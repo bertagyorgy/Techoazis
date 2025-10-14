@@ -1,0 +1,255 @@
+/* ===============================
+   ÁLTALÁNOS STÍLUSOK
+================================*/
+body {
+  font-family: Sans-Serif;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+}
+
+.line {
+  width: 100%;
+  background-color: #000;
+  height: 3px;
+}
+.gap{
+  height: 200px;
+  width: 100%;
+  background-color: #fff;
+}
+/* ===============================
+   GOMBOK ÉS IKONOK
+================================*/
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.icon-button:hover {
+  background-color: coral;
+  color: white;
+}
+
+/* ===============================
+   HERO SECTION
+================================*/
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #eae3c9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+.hero-text {
+  max-width: 800px;
+}
+
+.hero-text h1 {
+  font-size: clamp(2rem, 5vw, 4.5rem); /* ✅ reszponzív méretezés */
+  font-weight: 700;
+  line-height: 1.2;
+  color: #6f4d38; /* barna árnyalat */
+}
+
+.hero-text p {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  margin-top: 1rem;
+  color: #333;
+}
+
+.shopnow {
+  margin-top: 2rem;
+  padding: 14px 36px;
+  color: #fff;
+  background-color: coral;
+  border-radius: 50px;
+  font-size: 1.4rem;
+  border: none;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.shopnow:hover {
+  background-color: #ffa787;
+  transform: translateY(-5px);
+}
+
+.shopnow-small {
+  margin-top: 2rem;
+  padding: 10px 32px;
+  color: #fff;
+  background-color: coral;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  border: none;
+  text-decoration: none;
+}
+
+.shopnow-small:hover {
+  background-color: #ffa787;
+  color: black;
+}
+/* Kis kijelzőn középre igazítás */
+@media (max-width: 768px) {
+  .hero-section {
+    text-align: center;
+    padding: 4rem 1.5rem;
+  }
+
+  .hero-text h1 {
+    font-size: clamp(1.8rem, 6vw, 3rem);
+  }
+
+  .shopnow {
+    font-size: 1.1rem;
+    padding: 12px 28px;
+  }
+}
+
+/* ===============================
+   CÍMEK (globális szabály)
+   → Minden h2 barna legyen
+================================*/
+h2 {
+  color: #6f4d38; /* barna mindenhol */
+}
+
+/* ===============================
+   FEATURE SECTION
+================================*/
+section h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #6f4d38;
+}
+
+
+.feature-card {
+  background: #fff;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card i {
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover i {
+  transform: scale(1.1);
+}
+
+/* ===============================
+   SCROLL REVEAL ANIMÁCIÓ
+================================*/
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===============================
+   LATEST CONTENT (Friss tartalmak)
+================================*/
+.latest-section .card img {
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+/* ===============================
+   WHY CHOOSE US (Miért válassz minket)
+================================*/
+.whyus-icon i {
+  font-size: 3rem;
+  color: #059639;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.whyus-icon:hover i {
+  transform: scale(1.2);
+}
+
+.whyus-icon h5 {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.whyus-icon p {
+  font-size: 0.95rem;
+  color: #555;
+}
+/* ===============================
+   LÁBLÉC
+================================*/
+.footer {
+  background-color: #6f4d38; /* vagy #343a40 ha sötétebb tech-stílus kell */
+  color: #fff;
+}
+
+.footer-link {
+  color: #f5f5f5;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: coral;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: coral;
+  color: black;
+  transform: translateY(-4px);
+}
+
+@media (max-width: 768px) {
+  .footer {
+    text-align: center;
+  }
+  .footer .text-md-end {
+    text-align: center !important;
+  }
+}
+
