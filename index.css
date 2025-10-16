@@ -1,255 +1,502 @@
 /* ===============================
-   ÁLTALÁNOS STÍLUSOK
+  VARIABLES & BASIC SETUP
 ================================*/
+:root {
+    --primary-color: #6f4d38;
+    --secondary-color: coral;
+    --text-color: #333;
+    --background-light: #eae3c9;
+    --white: #fff;
+    --primary-icon: #0d6efd;
+    --success-icon: #198754;
+    --info-icon: #0dcaf0;
+    --warning-icon: #ffc107;
+    --danger-badge: #dc3545;
+}
+
 body {
-  font-family: Sans-Serif;
-  margin: 0;
+    font-family: 'Sans-Serif', sans-serif;
+    margin: 0;
+    color: var(--text-color);
 }
 
 a {
-  text-decoration: none;
-  color: black;
+    text-decoration: none;
+    color: black;
 }
 
-.navbar-brand {
-  font-size: 2rem;
+h2 {
+    color: var(--primary-color);
 }
 
-.line {
-  width: 100%;
-  background-color: #000;
-  height: 3px;
+.text-center {
+    text-align: center;
 }
-.gap{
-  height: 200px;
-  width: 100%;
-  background-color: #fff;
+
+.section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+.section-title {
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.gap {
+    height: 100px; /* Csökkentettem a méretet, ízlés szerint állítható */
+    width: 100%;
 }
 /* ===============================
-   GOMBOK ÉS IKONOK
+  CONTAINER & GRID SYSTEM
 ================================*/
+.custom-container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Különböző képernyőméretekhez a konténer maximális szélessége */
+@media (min-width: 576px) { .custom-container { max-width: 540px; } }
+@media (min-width: 768px) { .custom-container { max-width: 720px; } }
+@media (min-width: 992px) { .custom-container { max-width: 960px; } }
+@media (min-width: 1200px) { .custom-container { max-width: 1140px; } }
+
+.grid-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -1rem; /* Negatív margó a távolságokhoz */
+}
+
+/* Oszlopok alapbeállítása, padding a távolsághoz */
+[class^="grid-col-"] {
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box; /* A padding ne növelje a méretet */
+}
+
+/* Reszponzív oszlopok - Mobil nézetben minden 100% széles */
+@media (min-width: 768px) {
+    .grid-col-3 { width: 25%; }
+    .grid-col-4 { width: 33.3333%; }
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+/* ===============================
+  NAVBAR
+================================*/
+.main-navbar {
+    background-color: #f8f9fa;
+    padding: 0.5rem 0;
+    border-bottom: 3px solid #000;
+    font-weight: bold;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand img {
+    height: 35px;
+    width: 200px;
+    vertical-align: middle; /* Kép igazítása */
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.5rem; /* Menüpontok közötti távolság */
+}
+
+.nav-link {
+    color: #333;
+    transition: color 0.3s ease;
+    padding: 0.5rem 0;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--secondary-color);
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Ikonok közötti távolság */
+}
+
 .icon-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1.25rem; /* fs-5 */
 }
 
 .icon-button:hover {
-  background-color: coral;
-  color: white;
+    background-color: coral;
+    color: white;
 }
 
+.cart-icon {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: var(--danger-badge);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75em;
+    padding: 0.25em 0.6em;
+    font-weight: bold;
+}
+
+.nav-toggler {
+    display: none; /* Alapból rejtett */
+    background: none;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    cursor: pointer;
+}
+
+.nav-toggler-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+
+/* Mobilnézet a navbárhoz */
+@media (max-width: 992px) {
+    .nav-container {
+        flex-wrap: wrap;
+    }
+    .nav-toggler {
+        display: block; /* Megjelenik a gomb */
+    }
+    .nav-collapse {
+        display: none; /* Alapból rejtett a menü */
+        width: 100%;
+        flex-basis: 100%;
+    }
+    .nav-collapse.show {
+        display: block; /* JS-sel adjuk hozzá ezt az osztályt */
+    }
+    .nav-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 1rem;
+        gap: 0.5rem;
+    }
+    .nav-icons {
+        display: none; /* Ikonok elrejtése a menüben, duplikáció elkerülése */
+    }
+}
+
+
 /* ===============================
-   HERO SECTION
+  HERO SECTION
 ================================*/
 .hero-section {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  background-color: #eae3c9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 1rem;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--background-light);
+    display: flex;
+    align-items: center;
+    padding: 3rem 1rem;
+    box-sizing: border-box;
+}
+
+.hero-container {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .hero-container {
+        text-align: left;
+    }
 }
 
 .hero-text {
-  max-width: 800px;
+    max-width: 800px;
 }
 
 .hero-text h1 {
-  font-size: clamp(2rem, 5vw, 4.5rem); /* ✅ reszponzív méretezés */
-  font-weight: 700;
-  line-height: 1.2;
-  color: #6f4d38; /* barna árnyalat */
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--primary-color);
 }
 
 .hero-text p {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  margin-top: 1rem;
-  color: #333;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    margin-top: 1rem;
+    color: var(--text-color);
 }
 
+/* ===============================
+  GOMBOK
+================================*/
 .shopnow {
-  margin-top: 2rem;
-  padding: 14px 36px;
-  color: #fff;
-  background-color: coral;
-  border-radius: 50px;
-  font-size: 1.4rem;
-  border: none;
-  transition: all 0.3s ease;
-  text-decoration: none;
+    margin-top: 2rem;
+    padding: 14px 36px;
+    color: var(--white);
+    background-color: var(--secondary-color);
+    border-radius: 50px;
+    font-size: 1.4rem;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .shopnow:hover {
-  background-color: #ffa787;
-  transform: translateY(-5px);
+    background-color: #ffa787;
+    transform: translateY(-5px);
 }
 
 .shopnow-small {
-  margin-top: 2rem;
-  padding: 10px 32px;
-  color: #fff;
-  background-color: coral;
-  border-radius: 50px;
-  font-size: 1.2rem;
-  border: none;
-  text-decoration: none;
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 10px 32px;
+    color: var(--white);
+    background-color: var(--secondary-color);
+    border-radius: 50px;
+    font-size: 1.2rem;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .shopnow-small:hover {
-  background-color: #ffa787;
-  color: black;
+    background-color: #ffa787;
+    color: black;
 }
-/* Kis kijelzőn középre igazítás */
+
 @media (max-width: 768px) {
-  .hero-section {
-    text-align: center;
-    padding: 4rem 1.5rem;
-  }
-
-  .hero-text h1 {
-    font-size: clamp(1.8rem, 6vw, 3rem);
-  }
-
-  .shopnow {
-    font-size: 1.1rem;
-    padding: 12px 28px;
-  }
+    .hero-section {
+        padding: 4rem 1.5rem;
+    }
+    .hero-text h1 {
+        font-size: clamp(1.8rem, 6vw, 3rem);
+    }
+    .shopnow {
+        font-size: 1.1rem;
+        padding: 12px 28px;
+    }
 }
-
 /* ===============================
-   CÍMEK (globális szabály)
-   → Minden h2 barna legyen
+  FEATURE & WHY US SECTIONS
 ================================*/
-h2 {
-  color: #6f4d38; /* barna mindenhol */
-}
-
-/* ===============================
-   FEATURE SECTION
-================================*/
-section h2 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #6f4d38;
-}
-
-
 .feature-card {
-  background: #fff;
-  border-radius: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
+    padding: 1.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 20px;
+    height: 100%;
+    background: var(--white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 
 .feature-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .feature-card i {
-  transition: transform 0.3s ease;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
 }
 
 .feature-card:hover i {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
-/* ===============================
-   SCROLL REVEAL ANIMÁCIÓ
-================================*/
-.reveal {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.6s ease;
-}
+.icon-primary { color: var(--primary-icon); }
+.icon-success { color: var(--success-icon); }
+.icon-info { color: var(--info-icon); }
+.icon-warning { color: var(--warning-icon); }
 
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
 
-/* ===============================
-   LATEST CONTENT (Friss tartalmak)
-================================*/
-.latest-section .card img {
-  height: 220px;
-  object-fit: cover;
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-}
-
-/* ===============================
-   WHY CHOOSE US (Miért válassz minket)
-================================*/
 .whyus-icon i {
-  font-size: 3rem;
-  color: #059639;
-  margin-bottom: 10px;
-  transition: transform 0.3s ease;
+    font-size: 3rem;
+    color: #059639;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
 }
 
 .whyus-icon:hover i {
-  transform: scale(1.2);
+    transform: scale(1.2);
 }
 
 .whyus-icon h5 {
-  margin-top: 10px;
-  font-weight: bold;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 .whyus-icon p {
-  font-size: 0.95rem;
-  color: #555;
+    font-size: 0.95rem;
+    color: #555;
 }
+
 /* ===============================
-   LÁBLÉC
+  CUSTOM CARD (Latest content)
+================================*/
+.custom-card {
+    height: 100%;
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.custom-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+.card-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* ===============================
+  SCROLL REVEAL ANIMATION
+================================*/
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===============================
+  FOOTER
 ================================*/
 .footer {
-  background-color: #6f4d38; /* vagy #343a40 ha sötétebb tech-stílus kell */
-  color: #fff;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 3rem 0;
 }
 
+.footer-title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.footer-description {
+    font-size: 0.875rem; /* small */
+    margin-bottom: 0;
+}
+
+.footer-subtitle {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
 .footer-link {
-  color: #f5f5f5;
-  text-decoration: none;
-  transition: color 0.3s ease;
+    color: #f5f5f5;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
-
 .footer-link:hover {
-  color: coral;
+    color: var(--secondary-color);
 }
 
+.social-icons-wrapper {
+    display: flex;
+    gap: 0.75rem;
+}
 .social-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    transition: all 0.3s ease;
 }
-
 .social-icon:hover {
-  background-color: coral;
-  color: black;
-  transform: translateY(-4px);
+    background-color: var(--secondary-color);
+    color: black;
+    transform: translateY(-4px);
 }
 
-@media (max-width: 768px) {
-  .footer {
+.footer-divider {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-copy {
     text-align: center;
-  }
-  .footer .text-md-end {
-    text-align: center !important;
-  }
+    font-size: 0.875rem; /* small */
 }
 
+/* Footer reszponzivitás */
+@media (max-width: 768px) {
+    .grid-col-4 {
+        text-align: center;
+    }
+    .footer-nav, .footer-social {
+        margin-top: 2rem;
+    }
+    .social-icons-wrapper {
+        justify-content: center;
+    }
+}

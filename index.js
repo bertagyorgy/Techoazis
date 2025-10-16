@@ -1,14 +1,31 @@
-const reveals = document.querySelectorAll(".reveal");
+// Mobil menü (hamburger) működtetése
+const navToggler = document.getElementById('navToggler');
+const navCollapseContent = document.getElementById('navCollapseContent');
 
-window.addEventListener("scroll", () => {
-  const windowHeight = window.innerHeight;
+if (navToggler && navCollapseContent) {
+    navToggler.addEventListener('click', () => {
+        navCollapseContent.classList.toggle('show');
+    });
+}
 
-  reveals.forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < windowHeight - 100) {
-      // a delay-t az elem bal offset-je alapján állítjuk
-      const delay = rect.left / 5; // minél jobbra van, annál nagyobb delay
-      setTimeout(() => el.classList.add("active"), delay);
+
+// Scroll Reveal animáció
+function reveal() {
+  const reveals = document.querySelectorAll(".reveal");
+
+  for (let i = 0; i < reveals.length; i++) {
+    const windowHeight = window.innerHeight;
+    const elementTop = reveals[i].getBoundingClientRect().top;
+    const elementVisible = 150; // Milyen magasságnál jelenjen meg
+
+    if (elementTop < windowHeight - elementVisible) {
+      reveals[i].classList.add("active");
+    } else {
+      reveals[i].classList.remove("active"); // Ha azt akarod, hogy visszagörgetésnél újra eltűnjön
     }
-  });
-});
+  }
+}
+
+window.addEventListener("scroll", reveal);
+// Oldal betöltésekor is fusson le, hogy a látható elemek megjelenjenek
+reveal();
