@@ -113,28 +113,28 @@ session_start();
                 <div class="grid-col-3 reveal">
                     <div class="whyus-icon">
                         <i class="bi bi-lightning-charge-fill"></i>
-                        <h5>Gyors</h5>
+                        <h5 class="card-title">Gyors</h5>
                         <p>Villámgyors oldalbetöltés és optimalizált élmény minden eszközön.</p>
                     </div>
                 </div>
                 <div class="grid-col-3 reveal">
                     <div class="whyus-icon">
                         <i class="bi bi-people-fill"></i>
-                        <h5>Közösségi</h5>
+                        <h5 class="card-title">Közösségi</h5>
                         <p>Beszélgess, ossz meg projekteket, és tanulj másoktól.</p>
                     </div>
                 </div>
                 <div class="grid-col-3 reveal">
                     <div class="whyus-icon">
                         <i class="bi bi-cpu-fill"></i>
-                        <h5>Modern</h5>
+                        <h5 class="card-title">Modern</h5>
                         <p>A legfrissebb technológiákkal és eszközökkel építve.</p>
                     </div>
                 </div>
                 <div class="grid-col-3 reveal">
                     <div class="whyus-icon">
                         <i class="bi bi-shield-lock-fill"></i>
-                        <h5>Biztonságos</h5>
+                        <h5 class="card-title" >Biztonságos</h5>
                         <p>Adatvédelem és biztonság a legmagasabb szinten.</p>
                     </div>
                 </div>
@@ -154,7 +154,7 @@ session_start();
                     </p>
                 </div>
                 <div class="grid-col-4 footer-nav">
-                    <h5 class="footer-subtitle">Navigáció</h5>
+                    <h3 class="footer-subtitle">Navigáció</h3>
                     <ul class="footer-links">
                         <li><a href="index.php" class="footer-link">Főoldal</a></li>
                         <li><a href="shop.php" class="footer-link">Webshop</a></li>
@@ -164,7 +164,7 @@ session_start();
                     </ul>
                 </div>
                 <div class="grid-col-4 footer-social">
-                    <h5 class="footer-subtitle">Kövess minket</h5>
+                    <h3 class="footer-subtitle">Kövess minket</h3>
                     <div class="social-icons-wrapper">
                         <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>

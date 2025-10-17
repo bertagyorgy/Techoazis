@@ -19,9 +19,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <img src="images/techoazis_logo_chopped.png" alt="kep">
         </a>
         
-        <button class="nav-toggler" id="navToggler">
-            <span class="nav-toggler-icon"></span>
+        <button class="nav-toggler" id="navToggle" aria-label="Menü">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
         </button>
+
 
         <div class="nav-collapse" id="navCollapseContent">
             <ul class="nav-menu">
@@ -37,13 +40,13 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
         <div class="nav-icons">
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <a href='shop.php' class='icon-button'><i class='fa-solid fa-magnifying-glass'></i></a>
-                <a href='cart.php' class='icon-button cart-icon'>
-                    <i class='fa-solid fa-cart-shopping'></i>
-                    <span class='cart-badge'><?php echo $cart_badge; ?></span>
-                </a>
                 <a href='profile.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
             <?php else: ?>
                 <a href='shop.php' class='icon-button'><i class='fa-solid fa-magnifying-glass'></i></a>
+                <a href='cart.php' class='icon-button cart-icon'>
+                    <i class='fa-solid fa-cart-shopping'></i>
+                    <span class='cart-badge'>0<!--?php echo $cart_badge; ?>--></span>
+                </a>
                 <a href='login.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
             <?php endif; ?>
         </div>

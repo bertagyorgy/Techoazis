@@ -1,12 +1,11 @@
 // Mobil menü (hamburger) működtetése
-const navToggler = document.getElementById('navToggler');
-const navCollapseContent = document.getElementById('navCollapseContent');
+const navToggle = document.getElementById('navToggle');
+  const navbarMenu = document.getElementById('navCollapseContent'); // a collapse div-ed
 
-if (navToggler && navCollapseContent) {
-    navToggler.addEventListener('click', () => {
-        navCollapseContent.classList.toggle('show');
-    });
-}
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active'); // animáció
+    navbarMenu.classList.toggle('show'); // menü nyit/zár
+  });
 
 
 // Scroll Reveal animáció
