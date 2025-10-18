@@ -25,7 +25,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <span class="bar"></span>
         </button>
 
-
         <div class="nav-collapse" id="navCollapseContent">
             <ul class="nav-menu">
                 <li class="nav-item"><a class="nav-link active" href="index.php">Főoldal</a></li>
@@ -35,18 +34,30 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 <li class="nav-item"><a class="nav-link" href="shop.php">Vásárlás</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.php">Kapcsolat</a></li>
             </ul>
-        </div>
-        
-        <div class="nav-icons">
-            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                <a href='shop.php' class='icon-button'><i class='fa-solid fa-magnifying-glass'></i></a>
-                <a href='profile.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
-            <?php else: ?>
+
+            <div class="nav-icons mobile-icons">
                 <a href='shop.php' class='icon-button'><i class='fa-solid fa-magnifying-glass'></i></a>
                 <a href='cart.php' class='icon-button cart-icon'>
                     <i class='fa-solid fa-cart-shopping'></i>
                     <span class='cart-badge'>0<!--?php echo $cart_badge; ?>--></span>
                 </a>
+                <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                    <a href='profile.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
+                <?php else: ?>  
+                    <a href='login.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div class="nav-icons desktop-icons">
+            <a href='shop.php' class='icon-button'><i class='fa-solid fa-magnifying-glass'></i></a>
+            <a href='cart.php' class='icon-button cart-icon'>
+                <i class='fa-solid fa-cart-shopping'></i>
+                <span class='cart-badge'>0<!--?php echo $cart_badge; ?>--></span>
+            </a>
+            <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+                <a href='profile.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
+            <?php else: ?>  
                 <a href='login.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
             <?php endif; ?>
         </div>

@@ -232,29 +232,87 @@ h2 {
   }
 }
 
-
 /* Mobilnézet a navbárhoz */
 @media (max-width: 992px) {
-    .nav-container {
-        flex-wrap: wrap;
-    }
-    .nav-collapse {
-        display: none; /* Alapból rejtett a menü */
-        width: 100%;
-        flex-basis: 100%;
-    }
-    .nav-collapse.show {
-        display: block; /* JS-sel adjuk hozzá ezt az osztályt */
-    }
-    .nav-menu {
-        flex-direction: column;
-        align-items: flex-start;
-        padding-top: 1rem;
-        gap: 1rem;
-    }
-    .nav-icons {
-        display: none; /* Ikonok elrejtése a menüben, duplikáció elkerülése */
-    }
+  .nav-container {
+    flex-wrap: wrap;
+  }
+
+  .nav-collapse {
+    display: none; /* Alapból rejtett a menü */
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .nav-collapse.show {
+    display: block; /* JS-sel adjuk hozzá ezt az osztályt */
+  }
+
+  .nav-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 1rem;
+    gap: 1rem;
+  }
+
+  /* ⚠️ Ne rejtsd el az összes nav-icons-t */
+  /* Csak az asztali ikonsort rejtjük el külön lent */
+}
+
+/* Asztali ikonok (alapértelmezett) */
+.desktop-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Mobil ikonok alapból rejtve */
+.mobile-icons {
+  display: none;
+}
+
+/* Mobilnézet (és tablet is ide esik 992px alatt) */
+@media (max-width: 992px) {
+  .nav-container {
+    flex-wrap: wrap;
+  }
+
+  .desktop-icons {
+    display: none; /* ne csússzon fel */
+  }
+
+  .nav-collapse {
+    display: none;
+    width: 100%;
+    flex-basis: 100%;
+  }
+
+  .nav-collapse.show {
+    display: block;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 1rem;
+    gap: 1rem;
+  }
+
+  .mobile-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-icons .icon-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
 }
 
 
