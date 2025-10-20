@@ -40,7 +40,7 @@ h2 {
 
 .section-title {
     margin-bottom: 3rem;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
@@ -57,9 +57,12 @@ h2 {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+    box-sizing: border-box;
 }
 
 /* Különböző képernyőméretekhez a konténer maximális szélessége */
+@media (min-width: 576px) { .section-title { font-size: 2.5rem; } }
+
 @media (min-width: 576px) { .custom-container { max-width: 540px; } }
 @media (min-width: 768px) { .custom-container { max-width: 720px; } }
 @media (min-width: 992px) { .custom-container { max-width: 960px; } }
@@ -190,7 +193,6 @@ h2 {
   border-radius: 2px;
   transition: all 0.3s ease;
   position: absolute;
-  left: 0;
 }
 
 /* Három vonal elhelyezése */
@@ -321,7 +323,7 @@ h2 {
 ================================*/
 .hero-section {
     width: 100%;
-    min-height: 100vh;
+    height: calc(100vh - 75px);
     background-color: var(--background-light);
     display: flex;
     align-items: center;
@@ -472,6 +474,7 @@ h2 {
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
 }
 .custom-card:hover {
     transform: translateY(-8px);
