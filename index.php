@@ -14,7 +14,12 @@ session_start();
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
+<?php
+$page = $_GET['p'] ?? '';  
+
+if ($page === '') {
+    include 'navbar.php';
+?>
 
     <div class="hero-section">
         <div class="custom-container hero-container">
@@ -179,6 +184,18 @@ session_start();
             </div>
         </div>
     </footer>
+<?php
+} else {
+    // Dinamikusan betöltjük az adott oldal fájlját, ha létezik
+    $file = $page . '.php';
+    
+    if (file_exists($file)) {
+        include $file;
+    } else {
+        include '404.php';
+    }
+}
+?>
 
 </body>
 </html>
