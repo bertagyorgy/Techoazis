@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'db.php';
 ?>
 
 <!DOCTYPE html>
@@ -16,8 +17,63 @@ session_start();
 </head>
 <body>
 <?php
-    include 'db.php';
+$error_message = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    if (empty($username) || empty($password)) {
+        $error_message = "Kérlek, tölts ki minden mezőt.";
+    } else {
+        // Ellenőrizzük, hogy van-e ilyen felhasználó
+        $sql = "SELECT user_id, username, email, user_password, is_active FROM users WHERE username = ?";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("s", $username);
+
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                if ($result->num_rows == 1) {
+                    $row = $result->fetch_assoc();
+
+                    // Ellenőrizzük, hogy aktív-e
+                    if ($row['is_active'] !== 'A') {
+                        $error_message = "A fiókod nem aktív.";
+                    } elseif (password_verify($password, $row['user_password'])) {
+                        // Sikeres belépés
+
+                        // Login adatainak mentése
+                        $user_id = $row['user_id'];
+                        $login_date = date('Y-m-d H:i:s');
+
+                        $insert_sql = "INSERT INTO login (user_id, login_date) VALUES (?, ?)";
+                        if ($insert_stmt = $conn->prepare($insert_sql)) {
+                            $insert_stmt->bind_param("is", $user_id, $login_date);
+                            $insert_stmt->execute();
+                            $insert_stmt->close();
+                        }
+
+                        // Sikeres belépés után
+                        echo "<script>alert('Sikeres belépés!'); window.location.href='index.php';</script>";
+                        exit();
+                    } else {
+                        $error_message = "Hibás jelszó.";
+                    }
+                } else {
+                    $error_message = "Nincs ilyen felhasználónév.";
+                }
+            } else {
+                $error_message = "Hiba történt a bejelentkezés során.";
+            }
+
+            $stmt->close();
+        }
+    }
+
+    $conn->close();
+}
 ?>
+
     <div class="background">
         <div class="login-container">
             <section class="login-box">
@@ -34,7 +90,7 @@ session_start();
                         <label for="password" class="login-label">Jelszó</label>
                         <input type="password" name="password" id="password" class="login-input" required>
                     </div>
-                    <button type="submit" name="login" class="login-button">Bejelentkezés</button>
+                    <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
 
                 <p class="login-footer">Nincs fiókod? <a href="registration.php">Regisztráció</a></p>
