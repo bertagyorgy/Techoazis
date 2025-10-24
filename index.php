@@ -25,7 +25,7 @@ if ($page === '') {
     <div class="hero-section">
         <div class="custom-container hero-container">
             <div class="hero-text">
-                <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Mind egy helyen.</h1>
+                <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
                 <p>Fedezze fel oldalunk nyújtotta szolgáltatásokat.</p>
                 <a href="shop.php">
                     <button type="button" class="shopnow">Vásárolj most</button>
@@ -112,36 +112,44 @@ if ($page === '') {
 
     <div class="gap"></div>
 
-    <section class="section-padding">
-        <div class="custom-container text-center">
+    <section class="custom-container section-padding">
+        <div class="text-center">
             <h2 class="section-title">Miért válassz minket?</h2>
-            <div class="grid-row justify-center">
+            <div class="grid-row">
                 <div class="grid-col-3 reveal">
-                    <div class="whyus-icon">
-                        <i class="bi bi-lightning-charge-fill"></i>
-                        <h5 class="card-title">Gyors</h5>
-                        <p>Villámgyors oldalbetöltés és optimalizált élmény minden eszközön.</p>
+                    <div class="feature-card">
+                        <div class="whyus-icon">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                            <h4>Gyors</h4>
+                            <p>Villámgyors oldalbetöltés és optimalizált élmény minden eszközön.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="grid-col-3 reveal">
-                    <div class="whyus-icon">
-                        <i class="bi bi-people-fill"></i>
-                        <h5 class="card-title">Közösségi</h5>
-                        <p>Beszélgess, ossz meg projekteket, és tanulj másoktól.</p>
+                    <div class="feature-card">
+                        <div class="whyus-icon">
+                            <i class="bi bi-people-fill"></i>
+                            <h4>Közösségi</h4>
+                            <p>Beszélgess, ossz meg projekteket, és tanulj másoktól.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="grid-col-3 reveal">
-                    <div class="whyus-icon">
-                        <i class="bi bi-cpu-fill"></i>
-                        <h5 class="card-title">Modern</h5>
-                        <p>A legfrissebb technológiákkal és eszközökkel építve.</p>
+                    <div class="feature-card">
+                        <div class="whyus-icon">
+                            <i class="bi bi-cpu-fill"></i>
+                            <h4>Modern</h4>
+                            <p>A legfrissebb technológiákkal és eszközökkel építve.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="grid-col-3 reveal">
-                    <div class="whyus-icon">
-                        <i class="bi bi-shield-lock-fill"></i>
-                        <h5 class="card-title" >Biztonságos</h5>
-                        <p>Adatvédelem és biztonság a legmagasabb szinten.</p>
+                    <div class="feature-card">
+                        <div class="whyus-icon">
+                            <i class="bi bi-shield-lock-fill"></i>
+                            <h4>Biztonságos</h4>
+                            <p>Adatvédelem és biztonság a legmagasabb szinten.</p>
+                        </div>
                     </div>
                 </div>
             </div>

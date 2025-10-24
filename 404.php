@@ -8,8 +8,12 @@
         body {
             margin: 0;
             height: 100vh;
-            background-color: #eae3c9;
-            color: #6f4d38;
+            background: url(images/minimalist_background_notfound.jpg);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            color: #fff;
             font-family: sans-serif;
             display: flex;
             flex-direction: column;
@@ -21,11 +25,13 @@
         h1 {
             font-size: 8rem;
             margin: 0;
+            opacity: 0.7;
         }
 
         p {
             font-size: 1.5rem;
             margin-top: 1rem;
+            opacity: 0.7;
         }
 
         footer {
