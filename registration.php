@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include 'db.php';
 ?>
 
@@ -18,6 +20,10 @@ include 'db.php';
 <body>
 <?php
 $error_message = '';
+$page = $_GET['p'] ?? '';  
+if ($page === '') {
+    include 'navbar.php';
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     $errors = [];
