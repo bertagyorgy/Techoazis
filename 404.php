@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoázis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="index.css">
     <style>
-        body {
+        .main {
             margin: 0;
-            height: 100vh;
+            height: calc(100vh - 75px);
             background: url(images/minimalist_background_notfound.jpg);
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -22,19 +26,19 @@
             text-align: center;
         }
 
-        h1 {
+        .main h1 {
             font-size: 8rem;
             margin: 0;
             opacity: 0.7;
         }
 
-        p {
+        .main p {
             font-size: 1.5rem;
             margin-top: 1rem;
             opacity: 0.7;
         }
 
-        footer {
+        .main footer {
             position: absolute;
             bottom: 20px;
             font-size: 0.9rem;
@@ -42,11 +46,16 @@
     </style>
 </head>
 <body>
-    <h1>404</h1>
-    <p>A keresett oldal nem található.</p>
+    <?php
+    include 'navbar.php';
+    ?>
+    <div class="main">
+        <h1>404</h1>
+        <p>A keresett oldal nem található.</p>
 
-    <footer>
-        &copy; <?php echo date("Y"); ?> Techoázis
-    </footer>
+        <footer>
+            &copy; <?php echo date("Y"); ?> Techoázis
+        </footer>
+    </div>
 </body>
 </html>

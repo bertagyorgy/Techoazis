@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 
             if ($stmt->execute()) {
                 // sikeres regisztráció
-                header("Location: login.php?message=" . urlencode("Sikeres regisztráció! Jelentkezz be.") . "&message_type=success");
+                echo "<script>alert('Sikeres belépés!'); window.location.href='login.php';</script>";
                 exit();
             } else {
                 $errors[] = "Hiba a mentés során. Kérlek, próbáld újra később.";
