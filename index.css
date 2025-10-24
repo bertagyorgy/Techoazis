@@ -368,6 +368,18 @@ h4{
     opacity: 0.7;
 }
 
+.feature-card-link {
+  display: block;
+  color: inherit; /* ne legyen kék link */
+  text-decoration: none;
+}
+
+.feature-card-link:hover .feature-card {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+
 /* ===============================
   GOMBOK
 ================================*/
