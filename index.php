@@ -171,10 +171,10 @@ if ($page === '') {
                     <h3 class="footer-subtitle">Navigáció</h3>
                     <ul class="footer-links">
                         <li><a href="index.php" class="footer-link">Főoldal</a></li>
-                        <li><a href="shop.php" class="footer-link">Webshop</a></li>
-                        <li><a href="forum.php" class="footer-link">Csevegés</a></li>
-                        <li><a href="articles.php" class="footer-link">Cikkek</a></li>
-                        <li><a href="contact.php" class="footer-link">Kapcsolat</a></li>
+                        <li><a href="index.php?p=shop.php" class="footer-link">Webshop</a></li>
+                        <li><a href="index.php?p=forum.php" class="footer-link">Csevegés</a></li>
+                        <li><a href="index.php?p=articles.php" class="footer-link">Cikkek</a></li>
+                        <li><a href="index.php?p=contact" class="footer-link">Kapcsolat</a></li>
                     </ul>
                 </div>
                 <div class="grid-col-4 footer-social">
