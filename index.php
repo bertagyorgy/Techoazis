@@ -178,7 +178,7 @@ if ($page === '') {
                         <li><a href="articles.php" class="footer-link">Cikkek</a></li>
                         <li><a href="contact.php" class="footer-link">Kapcsolat</a></li>
                         <?php
-                        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] === 'A'): ?>
+                        if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
                             <li><a href="admin_panel.php" class="footer-link">Admin</a></li>
                         <?php endif; ?>
                     </ul>
