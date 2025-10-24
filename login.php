@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include 'db.php';
 ?>
 
@@ -18,6 +20,10 @@ include 'db.php';
 <body>
 <?php
 $error_message = '';
+$page = $_GET['p'] ?? '';  
+if ($page === '') {
+    include 'navbar.php';
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $username = trim($_POST['username']);
@@ -27,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         $error_message = "Kérlek, tölts ki minden mezőt.";
     } else {
         // Ellenőrizzük, hogy van-e ilyen felhasználó
-        $sql = "SELECT user_id, username, email, user_password, is_active FROM users WHERE username = ?";
+        $sql = "SELECT user_id, username, email, user_password, is_active, user_role FROM users WHERE username = ?";
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $username);
 
@@ -45,6 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         // Login adatainak mentése
                         $user_id = $row['user_id'];
                         $login_date = date('Y-m-d H:i:s');
+
+                        $_SESSION['user_id'] = $row['user_id'];
+                        $_SESSION['username'] = $row['username'];
+                        $_SESSION['user_role'] = $row['user_role'];
+                        $_SESSION['loggedin'] = true;
 
                         $insert_sql = "INSERT INTO login (user_id, login_date) VALUES (?, ?)";
                         if ($insert_stmt = $conn->prepare($insert_sql)) {
