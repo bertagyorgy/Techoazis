@@ -39,33 +39,33 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             </ul>
 
             <div class="nav-icons mobile-icons">
-                <a href='shop.php' class='icon-button'><i class='fa-solid fa-magnifying-glass'></i></a>
-                <a href='cart.php' class='icon-button cart-icon'>
+                <a href='shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
+                <a href='cart.php' class='icon-button cart-icon' title='Kosár'>
                     <i class='fa-solid fa-cart-shopping'></i>
                     <span class='cart-badge'>0<!--?php echo $cart_badge; ?>--></span>
                 </a>
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                    <a href='profile.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
+                    <a href='profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
                     <a href="logout.php" class="icon-button" title="Kijelentkezés">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </a>
                 <?php else: ?>  
-                    <a href="login.php" class="icon-button"><i class="fa-solid fa-user"></i></a>
+                    <a href="login.php" class="icon-button" title='Bejelentkezés'><i class="fa-solid fa-user"></i></a>
                 <?php endif; ?>
             </div>
         </div>
 
         <div class="nav-icons desktop-icons">
-            <a href='shop.php' class='icon-button'><i class='fa-solid fa-magnifying-glass'></i></a>
-            <a href='cart.php' class='icon-button cart-icon'>
+            <a href='shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
+            <a href='cart.php' class='icon-button cart-icon' title='Kosár'>
                 <i class='fa-solid fa-cart-shopping'></i>
                 <span class='cart-badge'>0<!--?php echo $cart_badge; ?>--></span>
             </a>
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-                <a href='profile.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
+                <a href='profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
                 <a href='logout.php' class='icon-button' title='Kijelentkezés'><i class='fa-solid fa-right-from-bracket'></i></a>
             <?php else: ?>  
-                <a href='login.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
+                <a href='login.php' class='icon-button' title='Bejelentkezés'><i class='fa-solid fa-user'></i></a>
             <?php endif; ?>
         </div>
     </div>
