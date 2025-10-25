@@ -20,11 +20,6 @@ include 'db.php';
 <body>
 <?php
 $error_message = '';
-$page = $_GET['p'] ?? '';  
-if ($page === '') {
-    include 'navbar.php';
-}
-
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     $errors = [];
 
@@ -103,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 
             if ($stmt->execute()) {
                 // sikeres regisztráció
-                echo "<script>alert('Sikeres belépés!'); window.location.href='login.php';</script>";
+                echo "<script>window.location.href='login.php';</script>";
                 exit();
             } else {
                 $errors[] = "Hiba a mentés során. Kérlek, próbáld újra később.";

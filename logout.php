@@ -1,19 +1,16 @@
 <?php
-session_start();
-include 'db.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// Ha a felhasználó be van jelentkezve
+session_start();
+
+// Ha be van jelentkezve, töröljük az adatokat
 if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $logout_date = date('Y-m-d H:i:s');
+    $_SESSION = [];
+    session_unset();
+    session_destroy();
 }
 
-// Minden session adat törlése
-$_SESSION = [];
-session_unset();
-session_destroy();
-
-// Visszairányítás a kezdőlapra vagy login oldalra
-header("Location: login.php");
+// Biztonságosabb header-es redirect
+header("Location: index.php");
 exit();
-?>

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $username = $_POST['username'];
         $email = $_POST['email'];
         $user_role = $_POST['user_role'];
-        $is_active = isset($_POST['is_active']) ? "A" : "IA";
+        $is_active = isset($_POST['is_active']) ? "A" : "T";
 
         try {
             $sql = "UPDATE USERS SET username = ?, email = ?, user_role = ?, is_active = ? WHERE user_id = ?";
@@ -103,26 +103,28 @@ if ($action === 'edit') $title = "Felhasználó Szerkesztése";
 <!DOCTYPE html>
 <html lang="hu">
 <head>
+    <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <script src="index.js" defer></script>
-    <title><?php echo $title; ?></title>
+    <title>Techoazis | Felhasználók</title>
     <link rel="stylesheet" href="index.css">
+
     <style>
-        body { font-family: "Segoe UI", Roboto, sans-serif; background-color: #f3f4f6; margin: 0; padding: 40px; color: #333; }
+        body{ background-color: var(--background-light); }
         h1 { text-align: center; color: #1f2937; margin-bottom: 20px; }
-        a { color: #2563eb; text-decoration: none; font-weight: 500; }
-        a:hover { text-decoration: underline; }
+        /*a { color: #2563eb; text-decoration: none; font-weight: 500; }*/
+        /*a:hover { text-decoration: underline; }*/
         .action-btn { background: #2563eb; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; transition: background 0.2s; }
         .action-btn:hover { background: #1e40af; }
         .delete-btn { background: #dc2626; }
         .delete-btn:hover { background: #b91c1c; }
         table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
         th, td { padding: 12px 16px; text-align: left; }
-        th { background: #2563eb; color: white; text-transform: uppercase; font-size: 0.85rem; }
+        th { background: var(--primary-color); color: white; text-transform: uppercase; font-size: 0.85rem; }
         tr:nth-child(even) { background-color: #f9fafb; }
         tr:hover { background-color: #eff6ff; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
@@ -133,12 +135,6 @@ if ($action === 'edit') $title = "Felhasználó Szerkesztése";
         /* ===============================
         USERS PAGE FIXES
         ================================*/
-        body.users-page {
-            background-color: var(--background-light);
-            margin: 0;
-            padding: 2rem;
-            font-family: 'Sans-Serif', sans-serif;
-        }
 
         .users-page h1 {
             text-align: center;
@@ -259,8 +255,8 @@ default: ?>
                     <th>ID</th>
                     <th>Felhasználónév</th>
                     <th>Email</th>
+                    <th>Státusz</th>
                     <th>Szerepkör</th>
-                    <th>Aktív</th>
                     <th>Műveletek</th>
                 </tr>
             </thead>
@@ -273,12 +269,12 @@ default: ?>
                         echo "<td>{$row['user_id']}</td>";
                         echo "<td>" . htmlspecialchars($row['username']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+                        echo "<td>" . ($row['is_active'] === 'A' ? '✅ Aktív' : '❌ Törölt') . "</td>";
                         echo "<td>" . htmlspecialchars($row['user_role']) . "</td>";
-                        echo "<td>" . ($row['is_active'] ? '✅ Igen' : '❌ Nem') . "</td>";
                         echo "<td>
-                                <a href='users.php?action=edit&id={$row['user_id']}' class='action-btn'>Szerkesztés</a>
+                                <a href='users.php?action=edit&id={$row['user_id']}' class='action-btn'><i class='fa-solid fa-pen-to-square'></i> Szerkesztés</a>
                                 <a href='users.php?action=delete&id={$row['user_id']}' class='action-btn delete-btn' 
-                                onclick='return confirm(\"Biztosan törlöd ezt a felhasználót?\");'>Törlés</a>
+                                onclick='return confirm(\"Biztosan törlöd ezt a felhasználót?\");'><i class='fa-solid fa-box-archive'></i> Törlés</a>
                             </td>";
                         echo "</tr>";
                     }

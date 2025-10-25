@@ -20,11 +20,6 @@ include 'db.php';
 <body>
 <?php
 $error_message = '';
-$page = $_GET['p'] ?? '';  
-if ($page === '') {
-    include 'navbar.php';
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
@@ -65,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         }
 
                         // Sikeres belépés után
-                        echo "<script>alert('Sikeres belépés!'); window.location.href='index.php';</script>";
+                        echo "<script>window.location.href='index.php';</script>";
                         exit();
                     } else {
                         $error_message = "Hibás jelszó.";

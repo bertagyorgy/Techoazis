@@ -33,9 +33,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 <li class="nav-item"><a class="nav-link" href="forum.php">Közösség</a></li>
                 <li class="nav-item"><a class="nav-link" href="shop.php">Vásárlás</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.php">Kapcsolat</a></li>
-                <?php
-                if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
-                    <li><a href="admin_panel.php" class="footer-link">Admin</a></li>
+                <?php if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
+                    <li class="nav-item"><a class="nav-link" href="admin_panel.php" >Admin</a></li>
                 <?php endif; ?>
             </ul>
 
@@ -47,9 +46,11 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 </a>
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                     <a href='profile.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
-                        <a href='logout.php' class='icon-button' title='Kijelentkezés'><i class='fa-solid fa-right-from-bracket'></i></a>
+                    <a href="logout.php" class="icon-button" title="Kijelentkezés">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
                 <?php else: ?>  
-                    <a href='login.php' class='icon-button'><i class='fa-solid fa-user'></i></a>
+                    <a href="login.php" class="icon-button"><i class="fa-solid fa-user"></i></a>
                 <?php endif; ?>
             </div>
         </div>
@@ -68,4 +69,19 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <?php endif; ?>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Minden logout linkre ráteszi az eseményt (mobil + desktop)
+            const logoutLinks = document.querySelectorAll('a[href="logout.php"]');
+            logoutLinks.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    const confirmed = confirm("Biztosan ki szeretnél jelentkezni?");
+                    if (!confirmed) {
+                        e.preventDefault(); // ha nem nyom 'OK'-t, akkor nem lép ki
+                    }
+                });
+            });
+        });
+    </script>
+
 </nav>
