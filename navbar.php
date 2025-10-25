@@ -12,7 +12,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     $cart_badge = $cart_count > 0 ? $cart_count : '0';
 }
 ?>
-
+<!-- TO DO: DOM TARTALOM BETÖLTÉS ITT A NAVBARON KERESZTÜL, ÍGY MEGSZŰNIK A VILLANÁS-->
 <nav class="main-navbar">
     <div class="custom-container nav-container">
         <a class="nav-brand" href="#">

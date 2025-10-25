@@ -1,68 +1,215 @@
-body{ background-color: var(--background-light); }
-h1 { text-align: center; color: #1f2937; margin-bottom: 20px; }
-/*a { color: #2563eb; text-decoration: none; font-weight: 500; }*/
-/*a:hover { text-decoration: underline; }*/
-.action-btn { background: #2563eb; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.9rem; transition: background 0.2s; }
-.action-btn:hover { background: #1e40af; }
-.delete-btn { background: #dc2626; }
-.delete-btn:hover { background: #b91c1c; }
-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
-th, td { padding: 12px 16px; text-align: left; }
-th { background: var(--primary-color); color: white; text-transform: uppercase; font-size: 0.85rem; }
-tr:nth-child(even) { background-color: #f9fafb; }
-tr:hover { background-color: #eff6ff; }
-.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-.add-user-btn { background: #16a34a; color: white; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-weight: 500; transition: background 0.2s; }
-.add-user-btn:hover { background: #15803d; }
-.message { padding: 12px; margin-bottom: 20px; border-radius: 6px; background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; text-align: center; }
-.message.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-/* ===============================
-USERS PAGE FIXES
-================================*/
+body { background-color: var(--background-light); }
 
 .users-page h1 {
     text-align: center;
     color: var(--primary-color);
-    margin-top: 2rem; /* hogy ne ütközzön a navbárral */
+    margin-top: 2rem;
 }
 
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 40px auto 25px auto;
+    padding: 0 20px;
+}
+
+.top-bar h1 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.8rem;
+}
+
+.add-user-btn {
+    background: #16a34a;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.25s ease;
+}
+.add-user-btn:hover {
+    background: #15803d;
+    transform: scale(1.05);
+}
+
+/* TÁBLÁZAT */
 .users-table-wrapper {
     max-width: 1100px;
     margin: 2rem auto;
-    background-color: var(--white);
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow-x: auto;
 }
-
-.users-table {
+table {
     width: 100%;
     border-collapse: collapse;
-    border: none;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-
-.users-table th {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 0.75rem;
+th, td {
+    padding: 12px 16px;
     text-align: left;
 }
+th {
+    background: var(--primary-color);
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+tr:nth-child(even) { background-color: #f9fafb; }
+tr:hover { background-color: #eff6ff; }
 
-.users-table td {
-    padding: 0.75rem;
-    border-bottom: 1px solid #ddd;
+.action-btn {
+    background: #2563eb;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+.action-btn:hover { background: #1e40af; }
+
+.delete-btn {
+    background: #dc2626;
+}
+.delete-btn:hover {
+    background: #b91c1c;
 }
 
-.users-table tr:hover {
-    background-color: #f9f9f9;
+/* ÜZENETEK */
+.message {
+    padding: 12px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 6px;
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    text-align: center;
+}
+.message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
 }
 
-.users-table a {
-    color: var(--secondary-color);
-    font-weight: bold;
-    margin-right: 0.5rem;
+/* VISSZA GOMB */
+.back-link {
+    width: 200px;
+    display: block;
+    text-align: center;
+    margin: 30px auto;
+    background: #4b5563;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.25s ease, transform 0.15s ease;
+}
+.back-link:hover {
+    background: #374151;
+    transform: translateY(-2px);
 }
 
-.users-table a:hover {
-    color: #ff9966;
+/* SZERKESZTŐ FORM */
+.form-container {
+    max-width: 600px;
+    margin: 80px auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #333;
+}
+
+.form-container h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #222;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+label {
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    margin-top: 0.4rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.15);
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.action-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.delete-btn:hover {
+    background-color: #a71d2a;
 }
