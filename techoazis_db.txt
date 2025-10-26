@@ -1,0 +1,86 @@
+CREATE TABLE USERS (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    user_password VARCHAR(255) NOT NULL,
+    is_active CHAR(1) NOT NULL DEFAULT 'A',
+    registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    user_role CHAR(1) NOT NULL,
+    session VARCHAR(255),
+    ip VARCHAR(45)
+);
+
+CREATE TABLE LOGIN (
+    login_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    login_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+CREATE TABLE PRODUCTS (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(100),
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+CREATE TABLE POSTS (
+    post_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    category VARCHAR(100),
+    code_snippet TEXT,
+    language VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+CREATE TABLE COMMENTS (
+    comment_id INT PRIMARY KEY AUTO_INCREMENT,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES POSTS(post_id),
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+);
+
+CREATE TABLE BADGES (
+    badge_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    icon VARCHAR(255)
+);
+
+CREATE TABLE USER_BADGES (
+    user_id INT NOT NULL,
+    badge_id INT NOT NULL,
+    earned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, badge_id),
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id),
+    FOREIGN KEY (badge_id) REFERENCES BADGES(badge_id)
+);
+
+CREATE TABLE IMAGES (
+    image_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT,
+    post_id INT,
+    image_path VARCHAR(255) NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES PRODUCTS(product_id),
+    FOREIGN KEY (post_id) REFERENCES POSTS(post_id)
+);
+
+CREATE TABLE CART (
+    cart_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(user_id),
+    FOREIGN KEY (product_id) REFERENCES PRODUCTS(product_id)
+);
