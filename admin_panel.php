@@ -28,49 +28,104 @@ if ($page === '') {
             </div>
         </div>
     </div>
+
     <section class="custom-container section-padding">
         <div class="text-center">
             <h2 class="section-title">Mit tudsz csinálni?</h2>
             <div class="grid-row">
+                <!-- Felhasználók -->
                 <div class="grid-col-3 reveal">
-                    <a href="users.php" class="btn">
-                    <div class="feature-card">
-                        <i class="fa-solid fa-user-gear fa-3x icon-primary"></i>
-                        <h4>Felhasználók</h4>
-                        <p>Felhasználói fiókok kezelése, jogosultságok módosítása.</p>
-                        <span class="btn"></span>
-                    </div>
-                    </a>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <a href="products.php" class="btn">
-                    <div class="feature-card">
-                        <i class="fa-solid fa-box-open fa-3x icon-success"></i>
-                        <h4>Termékek</h4>
-                        <p>Termékek hozzáadása, szerkesztése és törlése a webshopban.</p>
-                    </div>
-                    </a>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <a href="posts.php" class="btn">
+                    <a href="panel_users.php" class="btn">
                         <div class="feature-card">
-                            <i class="fa-solid fa-pen-to-square fa-3x icon-info"></i>
+                            <i class="fa-solid fa-user-gear fa-3x icon-primary"></i>
+                            <h4>Felhasználók</h4>
+                            <p>Felhasználói fiókok kezelése, jogosultságok módosítása.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Bejelentkezések -->
+                <div class="grid-col-3 reveal">
+                    <a href="panel_login.php" class="btn">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-right-to-bracket fa-3x icon-success"></i>
+                            <h4>Bejelentkezések</h4>
+                            <p>Felhasználói aktivitás és bejelentkezési előzmények megtekintése.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Termékek -->
+                <div class="grid-col-3 reveal">
+                    <a href="panel_products.php" class="btn">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-box-open fa-3x icon-info"></i>
+                            <h4>Termékek</h4>
+                            <p>Termékek hozzáadása, szerkesztése és törlése a webshopban.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Bejegyzések -->
+                <div class="grid-col-3 reveal">
+                    <a href="panel_posts.php" class="btn">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-pen-to-square fa-3x icon-warning"></i>
                             <h4>Bejegyzések</h4>
                             <p>Blogbejegyzések és cikkek kezelése, publikálása.</p>
                         </div>
                     </a>
                 </div>
+                <!-- Kommentek -->
                 <div class="grid-col-3 reveal">
-                    <a href="easter_egg.php" class="btn">
+                    <a href="panel_comments.php" class="btn">
                         <div class="feature-card">
-                            <i class="fa-solid fa-mug-hot fa-3x icon-warning"></i>
-                            <h4>Stresszoldó mód</h4>
-                            <p>Ha túl sok a bug, túl kevés a kávé, itt egy kis nyugi.</p>
+                            <i class="fa-solid fa-comments fa-3x icon-primary"></i>
+                            <h4>Kommentek</h4>
+                            <p>Hozzászólások moderálása, törlése és válaszok kezelése.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Jelvények -->
+                <div class="grid-col-3 reveal">
+                    <a href="panel_badges.php" class="btn">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-medal fa-3x icon-success"></i>
+                            <h4>Jelvények</h4>
+                            <p>Új jelvények létrehozása, ikonok és leírások kezelése.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Felhasználói jelvények -->
+                <div class="grid-col-3 reveal">
+                    <a href="panel_user_badges.php" class="btn">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-star fa-3x icon-info"></i>
+                            <h4>Felhasználói jelvények</h4>
+                            <p>Megtekintheted, hogy melyik felhasználó milyen jelvényeket szerzett meg és mikor.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Képek -->
+                <div class="grid-col-3 reveal">
+                    <a href="panel_images.php" class="btn">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-image fa-3x icon-warning"></i>
+                            <h4>Képek</h4>
+                            <p>Termékekhez és bejegyzésekhez tartozó képek feltöltése és kezelése.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Kosár -->
+                <div class="grid-col-3 reveal">
+                    <a href="panel_cart.php" class="btn">
+                        <div class="feature-card">
+                            <i class="fa-solid fa-cart-shopping fa-3x icon-primary"></i>
+                            <h4>Kosár</h4>
+                            <p>Felhasználói kosarak megtekintése, termékek mennyiségének módosítása.</p>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
     </section>
+
 </body>
 </html>
