@@ -320,7 +320,7 @@ switch ($action):
             <?php endwhile; else: ?>
             <tr>
                 <td colspan="<?= count($config['list_columns']) + 1 ?>" 
-                    style="text-align:center; padding:20px;">
+                    style="text-align:center; padding:20px; font-weight:bold;">
                     Nincsenek bejegyzések.
                 </td>
             </tr>

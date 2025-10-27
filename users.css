@@ -44,7 +44,8 @@ body { background-color: var(--background-light); }
     overflow-x: auto;
 }
 table {
-    width: 100%;
+    width: 80%;
+    margin: auto;
     border-collapse: collapse;
     background: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
