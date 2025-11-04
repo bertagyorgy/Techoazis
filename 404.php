@@ -11,8 +11,8 @@
     <style>
         .main {
             margin: 0;
-            height: calc(100vh - 75px);
-            background: url(images/minimalist_background_notfound.jpg);
+            height: 100vh;
+            background: url(images/desert_night2.jpeg);
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;

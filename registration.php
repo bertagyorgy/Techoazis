@@ -19,6 +19,7 @@ include 'db.php';
 </head>
 <body>
 <?php
+include 'navbar.php';
 $error_message = '';
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     $errors = [];
@@ -140,11 +141,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     </div>
                     <div class="login-form-group">
                         <label for="password" class="login-label">Jelszó</label>
-                        <input type="password" name="password" id="password" class="login-input" required>
+                        <div class="password-wrapper">
+                            <input type="password" name="password" id="password" class="login-input" required>
+                            <i class="fa-solid fa-eye-slash toggle-password"></i>
+                        </div>
                     </div>
                     <div class="login-form-group">
                         <label for="password" class="login-label">Jelszó megerősítése</label>
-                        <input type="password" name="confirm_password" id="confirm_password" class="login-input" required>
+                        <div class="password-wrapper">
+                            <input type="password" name="confirm_password" id="confirm_password" class="login-input" required>
+                            <i class="fa-solid fa-eye-slash toggle-password"></i>
+                        </div>
                     </div>
                     <button type="submit" name="submit" class="login-button">Regisztráció</button>
                 </form>
