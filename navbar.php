@@ -34,7 +34,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 <li class="nav-item"><a class="nav-link" href="shop.php">Vásárlás</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.php">Kapcsolat</a></li>
                 <?php if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
-                    <li class="nav-item"><a class="nav-link" href="admin_panel.php" >Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin.php" >Admin</a></li>
                 <?php endif; ?>
             </ul>
 

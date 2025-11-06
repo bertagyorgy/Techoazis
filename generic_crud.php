@@ -208,7 +208,7 @@ if ($action === 'delete' && $id && $allow_delete) {
 </head>
 <body class="admin-page">
 
-<?php include 'navbar.php'; ?>
+<!--?php include 'navbar.php'; ?>-->
 
 <?php if (!empty($message)): ?>
     <div class="message <?= str_starts_with(strtolower($message), 'hiba') ? 'error' : ''; ?>">
@@ -229,7 +229,7 @@ switch ($action):
             echo build_form_field($field_name, $config['fields'][$field_name], null, $conn);
         } ?>
         <button type="submit" class="action-btn">Mentés</button>
-        <a href="<?= $page_file ?>" class="action-btn delete-btn">Mégse</a>
+        <a href="admin.php" class="action-btn delete-btn">Mégse</a>
     </form>
 </div>
 <?php
@@ -256,7 +256,7 @@ switch ($action):
             echo build_form_field($field_name, $config['fields'][$field_name], $item[$field_name] ?? null, $conn);
         } ?>
         <button type="submit" class="action-btn">Frissítés</button>
-        <a href="<?= $page_file ?>" class="action-btn delete-btn">Mégse</a>
+        <a href="admin.php" class="action-btn delete-btn">Mégse</a>
     </form>
 </div>
 <?php else: ?>
@@ -329,8 +329,8 @@ switch ($action):
     </table>
 </div> <!-- ✅ lezárva a table-wrapper itt -->
 
-<!-- A vissza gomb a táblázat ALÁ kerül -->
-<a href="admin_panel.php" class="back-link">⬅ Vissza a panelra</a>
+<!-- A vissza gomb a táblázat ALÁ kerül
+<a href="admin_panel.php" class="back-link">⬅ Vissza a panelra</a>-->
 
 <?php endswitch; $conn->close(); ?>
 </body>

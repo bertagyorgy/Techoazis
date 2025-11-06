@@ -6,7 +6,6 @@ CREATE TABLE USERS (
     is_active CHAR(1) NOT NULL DEFAULT 'A',
     registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     user_role CHAR(1) NOT NULL,
-    session VARCHAR(255),
     ip VARCHAR(45)
 );
 
