@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../app/db.php';
+include './app/db.php';
 
 // Ellenőrizzük, hogy be van-e jelentkezve a felhasználó
 if (!isset($_SESSION['username'])) {
@@ -20,7 +20,7 @@ $user = $result->fetch_assoc();
 $stmt->close();
 
 // Alapértelmezett kép, ha nincs megadva
-$profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profile_image']) : 'images/anonymous.png';
+$profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profile_image']) : './images/anonymous.png';
 ?>
 
 <!DOCTYPE html>
@@ -29,13 +29,13 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Profile</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="../static/index.css">
+    <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body>
 
-<?php include '../views/navbar.php'; ?>
+<?php include './views/navbar.php'; ?>
 
 <section class="profile-section">
     <div class="profile-container">
