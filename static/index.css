@@ -767,7 +767,9 @@ h4{
   color: var(--secondary-color);
   font-weight: 600;
 }
-/*Jelszómegjelenítő*/
+/* ===============================
+  PASSWORD CHECKER
+================================*/
 .password-wrapper {
     position: relative;
     display: flex;
@@ -791,9 +793,6 @@ h4{
 .password-wrapper .toggle-password:hover {
     color: #000;
 }
-
-
-
 /* ===============================
   PROFILE PAGE STYLES
 ================================*/
