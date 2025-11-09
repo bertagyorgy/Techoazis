@@ -1,8 +1,19 @@
 <?php
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include 'db.php';
+
+// 1. JAVÍTÁS: Abszolút elérési út az 'app/db.php'-hoz
+// __DIR__ a 'views' mappa. '/../' felvisz a gyökérbe (Techoazis).
+include __DIR__ . '/../app/db.php'; 
+
+// ÚJ RÉSZ: Sikeres regisztráció session üzenetének kezelése
+$info_message = '';
+if (isset($_SESSION['registration_message'])) {
+    $info_message = $_SESSION['registration_message'];
+    unset($_SESSION['registration_message']); // Töröljük a megjelenés után
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,14 +23,17 @@ include 'db.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <script src="index.js" defer></script>
+    
+    <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
+    <script src="../static/index.js" defer></script>
     <title>Techoazis | Login</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../static/index.css">
 </head>
 <body>
 <?php
-include 'navbar.php';
+// 3. JAVÍTÁS: Navbar beillesztése (mivel a navbar is a views mappában van)
+include __DIR__ . '/navbar.php';
+
 $error_message = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $username = trim($_POST['username']);
@@ -30,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     } else {
         // Ellenőrizzük, hogy van-e ilyen felhasználó
         $sql = "SELECT user_id, username, email, user_password, is_active, user_role FROM users WHERE username = ?";
+        // A $conn változó a fent beillesztett db.php fájlból származik
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $username);
 
@@ -38,11 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 if ($result->num_rows == 1) {
                     $row = $result->fetch_assoc();
 
-                    // Ellenőrizzük, hogy aktív-e
+                    // MÓDOSÍTOTT RÉSZ: Ellenőrizzük az aktivitást
                     if ($row['is_active'] !== 'A') {
-                        $error_message = "A fiókod nem aktív.";
+                        if ($row['is_active'] === 'P') {
+                            $error_message = "A fiókod még **nincs megerősítve**. Kérlek, ellenőrizd az emailjeidet (beleértve a spam mappát is) az aktiváló linkért.";
+                        } else {
+                            $error_message = "A fiókod nem aktív."; 
+                        }
                     } elseif (password_verify($password, $row['user_password'])) {
-                        // Sikeres belépés
+                        // Sikeres belépés (csak az 'A' állapotú felhasználó léphet be)
 
                         // Login adatainak mentése
                         $user_id = $row['user_id'];
@@ -60,8 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             $insert_stmt->close();
                         }
 
-                        // Sikeres belépés után
-                        echo "<script>window.location.href='index.php';</script>";
+                        // Sikeres belépés után - Vissza a gyökérkönyvtárban lévő index.php-ra
+                        echo "<script>window.location.href='../index.php';</script>"; // ⬅️ JAVÍTVA: Visszalépés a gyökérbe (Techoazis/index.php)
                         exit();
                     } else {
                         $error_message = "Hibás jelszó.";
@@ -85,11 +104,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         <div class="login-container">
             <section class="login-box">
                 <h2>Bejelentkezés</h2>
+                
+                <?php if (!empty($info_message)) : ?>
+                    <div class="login-alert login-success-alert"><?php echo $info_message; ?></div>
+                <?php endif; ?>
+                
                 <?php if (!empty($error_message)) : ?>
                     <div class="login-alert"><?php echo $error_message; ?></div>
                 <?php endif; ?>
+                
                 <form method="POST" action="">
-                    <div class="login-form-group">
+                <div class="login-form-group">
                         <label for="username" class="login-label">Felhasználónév</label>
                         <input type="text" name="username" id="username" class="login-input" required>
                     </div>
@@ -107,7 +132,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             </section>
         </div>
     </div>
-
-
 </body>
 </html>

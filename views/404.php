@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="static/index.css">
     <style>
         .main {
             margin: 0;
@@ -47,7 +47,7 @@
 </head>
 <body>
     <?php
-    include 'navbar.php';
+    include 'views/navbar.php';
     ?>
     <div class="main">
         <h1>404</h1>
