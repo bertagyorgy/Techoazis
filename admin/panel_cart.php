@@ -1,11 +1,11 @@
 <?php
-require 'auth_check.php';
+require '../app/auth_check.php';
 
 // --- KOSÁR KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'CART',
     'pk' => 'cart_id',
-    'page_file' => 'panel_cart.php',
+    'page_file' => '../admin/panel_cart.php',
     'page_title' => 'Kosár',
     'singular_name' => 'tétel',
 
@@ -55,5 +55,5 @@ $config = [
     ]
 ];
 
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>

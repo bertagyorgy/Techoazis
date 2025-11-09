@@ -1,11 +1,11 @@
 <?php
-require 'auth_check.php'; // Adatbázis $conn és authentikáció
+require '../app/auth_check.php'; // Adatbázis $conn és authentikáció
 
 // --- KOMMENTEK KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'COMMENTS',
     'pk' => 'comment_id',
-    'page_file' => 'panel_comments.php',
+    'page_file' => '../admin/panel_comments.php',
     'page_title' => 'Kommentek',
     'singular_name' => 'komment',
 
@@ -63,5 +63,5 @@ $config = [
 ];
 
 // --- SABLON BETÖLTÉSE ---
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>

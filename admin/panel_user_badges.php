@@ -1,12 +1,12 @@
 <?php
-require 'auth_check.php';
+require '../app/auth_check.php';
 
 // --- FELHASZNÁLÓ KITŰZÉSEK KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'USER_BADGES',
     'pk' => null,
     'composite_pk' => ['user_id', 'badge_id'],
-    'page_file' => 'panel_user_badges.php',
+    'page_file' => '../admin/panel_user_badges.php',
     'page_title' => 'Felhasználói Kitűzések',
     'singular_name' => 'felhasználói kitűzés',
 
@@ -53,5 +53,5 @@ $config = [
     ]
 ];
 
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>

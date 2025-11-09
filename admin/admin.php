@@ -1,4 +1,4 @@
-<?php require 'auth_check.php'; // Oldal védelme 
+<?php require '../app/auth_check.php'; // ✅ JAVÍTVA: Visszalépés a gyökérbe (../)
 $page = $_GET['p'] ?? '';  
 ?>
 
@@ -11,21 +11,21 @@ $page = $_GET['p'] ?? '';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <title>Techoazis | Adminpanel</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="admin.css">
-    <script src="index.js" defer></script>
+    <link rel="stylesheet" href="../static/users.css">
+    <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="../static/admin.css">
+    <script src="../static/index.js" defer></script>
 </head>
 <body>
     <div class="up-bar">
-        <?php include 'navbar.php'; ?>
+        <?php include '../views/navbar.php'; ?>
     </div>
 
     <div class="admin-container">
         <!-- Oldalsó menü -->
         <div class="side-nav">
             <div class="logo">
-                <img src="images/palmtree_favicon.svg" class="logo-icon">
+                <img src="../images/palmtree_favicon.svg" class="logo-icon">
                 <p class="logo-text">Adminpanel</p>
             </div>
             <ul class="nav-links">

@@ -1,11 +1,11 @@
 <?php
-require 'auth_check.php'; // Adatbázis $conn és authentikáció
+require '../app/auth_check.php'; // Adatbázis $conn és authentikáció
 
 // --- FELHASZNÁLÓK KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'users',
     'pk' => 'user_id',
-    'page_file' => 'panel_users.php',
+    'page_file' => '../admin/panel_users.php',
     'page_title' => 'Felhasználók',
     'singular_name' => 'felhasználó',
 
@@ -17,11 +17,14 @@ $config = [
         'is_active' => 'Státusz',
         'user_role' => 'Szerepkör'
     ],
+
+    'list_query' => "SELECT user_id, username, email, is_active, user_role FROM users ORDER BY user_id DESC LIMIT 10;",
+
     
     // Egyéni formázás a listában
     'list_formatters' => [
         'is_active' => function($value) {
-            return $value === 'A' ? '✅ Aktív' : '❌ Inaktív';
+            return $value === 'A' ? '✅ Aktív' : '❌ Törölt';
         }
     ],
 
@@ -39,7 +42,7 @@ $config = [
 
         // --- Státusz kezelése ---
         if (isset($data['is_active'])) {
-            $data['is_active'] = ($data['is_active'] === 'A') ? 'A' : 'IA';
+            $data['is_active'] = ($data['is_active'] === 'A') ? 'A' : 'T';
         }
 
         return $data;
@@ -71,5 +74,5 @@ $config = [
 ];
 
 // --- SABLON BETÖLTÉSE ---
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>

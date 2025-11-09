@@ -1,11 +1,11 @@
 <?php
-require 'auth_check.php'; // Adatbázis $conn és authentikáció
+require '../app/auth_check.php'; // Adatbázis $conn és authentikáció
 
 // --- TERMÉKEK KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'PRODUCTS',
     'pk' => 'product_id',
-    'page_file' => 'panel_products.php',
+    'page_file' => '../admin/panel_products.php',
     'page_title' => 'Termékek',
     'singular_name' => 'termék',
 
@@ -61,5 +61,5 @@ $config = [
 ];
 
 // --- SABLON BETÖLTÉSE ---
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>

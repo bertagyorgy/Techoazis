@@ -1,11 +1,11 @@
 <?php
-require 'auth_check.php'; // Adatbázis $conn és authentikáció
+require '../app/auth_check.php'; // Adatbázis $conn és authentikáció
 
 // --- BEJELENTKEZÉSEK KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'LOGIN',
     'pk' => 'login_id',
-    'page_file' => 'panel_login.php',
+    'page_file' => '../admin/panel_login.php',
     'page_title' => 'Bejelentkezési Napló',
     'singular_name' => 'bejegyzés',
     
@@ -24,7 +24,7 @@ $config = [
     'list_query' => "SELECT l.login_id, l.login_date, u.username, u.ip
                      FROM LOGIN l
                      JOIN USERS u ON l.user_id = u.user_id
-                     ORDER BY l.login_date DESC LIMIT 15",
+                     ORDER BY l.login_date DESC LIMIT 10",
 
     'list_formatters' => [
         'user_id' => function($value, $row) { return htmlspecialchars($row['username']); },
@@ -50,5 +50,5 @@ $config = [
 ];
 
 // --- SABLON BETÖLTÉSE ---
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>

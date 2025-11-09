@@ -1,11 +1,11 @@
 <?php
-require 'auth_check.php';
+require '../app/auth_check.php';
 
 // --- KÉPEK KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'IMAGES',
     'pk' => 'image_id',
-    'page_file' => 'panel_images.php',
+    'page_file' => '../admin/panel_images.php',
     'page_title' => 'Képek',
     'singular_name' => 'kép',
 
@@ -53,5 +53,5 @@ $config = [
     ]
 ];
 
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>

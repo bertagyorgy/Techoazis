@@ -1,11 +1,11 @@
 <?php
-require 'auth_check.php';
+require '../app/auth_check.php';
 
 // --- POSZTOK KONFIGURÁCIÓJA ---
 $config = [
     'table' => 'POSTS',
     'pk' => 'post_id',
-    'page_file' => 'panel_posts.php',
+    'page_file' => '../admin/panel_posts.php',
     'page_title' => 'Posztok',
     'singular_name' => 'poszt',
 
@@ -48,5 +48,5 @@ $config = [
     ]
 ];
 
-require 'generic_crud.php';
+require '../app/generic_crud.php';
 ?>
