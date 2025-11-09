@@ -305,14 +305,14 @@ switch ($action):
                     <?php if (!empty($allow_edit)): ?>
                         <a href="<?= htmlspecialchars($page_file) ?>?action=edit&id=<?= urlencode($row[$pk] ?? '') ?>" 
                            class="action-btn">
-                            <i class="fa-solid fa-pen-to-square"></i> Szerkesztés
+                            <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                     <?php endif; ?>
                     <?php if (!empty($allow_delete)): ?>
                         <a href="<?= htmlspecialchars($page_file) ?>?action=delete&id=<?= urlencode($row[$pk] ?? '') ?>" 
                            class="action-btn delete-btn" 
                            onclick="return confirm('Biztosan törlöd ezt az elemet?');">
-                            <i class="fa-solid fa-box-archive"></i> Törlés
+                            <i class="fa-solid fa-box-archive"></i>
                         </a>
                     <?php endif; ?>
                 </td>

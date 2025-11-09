@@ -17,11 +17,13 @@ $config = [
         'is_active' => 'Státusz',
         'user_role' => 'Szerepkör'
     ],
+
+    'list_query' => "SELECT user_id, username, email, is_active, user_role FROM `users` ORDER BY user_id DESC LIMIT 10;",
     
     // Egyéni formázás a listában
     'list_formatters' => [
         'is_active' => function($value) {
-            return $value === 'A' ? '✅ Aktív' : '❌ Inaktív';
+            return $value === 'A' ? '✅ Aktív' : '❌ Törölt';
         }
     ],
 
@@ -39,7 +41,7 @@ $config = [
 
         // --- Státusz kezelése ---
         if (isset($data['is_active'])) {
-            $data['is_active'] = ($data['is_active'] === 'A') ? 'A' : 'IA';
+            $data['is_active'] = ($data['is_active'] === 'A') ? 'A' : 'T';
         }
 
         return $data;

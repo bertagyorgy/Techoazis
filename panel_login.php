@@ -24,7 +24,7 @@ $config = [
     'list_query' => "SELECT l.login_id, l.login_date, u.username, u.ip
                      FROM LOGIN l
                      JOIN USERS u ON l.user_id = u.user_id
-                     ORDER BY l.login_date DESC LIMIT 15",
+                     ORDER BY l.login_date DESC LIMIT 10",
 
     'list_formatters' => [
         'user_id' => function($value, $row) { return htmlspecialchars($row['username']); },
