@@ -196,10 +196,10 @@ if ($action === 'delete' && $id && $allow_delete) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin | <?= htmlspecialchars($page_title) ?></title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="users.css">
+    <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="../static/users.css">
     <style>
         body { opacity: 0; transition: opacity 0.3s ease; }
         body.loaded { opacity: 1; }
@@ -229,7 +229,7 @@ switch ($action):
             echo build_form_field($field_name, $config['fields'][$field_name], null, $conn);
         } ?>
         <button type="submit" class="action-btn">Mentés</button>
-        <a href="admin.php" class="action-btn delete-btn">Mégse</a>
+        <a href="../admin/admin.php" class="action-btn delete-btn">Mégse</a>
     </form>
 </div>
 <?php
@@ -256,7 +256,7 @@ switch ($action):
             echo build_form_field($field_name, $config['fields'][$field_name], $item[$field_name] ?? null, $conn);
         } ?>
         <button type="submit" class="action-btn">Frissítés</button>
-        <a href="admin.php" class="action-btn delete-btn">Mégse</a>
+        <a href="../admin/admin.php" class="action-btn delete-btn">Mégse</a>
     </form>
 </div>
 <?php else: ?>
@@ -305,14 +305,14 @@ switch ($action):
                     <?php if (!empty($allow_edit)): ?>
                         <a href="<?= htmlspecialchars($page_file) ?>?action=edit&id=<?= urlencode($row[$pk] ?? '') ?>" 
                            class="action-btn">
-                            <i class="fa-solid fa-pen-to-square"></i> Szerkesztés
+                            <i class="fa-solid fa-pen-to-square"></i> 
                         </a>
                     <?php endif; ?>
                     <?php if (!empty($allow_delete)): ?>
                         <a href="<?= htmlspecialchars($page_file) ?>?action=delete&id=<?= urlencode($row[$pk] ?? '') ?>" 
                            class="action-btn delete-btn" 
                            onclick="return confirm('Biztosan törlöd ezt az elemet?');">
-                            <i class="fa-solid fa-box-archive"></i> Törlés
+                            <i class="fa-solid fa-box-archive"></i> 
                         </a>
                     <?php endif; ?>
                 </td>

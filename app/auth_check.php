@@ -8,11 +8,11 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve és admin-e
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'A') {
-    echo "<script>window.location.href='login.php';</script>";
+    echo "<script>window.location.href='../views/login.php';</script>";
     ob_end_flush();
     exit;
 }
 
-require 'db.php';
+require '../app/db.php';
 ob_end_flush();
 ?>
