@@ -6,7 +6,8 @@ CREATE TABLE USERS (
     is_active CHAR(1) NOT NULL DEFAULT 'A',
     registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     user_role CHAR(1) NOT NULL,
-    ip VARCHAR(45)
+    ip VARCHAR(45),
+    profile_image VARCHAR(255) NOT NULL DEFAULT 'images/anonymous.png';
 );
 
 CREATE TABLE LOGIN (

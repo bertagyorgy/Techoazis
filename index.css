@@ -767,7 +767,9 @@ h4{
   color: var(--secondary-color);
   font-weight: 600;
 }
-/*Jelszómegjelenítő*/
+/* ===============================
+  PASSWORD CHECKER
+================================*/
 .password-wrapper {
     position: relative;
     display: flex;
@@ -791,4 +793,139 @@ h4{
 .password-wrapper .toggle-password:hover {
     color: #000;
 }
+/* ===============================
+  PROFILE PAGE STYLES
+================================*/
+.profile-section {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: var(--background-light);
+    height: 100vh;
+}
+
+.profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    /*margin-top: 75px;*/
+}
+
+.profile-left {
+    flex: 1 1 250px;
+    text-align: center;
+    border-right: 2px solid #f0f0f0;
+    padding-right: 30px;
+}
+
+.profile-right {
+    flex: 2 1 400px;
+}
+
+.profile-image {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-color, #0a6cf1);
+}
+
+.profile-left h2 {
+    margin-top: 15px;
+    font-size: 1.5rem;
+}
+
+.profile-role {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+.profile-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.profile-btn i {
+    margin-right: 8px;
+}
+
+.profile-change-image {
+    background: #f0f0f0;
+    color: #333;
+}
+.profile-change-image:hover {
+    background: #dcdcdc;
+}
+
+.profile-edit {
+    background: var(--accent-color, #0a6cf1);
+    color: white;
+}
+.profile-edit:hover {
+    background: #084db8;
+}
+
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 25px;
+    margin-top: 15px;
+}
+
+.profile-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.profile-btn.logout {
+    background: #ffa534;
+    color: #fff;
+}
+.profile-btn.logout:hover {
+    background: #e28c1f;
+}
+
+.profile-btn.delete {
+    background: #dc3545;
+    color: #fff;
+}
+.profile-btn.delete:hover {
+    background: #b8212f;
+}
+
+/* Mobilbarát megjelenés */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+        padding: 25px;
+    }
+    .profile-left {
+        border-right: none;
+        border-bottom: 2px solid #f0f0f0;
+        padding-right: 0;
+        padding-bottom: 25px;
+    }
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 
