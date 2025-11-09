@@ -40,7 +40,7 @@ body {
     align-items: center;
     height: calc(100vh - 75px); /* mindig látszódjon minden elem */
     position: sticky;
-    top: 75px;
+    /* top: 75px; */
 }
 
 .menu-separator {
