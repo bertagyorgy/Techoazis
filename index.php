@@ -12,16 +12,16 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <script src="index.js" defer></script>
+    <script src="./static/index.js" defer></script>
     <title>Techoazis | Home</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./static/index.css">
 </head>
 <body>
 <?php
 $page = $_GET['p'] ?? '';  
 
 if ($page === '') {
-    include 'navbar.php';
+    include 'views/navbar.php';
 ?>
 
     <div class="hero-section">
@@ -172,14 +172,14 @@ if ($page === '') {
                 <div class="grid-col-4 footer-nav">
                     <h3 class="footer-subtitle">Navigáció</h3>
                     <ul class="footer-links">
-                        <li><a href="index.php" class="footer-link">Főoldal</a></li>
-                        <li><a href="shop.php" class="footer-link">Webshop</a></li>
-                        <li><a href="forum.php" class="footer-link">Csevegés</a></li>
-                        <li><a href="articles.php" class="footer-link">Cikkek</a></li>
-                        <li><a href="contact.php" class="footer-link">Kapcsolat</a></li>
+                        <li><a href="./index.php" class="footer-link">Főoldal</a></li>
+                        <li><a href="./shop.php" class="footer-link">Webshop</a></li>
+                        <li><a href="./forum.php" class="footer-link">Csevegés</a></li>
+                        <li><a href="./articles.php" class="footer-link">Cikkek</a></li>
+                        <li><a href="./contact.php" class="footer-link">Kapcsolat</a></li>
                         <?php
                         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
-                            <li><a href="admin_panel.php" class="footer-link">Admin</a></li>
+                            <li><a href="admin/admin.php" class="footer-link">Admin</a></li>
                         <?php endif; ?>
                     </ul>
                 </div>
@@ -207,7 +207,7 @@ if ($page === '') {
     if (file_exists($file)) {
         include $file;
     } else {
-        include '404.php';
+        include 'views/404.php';
     }
 }
 ?>
