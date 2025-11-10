@@ -14,19 +14,17 @@ CREATE TABLE USERS (
 CREATE TABLE LOGIN (
     login_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
-    login_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+    login_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE PRODUCTS (
     product_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
     category VARCHAR(100),
-    description TEXT,
+    product_description TEXT,
     price DECIMAL(10,2) NOT NULL,
-    stock INT DEFAULT 0,
-    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+    stock INT DEFAULT 0
 );
 
 CREATE TABLE POSTS (
@@ -37,8 +35,7 @@ CREATE TABLE POSTS (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     category VARCHAR(100),
     code_snippet TEXT,
-    language VARCHAR(50),
-    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+    post_language VARCHAR(50)
 );
 
 CREATE TABLE COMMENTS (
@@ -46,15 +43,13 @@ CREATE TABLE COMMENTS (
     post_id INT NOT NULL,
     user_id INT NOT NULL,
     content TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES POSTS(post_id),
-    FOREIGN KEY (user_id) REFERENCES USERS(user_id)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE BADGES (
     badge_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
+    badge_name VARCHAR(100) NOT NULL,
+    badge_description TEXT,
     icon VARCHAR(255)
 );
 
@@ -62,18 +57,14 @@ CREATE TABLE USER_BADGES (
     user_id INT NOT NULL,
     badge_id INT NOT NULL,
     earned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, badge_id),
-    FOREIGN KEY (user_id) REFERENCES USERS(user_id),
-    FOREIGN KEY (badge_id) REFERENCES BADGES(badge_id)
+    PRIMARY KEY (user_id, badge_id)
 );
 
 CREATE TABLE IMAGES (
     image_id INT PRIMARY KEY AUTO_INCREMENT,
     product_id INT,
     post_id INT,
-    image_path VARCHAR(255) NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES PRODUCTS(product_id),
-    FOREIGN KEY (post_id) REFERENCES POSTS(post_id)
+    image_path VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE CART (
@@ -81,7 +72,5 @@ CREATE TABLE CART (
     user_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT DEFAULT 1,
-    added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES USERS(user_id),
-    FOREIGN KEY (product_id) REFERENCES PRODUCTS(product_id)
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
