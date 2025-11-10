@@ -8,7 +8,7 @@ CREATE TABLE USERS (
     user_role CHAR(1) NOT NULL,
     ip VARCHAR(45),
     activation_code VARCHAR(128),
-    profile_image VARCHAR(255) NOT NULL DEFAULT 'images/anonymous.png';
+    profile_image VARCHAR(255) NOT NULL DEFAULT('images/anonymous.png')
 );
 
 CREATE TABLE LOGIN (

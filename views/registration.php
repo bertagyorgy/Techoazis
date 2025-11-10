@@ -5,14 +5,15 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // 1. URL ÉS ÚTVONAL DEFINÍCIÓK
 // A teljes URL a JS átirányításhoz és az email linkhez.
-$base_url = 'http://localhost/sulisprojektek/Techoazis/'; 
+$base_url = 'http://localhost/techoazis/';
 // Relatív gyökér útvonal a navigációs linkekhez (pl. CSS, JS, login.php-ra mutató link)
-$root_path = '/sulisprojektek/Techoazis/'; 
+$root_path = '/techoazis/'; 
 
 
 // 2. FÁJL BETÖLTÉSEK JAVÍTÁSA: ../ a views mappából
 // db.php: views/ -> app/db.php
 include __DIR__ . '/../app/db.php'; 
+include __DIR__ . '/../envreader.php';
 
 // PHPMailer komponensek importálása
 use PHPMailer\PHPMailer\PHPMailer;
@@ -84,22 +85,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                 
                 try {
                     // SMTP BEÁLLÍTÁSOK (HASZNÁLD A SAJÁT ADATAIDAT)
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.gmail.com'; 
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'sendergmail.com'; // A TE email címed
-                    $mail->Password = 'password'; // A TE Gmail App Password-öd
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                    $mail->Port = 587;
+                    loadEnv(); // vagy loadEnv(__DIR__.'/.env');
+                    
 
-                    $mail->setFrom('sender@gmail.com', 'Techoazis Registration');
+                    $mail->isSMTP();
+                    $mail->Host = getenv('SMTP_HOST'); 
+                    $mail->SMTPAuth = true;
+                    $mail->Username = getenv('SMTP_EMAIL'); // A TE email címed
+                    $mail->Password = getenv('SMTP_EMAIL_PASSWORD'); // A TE Gmail App Password-öd
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = getenv('SMTP_PORT');
+
+                    $mail->setFrom(getenv('SMTP_EMAIL'), 'Techoazis Registration');
                     $mail->addAddress($email, $username);
                     $mail->isHTML(true); 
                     
                     // Aktivációs link létrehozása: a $base_url-t használjuk
                     $activation_link = $base_url . "views/activate.php?email=" . urlencode($email) . "&code=" . urlencode($activation_code);
                     $mail->CharSet = 'UTF-8';
-                    $mail->Subject = 'Aktiváld a Techoazis fiókodat!';
+                    $mail->Subject = 'Aktiváld a Techoázis fiókodat!';
                     $mail->Body    = '
                         <h2>Köszönjük a regisztrációt!</h2>
                         <p>Kérlek, kattints az alábbi linkre a fiókod aktiválásához:</p>

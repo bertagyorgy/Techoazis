@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // DEFINIÁLÁS: A PROJEKT GYÖKÉR ELÉRÉSI ÚTJA A BÖNGÉSZŐ SZÁMÁRA
 // Ezt az útvonalat kell használnod a XAMPP-ben (htdocs-tól számítva):
-$root = '/sulisprojektek/Techoazis/'; 
+$root = '/techoazis/'; 
 
 // JAVÍTÁS: PHP include abszolút elérési úttal (EZ HELYES!)
 include_once __DIR__ . '/../app/db.php';
@@ -58,7 +58,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                     <a href="<?= $root ?>views/logout.php" class="icon-button" title="Kijelentkezés"> 
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </a>
-                <?php else: ?>  
+                <?php else: ?>
                     <a href="<?= $root ?>views/login.php" class="icon-button" title='Bejelentkezés'><i class="fa-solid fa-user"></i></a>
                 <?php endif; ?>
             </div>
@@ -73,7 +73,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
                 <a href='<?= $root ?>views/logout.php' class='icon-button' title='Kijelentkezés'><i class='fa-solid fa-right-from-bracket'></i></a>
-            <?php else: ?>  
+            <?php else: ?>
                 <a href='<?= $root ?>views/login.php' class='icon-button' title='Bejelentkezés'><i class='fa-solid fa-user'></i></a>
             <?php endif; ?>
         </div>
