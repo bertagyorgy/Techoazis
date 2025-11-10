@@ -26,7 +26,7 @@ $config = [
         'user_id' => fn($v, $r) => htmlspecialchars($r['username']),
     ],
 
-    'form_fields' => ['user_id', 'title', 'content', 'category', 'code_snippet', 'language'],
+    'form_fields' => ['user_id', 'title', 'content', 'category', 'code_snippet', 'post_language'],
 
     'fields' => [
         'user_id' => [

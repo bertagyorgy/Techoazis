@@ -37,7 +37,7 @@ $config = [
     // A fenti formattert törölheted, ha a list_columns kulcsa megegyezik a list_query oszlopnevével
     
     // Mezők a "Hozzáadás" és "Szerkesztés" űrlapokon
-    'form_fields' => ['user_id', 'name', 'category', 'description', 'price', 'stock'],
+    'form_fields' => ['user_id', 'product_name', 'category', 'product_description', 'price', 'stock'],
 
     // Részletes meződefiníciók az űrlaphoz
     'fields' => [

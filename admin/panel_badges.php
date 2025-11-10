@@ -18,7 +18,7 @@ $config = [
 
     'list_query' => "SELECT * FROM BADGES ORDER BY badge_id",
 
-    'form_fields' => ['name', 'description', 'icon'],
+    'form_fields' => ['badge_name', 'badge_description', 'icon'],
 
     'fields' => [
         'name' => ['label' => 'Kitűzés neve', 'type' => 'text', 'required' => true],
