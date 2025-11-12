@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $message = "Profilkép sikeresen frissítve!";
                 } else {
-                    $message = "rvénytelen képformátum.";
+                    $message = "Érvénytelen képformátum.";
                 }
             }
         } else {
@@ -128,6 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Profil módosítása</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="./static/index.css">
 </head>
 <body>
