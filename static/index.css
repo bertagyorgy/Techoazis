@@ -927,3 +927,62 @@ h4{
         grid-template-columns: 1fr;
     }
 }
+/* ===============================
+  PROFILE EDIT
+================================*/
+.profile-edit-section {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: var(--background-light);
+    height: 100vh;
+}
+
+.profile-container h2 {
+    margin-bottom: 20px;
+}
+
+.profile-container form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+}
+
+.profile-container input[type="text"],
+.profile-container input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.profile-container button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.profile-container button:hover {
+    background: #45a049;
+}
+
+.message {
+    background: #e3f7e3;
+    border: 2px solid #4CAF50;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+

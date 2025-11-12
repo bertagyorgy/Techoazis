@@ -29,7 +29,7 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Profile</title>
-    <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
@@ -50,8 +50,8 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
                 ?>
             </p>
 
-            <button class="profile-btn profile-change-image"><i class="fa-solid fa-image"></i> Profilkép módosítása</button>
-            <button class="profile-btn profile-edit"><i class="fa-solid fa-pen"></i> Adatok szerkesztése</button>
+            <button class="profile-btn profile-change-image" onclick="window.location.href='profile_edit.php?action=image'"><i class="fa-solid fa-image"></i> Profilkép módosítása</button>
+            <button class="profile-btn profile-edit" onclick="window.location.href='profile_edit.php?action=username'"><i class="fa-solid fa-pen"></i> Adatok szerkesztése</button>
         </div>
 
         <div class="profile-right">

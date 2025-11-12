@@ -56,7 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     // MÓDOSÍTOTT RÉSZ: Ellenőrizzük az aktivitást
                     if ($row['is_active'] !== 'A') {
                         if ($row['is_active'] === 'P') {
-                            $error_message = "A fiókod még **nincs megerősítve**. Kérlek, ellenőrizd az emailjeidet (beleértve a spam mappát is) az aktiváló linkért.";
+                            $error_message = "A fiókod még NINCS MEGERŐSÍTVE. Kérlek, ellenőrizd az emailjeidet (beleértve a spam mappát is) az aktiváló linkért.";
+                        } elseif ($row['is_active'] === 'T') {
+                            $error_message = "A fiókod törölve lett. Ha esetleges hiba történt, akkor kérlek lépj kapcsolatba adminjainkkal";
                         } else {
                             $error_message = "A fiókod nem aktív."; 
                         }

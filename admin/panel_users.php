@@ -24,9 +24,12 @@ $config = [
     // Egyéni formázás a listában
     'list_formatters' => [
         'is_active' => function($value) {
-            return $value === 'A' ? '✅ Aktív' : '❌ Törölt';
+            if ($value === 'A') return '✅ Aktív';
+            if ($value === 'P') return '🔄 Folyamatban';
+            return '❌ Törölt';
         }
     ],
+
 
     // Mezők a "Hozzáadás" és "Szerkesztés" űrlapokon
     'form_fields' => ['username', 'email', 'user_password', 'user_role', 'is_active'],

@@ -118,10 +118,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     exit();
 
                 } catch (Exception $e) {
-                    $errors[] = "A regisztráció sikeres volt, de hiba történt az aktiváló email küldésekor. Kérlek, vedd fel velünk a kapcsolatot. Mailer Error: {$mail->ErrorInfo}";
+                    $errors[] = "A regisztráció sikeres volt, de hiba történt az aktiváló email küldésekor. Kérlek, vedd fel velünk a kapcsolatot.";
                 }
             } else {
-                $errors[] = "Hiba a mentés során. Kérlek, próbáld újra később. MySQL Hiba: " . $conn->error;
+                $errors[] = "Hiba a mentés során. Kérlek, próbáld újra később.";
             }
 
             $stmt->close();
