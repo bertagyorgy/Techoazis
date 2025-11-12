@@ -17,10 +17,10 @@ $config = [
         'added_at' => 'Hozzáadva'
     ],
 
-    'list_query' => "SELECT c.*, u.username, p.name AS product_name
-                     FROM CART c
-                     JOIN USERS u ON c.user_id = u.user_id
-                     JOIN PRODUCTS p ON c.product_id = p.product_id
+    'list_query' => "SELECT c.*, u.username, p.product_name AS product_name
+                     FROM cart c
+                     JOIN users u ON c.user_id = u.user_id
+                     JOIN products p ON c.product_id = p.product_id
                      ORDER BY c.added_at DESC",
 
     'list_formatters' => [

@@ -18,9 +18,9 @@ $config = [
     ],
     
     'list_query' => "SELECT c.comment_id, c.content, c.created_at, p.title AS post_title, u.username 
-                     FROM COMMENTS c
-                     JOIN POSTS p ON c.post_id = p.post_id
-                     JOIN USERS u ON c.user_id = u.user_id
+                     FROM comments c
+                     JOIN posts p ON c.post_id = p.post_id
+                     JOIN users u ON c.user_id = u.user_id
                      ORDER BY c.created_at DESC",
 
     'list_formatters' => [

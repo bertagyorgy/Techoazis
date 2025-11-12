@@ -16,7 +16,7 @@ $config = [
         'icon' => 'Ikon'
     ],
 
-    'list_query' => "SELECT * FROM BADGES ORDER BY badge_id",
+    'list_query' => "SELECT * FROM badges ORDER BY badge_id",
 
     'form_fields' => ['badge_name', 'badge_description', 'icon'],
 

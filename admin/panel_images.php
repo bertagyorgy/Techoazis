@@ -16,10 +16,10 @@ $config = [
         'image_path' => 'Képfájl'
     ],
 
-    'list_query' => "SELECT i.*, p.name AS product_name, po.title AS post_title
-                     FROM IMAGES i
-                     LEFT JOIN PRODUCTS p ON i.product_id = p.product_id
-                     LEFT JOIN POSTS po ON i.post_id = po.post_id
+    'list_query' => "SELECT i.*, p.product_name AS product_name, po.title AS post_title
+                     FROM images i
+                     LEFT JOIN products p ON i.product_id = p.product_id
+                     LEFT JOIN posts po ON i.post_id = po.post_id
                      ORDER BY i.image_id",
 
     'list_formatters' => [

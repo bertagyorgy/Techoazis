@@ -18,8 +18,8 @@ $config = [
     ],
 
     'list_query' => "SELECT p.*, u.username 
-                     FROM POSTS p 
-                     JOIN USERS u ON p.user_id = u.user_id
+                     FROM posts p 
+                     JOIN users u ON p.user_id = u.user_id
                      ORDER BY p.created_at DESC",
 
     'list_formatters' => [

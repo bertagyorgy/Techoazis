@@ -16,10 +16,10 @@ $config = [
         'earned_at' => 'Megszerezve'
     ],
 
-    'list_query' => "SELECT ub.*, u.username, b.name AS badge_name 
-                     FROM USER_BADGES ub
-                     JOIN USERS u ON ub.user_id = u.user_id
-                     JOIN BADGES b ON ub.badge_id = b.badge_id
+    'list_query' => "SELECT ub.*, u.username, b.badge_name AS badge_name 
+                     FROM user_badges ub
+                     JOIN users u ON ub.user_id = u.user_id
+                     JOIN badges b ON ub.badge_id = b.badge_id
                      ORDER BY ub.earned_at DESC",
 
     'list_formatters' => [

@@ -21,8 +21,8 @@ $config = [
     
     // Egyéni JOIN-olt lekérdezés, hogy a felhasználónevet lássuk az ID helyett
     'list_query' => "SELECT p.*, u.username 
-                     FROM PRODUCTS p 
-                     JOIN USERS u ON p.user_id = u.user_id 
+                     FROM products p 
+                     JOIN users u ON p.user_id = u.user_id 
                      ORDER BY p.product_id",
                      
     // A 'list_columns'-ban lévő 'user_id' kulcsot a 'username' oszlopra cseréljük
