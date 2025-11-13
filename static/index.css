@@ -137,25 +137,33 @@ h4{
   NAVBAR
 ================================*/
 .main-navbar {
-    background-color: #f8f9fa;
-    padding: 1rem 0;
-    border-bottom: 3px solid #000;
-    font-weight: bold;
+    background-color: #ffffff; /* tiszta fehér, ne legyen sárgás */
+    padding: 0.5rem 0;
+    border-bottom: 2px solid #000; /* lágyabb vonal, ne túl vastag */
+    font-weight: 700;
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    z-index: 99999;
+    height: var(--navbar-height);
+    z-index: 100005; /* legyen magasabb mint a legtöbb elem */
+    display: flex;
+    align-items: center;
 }
 
 .nav-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .nav-brand img {
-    height: 35px;
-    width: 200px;
-    vertical-align: middle; /* Kép igazítása */
+    height: 40px;
+    width: auto;
 }
 
 .nav-menu {
@@ -163,13 +171,15 @@ h4{
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 1.5rem; /* Menüpontok közötti távolság */
+    gap: 1.25rem;
+    align-items: center;
 }
 
 .nav-link {
-    color: #333;
-    transition: color 0.3s ease;
+    color: var(--text-color);
+    transition: color 0.2s ease;
     padding: 0.5rem 0;
+    font-weight: 600;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -189,8 +199,11 @@ h4{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    font-size: 1.25rem; /* fs-5 */
+    transition: background-color 0.2s ease, transform 0.15s ease;
+    font-size: 1.1rem;
+    color: #000;
+    background: transparent;
+    border: none;
 }
 
 .icon-button:hover {
@@ -220,14 +233,14 @@ h4{
 
 
 .nav-toggler {
-  display: none; /* alapból rejtve (csak mobilon lesz aktív) */
+  display: none;
   background: none;
   border: none;
   cursor: pointer;
-  width: 35px;
-  height: 28px;
+  width: 36px;
+  height: 30px;
   position: relative;
-  z-index: 1001; /* hogy mindig a menü fölött legyen */
+  z-index: 100010; /* A lehető legmagasabb, hogy kattintható maradjon */
 }
 
 .nav-toggler .bar {
@@ -236,7 +249,7 @@ h4{
   height: 3px;
   background-color: #000;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, opacity 0.2s ease;
   position: absolute;
 }
 
@@ -270,6 +283,14 @@ h4{
 @media (max-width: 992px) {
   .nav-toggler {
     display: block;
+  }
+
+  .nav-menu { 
+    display: none; 
+  } /* desktop menu rejtve, mobil menü használatos */
+
+  .desktop-icons { 
+    display: none; 
   }
 }
 
@@ -794,40 +815,42 @@ h4{
     color: #000;
 }
 /* ===============================
-  PROFILE PAGE STYLES
+  PROFILE
 ================================*/
 .profile-section {
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
+    align-items: flex-start;
+    padding: 1.75rem 1rem 3.5rem; /* itt body már adja a top-paddinget */
     background: var(--background-light);
-    height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
+    width: 100%;
 }
 
 .profile-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 24px;
     background: var(--white);
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    max-width: 960px;
     width: 100%;
-    /*margin-top: 75px;*/
+    z-index: 2;
 }
 
 .profile-left {
-    flex: 1 1 250px;
+    flex: 0 0 260px;
     text-align: center;
-    border-right: 2px solid #f0f0f0;
-    padding-right: 30px;
+    border-right: 1px solid #f0f0f0;
+    padding-right: 20px;
 }
 
 .profile-right {
-    flex: 2 1 400px;
+    flex: 1 1 420px;
+    padding-left: 10px;
 }
 
 .profile-image {
@@ -836,6 +859,7 @@ h4{
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid var(--accent-color, #0a6cf1);
+    display: inline-block;
 }
 
 .profile-left h2 {
@@ -913,76 +937,93 @@ h4{
 
 /* Mobilbarát megjelenés */
 @media (max-width: 768px) {
+    .profile-section { 
+      padding: 1.25rem 0.75rem 2rem; 
+    }
+
     .profile-container {
-        flex-direction: column;
-        padding: 25px;
+        padding: 18px;
     }
-    .profile-left {
-        border-right: none;
-        border-bottom: 2px solid #f0f0f0;
-        padding-right: 0;
-        padding-bottom: 25px;
+
+    .profile-left, .profile-right { 
+      width: 100%; 
+      flex: 1 1 100%; 
     }
+
     .profile-info-grid {
         grid-template-columns: 1fr;
     }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
 }
+
 /* ===============================
-  PROFILE EDIT
+  PROFILE EDIT (javítva)
 ================================*/
 .profile-edit-section {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    background: var(--background-light);
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2.25rem 1rem 3.5rem;
+  background: var(--background-light);
+  min-height: calc(100vh - var(--navbar-height));
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.profile-container h2 {
-    margin-bottom: 20px;
+.profile-edit-container {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 36px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  max-width: 760px;
+  width: 100%;
+  min-height: 420px; /* elegendő hely, ne legyen "pindúr" */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.profile-container form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    background: var(--white);
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
+/* form elemek, gombok */
+.profile-edit-container form { display:block; }
+.profile-edit-container input[type="text"],
+.profile-edit-container input[type="file"] {
     width: 100%;
-}
-
-.profile-container input[type="text"],
-.profile-container input[type="file"] {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #dcdcdc;
     border-radius: 8px;
+    box-sizing: border-box;
 }
 
-.profile-container button {
-    background: #4CAF50;
+.profile-edit-container .actions {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+
+.profile-edit-container button {
+    background: var(--accent-color, #0a6cf1);
     color: white;
     border: none;
-    padding: 10px;
+    padding: 10px 14px;
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s;
 }
 
-.profile-container button:hover {
-    background: #45a049;
+.profile-edit-container .delete-btn {
+    background: #dc3545;
 }
 
-.message {
-    background: #e3f7e3;
-    border: 2px solid #4CAF50;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    text-align: center;
+/* mobil */
+@media (max-width: 768px) {
+  .profile-edit-container { padding: 18px; min-height: auto; }
+  .profile-edit-section { padding-top: 1.25rem; padding-bottom: 2rem; }
+  .profile-edit-container button { width: 100%; }
 }
+
 

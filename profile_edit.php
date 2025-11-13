@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include './views/navbar.php'; ?>
 
 <section class="profile-edit-section">
-    <div class="profile-container">
+    <div class="profile-edit-container">
         <h2>Profil módosítása</h2>
 
         <?php if ($message): ?>
@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if (!empty($user['profile_image']) && $user['profile_image'] !== './images/anonymous.png'): ?>
                 <form method="POST">
                     <input type="hidden" name="delete_image" value="1">
-                    <button type="submit" style="background:#e74c3c;">Profilkép törlése</button>
+                    <button type="submit" class="delete-btn">Profilkép törlése</button>
                 </form>
             <?php endif; ?>
 
