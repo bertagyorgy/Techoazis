@@ -12,11 +12,16 @@
     --info-icon: #0dcaf0;
     --warning-icon: #ffc107;
     --danger-badge: #dc3545;
+    --navbar-height: 63px;
 }
-
+*, *::before, *::after {
+    box-sizing: border-box; /* Ez megoldja a padding miatti méretezési gondokat */
+}
 body {
     font-family: 'Sans-Serif', sans-serif;
+    padding: 0;
     margin: 0;
+    width: 100%;
     color: var(--text-color);
 }
 
@@ -137,33 +142,25 @@ h4{
   NAVBAR
 ================================*/
 .main-navbar {
-    background-color: #ffffff; /* tiszta fehér, ne legyen sárgás */
-    padding: 0.5rem 0;
-    border-bottom: 2px solid #000; /* lágyabb vonal, ne túl vastag */
-    font-weight: 700;
+    background-color: #f8f9fa;
+    padding: 1rem 0;
+    border-bottom: 2px solid #000;
+    font-weight: bold;
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: var(--navbar-height);
-    z-index: 100005; /* legyen magasabb mint a legtöbb elem */
-    display: flex;
-    align-items: center;
+    z-index: 99999;
 }
 
 .nav-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .nav-brand img {
-    height: 40px;
-    width: auto;
+    height: 35px;
+    width: 200px;
+    vertical-align: middle; /* Kép igazítása */
 }
 
 .nav-menu {
@@ -171,15 +168,13 @@ h4{
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 1.25rem;
-    align-items: center;
+    gap: 1.5rem; /* Menüpontok közötti távolság */
 }
 
 .nav-link {
-    color: var(--text-color);
-    transition: color 0.2s ease;
+    color: #333;
+    transition: color 0.3s ease;
     padding: 0.5rem 0;
-    font-weight: 600;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -199,11 +194,8 @@ h4{
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    transition: background-color 0.2s ease, transform 0.15s ease;
-    font-size: 1.1rem;
-    color: #000;
-    background: transparent;
-    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1.25rem; /* fs-5 */
 }
 
 .icon-button:hover {
@@ -233,14 +225,14 @@ h4{
 
 
 .nav-toggler {
-  display: none;
+  display: none; /* alapból rejtve (csak mobilon lesz aktív) */
   background: none;
   border: none;
   cursor: pointer;
-  width: 36px;
-  height: 30px;
+  width: 35px;
+  height: 28px;
   position: relative;
-  z-index: 100010; /* A lehető legmagasabb, hogy kattintható maradjon */
+  z-index: 1001; /* hogy mindig a menü fölött legyen */
 }
 
 .nav-toggler .bar {
@@ -249,7 +241,7 @@ h4{
   height: 3px;
   background-color: #000;
   border-radius: 2px;
-  transition: transform 0.25s ease, opacity 0.2s ease;
+  transition: all 0.3s ease;
   position: absolute;
 }
 
@@ -283,14 +275,6 @@ h4{
 @media (max-width: 992px) {
   .nav-toggler {
     display: block;
-  }
-
-  .nav-menu { 
-    display: none; 
-  } /* desktop menu rejtve, mobil menü használatos */
-
-  .desktop-icons { 
-    display: none; 
   }
 }
 
@@ -815,19 +799,41 @@ h4{
     color: #000;
 }
 /* ===============================
-  PROFILE
+  PROFILE & PROFILE-EDIT ALAP (MAGASSÁG)
 ================================*/
-.profile-section {
-    box-sizing: border-box;
+.profile-section,
+.profile-edit-section {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 1.75rem 1rem 3.5rem; /* itt body már adja a top-paddinget */
     background: var(--background-light);
-    min-height: calc(100vh - var(--navbar-height));
     width: 100%;
+    
+    /* Kitölti a teljes képernyőmagasságot */
+    min-height: 100vh;
+    
+    /* Alapértelmezett padding */
+    padding: calc(var(--navbar-height) + 1.75rem) 1rem 3.5rem;
 }
 
+/* Különbség az edit oldalon */
+.profile-edit-section {
+    padding: calc(var(--navbar-height) + 2.25rem) 1rem 3.5rem;
+}
+
+/* Rögzíti a magasságot nagy képernyőn (960px felett) és a szekciót teszi görgethetővé */
+@media (min-width: 961px) {
+    .profile-section,
+    .profile-edit-section {
+        /*max-height: auto;*/
+        overflow-y: visible;
+    }
+}
+
+
+/* ===============================
+  PROFILE (NÉZET)
+================================*/
 .profile-container {
     display: flex;
     flex-wrap: wrap;
@@ -935,10 +941,13 @@ h4{
     background: #b8212f;
 }
 
-/* Mobilbarát megjelenés */
+/* Profil (Nézet) - Mobilbarát megjelenés (JAVÍTVA) */
 @media (max-width: 768px) {
     .profile-section { 
-      padding: 1.25rem 0.75rem 2rem; 
+        padding-top: calc(var(--navbar-height) + 1rem) !important; 
+        /* Mobilon ne legyen rögzítve a magasság */
+        max-height: none; 
+        overflow-y: visible;
     }
 
     .profile-container {
@@ -946,9 +955,20 @@ h4{
     }
 
     .profile-left, .profile-right { 
-      width: 100%; 
-      flex: 1 1 100%; 
+        width: 100%; 
+        flex: 1 1 100%; 
     }
+
+    /* --- JAVÍTÁS ITT --- */
+    .profile-left {
+        border-right: none;  /* Szegély eltávolítása mobilon */
+        padding-right: 0;    /* Padding eltávolítása */
+        margin-bottom: 16px; /* Kis térköz a két rész között */
+    }
+    .profile-right {
+        padding-left: 0; /* Padding eltávolítása */
+    }
+    /* --- JAVÍTÁS VÉGE --- */
 
     .profile-info-grid {
         grid-template-columns: 1fr;
@@ -960,49 +980,46 @@ h4{
     }
 }
 
+
 /* ===============================
   PROFILE EDIT (javítva)
 ================================*/
-.profile-edit-section {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2.25rem 1rem 3.5rem;
-  background: var(--background-light);
-  min-height: calc(100vh - var(--navbar-height));
-  width: 100%;
-  box-sizing: border-box;
-}
+/* A .profile-edit-section már definiálva van fent (magasság) */
 
 .profile-edit-container {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 36px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  max-width: 760px;
-  width: 100%;
-  min-height: 420px; /* elegendő hely, ne legyen "pindúr" */
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 36px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    max-width: 760px;
+    width: 100%;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Megnövelt térköz a form-ok és elemek között */
 }
 
-/* form elemek, gombok */
-.profile-edit-container form { display:block; }
+/* --- JAVÍTÁS ITT (FORM TÉRKÖZÖK) --- */
+.profile-edit-container form { 
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Térköz a label, input és gomb között */
+    width: 100%;
+}
+
+.profile-edit-container label {
+    font-weight: 500;
+    margin-bottom: -4px; /* Közelebb húzza az inputhoz */
+}
+/* --- JAVÍTÁS VÉGE --- */
+
+
 .profile-edit-container input[type="text"],
 .profile-edit-container input[type="file"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #dcdcdc;
     border-radius: 8px;
-    box-sizing: border-box;
-}
-
-.profile-edit-container .actions {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:8px;
 }
 
 .profile-edit-container button {
@@ -1013,17 +1030,57 @@ h4{
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s;
+    font-weight: 500;
+    width: auto; /* Alapból ne legyen 100% széles */
+    align-self: flex-start; /* Igazodjon balra */
+}
+.profile-edit-container button:hover {
+    background: #084db8;
 }
 
 .profile-edit-container .delete-btn {
     background: #dc3545;
 }
+.profile-edit-container .delete-btn:hover {
+    background: #b8212f;
+}
 
-/* mobil */
+/* --- JAVÍTÁS (VISSZA GOMB STÍLUSA) --- */
+/* Az inline 'style' helyett */
+.profile-edit-container .btn-back {
+    margin-top: 12px;
+    background: #6c757d;
+    align-self: flex-start;
+}
+.profile-edit-container .btn-back:hover {
+    background: #5a6268;
+}
+
+
+/* Profil (Edit) - Mobilbarát megjelenés (JAVÍTVA) */
 @media (max-width: 768px) {
-  .profile-edit-container { padding: 18px; min-height: auto; }
-  .profile-edit-section { padding-top: 1.25rem; padding-bottom: 2rem; }
-  .profile-edit-container button { width: 100%; }
+    .profile-edit-section { 
+        padding-top: calc(var(--navbar-height) + 1rem) !important; 
+        /* Mobilon ne legyen rögzítve a magasság */
+        max-height: none; 
+        overflow-y: visible;
+    }
+    .profile-edit-container { 
+        padding: 18px; 
+        min-height: auto; 
+        gap: 16px;
+    }
+    
+    /* --- JAVÍTÁS ITT (MOBIL GOMBOK) --- */
+    /* Mobilon minden gomb legyen 100% széles és középen */
+    .profile-edit-container button { 
+        width: 100%; 
+        align-self: center;
+    }
+
+    .profile-edit-container input[type="file"] {
+        width: 100%; /* Vagy amekkorára szeretnéd állítani */
+    }
 }
 
 

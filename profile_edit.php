@@ -126,10 +126,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil módosítása</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="./static/index.css">
+    <script src="./static/index.js" defer></script>
 </head>
 <body>
 
@@ -168,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Érvénytelen kérés.</p>
         <?php endif; ?>
 
-        <button onclick="window.location.href='profile.php'" style="margin-top:20px;">Vissza a profilhoz</button>
+        <button onclick="window.location.href='profile.php'">Vissza a profilhoz</button>
     </div>
 </section>
 

@@ -32,6 +32,7 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="./static/index.js" defer></script>
 </head>
 <body>
 
