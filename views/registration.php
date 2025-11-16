@@ -22,6 +22,7 @@ use PHPMailer\PHPMailer\Exception;
 // vendor/autoload.php: views/ -> vendor/autoload.php
 require __DIR__ . '/../vendor/autoload.php';
 
+$_SESSION['registration_message'] = "";
 $error_message = '';
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     $errors = [];
@@ -105,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     $mail->CharSet = 'UTF-8';
                     $mail->Subject = 'Aktiváld a Techoázis fiókodat!';
                     $mail->Body    = '
-                        <h2>Köszönjük a regisztrációt!</h2>
+                        <h1>Köszönjük a regisztrációt!</h1>
                         <p>Kérlek, kattints az alábbi linkre a fiókod aktiválásához:</p>
                         <p><a href="' . $activation_link . '" style="color: blue;">Fiók aktiválása</a></p>
                         <p>Ha nem te regisztráltál, hagyd figyelmen kívül ezt az emailt.</p>';
@@ -159,13 +160,16 @@ include __DIR__ . '/navbar.php';
                 <?php if (!empty($error_message)) : ?>
                     <div class="login-alert"><?php echo $error_message; ?></div>
                 <?php endif; ?>
+                <?php if (!empty($_SESSION['registration_message'])) : ?>
+                    <div class="login-success"><?php echo $_SESSION['registration_message']; ?></div>
+                <?php endif; ?>
                 <form method="POST" action="">
                     <div class="login-form-group">
                         <label for="username" class="login-label">Felhasználónév</label>
                         <input type="text" name="username" id="username" class="login-input" required>
                     </div>
                     <div class="login-form-group">
-                        <label for="email" class="login-label">Email</label>
+                        <label for="email" class="login-label">Email (erre küldjük az aktiváló linket)</label>
                         <input type="email" name="email" id="email" class="login-input" required>
                     </div>
                     <div class="login-form-group">

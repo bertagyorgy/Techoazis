@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <h2>Bejelentkezés</h2>
                 
                 <?php if (!empty($info_message)) : ?>
-                    <div class="login-alert login-success-alert"><?php echo $info_message; ?></div>
+                    <div class="login-alert login-success"><?php echo $info_message; ?></div>
                 <?php endif; ?>
                 
                 <?php if (!empty($error_message)) : ?>
