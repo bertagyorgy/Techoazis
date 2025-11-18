@@ -1093,4 +1093,156 @@ h4{
     }
 }
 
+/* =============================
+   FORUM – 3 OSZLOPOS GRID
+============================= */
+.forum-wrapper {
+    position: relative;                 /* fontos! */
+    padding: calc(var(--navbar-height) + 20px) 20px 20px;
+    display: grid;
+    grid-template-columns: 240px 1fr 280px;
+    gap: 30px;
+    background: var(--background-light); /* hátteret megkapja */
+    min-height: 100vh;                  /* ne vágja le a tartalmat */
+    box-sizing: border-box;
+}
+
+
+/* =============================
+      BAL OLDALI SIDEBAR
+============================= */
+.forum-left {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    height: max-content;
+}
+
+.group-search {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 14px;
+}
+
+.group-list {
+    list-style: none;
+    padding: 0;
+}
+
+.group-list li {
+    padding: 8px 5px;
+}
+
+.group-list li a {
+    color: #333;
+    font-weight: 500;
+}
+
+.group-list li a:hover {
+    color: var(--secondary-color);
+}
+
+/* =============================
+         KÖZÉPSŐ POSZTOK
+============================= */
+.post-card {
+    background: #fff;
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.post-title {
+    margin: 10px 0 0;
+}
+
+.post-content {
+    margin-top: 10px;
+    white-space: pre-line;
+}
+
+.show-comments-btn {
+    margin-top: 12px;
+    background: #f5f5f5;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.comment-form {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 80px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.comment-form button {
+    align-self: flex-end;
+    background: #309230;
+    padding: 8px 20px;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+}
+
+.login-warning {
+    margin-top: 8px;
+    color: #e47a44;
+    font-size: 0.9rem;
+}
+
+/* =============================
+       JOBB OLDALI SIDEBAR
+============================= */
+.forum-right {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    height: max-content;
+}
+
+.latest-post-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.latest-post-meta {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+/* =============================
+        RESPONSIVE LAYOUT FÓRUMHOZ
+============================= */
+@media (max-width: 992px) {
+    .forum-wrapper {
+        grid-template-columns: 1fr;
+    }
+    .forum-left, .forum-right {
+        display: none;
+    }
+}
+
+
 
