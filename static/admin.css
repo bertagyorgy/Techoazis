@@ -7,9 +7,10 @@
 
 body {
     background-color: #eae3c9;
-    height: 100%; /* fontos, hogy a 100% működjön */
 }
-
+html {
+    min-height: 100vh;
+}
 /* Navbar fixen */
 .up-bar {
     position: fixed;
@@ -25,7 +26,7 @@ body {
 /* Admin container: fix pozíció után teljes magasság a navbar alatt */
 .admin-container {
     display: flex;
-    height: 100%;
+
     margin-top: 63px; /* eltoljuk a fix navbar miatt */
     overflow: hidden; /* ne legyen dupla scroll */
 }
@@ -38,7 +39,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*height: calc(100vh - 63px);*/
+    min-height: calc(100vh - 63px);
     position: sticky;
     /* top: 75px; */
 }
