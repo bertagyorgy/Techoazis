@@ -78,3 +78,31 @@ CREATE TABLE groups (
     group_description TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO comments (comment_id, post_id, user_id, content, created_at) VALUES
+(1, 1, 1, 'Nagyon egyszerűen', '2025-11-18 20:37:21'),
+(2, 1, 2, 'HTML + CSS alapokkal érdemes kezdeni!', '2025-11-18 19:27:15'),
+(3, 1, 3, 'Ezután jöhet a JavaScript, nagyon fontos lesz!', '2025-11-18 19:28:15'),
+(4, 2, 1, 'A Python egyszerűbb kezdőknek, de C# erősebb rendszerszinten.', '2025-11-18 19:29:15'),
+(5, 3, 2, 'Nagyon jó összefoglaló, köszi!', '2025-11-18 19:30:15');
+
+INSERT INTO groups (group_id, group_name, group_description, created_at) VALUES
+(1, 'Webfejlesztés', 'Frontend, backend és full-stack témák', '2025-11-18 19:24:56'),
+(2, 'Programozás', 'Általános programozás: C#, Python, Java stb.', '2025-11-18 19:24:56'),
+(3, 'Hardver', 'PC építés, alkatrészek, optimalizálás', '2025-11-18 19:24:56'),
+(4, 'Tech hírek', 'Friss újdonságok a tech világban', '2025-11-18 19:24:56');
+
+INSERT INTO images (image_id, post_id, image_path) VALUES
+(1, 1, 'uploads/posts/1/starter_guide.png'),
+(2, 3, 'uploads/posts/3/tech_trends_2025.jpg');
+
+INSERT INTO posts (post_id, user_id, group_id, title, content, created_at) VALUES
+(1, 1, 1, 'Hogyan kezdjem el a webfejlesztést?', 'Sziasztok! Teljesen új vagyok a webfejlesztésben. Mivel érdemes kezdeni?', '2025-11-18 19:25:47'),
+(2, 2, 2, 'Melyik a jobb kezdőknek: Python vagy C#?', 'Kezdőként gondolkodom, melyik nyelv lenne jobb? Mi a véleményetek?', '2025-11-18 19:25:47'),
+(3, 1, 4, '2025 Tech trendjei', 'Összeszedtem pár érdekességet a 2025-ös év technológiai újításairól.', '2025-11-18 19:25:47');
+
+INSERT INTO users (user_id, username, email, user_password, is_active, registration_date, user_role, ip, activation_code, profile_image) VALUES
+(1, 'kistamáska', 'bertagyorgy@gmail.com', '$2y$10$RECzv8fPtXR5wYgsItunp.3yYXw84UzR95tAsCni8VNgVWKSziAJ2', 'A', '2025-11-11 18:57:24', 'A', '::1', '', './profile_images/profile_1.jpg'),
+(2, 'kunbéla', 'kunbela17@gmail.com', '$2y$10$er./MPIDc3o41MWuUpV.0.zZft3q/s1fEP8G9IDu8CShqfGYlmYm.', 'A', '2025-11-12 20:03:21', 'F', '::1', '', './images/anonymous.png'),
+(3, 'bertagyorgy', 'bertagyorgy222@gmail.com', '$2y$10$wL5BJkrX8vpjXZKeWemdEu2y3nPUB2kR1bHYwsrYeJdPR1jSYome2', 'P', '2025-11-12 20:11:19', 'F', '::1', 'a685256573e5ccbffda4ae4d5463d1da', './images/anonymous.png'),
+(5, 'proba123', 'proba123@gmail.com', '$2y$10$jbYznXaB9ZWM8NoE1x.PfurjeM86wPmwsvOfumFU3aBJhauvDFRIy', 'A', '2025-11-12 21:09:56', 'F', '::1', '', './images/anonymous.png');
