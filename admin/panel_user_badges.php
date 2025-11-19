@@ -23,8 +23,8 @@ $config = [
                      ORDER BY ub.earned_at DESC",
 
     'list_formatters' => [
-        'user_id' => fn($v, $r) => htmlspecialchars($r['username']),
-        'badge_id' => fn($v, $r) => htmlspecialchars($r['badge_name'])
+        'user_id' => function($value, $row) { return htmlspecialchars($row['username']);},
+        'badge_id' => function($value, $row) { return htmlspecialchars($row['badge_name']);}
     ],
 
     'form_fields' => ['user_id', 'badge_id'],

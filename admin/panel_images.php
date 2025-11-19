@@ -11,24 +11,27 @@ $config = [
 
     'list_columns' => [
         'image_id' => 'ID',
-        'product_id' => 'Termék',
         'post_id' => 'Poszt',
         'image_path' => 'Képfájl'
     ],
 
-    'list_query' => "SELECT i.*, p.product_name AS product_name, po.title AS post_title
-                     FROM images i
-                     LEFT JOIN products p ON i.product_id = p.product_id
-                     LEFT JOIN posts po ON i.post_id = po.post_id
-                     ORDER BY i.image_id",
+    'list_query' => "SELECT 
+                        i.image_id,
+                        i.post_id,
+                        i.image_path,
+                        po.title AS post_title
+                    FROM images i
+                    LEFT JOIN posts po ON i.post_id = po.post_id
+                    ORDER BY i.image_id;
+                    ",
 
     'list_formatters' => [
-        'product_id' => fn($v, $r) => $r['product_name'] ? htmlspecialchars($r['product_name']) : '-',
-        'post_id' => fn($v, $r) => $r['post_title'] ? htmlspecialchars($r['post_title']) : '-',
-        'image_path' => fn($v) => "<img src='" . htmlspecialchars($v) . "' style='max-width:80px;'>"
+        'image_id' => function($value, $row) { return htmlspecialchars($row['image_id']); },
+        'post_id' => function($value, $row) { return htmlspecialchars($row['post_title']); },
+        'image_path' => function($value, $row) { return htmlspecialchars($row['image_path']);}
     ],
 
-    'form_fields' => ['product_id', 'post_id', 'image_path'],
+    'form_fields' => ['image_id', 'post_id', 'image_path'],
 
     'fields' => [
         'product_id' => [

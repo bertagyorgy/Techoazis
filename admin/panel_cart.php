@@ -24,8 +24,8 @@ $config = [
                      ORDER BY c.added_at DESC",
 
     'list_formatters' => [
-        'user_id' => fn($v, $r) => htmlspecialchars($r['username']),
-        'product_id' => fn($v, $r) => htmlspecialchars($r['product_name'])
+        'user_id' => function($value, $row) { return htmlspecialchars($row['username']);},
+        'product_id' => function($value, $row) { return htmlspecialchars($r['product_name']);}
     ],
 
     'form_fields' => ['user_id', 'product_id', 'quantity'],

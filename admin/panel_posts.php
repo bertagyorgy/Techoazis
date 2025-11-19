@@ -13,7 +13,6 @@ $config = [
         'post_id' => 'ID',
         'user_id' => 'Szerző',
         'title' => 'Cím',
-        'category' => 'Kategória',
         'created_at' => 'Dátum'
     ],
 
@@ -23,10 +22,10 @@ $config = [
                      ORDER BY p.created_at DESC",
 
     'list_formatters' => [
-        'user_id' => fn($v, $r) => htmlspecialchars($r['username']),
+        'user_id' => function($value, $row) { return htmlspecialchars($row['username']); },
     ],
 
-    'form_fields' => ['user_id', 'title', 'content', 'category', 'code_snippet', 'post_language'],
+    'form_fields' => ['user_id', 'title', 'content'],
 
     'fields' => [
         'user_id' => [
