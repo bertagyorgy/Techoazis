@@ -32,7 +32,7 @@ $posts_result = $conn->query($posts_query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Techoázis | Közösség</title>
+    <title>Techoazis | Community</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
@@ -83,6 +83,22 @@ $posts_result = $conn->query($posts_query);
                 <h2 class="post-title"><?= htmlspecialchars($post['title']) ?></h2>
 
                 <p class="post-content"><?= nl2br(htmlspecialchars($post['content'])) ?></p>
+
+                <?php
+                // ===== KÉPEK LEKÉRÉSE =====
+                $img_stmt = $conn->prepare("SELECT image_path FROM images WHERE post_id = ?");
+                $img_stmt->bind_param("i", $post['post_id']);
+                $img_stmt->execute();
+                $images = $img_stmt->get_result();
+
+                if ($images->num_rows > 0): ?>
+                    <div class="post-images">
+                        <?php while ($img = $images->fetch_assoc()): ?>
+                            <img src="./<?= htmlspecialchars($img['image_path']) ?>" class="post-image">
+                        <?php endwhile; ?>
+                    </div>
+                <?php endif; ?>
+
 
                 <button class="show-comments-btn" data-post="<?= $post['post_id'] ?>">
                     Kommentek megnyitása
