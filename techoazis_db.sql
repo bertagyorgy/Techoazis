@@ -76,7 +76,8 @@ CREATE TABLE groups (
     group_id INT PRIMARY KEY AUTO_INCREMENT,
     group_name VARCHAR(100) NOT NULL UNIQUE,
     group_description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    group_image VARCHAR(255) DEFAULT 'default_group.png';
 );
 
 INSERT INTO comments (comment_id, post_id, user_id, content, created_at) VALUES
