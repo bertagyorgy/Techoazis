@@ -67,8 +67,74 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+    // ===========================
+    // KÉP PREVIEW (AJAX)
+    // ===========================
+    const fileInput = document.getElementById("postImages");
+    const preview = document.getElementById("imagePreview");
 
+    let selectedFiles = [];
+
+    fileInput.addEventListener("change", (e) => {
+        const files = Array.from(e.target.files);
+
+        if (selectedFiles.length + files.length > 3) {
+            alert("Maximum 3 képet tölthetsz fel!");
+            return;
+        }
+
+        files.forEach(file => {
+            selectedFiles.push(file);
+            showPreview();
+        });
+
+        updateInputFiles();
+    });
+
+    // Preview megjelenítés
+    function showPreview() {
+        preview.innerHTML = "";
+
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const div = document.createElement("div");
+                div.classList.add("preview-item");
+
+                div.innerHTML = `
+                    <img src="${e.target.result}" class="preview-thumb">
+                    <button type="button" class="remove-image" data-index="${index}">
+                        <i style="color:#fff;"class="fa-solid fa-x"></i>
+                    </button>
+                `;
+
+                preview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Input fájlainak frissítése
+    function updateInputFiles() {
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+    }
+
+    // Törlés egy képnél
+    preview.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("remove-image")) return;
+
+        const index = e.target.dataset.index;
+        selectedFiles.splice(index, 1);
+
+        showPreview();
+        updateInputFiles();
+    });
 });
+
+
+
 
 
 // ===========================

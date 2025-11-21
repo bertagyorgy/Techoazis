@@ -141,8 +141,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="profile-edit-container">
         <h2>Profil módosítása</h2>
 
-        <?php if ($message): ?>
-            <p class="message"><?= htmlspecialchars($message) ?></p>
+        <?php if ($message == "Profilkép sikeresen frissítve!"): ?>
+            <div class="login-success"><?= htmlspecialchars($message) ?></div>
+        <?php elseif ($message == "Érvénytelen képformátum." || $message == "Hiba történt a fájl feltöltése közben."): ?>
+            <div class="login-alert"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
 
         <?php if ($action === 'username'): ?>

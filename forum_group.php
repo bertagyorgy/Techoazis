@@ -65,6 +65,26 @@ $post_count = $posts->num_rows;
             <p class="group-meta"><?= $post_count ?> poszt ebben a csoportban</p>
         </div>
     </div>
+    <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+    <div class="create-post-bar">
+        <form action="create_post.php" method="POST" enctype="multipart/form-data">
+            
+            <input type="hidden" name="group_id" value="<?= $group_id ?>">
+
+            <input type="text" name="title" placeholder="Poszt címe..." required>
+
+            <textarea name="content" placeholder="Írd meg a poszt tartalmát..." required></textarea>
+
+            <div class="file-inputs">
+                <label>Képek feltöltése (max 3):</label>
+                <input type="file" id="postImages" name="images[]" accept="image/*" multiple>
+            </div>
+            <div id="imagePreview"></div>
+
+            <button type="submit" class="create-post-btn">Poszt létrehozása</button>
+        </form>
+    </div>
+    <?php endif; ?>
 
     <!-- ==== POSZTOK ==== -->
     <main class="group-posts">
