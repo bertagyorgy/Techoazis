@@ -3,7 +3,7 @@ session_start();
 include './app/db.php';
 
 if (!isset($_GET['group'])) {
-    header("Location: forum.php");
+    echo "<script>window.location.href='../forum.php';</script>";
     exit();
 }
 
