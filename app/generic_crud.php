@@ -77,6 +77,7 @@ $message = $_GET['message'] ?? '';
 $table = $config['table'];
 $pk = $config['pk'];
 $page_file = $config['page_file'];
+$page_name = basename($page_file, ".php");
 $page_title = $config['page_title'];
 
 $allow_add = $config['allow_add'] ?? true;
@@ -117,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($types !== "") $stmt->bind_param($types, ...$params);
                 $stmt->execute();
                 $stmt->close();
-                header("Location: $page_file?message=" . urlencode("Sikeres hozzáadás!"));
+                header("Location: admin.php?page={$page_name}&message=" . urlencode("Sikeres hozzáadás!"));
                 exit();
             } catch (mysqli_sql_exception $e) {
                 $message = "Hiba a hozzáadás során: " . $e->getMessage();
@@ -159,13 +160,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bind_param($types, ...$params);
                 $stmt->execute();
                 $stmt->close();
-                header("Location: $page_file?message=" . urlencode("Sikeres frissítés!"));
+                header("Location: admin.php?page={$page_name}&message=" . urlencode("Sikeres frissítés!"));
                 exit();
             } catch (mysqli_sql_exception $e) {
                 $message = "Hiba a frissítés során: " . $e->getMessage();
             }
         } else {
-            header("Location: $page_file?message=" . urlencode("Nem történt módosítás."));
+            header("Location: admin.php?page={$page_name}&message=" . urlencode("Nem történt módosítás."));
             exit();
         }
     }
@@ -180,7 +181,7 @@ if ($action === 'delete' && $id && $allow_delete) {
         $stmt->bind_param("i", $safe_id);
         $stmt->execute();
         $stmt->close();
-        header("Location: $page_file?message=" . urlencode("Sikeres törlés!"));
+        header("Location: admin.php?page={$page_name}&message=" . urlencode("Sikeres törlés!"));
         exit;
     } catch (mysqli_sql_exception $e) {
         $message = str_contains($e->getMessage(), 'foreign key constraint')
