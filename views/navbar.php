@@ -24,7 +24,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 ?>
 <nav class="main-navbar">
     <div class="custom-container nav-container">
-        <a class="nav-brand" href="<?= $root ?>index.php"> 
+        <a class="nav-brand" href="<?= $root ?>"> 
             <img src="<?= $root ?>images/techoazis_logo_chopped.png" alt="kep">
         </a>
         
