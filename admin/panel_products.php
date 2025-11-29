@@ -29,6 +29,9 @@ $config = [
     'list_formatters' => [
         'user_id' => function($value, $row) {
             return htmlspecialchars($row['username']); // A $row a teljes sor a list_query-ből
+        },
+        'price' => function($value, $row) {
+            return number_format((float)$value, 2, ',', '.') . ' HUF';
         }
     ],
     // Mivel a list_query betölti a 'username'-t, a formatter felül tudja írni a 'user_id' kijelzését
@@ -37,10 +40,11 @@ $config = [
     // A fenti formattert törölheted, ha a list_columns kulcsa megegyezik a list_query oszlopnevével
     
     // Mezők a "Hozzáadás" és "Szerkesztés" űrlapokon
-    'form_fields' => ['user_id', 'product_name', 'category', 'product_description', 'price', 'stock'],
+    'form_fields' => ['user_id', 'name', 'category', 'description', 'price', 'stock'],
 
     // Részletes meződefiníciók az űrlaphoz
     'fields' => [
+        'product_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true], // Hozzáadva a PK definíciója
         'user_id' => [
             'label' => 'Feltöltő felhasználó',
             'type' => 'select', // --- EZ A LEGÖRDÜLŐ MENÜ ---
@@ -52,9 +56,9 @@ $config = [
                 'display_col' => 'username'
             ]
         ],
-        'name' => ['label' => 'Termék neve', 'type' => 'text', 'required' => true],
-        'category' => ['label' => 'Kategória', 'type' => 'text'],
-        'description' => ['label' => 'Leírás', 'type' => 'textarea'],
+        'name' => ['label' => 'Termék neve', 'type' => 'text', 'required' => true, 'param_type' => 's'],
+        'category' => ['label' => 'Kategória', 'type' => 'text', 'param_type' => 's'],
+        'description' => ['label' => 'Leírás', 'type' => 'textarea', 'param_type' => 'd'],
         'price' => ['label' => 'Ár', 'type' => 'number', 'step' => '0.01', 'required' => true, 'param_type' => 'd'], // double
         'stock' => ['label' => 'Készlet', 'type' => 'number', 'default' => 0, 'param_type' => 'i'] // integer
     ]

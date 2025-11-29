@@ -24,7 +24,8 @@ CREATE TABLE products (
     category VARCHAR(100),
     product_description TEXT,
     price DECIMAL(10,2) NOT NULL,
-    stock INT DEFAULT 0
+    stock INT DEFAULT 0,
+    main_image_url VARCHAR(255)
 );
 
 CREATE TABLE posts (
@@ -60,13 +61,15 @@ CREATE TABLE user_badges (
 
 CREATE TABLE images (
     image_id INT PRIMARY KEY AUTO_INCREMENT,
-    post_id INT NOT NULL,
+    post_id INT NULL,
+    product_id INT NULL,
     image_path VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE cart (
     cart_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
+    user_id INT NULL,
+    session_id VARCHAR(255) NULL,
     product_id INT NOT NULL,
     quantity INT DEFAULT 1,
     added_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -77,7 +80,42 @@ CREATE TABLE groups (
     group_name VARCHAR(100) NOT NULL UNIQUE,
     group_description TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    group_image VARCHAR(255) DEFAULT 'default_group.png';
+    group_image VARCHAR(255) DEFAULT 'default_group.png'
+);
+
+CREATE TABLE shipping_addresses (
+    address_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    zip_code VARCHAR(10) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    street_address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(50),
+    is_billing_address BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10,2) NOT NULL,
+    shipping_cost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    status VARCHAR(50) NOT NULL DEFAULT 'Függőben', 
+    payment_method VARCHAR(50), 
+    transaction_id VARCHAR(255), 
+    
+    shipping_address_id INT NOT NULL, 
+    billing_address_id INT
+);
+
+CREATE TABLE order_details (
+    detail_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price_snapshot DECIMAL(10,2) NOT NULL
 );
 
 INSERT INTO comments (comment_id, post_id, user_id, content, created_at) VALUES

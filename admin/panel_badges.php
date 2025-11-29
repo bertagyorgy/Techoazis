@@ -11,8 +11,8 @@ $config = [
 
     'list_columns' => [
         'badge_id' => 'ID',
-        'name' => 'Név',
-        'description' => 'Leírás',
+        'badge_name' => 'Név',
+        'badge_description' => 'Leírás',
         'icon' => 'Ikon'
     ],
 
@@ -21,9 +21,10 @@ $config = [
     'form_fields' => ['badge_name', 'badge_description', 'icon'],
 
     'fields' => [
-        'name' => ['label' => 'Kitűzés neve', 'type' => 'text', 'required' => true],
-        'description' => ['label' => 'Leírás', 'type' => 'textarea'],
-        'icon' => ['label' => 'Ikon elérési útja', 'type' => 'text']
+        'badge_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
+        'badge_name' => ['label' => 'Kitűzés neve', 'type' => 'text', 'required' => true, 'param_type' => 's'],
+        'badge_description' => ['label' => 'Leírás', 'type' => 'textarea', 'param_type' => 's'],
+        'icon' => ['label' => 'Ikon elérési útja', 'type' => 'text', 'param_type' => 's']
     ]
 ];
 

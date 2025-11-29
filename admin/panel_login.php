@@ -7,7 +7,7 @@ $config = [
     'pk' => 'login_id',
     'page_file' => '../admin/panel_login.php',
     'page_title' => 'Bejelentkezési Napló',
-    'singular_name' => 'bejegyzés',
+    'singular_name' => 'bejelentkezés',
     
     // Műveletek letiltása
     'allow_edit' => false,

@@ -41,6 +41,10 @@ $page = $_GET['p'] ?? '';
                 <li><a href="?page=panel_user_badges" class="<?php echo ($_GET['page'] ?? '') === 'panel_user_badges' ? 'active' : ''; ?>"><i class="fa-solid fa-award"></i><p>Felh. jelvények</p></a></li>
                 <li><a href="?page=panel_images" class="<?php echo ($_GET['page'] ?? '') === 'panel_images' ? 'active' : ''; ?>"><i class="fa-solid fa-image"></i><p>Képek</p></a></li>
                 <li><a href="?page=panel_cart" class="<?php echo ($_GET['page'] ?? '') === 'panel_cart' ? 'active' : ''; ?>"><i class="fa-solid fa-cart-shopping"></i><p>Kosár</p></a></li>
+                <li><a href="?page=panel_groups" class="<?php echo ($_GET['page'] ?? '') === 'panel_groups' ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i><p>Csoportok</p></a></li>
+                <li><a href="?page=panel_shipping_addresses" class="<?php echo ($_GET['page'] ?? '') === 'panel_shipping_addresses' ? 'active' : ''; ?>"><i class="fa-solid fa-map-location"></i><p>Szállítási cikkek</p></a></li>
+                <li><a href="?page=panel_orders" class="<?php echo ($_GET['page'] ?? '') === 'panel_orders' ? 'active' : ''; ?>"><i class="fa-solid fa-cart-shopping"></i><p>Rendelések</p></a></li>
+                <li><a href="?page=panel_order_details" class="<?php echo ($_GET['page'] ?? '') === 'panel_order_details' ? 'active' : ''; ?>"><i class="fa-solid fa-list"></i><p>Rendelés részletei</p></a></li>
             </ul>
         </div>
 
@@ -48,7 +52,7 @@ $page = $_GET['p'] ?? '';
         <div class="main">
             <?php
                 $page = $_GET['page'] ?? 'panel_dashboard'; // alapértelmezett oldal 
-                $allowed_pages = ['panel_dashboard', 'panel_users', 'panel_login', 'panel_products', 'panel_posts', 'panel_comments', 'panel_badges', 'panel_user_badges', 'panel_images', 'panel_cart'];
+                $allowed_pages = ['panel_dashboard', 'panel_users', 'panel_login', 'panel_products', 'panel_posts', 'panel_comments', 'panel_badges', 'panel_user_badges', 'panel_images', 'panel_cart', 'panel_groups', 'panel_shipping_addresses', 'panel_orders', 'panel_order_details'];
 
                 if (in_array($page, $allowed_pages)) {
                     include "$page.php";

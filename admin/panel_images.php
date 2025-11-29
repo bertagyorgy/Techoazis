@@ -34,6 +34,7 @@ $config = [
     'form_fields' => ['image_id', 'post_id', 'image_path'],
 
     'fields' => [
+        'image_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true], // ÚJ SOR
         'product_id' => [
             'label' => 'Kapcsolt termék',
             'type' => 'select',
