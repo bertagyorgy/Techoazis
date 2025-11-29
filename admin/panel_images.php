@@ -12,7 +12,8 @@ $config = [
     'list_columns' => [
         'image_id' => 'ID',
         'post_id' => 'Poszt',
-        'image_path' => 'Képfájl'
+        'image_path' => 'Képútvonal',
+        'image' => 'Kép'
     ],
 
     'list_query' => "SELECT 
@@ -28,10 +29,11 @@ $config = [
     'list_formatters' => [
         'image_id' => function($value, $row) { return htmlspecialchars($row['image_id']); },
         'post_id' => function($value, $row) { return htmlspecialchars($row['post_title']); },
-        'image_path' => function($value, $row) { return htmlspecialchars($row['image_path']);}
+        'image_path' => function($value, $row) { return htmlspecialchars($row['image_path']);},
+        'image' => function ($value, $row) { return "<img src='../{$row['image_path']}' alt='Poszt kép' style='width: 50px; height: 50px; object-fit: cover'>";}
     ],
 
-    'form_fields' => ['image_id', 'post_id', 'image_path'],
+    'form_fields' => ['image_id', 'post_id', 'image_path', 'image'],
 
     'fields' => [
         'image_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true], // ÚJ SOR
@@ -53,7 +55,8 @@ $config = [
                 'display_col' => 'title'
             ]
         ],
-        'image_path' => ['label' => 'Képfájl elérési út', 'type' => 'text', 'required' => true]
+        'image_path' => ['label' => 'Képfájl elérési út', 'type' => 'text', 'required' => true],
+        'image' => ['label' => 'Kép fájlnév', 'type' => 'text', 'param_type' => 's']
     ]
 ];
 

@@ -102,10 +102,9 @@ CREATE TABLE orders (
     order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     total_amount DECIMAL(10,2) NOT NULL,
     shipping_cost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    status VARCHAR(50) NOT NULL DEFAULT 'Függőben', 
+    order_status VARCHAR(50) NOT NULL DEFAULT 'Függőben', 
     payment_method VARCHAR(50), 
     transaction_id VARCHAR(255), 
-    
     shipping_address_id INT NOT NULL, 
     billing_address_id INT
 );

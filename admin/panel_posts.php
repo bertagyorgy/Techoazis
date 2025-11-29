@@ -40,10 +40,7 @@ $config = [
             ]
         ],
         'title' => ['label' => 'Cím', 'type' => 'text', 'required' => true],
-        'content' => ['label' => 'Tartalom', 'type' => 'textarea', 'required' => true],
-        'category' => ['label' => 'Kategória', 'type' => 'text'],
-        'code_snippet' => ['label' => 'Kódrészlet', 'type' => 'textarea'],
-        'language' => ['label' => 'Programnyelv', 'type' => 'text']
+        'content' => ['label' => 'Tartalom', 'type' => 'textarea', 'required' => true]
     ]
 ];
 

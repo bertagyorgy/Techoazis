@@ -14,7 +14,7 @@ $config = [
         'user_id' => 'Felhasználó', // Ezt a list_query felülírja
         'order_date' => 'Dátum',
         'total_amount' => 'Végösszeg',
-        'status' => 'Státusz',
+        'order_status' => 'Státusz',
         'shipping_address_id' => 'Szállítási cím' // Visszaállítva címre
     ],
     
@@ -50,7 +50,7 @@ $config = [
     ],
 
     'form_fields' => [
-        'user_id', 'order_date', 'total_amount', 'shipping_cost', 'status', 
+        'user_id', 'order_date', 'total_amount', 'shipping_cost', 'order_status', 
         'payment_method', 'transaction_id', 'shipping_address_id', 'billing_address_id'
     ],
 
@@ -94,7 +94,7 @@ $config = [
             'default' => 0.00
         ],
         
-        'status' => [
+        'order_status' => [
             'label' => 'Státusz', 
             'type' => 'select', 
             'required' => true, 
