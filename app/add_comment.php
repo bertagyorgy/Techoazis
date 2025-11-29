@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "../app/db.php";
-
+ob_start();
 header("Content-Type: application/json");
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -29,3 +29,5 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
+ob_end_flush();
+?>

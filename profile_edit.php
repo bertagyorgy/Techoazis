@@ -3,7 +3,7 @@ session_start();
 include './app/db.php';
 
 if (!isset($_SESSION['username'])) {
-    header("Location: ./views/login.php");
+    echo "<script>window.location.href='./views/login.php';</script>";
     exit();
 }
 

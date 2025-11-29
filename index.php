@@ -12,6 +12,8 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="icon" href="./favicon.ico">
+    <link rel="icon" type="image/png" href="./favicon.png">
     <script src="./static/index.js" defer></script>
     <title>Techoazis | Home</title>
     <link rel="stylesheet" href="./static/index.css">
