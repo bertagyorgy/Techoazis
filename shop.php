@@ -4,9 +4,11 @@ include_once __DIR__ . '/app/db.php';
 
 // Termékek lekérése
 $products = [];
-$sql = "SELECT product_id, product_name, price, main_image_url, stock 
+// JAVÍTÁS: Eltávolítottuk a WHERE stock_quantity > 0 feltételt,
+// így a nulla készletű termékek is megjelennek, és a product_card.php
+// fogja kezelni a "KIFOGYOTT" állapot megjelenítését.
+$sql = "SELECT product_id, product_name, price, main_image_url, stock_quantity 
         FROM products 
-        WHERE stock > 0 
         ORDER BY product_name ASC";
 
 if (isset($conn) && $conn instanceof mysqli) {
@@ -25,7 +27,9 @@ if (isset($conn) && $conn instanceof mysqli) {
 include './views/navbar.php';
 ?>
 <link rel="stylesheet" href="./static/index.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 <script src="./static/index.js" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 
 <div class="gap"></div>
 
@@ -55,30 +59,3 @@ include './views/navbar.php';
     </div>
 </section>
 
-
-<!-- Kosár script -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const cartButtons = document.querySelectorAll('.add-to-cart-btn');
-
-        cartButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const productId = e.currentTarget.dataset.productId;
-
-                fetch('add_to_cart_handler.php', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: `product_id=${productId}&quantity=1`
-                })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data.success
-                        ? `Siker: hozzáadva a kosárhoz.`
-                        : `Hiba: ${data.message || 'Ismeretlen hiba'}`
-                    );
-                })
-                .catch(err => console.log('Hálózati hiba:', err));
-            });
-        });
-    });
-</script>

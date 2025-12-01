@@ -3,24 +3,18 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// DEFINIÁLÁS: A PROJEKT GYÖKÉR ELÉRÉSI ÚTJA A BÖNGÉSZŐ SZÁMÁRA
-// Ezt az útvonalat kell használnod a XAMPP-ben (htdocs-tól számítva):
 $root = '/techoazis/'; 
-
-// JAVÍTÁS: PHP include abszolút elérési úttal (EZ HELYES!)
 include_once __DIR__ . '/../app/db.php';
 
-// Ha be vagyunk jelentkezve, kérdezzük le a kosár tartalmát
-$cart_badge = '';
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    if (isset($conn)) {
-        $cart_count_result = $conn->query("SELECT SUM(quantity) AS total_items FROM cart");
-        $cart_count = $cart_count_result->fetch_assoc()['total_items'] ?? 0;
-        $cart_badge = $cart_count > 0 ? $cart_count : '0';
-    } else {
-        $cart_badge = '0';
-    }
+// --- JAVÍTÁS: Különböző termékek száma (tömb hossza) ---
+$cart_count_unique = 0;
+if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+    // count(): Hányféle termék van a kosárban
+    $cart_count_unique = count($_SESSION['cart']); 
 }
+
+$cart_badge = (string)$cart_count_unique;
+// ------------------------------------------------------------------
 ?>
 <nav class="main-navbar">
     <div class="custom-container nav-container">
@@ -51,7 +45,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 <a href='<?= $root ?>shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
                 <a href='<?= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
                     <i class='fa-solid fa-cart-shopping'></i>
-                    <span class='cart-badge'>0<!--?php echo $cart_badge; ?--></span>
+                    <span class='cart-badge'><?php echo $cart_badge; ?></span>
                 </a>
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                     <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
@@ -68,7 +62,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <a href='<?= $root ?>shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
             <a href='<?= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
                 <i class='fa-solid fa-cart-shopping'></i>
-                <span class='cart-badge'>0<!--?php echo $cart_badge; ?--></span>
+                <span class='cart-badge'><?php echo $cart_badge; ?></span>
             </a>
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
@@ -80,17 +74,14 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // JAVÍTÁS: A JS-ben a href-et most már abszolút útvonallal kell keresni
             const logoutLinks = document.querySelectorAll('a[href="<?= $root ?>views/logout.php"]'); 
             logoutLinks.forEach(link => {
                 link.addEventListener("click", function(e) {
-                    const confirmed = confirm("Biztosan ki szeretnél jelentkezni?");
-                    if (!confirmed) {
+                    if (!confirm("Biztosan ki szeretnél jelentkezni?")) {
                         e.preventDefault();
                     }
                 });
             });
         });
     </script>
-
 </nav>
