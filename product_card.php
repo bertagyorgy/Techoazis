@@ -27,9 +27,6 @@ $image_url = htmlspecialchars($base_url);
 $stock_quantity = (int)($product['stock_quantity'] ?? 0); 
 $is_available = $stock_quantity > 0;
 
-$stock        = (int)($product['stock'] ?? 0);
-$is_available = $stock > 0;
-
 // --- ÚJÍTÁS: Egyedi ID generálása a gombhoz, hogy a JS pontosan tudja, melyiket kell figyelni ---
 $unique_btn_id = 'add-btn-' . $product_id;
 ?>
@@ -41,7 +38,6 @@ $unique_btn_id = 'add-btn-' . $product_id;
                  alt="<?= $product_name ?>"
                  class="card-img-top"
                  onerror="this.onerror=null;this.src='https://placehold.co/400x260/2d3357/FFFFFF?text=Kép+hiba';"
-                 style="width: 100%; height: 100%; object-fit: scale-down; transition: transform 0.5s ease;"
                  style="width: 100%; height: 100%; object-fit: scale-down; transition: transform 0.5s ease;"
             >
             <?php if (!$is_available): ?>
@@ -74,10 +70,10 @@ $unique_btn_id = 'add-btn-' . $product_id;
                 data-product-id="<?= $product_id ?>"
                 class="add-to-cart-btn shopnow-small"
                 style="margin-top: 10px; width: 100%;"
-                <?= $stock > 0 ? '' : 'disabled' ?>
+                <?= $is_available ? '' : 'disabled' ?>
             >
                 <i class="fas fa-shopping-cart"></i>
-                <?= $stock > 0 ? 'Kosárba' : 'Nincs raktáron' ?>
+                <?= $is_available ? 'Kosárba' : 'Nincs raktáron' ?>
             </button>
         </div>
     </div>
