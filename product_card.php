@@ -32,7 +32,7 @@ if (strpos($db_image, 'http') === 0 || strpos($db_image, '//') === 0) {
 $image_url = htmlspecialchars($base_url);
 
 $stock        = (int)($product['stock'] ?? 0);
-$is_available = $stock > 0;
+//$is_available = $stock > 0;
 ?>
 
 <!-- VISSZAÁLLÍTVA: A korábbi, külső rácsrendszerre épülő CSS burkoló div. -->
@@ -48,9 +48,9 @@ $is_available = $stock > 0;
                  style="width: 100%; height: 100%; object-fit: scale-down; transition: transform 0.5s ease;"
             >
             
-            <?php if (!$is_available): ?>
+            <?php if ($stock == 0): ?>
                 <!-- Kifogyott Overlay -->
-                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(220, 53, 69, 0.7); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: bold; transform: rotate(12deg); border: 4px solid white;">
+                <div style="height: 30px; position: absolute; top: 50; left: 0; right: 0; bottom: 0; background-color: rgba(220, 53, 69, 0.7); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: bold;">
                     KIFOGYOTT
                 </div>
             <?php endif; ?>
@@ -69,7 +69,7 @@ $is_available = $stock > 0;
 
             <p class="card-text">
                 Készlet:
-                <span style="font-weight: bold; color: <?= $is_available ? 'var(--success-icon)' : 'var(--danger-badge)' ?>;">
+                <span style="font-weight: bold; color: <?= $stock > 0 ? 'var(--success-icon)' : 'var(--danger-badge)' ?>;">
                     <?= $stock ?> db
                 </span>
             </p>
@@ -78,10 +78,10 @@ $is_available = $stock > 0;
                 data-product-id="<?= $product_id ?>"
                 class="add-to-cart-btn shopnow-small"
                 style="margin-top: 10px; width: 100%;"
-                <?= $is_available ? '' : 'disabled' ?>
+                <?= $stock > 0 ? '' : 'disabled' ?>
             >
                 <i class="fas fa-shopping-cart"></i>
-                <?= $is_available ? 'Kosárba' : 'Nincs raktáron' ?>
+                <?= $stock > 0 ? 'Kosárba' : 'Nincs raktáron' ?>
             </button>
         </div>
     </div>

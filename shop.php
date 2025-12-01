@@ -5,8 +5,7 @@ include_once __DIR__ . '/app/db.php';
 // Termékek lekérése
 $products = [];
 $sql = "SELECT product_id, product_name, price, main_image_url, stock 
-        FROM products 
-        WHERE stock > 0 
+        FROM products  
         ORDER BY product_name ASC";
 
 if (isset($conn) && $conn instanceof mysqli) {

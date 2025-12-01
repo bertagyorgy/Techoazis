@@ -14,13 +14,14 @@ include_once __DIR__ . '/../app/db.php';
 $cart_badge = '';
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     if (isset($conn)) {
-        $cart_count_result = $conn->query("SELECT SUM(quantity) AS total_items FROM cart");
-        $cart_count = $cart_count_result->fetch_assoc()['total_items'] ?? 0;
+        $cart_count_result = $conn->query("SELECT SUM(stock_quantity) AS quantity FROM products");
+        $cart_count = $cart_count_result->fetch_assoc()['quantity'] ?? 0;
         $cart_badge = $cart_count > 0 ? $cart_count : '0';
     } else {
         $cart_badge = '0';
     }
-}
+} //------------------------------------
+
 ?>
 <nav class="main-navbar">
     <div class="custom-container nav-container">
@@ -51,7 +52,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                 <a href='<?= $root ?>shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
                 <a href='<?= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
                     <i class='fa-solid fa-cart-shopping'></i>
-                    <span class='cart-badge'>0<!--?php echo $cart_badge; ?--></span>
+                    <span class='cart-badge'><?php echo $cart_badge; ?></span>
                 </a>
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                     <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
@@ -68,7 +69,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
             <a href='<?= $root ?>shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
             <a href='<?= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
                 <i class='fa-solid fa-cart-shopping'></i>
-                <span class='cart-badge'>0<!--?php echo $cart_badge; ?--></span>
+                <span class='cart-badge'><?php echo $cart_badge; ?></span>
             </a>
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
