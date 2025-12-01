@@ -20,6 +20,7 @@ CREATE TABLE login (
 CREATE TABLE products (
     product_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
+    tock_quantity INT NOT NULL DEFAULT 0;
     product_name VARCHAR(255) NOT NULL,
     category VARCHAR(100),
     product_description TEXT,
