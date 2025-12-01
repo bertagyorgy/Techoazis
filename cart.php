@@ -137,6 +137,7 @@ if (!empty($cart) && isset($conn) && $conn instanceof mysqli) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 <style>
 /* Egyedi CSS a kosárhoz, hogy jobban nézzen ki */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css");
 .cart-table th, .cart-table td {
     padding: 12px 15px;
     text-align: left;

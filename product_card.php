@@ -45,7 +45,7 @@ $is_available = $stock > 0;
                  alt="<?= $product_name ?>"
                  class="card-img-top"
                  onerror="this.onerror=null;this.src='https://placehold.co/400x260/2d3357/FFFFFF?text=Kép+hiba';"
-                 style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;"
+                 style="width: 100%; height: 100%; object-fit: scale-down; transition: transform 0.5s ease;"
             >
             
             <?php if (!$is_available): ?>
