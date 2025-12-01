@@ -134,7 +134,7 @@ if (!empty($cart) && isset($conn) && $conn instanceof mysqli) {
 ?>
 <link rel="stylesheet" href="./static/index.css">
 <!-- Font Awesome betöltése az ikon megjelenítéséhez -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" xintegrity="sha512-1ycn6IcaQQ40B7iK2f0i8/1v2k75o+6rLhHl6wD4pD0T8gXhX+xW3t/r4E9x/S7HlW5KzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 <style>
 /* Egyedi CSS a kosárhoz, hogy jobban nézzen ki */
 .cart-table th, .cart-table td {
