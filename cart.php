@@ -108,7 +108,9 @@ if (!empty($cart) && isset($conn)) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
+body{
+    background-color: #eae3c9;
+}
 /* Egyedi CSS a kosárhoz, hogy jobban nézzen ki */
 .cart-table th, .cart-table td {
     padding: 12px 15px;

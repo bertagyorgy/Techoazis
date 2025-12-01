@@ -118,6 +118,10 @@ CREATE TABLE order_details (
     price_snapshot DECIMAL(10,2) NOT NULL
 );
 
+INSERT INTO products (product_id, user_id, stock_quantity, product_name, category, product_description, price, stock, main_image_url) VALUES
+(1, 3, 5, 'Laptop', 'elektronika', 'Jó laptop', 150000.00, 0, 'laptop.png'),
+(2, 3, 11, 'Fényképezőgép', 'fényképezőgépek', 'Jó termék', 50000.00, 0, 'fenykep.jpg');
+
 INSERT INTO comments (comment_id, post_id, user_id, content, created_at) VALUES
 (1, 1, 1, 'Nagyon egyszerűen', '2025-11-18 20:37:21'),
 (2, 1, 2, 'HTML + CSS alapokkal érdemes kezdeni!', '2025-11-18 19:27:15'),
