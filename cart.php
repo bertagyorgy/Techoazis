@@ -109,6 +109,13 @@ if (!empty($cart) && isset($conn)) {
 
 <style>
 
+/* Egyedi CSS a kosárhoz, hogy jobban nézzen ki */
+.cart-table th, .cart-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
 /* --- Modern Kosár Design --- */
 
 .cart-container {
