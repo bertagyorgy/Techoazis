@@ -103,10 +103,17 @@ if (!empty($cart) && isset($conn)) {
     }
 }
 ?>
-
-<link rel="stylesheet" href="./static/index.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techoazis | Cart</title>
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="./static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="./static/index.js" defer></script>
+</head>
 <style>
 body{
     background-color: #eae3c9;
@@ -263,9 +270,57 @@ body{
     width: 100%;
     justify-content: center;
 }
+/* ===============================
+   MOBILOS KOSÁR NÉZET
+================================*/
+@media (max-width: 768px) {
+
+    .cart-table,
+    .cart-table thead,
+    .cart-table tbody,
+    .cart-table tr,
+    .cart-table td,
+    .cart-table th {
+        display: block;
+        box-sizing: border-box;
+    }
+
+    .cart-table tr {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0px 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .cart-table td {
+        padding: 10px 0;
+        border: none;
+    }
+
+    .cart-product-img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .total-box {
+        width: 100%;
+    }
+
+    .quantity-input {
+        width: 100%;
+    }
+
+    .delete-btn {
+        float: right;
+        margin-top: -5px;
+    }
+}
+
 
 </style>
-
+<body>
 <div class="gap"></div>
 
 <section class="section-padding">
@@ -382,3 +437,7 @@ body{
 
     </div>
 </section>
+
+
+</body>
+</html>

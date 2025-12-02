@@ -23,13 +23,19 @@ if (isset($conn) && $conn instanceof mysqli) {
     $error_message = "Hiba: Az adatbázis kapcsolat (\$conn) nem inicializált vagy érvénytelen.";
 }
 
-// Navbar + assetek
-include './views/navbar.php';
+
 ?>
-<link rel="stylesheet" href="./static/index.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-<script src="./static/index.js" defer></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techoazis | Shop</title>
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="./static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="./static/index.js" defer></script>
+</head>
 <style>
     body{
         background-color: #eae3c9;
@@ -57,6 +63,8 @@ include './views/navbar.php';
         margin: -1rem; /* Negatív margó a távolságokhoz */
     }
 </style>
+<body>
+<?php include './views/navbar.php'; ?>
 <div class="gap"></div>
 
 <section class="section-padding">
@@ -84,4 +92,7 @@ include './views/navbar.php';
         <?php endif; ?>
     </div>
 </section>
+
+</body>
+</html>
 
