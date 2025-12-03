@@ -26,6 +26,16 @@ $posts_query = "
 ";
 $posts_result = $conn->query($posts_query);
 
+// ======= ÖSSZES KÉP LEKÉRÉSE EGYBŐL (N+1 QUERY ELKERÜLÉSÉRE) =======
+$images_query = "SELECT post_id, image_path FROM images WHERE post_id IN (
+    SELECT post_id FROM posts
+) ORDER BY post_id";
+$images_result = $conn->query($images_query);
+$post_images = [];
+while ($img = $images_result->fetch_assoc()) {
+    $post_images[$img['post_id']][] = $img['image_path'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -85,17 +95,12 @@ $posts_result = $conn->query($posts_query);
                 <p class="post-content"><?= nl2br(htmlspecialchars($post['content'])) ?></p>
 
                 <?php
-                // ===== KÉPEK LEKÉRÉSE =====
-                $img_stmt = $conn->prepare("SELECT image_path FROM images WHERE post_id = ?");
-                $img_stmt->bind_param("i", $post['post_id']);
-                $img_stmt->execute();
-                $images = $img_stmt->get_result();
-
-                if ($images->num_rows > 0): ?>
+                // ===== KÉPEK MEGJELENÍTÉSE =====
+                if (isset($post_images[$post['post_id']]) && !empty($post_images[$post['post_id']])): ?>
                     <div class="post-images">
-                        <?php while ($img = $images->fetch_assoc()): ?>
-                            <img src="./<?= htmlspecialchars($img['image_path']) ?>" class="post-image">
-                        <?php endwhile; ?>
+                        <?php foreach ($post_images[$post['post_id']] as $image_path): ?>
+                            <img src="./<?= htmlspecialchars($image_path) ?>" class="post-image">
+                        <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
 

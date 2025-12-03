@@ -50,9 +50,10 @@ if (isset($conn) && $conn instanceof mysqli) {
     }
 
     /* Különböző képernyőméretekhez a konténer maximális szélessége */
-    @media (min-width: 576px) { .section-title { font-size: 2.5rem; } }
-
-    @media (min-width: 576px) { .custom-container { max-width: 540px; } }
+    @media (min-width: 576px) {
+        .section-title { font-size: 2.5rem; }
+        .custom-container { max-width: 540px; }
+    }
     @media (min-width: 768px) { .custom-container { max-width: 720px; } }
     @media (min-width: 992px) { .custom-container { max-width: 960px; } }
     @media (min-width: 1200px) { .custom-container { max-width: 1140px; } }

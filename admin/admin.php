@@ -1,5 +1,4 @@
 <?php require '../app/auth_check.php'; // ✅ JAVÍTVA: Visszalépés a gyökérbe (../)
-$page = $_GET['p'] ?? '';  
 ?>
 
 
@@ -51,11 +50,17 @@ $page = $_GET['p'] ?? '';
         <!-- Jobb oldali tartalom -->
         <div class="main">
             <?php
-                $page = $_GET['page'] ?? 'panel_dashboard'; // alapértelmezett oldal 
+                $page = $_GET['page'] ?? 'panel_dashboard'; // alapértelmezett oldal
                 $allowed_pages = ['panel_dashboard', 'panel_users', 'panel_login', 'panel_products', 'panel_posts', 'panel_comments', 'panel_badges', 'panel_user_badges', 'panel_images', 'panel_cart', 'panel_groups', 'panel_shipping_addresses', 'panel_orders', 'panel_order_details'];
 
                 if (in_array($page, $allowed_pages)) {
-                    include "$page.php";
+                    $safe_filename = basename($page . '.php');
+                    $filepath = __DIR__ . '/' . $safe_filename;
+                    if (file_exists($filepath)) {
+                        include $filepath;
+                    } else {
+                        echo "<h2>Oldalgenerálási hiba, próbáld újra!</h2>";
+                    }
                 } else {
                     echo "<h2>Oldalgenerálási hiba, próbáld újra!</h2>";
                 }

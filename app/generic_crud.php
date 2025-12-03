@@ -1,7 +1,8 @@
 <?php
 // generic_crud.php - javított verzió
 if (!isset($conn) || !isset($config)) {
-    die("Hiba: A konfiguráció vagy az adatbázis-kapcsolat hiányzik.");
+    echo "<div class='message error'>Hiba: A konfiguráció vagy az adatbázis-kapcsolat hiányzik.</div>";
+    exit();
 }
 
 // --- Űrlapmezők generálása ---
@@ -182,9 +183,9 @@ if ($action === 'delete' && $id && $allow_delete) {
         $stmt->execute();
         $stmt->close();
         header("Location: admin.php?page={$page_name}&message=" . urlencode("Sikeres törlés!"));
-        exit;
+        exit();
     } catch (mysqli_sql_exception $e) {
-        $message = str_contains($e->getMessage(), 'foreign key constraint')
+        $message = strpos($e->getMessage(), 'foreign key constraint') !== false
             ? "Hiba: Ez az elem nem törölhető, mert más bejegyzések hivatkoznak rá."
             : "Hiba a törlés során: " . $e->getMessage();
     }
@@ -212,7 +213,7 @@ if ($action === 'delete' && $id && $allow_delete) {
 <!--?php include 'navbar.php'; ?>-->
 
 <?php if (!empty($message)): ?>
-    <div class="message <?= str_starts_with(strtolower($message), 'hiba') ? 'error' : ''; ?>">
+    <div class="message <?= strpos(strtolower($message), 'hiba') === 0 ? 'error' : ''; ?>">
         <?= htmlspecialchars($message); ?>
     </div>
 <?php endif; ?>

@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,10 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body>
 <?php
-$page = $_GET['p'] ?? '';  
+$page = $_GET['p'] ?? '';
+
+// Whitelist of allowed pages to prevent LFI attacks
+$allowed_pages = ['shop', 'forum', 'forum_group', 'cart', 'profile', 'profile_edit', 'create_post'];
 
 if ($page === '') {
     include 'views/navbar.php';
@@ -177,8 +180,8 @@ if ($page === '') {
                         <li><a href="./index.php" class="footer-link">Főoldal</a></li>
                         <li><a href="./shop.php" class="footer-link">Webshop</a></li>
                         <li><a href="./forum.php" class="footer-link">Csevegés</a></li>
-                        <li><a href="./articles.php" class="footer-link">Cikkek</a></li>
-                        <li><a href="./contact.php" class="footer-link">Kapcsolat</a></li>
+                        <!-- <li><a href="./articles.php" class="footer-link">Cikkek</a></li> -->
+                        <!-- <li><a href="./contact.php" class="footer-link">Kapcsolat</a></li> -->
                         <?php
                         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
                             <li><a href="admin/admin.php" class="footer-link">Admin</a></li>
@@ -203,11 +206,15 @@ if ($page === '') {
     </footer>
 <?php
 } else {
-    // Dinamikusan betöltjük az adott oldal fájlját, ha létezik
-    $file = $page . '.php';
-    
-    if (file_exists($file)) {
-        include $file;
+    // Dinamikusan betöltjük az adott oldal fájlját, ha létezik és engedélyezett
+    if (in_array($page, $allowed_pages)) {
+        $file = $page . '.php';
+
+        if (file_exists($file)) {
+            include $file;
+        } else {
+            include 'views/404.php';
+        }
     } else {
         include 'views/404.php';
     }
