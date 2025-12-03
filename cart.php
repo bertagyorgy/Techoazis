@@ -133,191 +133,194 @@ body{
 }
 
 .cart-card {
-    background: white;
-    padding: 1.75rem;
-    border-radius: 16px;
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0px 8px 32px rgba(0,0,0,0.12), 0px 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.06);
+    overflow: hidden;
 }
 
 .cart-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
 .cart-table thead {
-    background: #f1f3f5;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .cart-table th {
-    padding: 16px;
-    font-weight: 700;
+    padding: 20px 16px;
     text-transform: uppercase;
-    font-size: 0.9rem;
-    border-bottom: 2px solid #dee2e6;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    color: #475569;
+    border-bottom: 2px solid #cbd5e1;
+    position: relative;
+}
+
+.cart-table th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.cart-table th:last-child {
+    border-top-right-radius: 12px;
 }
 
 .cart-table td {
-    padding: 18px 16px;
-    border-bottom: 1px solid #e9ecef;
+    padding: 24px 16px;
+    border-bottom: 1px solid #e2e8f0;
     vertical-align: middle;
+    transition: background-color 0.2s ease;
 }
 
-.cart-table tr:hover {
-    background: #f8f9fa;
+.cart-table tbody tr {
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.cart-table tbody tr:hover {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    transform: translateY(-1px);
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.08);
+}
+
+.cart-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .cart-product-img {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     border-radius: 12px;
     object-fit: contain;
-    background: #fff;
-    border: 1px solid #e0e0e0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 2px solid rgba(255,255,255,0.8);
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.cart-product-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
 }
 
 /* Mennyiség input */
 .quantity-input {
-    width: 70px;
-    padding: 8px;
+    width: 80px;
+    padding: 10px 12px;
     border-radius: 8px;
-    border: 1px solid #bbb;
+    border: 1px solid #d1d5db;
     text-align: center;
     font-size: 1rem;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    color: #1e293b;
 }
 
 .quantity-input:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: #2563eb;
+    box-shadow: 0px 0px 0px 3px rgba(37, 99, 235, 0.1);
+    background: #ffffff;
+}
+
+.quantity-input:hover {
+    border-color: #3b82f6;
 }
 
 /* Törlés ikon */
 .delete-btn {
     color: #d63031;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.2s ease;
+    padding: 8px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
+
 .delete-btn:hover {
-    color: #ff7675;
+    color: #b91c1c;
+    background: #fee2e2;
+    transform: scale(1.1);
 }
 
 /* Összegző box */
 .total-box {
-    background: white;
-    padding: 1.75rem;
-    border-radius: 16px;
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
-    width: 350px;
-
-    /* ÚJ – ez húzza lejjebb */
-    margin-top: 40px;
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0px 8px 32px rgba(0,0,0,0.12), 0px 2px 8px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(0,0,0,0.06);
+    margin-top: 2rem;
 }
 
-
 .total-price {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--danger-badge);
+    font-size: 2.2rem;
+    color: #dc2626;
+    margin: 1rem 0;
 }
 
 /* Checkout gomb */
 .checkout-btn {
     display: block;
     text-align: center;
-    background: var(--primary-color);
+    background: var(--primary-color)/*linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)*/;
     color: white;
-    padding: 16px 0;
-    font-size: 1.2rem;
-    font-weight: 700;
-    border-radius: 50px;
-    margin-top: 20px;
-    transition: 0.3s;
+    padding: 18px 0;
+    font-size: 1.15rem;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0px 4px 16px rgba(37, 99, 235, 0.3);
+    text-decoration: none;
 }
+
 .checkout-btn:hover {
-    background: var(--secondary-color);
+    background: #364368ff;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 20px rgba(37, 99, 235, 0.4);
 }
+
 .back-to-shop-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-
-    background-color: #e9ecef;
-    color: #0d6efd;
-    padding: 12px 22px;
-
-    border-radius: 50px;
-    font-weight: 600;
+    gap: 10px;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    color: #475569;
+    padding: 14px 24px;
+    border-radius: 12px;
     font-size: 1rem;
-
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
     text-decoration: none;
-    border: 1px solid #d0d7dd;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.06);
 }
 
 .back-to-shop-btn:hover {
-    background-color: #dbe2e7;
-    color: #0a58ca;
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    color: #334155;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.12);
 }
 
 .back-to-shop-wrapper {
-    margin-top: 40px;
-    margin-bottom: 30px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
-
-.back-to-shop-btn {
-    width: 100%;
-    justify-content: center;
-}
-/* ===============================
-   MOBILOS KOSÁR NÉZET
-================================*/
-@media (max-width: 768px) {
-
-    .cart-table,
-    .cart-table thead,
-    .cart-table tbody,
-    .cart-table tr,
-    .cart-table td,
-    .cart-table th {
-        display: block;
-        box-sizing: border-box;
-    }
-
-    .cart-table tr {
-        margin-bottom: 20px;
-        padding: 15px;
-        border-radius: 12px;
-        background: #fff;
-        box-shadow: 0px 2px 12px rgba(0,0,0,0.08);
-    }
-
-    .cart-table td {
-        padding: 10px 0;
-        border: none;
-    }
-
-    .cart-product-img {
-        width: 100%;
-        height: auto;
-        margin-bottom: 10px;
-    }
-
-    .total-box {
-        width: 100%;
-    }
-
-    .quantity-input {
-        width: 100%;
-    }
-
-    .delete-btn {
-        float: right;
-        margin-top: -5px;
-    }
-}
-
 
 </style>
 <body>
@@ -437,6 +440,7 @@ body{
 
     </div>
 </section>
+
 
 
 </body>
