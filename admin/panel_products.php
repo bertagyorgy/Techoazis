@@ -41,7 +41,7 @@ $config = [
                  return 'Nincs kép';
              }
              // FIX: Az admin könyvtárból a gyökérben lévő images/ mappára mutatunk.
-             $image_path = '../images/' . htmlspecialchars($value);
+             $image_path = '../uploads/products/' . htmlspecialchars($value);
              // Egy kis miniatűr a könnyebb azonosításhoz
              return '<img src="' . $image_path . '" alt="Termékkép" style="max-width: 50px; height: auto; border-radius: 4px;">';
         }

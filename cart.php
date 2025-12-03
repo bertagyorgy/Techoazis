@@ -88,7 +88,7 @@ if (!empty($cart) && isset($conn)) {
         if (!$img) {
             $img = "https://placehold.co/100x100?text=Nincs+kép";
         } elseif (!str_starts_with($img, 'http')) {
-            $img = 'images/' . $img;
+            $img = 'uploads/products/' . $img;
         }
 
         $cart_items[] = [

@@ -20,7 +20,7 @@ if (isset($conn) && $conn instanceof mysqli) {
         }
     }
 } else {
-    $error_message = "Hiba: Az adatbázis kapcsolat (\$conn) nem inicializált vagy érvénytelen.";
+    $error_message = "Hiba: Az adatbázis kapcsolat nem inicializált vagy érvénytelen.";
 }
 
 

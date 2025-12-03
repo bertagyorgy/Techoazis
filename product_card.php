@@ -18,7 +18,7 @@ $placeholder_url = 'https://placehold.co/400x300/2d3357/FFFFFF?text=Techoazis';
 if (strpos($db_image, 'http') === 0 || strpos($db_image, '//') === 0) {
     $base_url = $db_image; 
 } elseif (!empty($db_image)) {
-    $base_url = 'images/' . $db_image; 
+    $base_url = 'uploads/products/' . $db_image; 
 } else {
     $base_url = $placeholder_url; 
 }
