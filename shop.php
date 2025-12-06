@@ -20,17 +20,52 @@ if (isset($conn) && $conn instanceof mysqli) {
         }
     }
 } else {
-    $error_message = "Hiba: Az adatbázis kapcsolat (\$conn) nem inicializált vagy érvénytelen.";
+    $error_message = "Hiba: Az adatbázis kapcsolat nem inicializált vagy érvénytelen.";
 }
 
-// Navbar + assetek
-include './views/navbar.php';
-?>
-<link rel="stylesheet" href="./static/index.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-<script src="./static/index.js" defer></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 
+?>
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techoazis | Shop</title>
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="./static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="./static/index.js" defer></script>
+</head>
+<style>
+    body{
+        background-color: #eae3c9;
+    }
+    .custom-container {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        box-sizing: border-box;
+    }
+
+    /* Különböző képernyőméretekhez a konténer maximális szélessége */
+    @media (min-width: 576px) {
+        .section-title { font-size: 2.5rem; }
+        .custom-container { max-width: 540px; }
+    }
+    @media (min-width: 768px) { .custom-container { max-width: 720px; } }
+    @media (min-width: 992px) { .custom-container { max-width: 960px; } }
+    @media (min-width: 1200px) { .custom-container { max-width: 1140px; } }
+
+    .grid-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -1rem; /* Negatív margó a távolságokhoz */
+    }
+</style>
+<body>
+<?php include './views/navbar.php'; ?>
 <div class="gap"></div>
 
 <section class="section-padding">
@@ -58,4 +93,7 @@ include './views/navbar.php';
         <?php endif; ?>
     </div>
 </section>
+
+</body>
+</html>
 

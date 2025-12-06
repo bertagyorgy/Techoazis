@@ -8,9 +8,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve és admin-e
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'A') {
-    echo "<script>window.location.href='../views/login.php';</script>";
+    header("Location: ../views/login.php");
     ob_end_flush();
-    exit;
+    exit();
 }
 
 require '../app/db.php';

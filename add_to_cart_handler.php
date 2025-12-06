@@ -4,19 +4,19 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['product_id'])) {
     echo json_encode([
-        'success' => false, 
+        'success' => false,
         'message' => 'Érvénytelen kérés.'
     ]);
-    exit;
+    exit();
 }
 
 $product_id = (int)$_POST['product_id'];
 if ($product_id <= 0) {
     echo json_encode([
-        'success' => false, 
+        'success' => false,
         'message' => 'Érvénytelen termék ID.'
     ]);
-    exit;
+    exit();
 }
 
 if (!isset($_SESSION['cart'])) {
@@ -41,4 +41,4 @@ echo json_encode([
     'new_quantity' => $_SESSION['cart'][$product_id],
     'cart_count'   => $unique_items_count // Ez frissíti a jelvényt
 ]);
-exit;
+exit();

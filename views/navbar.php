@@ -6,15 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
 $root = '/techoazis/'; 
 include_once __DIR__ . '/../app/db.php';
 
-// --- JAVÍTÁS: Különböző termékek száma (tömb hossza) ---
 $cart_count_unique = 0;
 if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
-    // count(): Hányféle termék van a kosárban
     $cart_count_unique = count($_SESSION['cart']); 
 }
 
 $cart_badge = (string)$cart_count_unique;
-// ------------------------------------------------------------------
 ?>
 <nav class="main-navbar">
     <div class="custom-container nav-container">

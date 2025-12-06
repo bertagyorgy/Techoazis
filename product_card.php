@@ -18,7 +18,7 @@ $placeholder_url = 'https://placehold.co/400x300/2d3357/FFFFFF?text=Techoazis';
 if (strpos($db_image, 'http') === 0 || strpos($db_image, '//') === 0) {
     $base_url = $db_image; 
 } elseif (!empty($db_image)) {
-    $base_url = 'images/' . $db_image; 
+    $base_url = 'uploads/products/' . $db_image; 
 } else {
     $base_url = $placeholder_url; 
 }
@@ -41,7 +41,7 @@ $unique_btn_id = 'add-btn-' . $product_id;
                  style="width: 100%; height: 100%; object-fit: scale-down; transition: transform 0.5s ease;"
             >
             <?php if (!$is_available): ?>
-                <div style="height: 30px; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(220, 53, 69, 0.7); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: bold;">
+                <div style="height: 50px; position: absolute; top: 100; left: 0; right: 0; bottom: 0; background-color: rgba(220, 53, 69, 0.7); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; font-weight: bold;">
                     KIFOGYOTT
                 </div>
             <?php endif; ?>
