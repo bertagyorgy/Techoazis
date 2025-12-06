@@ -625,7 +625,7 @@ a:hover {
     width: 100%;
     height: 220px;
     object-fit: scale-down;
-    border-bottom: 3px solid var(--primary-500);
+    /*border-bottom: 3px solid var(--primary-500);*/
 }
 
 .card-body {
