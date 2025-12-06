@@ -1,87 +1,160 @@
 /* ===============================
-  VARIABLES & BASIC SETUP
+  MODERN DESIGN SYSTEM - TECHOÁZIS
 ================================*/
 :root {
-    --primary-color: #2d3357;
-    --secondary-color: coral;
-    --text-color: #333;
-    --background-light: #eae3c9;
-    --white: #fff;
-    --primary-icon: #0d6efd;
-    --success-icon: #198754;
-    --info-icon: #0dcaf0;
-    --warning-icon: #ffc107;
-    --danger-badge: #dc3545;
-    --navbar-height: 63px;
+    /* 🌈 FŐ SZÍNEK - Tech Oázis hangulat */
+    --primary-900: #0a192f;       /* Mély éjfekete-kék */
+    --primary-700: #1a365d;       /* Sötét tech kék */
+    --primary-500: #2d5aa0;       /* Vibráns kék */
+    --primary-300: #64a1f4;       /* Világos akcent kék */
+    --primary-100: #e8f2ff;       /* Nagyon világos kék */
+    
+    /* 🍊 AKCENT SZÍNEK - Oázis élettel */
+    --accent-600: #ff6b35;        /* Narancs - fő akcent */
+    --accent-400: #ff9e6d;        /* Világosabb narancs */
+    --accent-200: #ffd8c2;        /* Pasztell narancs */
+    
+    /* 🌵 SEMLEGES SZÍNEK */
+    --neutral-900: #1a202c;       /* Majdnem fekete */
+    --neutral-700: #4a5568;       /* Sötét szürke */
+    --neutral-500: #a0aec0;       /* Közepes szürke */
+    --neutral-300: #e2e8f0;       /* Világos szürke */
+    --neutral-100: #f7fafc;       /* Nagyon világos szürke */
+    
+    /* ✅ FUNKCIONÁLIS SZÍNEK */
+    --success: #10b981;           /* Zöld */
+    --warning: #f59e0b;           /* Sárga */
+    --danger: #ef4444;            /* Piros */
+    --info: #3b82f6;              /* Info kék */
+    
+    /* 🎨 ALAPVETŐ VÁLTOZÓK */
+    --text-color: var(--neutral-900);
+    --text-light: var(--neutral-700);
+    --background: var(--neutral-100);
+    --surface: white;
+    --border-color: var(--neutral-300);
+    
+    /* 📐 ÁRNYÉKOK */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    
+    /* 🔄 ÁTMENETEK */
+    --transition-fast: 150ms ease;
+    --transition-normal: 300ms ease;
+    --transition-slow: 500ms ease;
+    
+    /* 📱 KÉPERNYŐMÉRETEK */
+    --navbar-height: 70px;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 20px;
+    --border-radius-xl: 30px;
+    
+    /* 🌓 SÖTÉT TÉMA ALAPOK */
+    --dark-bg: #0f172a;
+    --dark-surface: #1e293b;
+    --dark-text: #f1f5f9;
 }
+
+/* 🌓 SÖTÉT TÉMA */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: var(--dark-bg);
+        --surface: var(--dark-surface);
+        --text-color: var(--dark-text);
+        --text-light: #cbd5e1;
+        --border-color: #334155;
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* ===============================
+  RESET & BASE STYLES
+================================*/
 *, *::before, *::after {
-    box-sizing: border-box; /* Ez megoldja a padding miatti méretezési gondokat */
-}
-body {
-    font-family: 'Sans-Serif', sans-serif;
-    padding: 0;
+    box-sizing: border-box;
     margin: 0;
-    width: 100%;
-    color: var(--text-color);
+    padding: 0;
 }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--navbar-height);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color var(--transition-normal);
+}
+
+/* 📱 TYPOGRAPHY SCALE */
+h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; }
+h2 { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 700; color: var(--primary-700); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 600; }
+h5 { font-size: 1.1rem; font-weight: 600; }
+h6 { font-size: 1rem; font-weight: 600; }
+
+p { margin-bottom: 1rem; }
 
 a {
+    color: var(--primary-500);
     text-decoration: none;
-    color: black;
+    transition: color var(--transition-fast);
 }
 
-h2 {
-    color: var(--primary-color);
-}
-h4{
-  font-size: 1.25rem;
+a:hover {
+    color: var(--accent-600);
 }
 
-.text-center {
-    text-align: center;
-}
+.text-center { text-align: center; }
+.text-accent { color: var(--accent-600); }
 
-.section-padding {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-}
-
-.section-title {
-    margin-bottom: 3rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.gap {
-    height: 100px; /* Csökkentettem a méretet, ízlés szerint állítható */
-    width: 100%;
-}
 /* ===============================
-  CSS LOADING
+  LOADING ANIMATION
 ================================*/
-/* Loading screen alap */
 #loader {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #2e2e2e; /* szürke háttér */
+    background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    transition: opacity 0.5s ease; /* szép elhalványodás */
+    transition: opacity var(--transition-normal);
 }
 
-/* Egyszerű animált kör (spinner) */
+.loader-logo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.loader-logo span:first-child { color: var(--accent-600); }
+.loader-logo span:last-child { color: var(--primary-300); }
+
 .spinner {
-    border: 6px solid #ccc;
-    border-top: 6px solid white;
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid var(--accent-600);
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
 }
 
 @keyframes spin {
@@ -89,7 +162,6 @@ h4{
     100% { transform: rotate(360deg); }
 }
 
-/* Ha el akarjuk tüntetni */
 #loader.hidden {
     opacity: 0;
     pointer-events: none;
@@ -100,15 +172,11 @@ h4{
 ================================*/
 .custom-container {
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 20px;
+    padding-left: 20px;
     margin-right: auto;
     margin-left: auto;
-    box-sizing: border-box;
 }
-
-/* Különböző képernyőméretekhez a konténer maximális szélessége */
-@media (min-width: 576px) { .section-title { font-size: 2.5rem; } }
 
 @media (min-width: 576px) { .custom-container { max-width: 540px; } }
 @media (min-width: 768px) { .custom-container { max-width: 720px; } }
@@ -118,458 +186,472 @@ h4{
 .grid-row {
     display: flex;
     flex-wrap: wrap;
-    margin: -1rem; /* Negatív margó a távolságokhoz */
+    margin: -12px;
 }
 
-/* Oszlopok alapbeállítása, padding a távolsághoz */
 [class^="grid-col-"] {
     width: 100%;
-    padding: 1rem;
-    box-sizing: border-box; /* A padding ne növelje a méretet */
+    padding: 12px;
+    box-sizing: border-box;
 }
 
-/* Reszponzív oszlopok - Mobil nézetben minden 100% széles */
 @media (min-width: 768px) {
     .grid-col-3 { width: 25%; }
     .grid-col-4 { width: 33.3333%; }
-}
-
-.justify-center {
-    justify-content: center;
+    .grid-col-6 { width: 50%; }
+    .grid-col-8 { width: 66.6667%; }
 }
 
 /* ===============================
-  NAVBAR
+  MODERN NAVBAR - JAVÍTOTT
 ================================*/
 .main-navbar {
-    background-color: #f8f9fa;
-    padding: 1rem 0;
-    border-bottom: 2px solid #000;
-    font-weight: bold;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 0;
+    border-bottom: 1px solid var(--border-color);
     position: fixed;
     width: 100%;
-    z-index: 99999;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+    height: var(--navbar-height);
 }
 
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .nav-brand img {
-    height: 35px;
-    width: 200px;
-    vertical-align: middle; /* Kép igazítása */
+    height: 40px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-brand:hover img {
+    transform: scale(1.05);
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
+    gap: 2rem;
     margin: 0;
     padding: 0;
-    gap: 1.5rem; /* Menüpontok közötti távolság */
 }
 
 .nav-link {
-    color: #333;
-    transition: color 0.3s ease;
-    padding: 0.5rem 0;
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 8px 0;
+    position: relative;
+    transition: color var(--transition-fast);
 }
 
-.nav-link:hover, .nav-link.active {
-    color: var(--secondary-color);
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-600);
+    transition: width var(--transition-normal);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent-600);
 }
 
 .nav-icons {
     display: flex;
     align-items: center;
-    gap: 1.5rem; /* Ikonok közötti távolság */
+    gap: 1rem;
 }
 
 .icon-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    font-size: 1.25rem; /* fs-5 */
-}
-
-.icon-button:hover {
-    background-color: coral;
-    color: white;
-}
-
-.cart-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-md);
+    background: var(--primary-100);
+    color: var(--primary-700);
+    transition: all var(--transition-fast);
     position: relative;
 }
 
-.cart-badge {
-  position: absolute;
-  top: -5px;
-  right: -10px;
-  background-color: var(--danger-badge);
-  color: white;
-  border-radius: 50%;
-  font-size: 0.75em;
-  width: 22px;              
-  height: 22px;             
-  display: flex;
-  align-items: center;
-  justify-content: center;  /* szám középre igazítva */
-  font-weight: bold;
+.icon-button:hover {
+    background: var(--accent-600);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--danger);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
 
+/* HAMBURGER MENU */
 .nav-toggler {
-  display: none; /* alapból rejtve (csak mobilon lesz aktív) */
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 35px;
-  height: 28px;
-  position: relative;
-  z-index: 1001; /* hogy mindig a menü fölött legyen */
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    z-index: 1001;
 }
 
 .nav-toggler .bar {
-  display: block;
-  width: 100%;
-  height: 3px;
-  background-color: #000;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-  position: absolute;
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--primary-700);
+    border-radius: 2px;
+    transition: all var(--transition-normal);
+    position: absolute;
 }
 
-/* Három vonal elhelyezése */
-.nav-toggler .bar:nth-child(1) {
-  top: 0;
-}
-.nav-toggler .bar:nth-child(2) {
-  top: 50%;
-  transform: translateY(-50%);
-}
-.nav-toggler .bar:nth-child(3) {
-  bottom: 0;
-}
+.nav-toggler .bar:nth-child(1) { top: 6px; }
+.nav-toggler .bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav-toggler .bar:nth-child(3) { bottom: 6px; }
 
-/* Amikor aktív (X-re vált) */
 .nav-toggler.active .bar:nth-child(1) {
-  transform: rotate(45deg);
-  top: 50%;
+    transform: rotate(45deg);
+    top: 50%;
 }
-.nav-toggler.active .bar:nth-child(2) {
-  opacity: 0;
-}
+.nav-toggler.active .bar:nth-child(2) { opacity: 0; }
 .nav-toggler.active .bar:nth-child(3) {
-  transform: rotate(-45deg);
-  bottom: auto;
-  top: 50%;
+    transform: rotate(-45deg);
+    top: 50%;
 }
 
-/* Csak mobilon jelenjen meg */
-@media (max-width: 992px) {
-  .nav-toggler {
-    display: block;
-  }
-}
-
-@media (max-width: 576px) {
-  .nav-toggler {
-    right: 30px;
-  }
-}
-
-/* Mobilnézet a navbárhoz */
-@media (max-width: 992px) {
-  .nav-container {
-    flex-wrap: wrap;
-  }
-
-  .nav-collapse {
-    display: none; /* Alapból rejtett a menü */
-    width: 100%;
-    flex-basis: 100%;
-  }
-
-  .nav-collapse.show {
-    display: block; /* JS-sel adjuk hozzá ezt az osztályt */
-  }
-
-  .nav-menu {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-top: 1rem;
-    gap: 1rem;
-  }
-
-  /* ⚠️ Ne rejtsd el az összes nav-icons-t */
-  /* Csak az asztali ikonsort rejtjük el külön lent */
-}
-
-/* Asztali ikonok (alapértelmezett) */
+/* KÉT NAVIGÁCIÓS IKONCSOPORT KEZELÉSE */
 .desktop-icons {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Mobil ikonok alapból rejtve */
-.mobile-icons {
-  display: none;
-}
-
-/* Mobilnézet (és tablet is ide esik 992px alatt) */
-@media (max-width: 992px) {
-  .nav-container {
-    flex-wrap: wrap;
-  }
-
-  .desktop-icons {
-    display: none; /* ne csússzon fel */
-  }
-
-  .nav-collapse {
-    display: none;
-    width: 100%;
-    flex-basis: 100%;
-  }
-
-  .nav-collapse.show {
-    display: block;
-  }
-
-  .nav-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-top: 1rem;
-    gap: 1rem;
-  }
-
-  .mobile-icons {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .mobile-icons .icon-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-  }
-}
-
-
-/* ===============================
-  HERO SECTION
-================================*/
-.hero-section {
-    width: 100%;
-    height: 100vh;
-    background: url(../images/desert_evening.jpeg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
     display: flex;
     align-items: center;
-    padding: 3rem 1rem;
-    box-sizing: border-box;
+    gap: 1rem;
 }
 
-.hero-container {
-    text-align: center;
+.mobile-icons {
+    display: none;
 }
 
-@media (min-width: 768px) {
-    .hero-container {
-        text-align: left;
+/* MOBILE NAV - JAVÍTOTT */
+@media (max-width: 992px) {
+    .nav-toggler { 
+        display: block; 
+    }
+    
+    .nav-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--surface);
+        padding: 1rem;
+        box-shadow: var(--shadow-lg);
+        display: none;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .nav-collapse.show {
+        display: block;
+        animation: slideDown 0.3s ease;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .nav-link {
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+    }
+    
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    .desktop-icons {
+        display: none !important;
+    }
+    
+    .mobile-icons {
+        display: flex !important;
+        justify-content: center;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .nav-icons.mobile-icons {
+        margin-top: 0;
     }
 }
 
-.hero-text {
-    max-width: 800px;
+/* ===============================
+  HERO SECTION - MODERN
+================================*/
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--navbar-height);
+    background: url('../images/desert_evening.jpeg') left/cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
+.hero-container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .hero-text h1 {
-    font-size: clamp(2rem, 5vw, 4.5rem);
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--white);
-    /*opacity: 0.7;*/
+    color: white;
+    margin-bottom: 1.5rem;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    background: linear-gradient(45deg, white, var(--primary-300));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .hero-text p {
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
-    margin-top: 1rem;
-    color: var(--white);
-    /*opacity: 0.7;*/
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    margin-bottom: 2rem;
+    line-height: 1.6;
 }
-
-.feature-card-link {
-  display: block;
-  color: inherit; /* ne legyen kék link */
-  text-decoration: none;
-}
-
-.feature-card-link:hover .feature-card {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
 
 /* ===============================
-  GOMBOK
+  BUTTON SYSTEM
 ================================*/
-.shopnow {
-    margin-top: 2rem;
-    padding: 14px 36px;
-    color: var(--white);
-    background-color: var(--secondary-color);
-    border-radius: 50px;
-    font-size: 1.4rem;
-    border: none;
-    transition: all 0.3s ease;
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 32px;
+    border-radius: var(--border-radius-xl);
+    font-weight: 600;
     text-decoration: none;
+    transition: all var(--transition-normal);
+    border: none;
     cursor: pointer;
-}
-.shopnow:hover {
-    background-color: #ffa787;
-    transform: translateY(-5px);
-}
-
-.shopnow-small {
-    display: inline-block;
-    margin-top: 1rem;
-    padding: 10px 32px;
-    color: var(--white);
-    background-color: var(--secondary-color);
-    border-radius: 50px;
-    font-size: 1.2rem;
-    border: none;
-    text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
 }
 
-.shopnow-small:hover {
-    background-color: #ffa787;
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
 }
 
-@media (max-width: 768px) {
-    .hero-section {
-        padding: 4rem 1.5rem;
-    }
-    .hero-text h1 {
-        font-size: clamp(1.8rem, 6vw, 3rem);
-    }
-    .shopnow {
-        font-size: 1.1rem;
-        padding: 12px 28px;
-    }
+.btn:hover::before {
+    left: 100%;
 }
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(45deg, var(--accent-400), var(--accent-600));
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--primary-700);
+    border: 2px solid var(--primary-300);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-100);
+    border-color: var(--accent-600);
+    color: var(--accent-600);
+}
+
+.btn-outline {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+}
+
+
 /* ===============================
-  FEATURE & WHY US SECTIONS
+  FEATURE CARDS - MODERN
 ================================*/
 .feature-card {
-    padding: 1.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    border-radius: 20px;
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
     height: 100%;
-    background: var(--white);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    box-sizing: border-box;
+    transition: all var(--transition-normal);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-500), var(--accent-600));
+    transform: scaleX(0);
+    transition: transform var(--transition-normal);
+    transform-origin: left;
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
 }
 
 .feature-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-300);
 }
 
 .feature-card i {
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-500);
+    transition: all var(--transition-normal);
 }
 
 .feature-card:hover i {
+    color: var(--accent-600);
     transform: scale(1.1);
 }
 
-.icon-primary { color: var(--primary-icon); }
-.icon-success { color: var(--success-icon); }
-.icon-info { color: var(--info-icon); }
-.icon-warning { color: var(--warning-icon); }
-
-
-.whyus-icon i {
-    font-size: 3rem;
-    color: #198754;
-    margin-bottom: 10px;
-    transition: transform 0.3s ease;
-}
-
-.whyus-icon:hover i {
-    transform: scale(1.2);
-}
-
-.whyus-icon h5 {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-.whyus-icon p {
-    font-size: 0.95rem;
-    color: #555;
-}
+.icon-primary { color: var(--primary-500); }
+.icon-success { color: var(--success); }
+.icon-info { color: var(--info); }
+.icon-warning { color: var(--warning); }
 
 /* ===============================
   CUSTOM CARD (Latest content)
 ================================*/
 .custom-card {
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    border: 1px solid var(--border-color);
     height: 100%;
-    background-color: var(--white);
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box;
 }
+
 .custom-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-300);
 }
 
 .card-img-top {
     width: 100%;
     height: 220px;
     object-fit: scale-down;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
+    border-bottom: 3px solid var(--primary-500);
 }
 
 .card-body {
-    flex: 1 1 auto;
-    padding: 1.25rem;
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-title {
-    margin-bottom: 0.5rem;
     font-size: 1.25rem;
-    font-weight: bold;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--primary-700);
 }
 
 .card-text {
-    margin-top: 0;
+    color: var(--text-light);
     margin-bottom: 1rem;
+    flex: 1;
+}
+
+.card-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--neutral-100);
 }
 
 /* ===============================
@@ -577,8 +659,8 @@ h4{
 ================================*/
 .reveal {
     opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.6s ease;
+    transform: translateY(60px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .reveal.active {
@@ -587,690 +669,601 @@ h4{
 }
 
 /* ===============================
-  FOOTER
+  MODERN FOOTER
 ================================*/
 .footer {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
+    color: white;
+    padding: 4rem 0 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-600), var(--primary-300));
 }
 
 .footer-title {
-    font-weight: bold;
-    text-transform: uppercase;
-}
-.footer-description {
-    font-size: 0.875rem; /* small */
-    margin-bottom: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
 }
 
-.footer-subtitle {
-    font-weight: bold;
-    margin-bottom: 1rem;
+.footer-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
 }
 
 .footer-links {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
+
 .footer-links li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
+
 .footer-link {
-    color: #f5f5f5;
-    text-decoration: none;
-    transition: color 0.3s ease;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
+
 .footer-link:hover {
-    color: var(--secondary-color);
+    color: var(--accent-600);
+    transform: translateX(5px);
+}
+
+.footer-link i {
+    font-size: 0.8rem;
 }
 
 .social-icons-wrapper {
     display: flex;
-    gap: 0.75rem;
+    gap: 1rem;
 }
+
 .social-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--white);
-    transition: all 0.3s ease;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-md);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all var(--transition-normal);
 }
+
 .social-icon:hover {
-    background-color: var(--secondary-color);
-    color: black;
-    transform: translateY(-4px);
+    background: var(--accent-600);
+    color: white;
+    transform: translateY(-3px) rotate(5deg);
+    box-shadow: var(--shadow-md);
 }
 
 .footer-divider {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-copy {
     text-align: center;
-    font-size: 0.875rem; /* small */
-}
-
-/* Footer reszponzivitás */
-@media (max-width: 768px) {
-    .grid-col-4 {
-        text-align: center;
-    }
-    .footer-nav, .footer-social {
-        margin-top: 2rem;
-    }
-    .social-icons-wrapper {
-        justify-content: center;
-    }
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
 }
 
 /* ===============================
-  LOGIN PAGE STYLES
+  LOGIN PAGE - MODERN
 ================================*/
-.background{
-    width: 100%;
-    height: 100vh;
-    /*background-color: #e2e9f7;*/
-    background: url(../images/desert_evening.jpeg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-}
-.login-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 4rem 1rem;
-  box-sizing: border-box;
+.background {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
+    padding: var(--navbar-height) 20px;
 }
 
 .login-box {
-  background-color: var(--white);
-  opacity: 0.7;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
-  padding: 2rem;
-  max-width: 450px;
-  width: 100%;
-  margin-top: 75px;
-}
-
-.login-box h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: var(--primary-color);
-}
-
-.login-form-group {
-  margin-bottom: 1rem;
-}
-
-.login-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
-}
-
-.login-input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  box-sizing: border-box;
-}
-
-.login-input:focus {
-  outline: none;
-  border-color: var(--secondary-color);
-}
-
-.login-button {
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  background-color: var(--secondary-color);
-  color: var(--white);
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.login-button:hover {
-  background-color: #ffa787;
-}
-
-.login-alert {
-  background-color: #f8d7da;
-  color: #842029;
-  border: 1px solid #842029;
-  padding: 0.75rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-.login-success {
-  background-color: #e6f9ec;
-  color: #1e8f42;
-  border: 1px solid #1e8f42;
-  padding: 0.75rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.login-footer {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.login-footer a {
-  color: var(--secondary-color);
-  font-weight: 600;
-}
-/* ===============================
-  PASSWORD CHECKER
-================================*/
-.password-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-wrapper .login-input {
+    background: rgba(var(--surface), 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius-lg);
+    padding: 2.5rem;
+    max-width: 450px;
     width: 100%;
-    padding-right: 40px; /* hely az ikon számára */
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    animation: slideUp 0.5s ease;
 }
 
-.password-wrapper .toggle-password {
-    position: absolute;
-    right: 10px;
-    color: #555;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: color 0.3s;
-}
-
-.password-wrapper .toggle-password:hover {
-    color: #000;
-}
-/* ===============================
-  PROFILE & PROFILE-EDIT ALAP (MAGASSÁG)
-================================*/
-.profile-section,
-.profile-edit-section {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background: var(--background-light);
-    width: 100%;
-    
-    /* Kitölti a teljes képernyőmagasságot */
-    min-height: 100vh;
-    
-    /* Alapértelmezett padding */
-    padding: calc(var(--navbar-height) + 1.75rem) 1rem 3.5rem;
-}
-
-/* Különbség az edit oldalon */
-.profile-edit-section {
-    padding: calc(var(--navbar-height) + 2.25rem) 1rem 3.5rem;
-}
-
-/* Rögzíti a magasságot nagy képernyőn (960px felett) és a szekciót teszi görgethetővé */
-@media (min-width: 961px) {
-    .profile-section,
-    .profile-edit-section {
-        /*max-height: auto;*/
-        overflow-y: visible;
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-700);
+    font-size: 2rem;
+}
+
+.login-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.login-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.login-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+    background: var(--surface);
+    color: var(--text-color);
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: var(--accent-600);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.875rem;
+    background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.login-alert {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.login-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border: 1px solid var(--success);
+    padding: 1rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--neutral-500);
+    cursor: pointer;
+    padding: 5px;
+}
 
 /* ===============================
-  PROFILE (NÉZET)
+  PROFILE PAGES - MODERN
 ================================*/
-.profile-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    background: var(--white);
-    border-radius: 12px;
-    padding: 28px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    max-width: 960px;
-    width: 100%;
-    z-index: 2;
+.profile-section,
+.profile-edit-section {
+    min-height: calc(100vh - var(--navbar-height));
+    padding: calc(var(--navbar-height) + 2rem) 20px 3rem;
+    background: linear-gradient(135deg, var(--primary-100), var(--background));
+}
+
+.profile-container,
+.profile-edit-container {
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    padding: 2.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 1px solid var(--border-color);
 }
 
 .profile-left {
-    flex: 0 0 260px;
     text-align: center;
-    border-right: 1px solid #f0f0f0;
-    padding-right: 20px;
-}
-
-.profile-right {
-    flex: 1 1 420px;
-    padding-left: 10px;
+    padding-right: 2rem;
+    border-right: 1px solid var(--border-color);
 }
 
 .profile-image {
-    width: 160px;
-    height: 160px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--primary-color);
-    display: inline-block;
-}
-
-.profile-left h2 {
-    margin-top: 15px;
-    font-size: 1.5rem;
+    border: 5px solid var(--primary-500);
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-lg);
 }
 
 .profile-role {
-    color: #666;
-    font-size: 0.95rem;
-    margin-bottom: 20px;
-}
-
-.profile-btn {
+    color: var(--accent-600);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding: 4px 12px;
+    background: var(--accent-200);
+    border-radius: 20px;
     display: inline-block;
-    width: 100%;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: 0.3s ease;
-}
-
-.profile-btn i {
-    margin-right: 8px;
-}
-
-.profile-change-image {
-    background: #f0f0f0;
-    color: #333;
-}
-.profile-change-image:hover {
-    background: #dcdcdc;
-}
-
-.profile-edit {
-    background: var(--accent-color, #0a6cf1);
-    color: white;
-}
-.profile-edit:hover {
-    background: #084db8;
 }
 
 .profile-info-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 25px;
-    margin-top: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.info-item {
+    padding: 1rem;
+    background: var(--neutral-100);
+    border-radius: var(--border-radius-md);
+    border-left: 4px solid var(--primary-500);
+}
+
+.info-label {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-weight: 600;
+    color: var(--text-color);
 }
 
 .profile-actions {
-    margin-top: 30px;
     display: flex;
-    gap: 15px;
+    gap: 1rem;
+    margin-top: 2rem;
     flex-wrap: wrap;
 }
 
-.profile-btn.logout {
-    background: #ffa534;
-    color: #fff;
-}
-.profile-btn.logout:hover {
-    background: #e28c1f;
-}
-
-.profile-btn.delete {
-    background: #dc3545;
-    color: #fff;
-}
-.profile-btn.delete:hover {
-    background: #b8212f;
-}
-
-/* Profil (Nézet) - Mobilbarát megjelenés (JAVÍTVA) */
-@media (max-width: 768px) {
-    .profile-section { 
-        padding-top: calc(var(--navbar-height) + 1rem) !important; 
-        /* Mobilon ne legyen rögzítve a magasság */
-        max-height: none; 
-        overflow-y: visible;
-    }
-
-    .profile-container {
-        padding: 18px;
-    }
-
-    .profile-left, .profile-right { 
-        width: 100%; 
-        flex: 1 1 100%; 
-    }
-
-    /* --- JAVÍTÁS ITT --- */
-    .profile-left {
-        border-right: none;  /* Szegély eltávolítása mobilon */
-        padding-right: 0;    /* Padding eltávolítása */
-        margin-bottom: 16px; /* Kis térköz a két rész között */
-    }
-    .profile-right {
-        padding-left: 0; /* Padding eltávolítása */
-    }
-    /* --- JAVÍTÁS VÉGE --- */
-
-    .profile-info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .profile-image {
-        width: 120px;
-        height: 120px;
-    }
-}
-
-
 /* ===============================
-  PROFILE EDIT (javítva)
+  FORUM - MODERN DESIGN
 ================================*/
-/* A .profile-edit-section már definiálva van fent (magasság) */
-
-.profile-edit-container {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 36px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    max-width: 760px;
-    width: 100%;
-    min-height: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Megnövelt térköz a form-ok és elemek között */
-}
-
-/* --- JAVÍTÁS ITT (FORM TÉRKÖZÖK) --- */
-.profile-edit-container form { 
-    display: flex;
-    flex-direction: column;
-    gap: 12px; /* Térköz a label, input és gomb között */
-    width: 100%;
-}
-
-.profile-edit-container label {
-    font-weight: 500;
-    margin-bottom: -4px; /* Közelebb húzza az inputhoz */
-}
-/* --- JAVÍTÁS VÉGE --- */
-
-
-.profile-edit-container input[type="text"],
-.profile-edit-container input[type="file"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-}
-
-.profile-edit-container button {
-    background: var(--accent-color, #0a6cf1);
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-weight: 500;
-    width: auto; /* Alapból ne legyen 100% széles */
-    align-self: flex-start; /* Igazodjon balra */
-}
-.profile-edit-container button:hover {
-    background: #084db8;
-}
-
-.profile-edit-container .delete-btn {
-    background: #dc3545;
-}
-.profile-edit-container .delete-btn:hover {
-    background: #b8212f;
-}
-
-/* --- JAVÍTÁS (VISSZA GOMB STÍLUSA) --- */
-/* Az inline 'style' helyett */
-.profile-edit-container .btn-back {
-    margin-top: 12px;
-    background: #6c757d;
-    align-self: flex-start;
-}
-.profile-edit-container .btn-back:hover {
-    background: #5a6268;
-}
-
-
-/* Profil (Edit) - Mobilbarát megjelenés (JAVÍTVA) */
-@media (max-width: 768px) {
-    .profile-edit-section { 
-        padding-top: calc(var(--navbar-height) + 1rem) !important; 
-        /* Mobilon ne legyen rögzítve a magasság */
-        max-height: none; 
-        overflow-y: visible;
-    }
-    .profile-edit-container { 
-        padding: 18px; 
-        min-height: auto; 
-        gap: 16px;
-    }
-    
-    /* --- JAVÍTÁS ITT (MOBIL GOMBOK) --- */
-    /* Mobilon minden gomb legyen 100% széles és középen */
-    .profile-edit-container button { 
-        width: 100%; 
-        align-self: center;
-    }
-
-    .profile-edit-container input[type="file"] {
-        width: 100%; /* Vagy amekkorára szeretnéd állítani */
-    }
-}
-
-/* =============================
-   FORUM – 3 OSZLOPOS GRID
-============================= */
 .forum-wrapper {
-    position: relative;                 /* fontos! */
-    padding: calc(var(--navbar-height) + 20px) 20px 20px;
+    min-height: calc(100vh - var(--navbar-height));
+    padding: calc(var(--navbar-height) + 2rem) 20px 2rem;
+    background: var(--background);
     display: grid;
-    grid-template-columns: 240px 1fr 280px;
-    gap: 30px;
-    background: var(--background-light); /* hátteret megkapja */
-    min-height: 100vh;                  /* ne vágja le a tartalmat */
-    box-sizing: border-box;
+    grid-template-columns: 250px 1fr 300px;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
+.forum-left,
+.forum-right {
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    height: fit-content;
+    position: sticky;
+    top: calc(var(--navbar-height) + 2rem);
+}
 
-/* =============================
-      BAL OLDALI SIDEBAR
-============================= */
-.forum-left {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    height: max-content;
+.forum-left h3,
+.forum-right h3 {
+    color: var(--primary-700);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--accent-200);
 }
 
 .group-search {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 14px;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1.5rem;
+    transition: all var(--transition-fast);
+    background: var(--surface);
+    color: var(--text-color);
+}
+
+.group-search:focus {
+    outline: none;
+    border-color: var(--accent-600);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .group-list {
     list-style: none;
-    padding: 0;
 }
 
 .group-list li {
-    padding: 8px 5px;
+    margin-bottom: 0.75rem;
 }
 
-.group-list li a {
-    color: #333;
-    font-weight: 500;
+.group-list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem;
+    border-radius: var(--border-radius-md);
+    color: var(--text-color);
+    transition: all var(--transition-fast);
 }
 
-.group-list li a:hover {
-    color: var(--secondary-color);
+.group-list a:hover,
+.group-list a.active {
+    background: var(--primary-100);
+    color: var(--primary-700);
+    transform: translateX(5px);
 }
 
-/* =============================
-         KÖZÉPSŐ POSZTOK
-============================= */
+.group-list i {
+    color: var(--primary-500);
+    width: 20px;
+}
+
+/* ===============================
+  POST CARDS - MODERN
+================================*/
 .post-card {
-    background: #fff;
-    margin-bottom: 25px;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-normal);
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
 .post-header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    font-size: 0.9rem;
-    color: #666;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-500);
+}
+
+.author-info h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.author-info span {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+.post-meta {
+    display: flex;
+    gap: 1rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.post-meta i {
+    margin-right: 4px;
 }
 
 .post-title {
-    margin: 10px 0 0;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    color: var(--primary-700);
 }
 
 .post-content {
-    margin-top: 10px;
-    white-space: pre-line;
+    line-height: 1.7;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
 }
 
-.show-comments-btn {
-    margin-top: 12px;
-    background: #f5f5f5;
-    padding: 8px 14px;
-    border-radius: 8px;
-    border: none;
+.post-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.post-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-normal);
     cursor: pointer;
 }
 
-.comment-form {
-    margin-top: 12px;
+.post-image:hover {
+    transform: scale(1.05);
+}
+
+/* ===============================
+  CREATE POST - MODERN
+================================*/
+.create-post-bar {
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--border-color);
+}
+
+.create-post-bar form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 1.25rem;
 }
 
-.comment-form textarea {
+.create-post-bar input[type="text"],
+.create-post-bar textarea {
     width: 100%;
-    min-height: 80px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 10px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    background: var(--surface);
+    color: var(--text-color);
+    transition: all var(--transition-fast);
 }
 
-.comment-form button {
-    align-self: flex-end;
-    background: #309230;
-    padding: 8px 20px;
-    color: #fff;
-    border-radius: 6px;
+.create-post-bar textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.create-post-bar input:focus,
+.create-post-bar textarea:focus {
+    outline: none;
+    border-color: var(--accent-600);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.file-inputs {
+    position: relative;
+}
+
+.file-inputs input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    background: var(--surface);
+}
+
+#imagePreview {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.preview-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--primary-300);
+}
+
+.remove-image {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--danger);
+    color: white;
     border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
 }
 
-.login-warning {
-    margin-top: 8px;
-    color: #e47a44;
-    font-size: 0.9rem;
+.remove-image:hover {
+    background: #b91c1c;
+    transform: scale(1.1);
 }
 
-/* =============================
-       JOBB OLDALI SIDEBAR
-============================= */
-.forum-right {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    height: max-content;
-}
-
-.latest-post-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.latest-post-meta {
-    font-size: 0.85rem;
-    color: #777;
-}
-
-/* =============================
-        RESPONSIVE LAYOUT FÓRUMHOZ
-============================= */
-@media (max-width: 992px) {
-    .forum-wrapper {
-        grid-template-columns: 1fr;
-    }
-    .forum-left, .forum-right {
-        display: none;
-    }
-}
-
-/* =============================
-          KOMMENTEK
-============================= */
+/* ===============================
+  COMMENTS - MODERN
+================================*/
 .comments-container {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid #eee;
-    display: none;
-}
-.comments-container.open {
-    display: block;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
 }
 
 .comment-item {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid #f2f2f2;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--neutral-100);
+    border-radius: var(--border-radius-md);
+    border-left: 4px solid var(--primary-300);
 }
 
 .comment-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 3px solid var(--primary-color);
     object-fit: cover;
+    border: 2px solid var(--primary-500);
 }
 
 .comment-body {
@@ -1278,210 +1271,345 @@ h4{
 }
 
 .comment-meta {
-    font-size: 0.85rem;
-    color: #777;
-}
-
-.comment-meta span {
-    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-light);
 }
 
 .comment-body p {
-    margin: 5px 0 0;
-    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
 }
 
-/* ================================
-   CSOPORT NÉZET WRAPPER
-================================ */
+.comment-form {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--neutral-100);
+    border-radius: var(--border-radius-md);
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1rem;
+    background: var(--surface);
+    color: var(--text-color);
+    resize: vertical;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-600);
+}
+
+/* ===============================
+  GROUP VIEW - MODERN
+================================*/
 .group-wrapper {
-    padding: calc(var(--navbar-height) + 20px) 20px;
-    background: var(--background-light);
-    min-height: 100vh;
+    min-height: calc(100vh - var(--navbar-height));
+    padding: calc(var(--navbar-height) + 2rem) 20px 2rem;
+    background: var(--background);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* ================================
-   CSOPORT HEADER
-================================ */
 .group-header {
-    background: #333;
-    background: linear-gradient(225deg, rgba(51, 51, 51, 1) 0%, rgba(255, 127, 80, 1) 50%, rgba(255, 255, 255, 1) 100%);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    margin-bottom: 25px;
+    background: linear-gradient(135deg, var(--primary-700), var(--accent-600));
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 2rem;
+    color: white;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 2rem;
+    box-shadow: var(--shadow-lg);
 }
 
 .group-banner {
-    width: 93px;
-    height: 90px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    border: 3px solid var(--primary-color);
-    background: #fff;
-    
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: var(--shadow-md);
 }
 
 .group-header-info h1 {
-    margin: 0;
-    font-size: 1.8rem;
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
 }
 
 .group-meta {
-    color: #666;
-    font-size: 0.95rem;
+    display: flex;
+    gap: 2rem;
+    opacity: 0.9;
 }
 
-/* ================================
-   POSZTOK LISTÁJA
-================================ */
-.group-posts .post-card {
-    margin-bottom: 25px;
+.group-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.no-posts {
-    padding: 20px;
-    background: #fff;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+/* ===============================
+  FILTER SYSTEM
+================================*/
+.filter-section {
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
 }
 
-/* Részlegesen mobilbarát */
-@media (max-width: 768px) {
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-200);
+}
+
+.filter-header h3 {
+    margin: 0;
+    color: var(--primary-700);
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    background: var(--surface);
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--accent-600);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.filter-tag {
+    padding: 0.375rem 0.75rem;
+    background: var(--primary-100);
+    border: 1px solid var(--primary-300);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    color: var(--primary-700);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-tag:hover,
+.filter-tag.active {
+    background: var(--accent-600);
+    color: white;
+    border-color: var(--accent-600);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.filter-actions .btn {
+    flex: 1;
+}
+
+/* ===============================
+  RESPONSIVE ADJUSTMENTS
+================================*/
+@media (max-width: 1200px) {
+    .forum-wrapper {
+        grid-template-columns: 1fr 300px;
+    }
+    .forum-left {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .forum-wrapper {
+        grid-template-columns: 1fr;
+        padding: calc(var(--navbar-height) + 1rem) 15px 1rem;
+    }
+    
+    .forum-right {
+        position: static;
+    }
+    
     .group-header {
         flex-direction: column;
         text-align: center;
+        gap: 1rem;
     }
-
-    .group-banner {
-        width: 120px;
-        height: 120px;
+    
+    .group-meta {
+        justify-content: center;
+        flex-wrap: wrap;
     }
 }
 
-.post-images {
-    margin-top: 15px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-}
-
-.post-image {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: 2px solid #e8e8e8;
-    background: #f9f9f9;
-}
-
-/* Mobilon kisebb képméret */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    .profile-container,
+    .profile-edit-container {
+        padding: 1.5rem;
+    }
+    
+    .profile-left {
+        padding-right: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .post-images {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
     .post-image {
-        height: 140px;
+        height: 150px;
     }
 }
-/* ================================
-   CREATE POST
-================================ */
-.create-post-bar {
-    width: 100%;
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+@media (max-width: 576px) {
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+    
+    .feature-card,
+    .custom-card {
+        padding: 1.5rem;
+    }
+    
+    .btn {
+        padding: 10px 24px;
+        font-size: 0.9rem;
+    }
+    
+    .nav-menu {
+        gap: 1rem;
+    }
+    
+    .footer {
+        padding: 3rem 0 1.5rem;
+    }
 }
 
-.create-post-bar form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+/* ===============================
+  ANIMATIONS & MICRO-INTERACTIONS
+================================*/
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
-.create-post-bar input[type="text"],
-.create-post-bar textarea {
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
+.float {
+    animation: float 3s ease-in-out infinite;
 }
 
-.create-post-bar textarea {
-    min-height: 120px;
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.create-post-btn {
-    background: #0f7bf4;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 200px;
-    transition: 0.2s ease;
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
-.create-post-btn:hover {
-    background: #0c63c4;
+/* ===============================
+  UTILITY CLASSES
+================================*/
+.section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
 }
 
-
-.file-inputs label {
-    font-weight: 500;
+@media (min-width: 768px) {
+    .section-padding {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
 }
 
-#imagePreview {
-    display: flex;
-    gap: 12px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
-
-.preview-item {
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
     position: relative;
+    padding-bottom: 1rem;
 }
 
-.preview-thumb {
-    width: 90px;
-    height: 90px;
-    border-radius: 10px;
-    object-fit: cover;
-    border: 2px solid var(--accent-color);
-    box-shadow: 0 0 6px rgba(0,0,0,0.15);
-}
-
-.remove-image {
+.section-title::after {
+    content: '';
     position: absolute;
-    top: -6px;
-    right: -6px;
-    height: 25px;
-    width: 25px;
-    padding-inline: 5px;
-    border-radius: 50%;
-    background: #dc3545;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 14px;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-600), var(--primary-500));
+    border-radius: 2px;
 }
 
-.remove-image:hover {
-    background: #bb2d3b;
+.gap {
+    height: 60px;
 }
 
-.remove-image i {
-    pointer-events: none;
+@media (min-width: 768px) {
+    .gap {
+        height: 100px;
+    }
+}
+@media (max-width: 768px) {
+    .hero-section {
+        background-attachment: scroll;
+        background: url('../images/desert_evening.jpeg') left/cover;
+    }
+}
+/* Glass effect */
+.glass {
+    background: rgba(var(--surface), 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-
-
-
-
-
-
-
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(45deg, var(--accent-600), var(--primary-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

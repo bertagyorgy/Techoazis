@@ -11,9 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
     <title>Techoazis | Adminpanel</title>
-    <link rel="stylesheet" href="../static/users.css">
     <link rel="stylesheet" href="../static/index.css">
-    <link rel="stylesheet" href="../static/admin.css">
+    <link rel="stylesheet" href="../static/admin-modern.css">
     <script src="../static/index.js" defer></script>
 </head>
 <body>
