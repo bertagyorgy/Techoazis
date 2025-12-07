@@ -92,10 +92,31 @@ $cart_badge = (string)$cart_count_unique;
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const themeButtons = document.querySelectorAll(".theme-toggle");
+    const htmlElement = document.documentElement;
+    const storageKey = 'theme'; // Kulcs, amit a localStorage-ban használunk
 
+    // --- 1. Téma Betöltése a localStorage-ból ---
+    const savedTheme = localStorage.getItem(storageKey);
+
+    if (savedTheme === 'dark') {
+        // Ha el van mentve a 'dark' téma, hozzáadjuk az 'dark' osztályt
+        htmlElement.classList.add('dark');
+    } else if (savedTheme === 'light' && htmlElement.classList.contains('dark')) {
+        // Ha el van mentve a 'light' téma (de az alapértelmezett beállítás 'dark' lenne), eltávolítjuk az 'dark' osztályt
+        htmlElement.classList.remove('dark');
+    }
+
+    // --- 2. Gombok Eseménykezelése és Téma Mentése ---
     themeButtons.forEach(btn => {
         btn.addEventListener("click", () => {
-            document.documentElement.classList.toggle("dark");
+            // Váltja a 'dark' osztályt
+            htmlElement.classList.toggle("dark");
+
+            // A jelenlegi állapot meghatározása
+            const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+
+            // Az új téma elmentése a localStorage-ba
+            localStorage.setItem(storageKey, currentTheme);
         });
     });
 });
