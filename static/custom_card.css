@@ -36,7 +36,6 @@
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 0.75rem;
-    color: var(--primary-700);
 }
 
 .card-text {
@@ -48,7 +47,7 @@
 .card-footer {
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--border-color);
-    background: var(--neutral-100);
+    background: var(--neutral-700);
 }
 
 /* ===============================
