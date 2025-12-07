@@ -1,0 +1,94 @@
+/* ===============================
+  MODERN FOOTER
+================================*/
+.footer {
+    background: linear-gradient(135deg, var(--primary-900), var(--primary-700));
+    color: white;
+    padding: 4rem 0 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-600), var(--primary-300));
+}
+
+.footer-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.footer-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-link {
+    color: rgba(255, 255, 255, 0.8);
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-link:hover {
+    color: var(--accent-600);
+    transform: translateX(5px);
+}
+
+.footer-link i {
+    font-size: 0.8rem;
+}
+
+.social-icons-wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-md);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all var(--transition-normal);
+}
+
+.social-icon:hover {
+    background: var(--accent-600);
+    color: white;
+    transform: translateY(-3px) rotate(5deg);
+    box-shadow: var(--shadow-md);
+}
+
+.footer-divider {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-copy {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}

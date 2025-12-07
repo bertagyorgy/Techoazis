@@ -52,6 +52,9 @@ $cart_badge = (string)$cart_count_unique;
                 <?php else: ?>
                     <a href="<?= $root ?>views/login.php" class="icon-button" title='Bejelentkezés'><i class="fa-solid fa-user"></i></a>
                 <?php endif; ?>
+                <button class="icon-button theme-toggle" title="Téma váltás">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
             </div>
         </div>
 
@@ -67,6 +70,9 @@ $cart_badge = (string)$cart_count_unique;
             <?php else: ?>
                 <a href='<?= $root ?>views/login.php' class='icon-button' title='Bejelentkezés'><i class='fa-solid fa-user'></i></a>
             <?php endif; ?>
+            <button class="icon-button theme-toggle" title="Téma váltás">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </button>
         </div>
     </div>
     <script>
@@ -82,3 +88,15 @@ $cart_badge = (string)$cart_count_unique;
         });
     </script>
 </nav>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const themeButtons = document.querySelectorAll(".theme-toggle");
+
+    themeButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.documentElement.classList.toggle("dark");
+        });
+    });
+});
+</script>

@@ -1,0 +1,63 @@
+/* ===============================
+  UTILITY CLASSES
+================================*/
+.section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+    .section-padding {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-600), var(--primary-500));
+    border-radius: 2px;
+}
+
+.gap {
+    height: 60px;
+}
+
+@media (min-width: 768px) {
+    .gap {
+        height: 100px;
+    }
+}
+@media (max-width: 768px) {
+    .hero-section {
+        background-attachment: scroll;
+        background: url('../images/desert_evening.jpeg') left/cover;
+    }
+}
+/* Glass effect */
+.glass {
+    background: rgba(var(--surface), 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(45deg, var(--accent-600), var(--primary-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

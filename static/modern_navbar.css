@@ -1,0 +1,231 @@
+/* ===============================
+  MODERN NAVBAR - JAVÍTOTT
+================================*/
+.main-navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 0;
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+    height: var(--navbar-height);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-brand img {
+    height: 40px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-brand:hover img {
+    transform: scale(1.05);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 8px 0;
+    position: relative;
+    transition: color var(--transition-fast);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-600);
+    transition: width var(--transition-normal);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent-600);
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--border-radius-md);
+    background: var(--primary-100);
+    color: var(--primary-700);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.icon-button:hover {
+    background: var(--accent-600);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--danger);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* HAMBURGER MENU */
+.nav-toggler {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    z-index: 1001;
+}
+
+.nav-toggler .bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--primary-700);
+    border-radius: 2px;
+    transition: all var(--transition-normal);
+    position: absolute;
+}
+
+.nav-toggler .bar:nth-child(1) { top: 6px; }
+.nav-toggler .bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav-toggler .bar:nth-child(3) { bottom: 6px; }
+
+.nav-toggler.active .bar:nth-child(1) {
+    transform: rotate(45deg);
+    top: 50%;
+}
+.nav-toggler.active .bar:nth-child(2) { opacity: 0; }
+.nav-toggler.active .bar:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 50%;
+}
+
+/* KÉT NAVIGÁCIÓS IKONCSOPORT KEZELÉSE */
+.desktop-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mobile-icons {
+    display: none;
+}
+
+/* MOBILE NAV - JAVÍTOTT */
+@media (max-width: 992px) {
+    .nav-toggler { 
+        display: block; 
+    }
+    
+    .nav-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--surface);
+        padding: 1rem;
+        box-shadow: var(--shadow-lg);
+        display: none;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .nav-collapse.show {
+        display: block;
+        animation: slideDown 0.3s ease;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .nav-link {
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+    }
+    
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    .desktop-icons {
+        display: none !important;
+    }
+    
+    .mobile-icons {
+        display: flex !important;
+        justify-content: center;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .nav-icons.mobile-icons {
+        margin-top: 0;
+    }
+}
+

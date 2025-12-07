@@ -1,0 +1,67 @@
+/* ===============================
+  COMMENTS - MODERN
+================================*/
+.comments-container {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.comment-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--neutral-100);
+    border-radius: var(--border-radius-md);
+    border-left: 4px solid var(--primary-300);
+}
+
+.comment-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-500);
+}
+
+.comment-body {
+    flex: 1;
+}
+
+.comment-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+.comment-body p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.comment-form {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--neutral-100);
+    border-radius: var(--border-radius-md);
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 1rem;
+    background: var(--surface);
+    color: var(--text-color);
+    resize: vertical;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-600);
+}

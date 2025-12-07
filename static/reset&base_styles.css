@@ -1,0 +1,47 @@
+/* ===============================
+  RESET & BASE STYLES
+================================*/
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--navbar-height);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color var(--transition-normal);
+}
+
+/* 📱 TYPOGRAPHY SCALE */
+h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; }
+h2 { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 700; color: var(--primary-700); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 600; }
+h5 { font-size: 1.1rem; font-weight: 600; }
+h6 { font-size: 1rem; font-weight: 600; }
+
+p { margin-bottom: 1rem; }
+
+a {
+    color: var(--primary-500);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--accent-600);
+}
+
+.text-center { text-align: center; }
+.text-accent { color: var(--accent-600); }
+
+

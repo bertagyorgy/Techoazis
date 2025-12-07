@@ -1,0 +1,97 @@
+/* ===============================
+  CREATE POST - MODERN
+================================*/
+.create-post-bar {
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--border-color);
+}
+
+.create-post-bar form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.create-post-bar input[type="text"],
+.create-post-bar textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    background: var(--surface);
+    color: var(--text-color);
+    transition: all var(--transition-fast);
+}
+
+.create-post-bar textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.create-post-bar input:focus,
+.create-post-bar textarea:focus {
+    outline: none;
+    border-color: var(--accent-600);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.file-inputs {
+    position: relative;
+}
+
+.file-inputs input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    background: var(--surface);
+}
+
+#imagePreview {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.preview-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+    border: 2px solid var(--primary-300);
+}
+
+.remove-image {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--danger);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.remove-image:hover {
+    background: #b91c1c;
+    transform: scale(1.1);
+}

@@ -1,0 +1,34 @@
+/* ===============================
+  CONTAINER & GRID SYSTEM
+================================*/
+.custom-container {
+    width: 100%;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 576px) { .custom-container { max-width: 540px; } }
+@media (min-width: 768px) { .custom-container { max-width: 720px; } }
+@media (min-width: 992px) { .custom-container { max-width: 960px; } }
+@media (min-width: 1200px) { .custom-container { max-width: 1140px; } }
+
+.grid-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -12px;
+}
+
+[class^="grid-col-"] {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .grid-col-3 { width: 25%; }
+    .grid-col-4 { width: 33.3333%; }
+    .grid-col-6 { width: 50%; }
+    .grid-col-8 { width: 66.6667%; }
+}

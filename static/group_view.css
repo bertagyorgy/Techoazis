@@ -1,0 +1,48 @@
+/* ===============================
+  GROUP VIEW - MODERN
+================================*/
+.group-wrapper {
+    min-height: calc(100vh - var(--navbar-height));
+    padding: calc(var(--navbar-height) + 2rem) 20px 2rem;
+    background: var(--background);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.group-header {
+    background: linear-gradient(135deg, var(--primary-700), var(--accent-600));
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 2rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.group-banner {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: var(--shadow-md);
+}
+
+.group-header-info h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+}
+
+.group-meta {
+    display: flex;
+    gap: 2rem;
+    opacity: 0.9;
+}
+
+.group-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

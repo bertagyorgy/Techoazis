@@ -12,6 +12,27 @@
     <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
     <title>Techoazis | Adminpanel</title>
     <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="../static/reset&base_styles.css">
+    <link rel="stylesheet" href="../static/animations_microinteractions.css">
+    <link rel="stylesheet" href="../static/button_system.css">
+    <link rel="stylesheet" href="../static/comments.css">
+    <link rel="stylesheet" href="../static/container&grid_system.css">
+    <link rel="stylesheet" href="../static/create_post.css">
+    <link rel="stylesheet" href="../static/custom_card.css">
+    <link rel="stylesheet" href="../static/feature_cards.css">
+    <link rel="stylesheet" href="../static/filter_system.css">
+    <link rel="stylesheet" href="../static/forum.css">
+    <link rel="stylesheet" href="../static/group_view.css">
+    <link rel="stylesheet" href="../static/hero_section.css">
+    <link rel="stylesheet" href="../static/loading_animation.css">
+    <link rel="stylesheet" href="../static/login_page.css">
+    <link rel="stylesheet" href="../static/modern_footer.css">
+    <link rel="stylesheet" href="../static/modern_navbar.css">
+    <link rel="stylesheet" href="../static/post_card.css">
+    <link rel="stylesheet" href="../static/profile_pages.css">
+    <link rel="stylesheet" href="../static/responsive_adjustments.css">
+    <link rel="stylesheet" href="../static/utility_classes.css">
+
     <link rel="stylesheet" href="../static/admin-modern.css">
     <script src="../static/index.js" defer></script>
 </head>
