@@ -148,7 +148,7 @@ $post_count = $posts->num_rows;
 
                 <?php if(isset($_SESSION['loggedin'])): ?>
                 <form class="comment-form" data-post="<?= $post['post_id'] ?>">
-                    <textarea placeholder="Írj kommentet..." maxlength="800" required></textarea>
+                    <textarea placeholder="Írj kommentet..." maxlength="1500" required></textarea>
                     <button class="forum-submit-btn" type="submit">Küldés</button>
                 </form>
                 <?php else: ?>

@@ -134,7 +134,7 @@ while ($img = $images_result->fetch_assoc()) {
 
                 <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <form class="comment-form" data-post="<?= $post['post_id'] ?>">
-                    <textarea placeholder="Írj kommentet..." maxlength="800" required></textarea>
+                    <textarea placeholder="Írj kommentet..." maxlength="1500" required></textarea>
                     <button class="forum-submit-btn" type="submit">Küldés</button>
                 </form>
                 <?php else: ?>

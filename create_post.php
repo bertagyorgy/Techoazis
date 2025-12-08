@@ -82,6 +82,6 @@ if (!empty($_FILES['images']['name'][0])) {
 $conn->close();
 
 // Siker → vissza az adott csoportba
-echo "<script>window.location.href='../forum_group.php?group=" . $group_id';</script>";
+echo "<script>window.location.href='../forum_group.php?group={$group_id}';</script>";
 exit();
 ?>
