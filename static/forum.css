@@ -78,3 +78,21 @@
     color: var(--primary-500);
     width: 20px;
 }
+.show-comments-btn{
+    background: var(--dark-bg);
+    color: var(--dark-text);
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+}
+.forum-submit-btn{
+    background: green;
+    color: var(--neutral-100);
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+}
+.forum-submit-btn:hover{
+    background: darkgreen;
+    /*transform: translateY(5px);*/
+}

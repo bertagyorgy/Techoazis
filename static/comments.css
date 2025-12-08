@@ -12,7 +12,7 @@
     gap: 1rem;
     padding: 1rem;
     margin-bottom: 1rem;
-    background: var(--neutral-100);
+    background: var(--border-color);
     border-radius: var(--border-radius-md);
     border-left: 4px solid var(--primary-300);
 }
@@ -40,12 +40,13 @@
 .comment-body p {
     margin: 0;
     line-height: 1.6;
+    color: var(--text-light);
 }
 
 .comment-form {
     margin-top: 1.5rem;
     padding: 1rem;
-    background: var(--neutral-100);
+    background: var(--border-color);
     border-radius: var(--border-radius-md);
 }
 
