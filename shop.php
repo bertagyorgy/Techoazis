@@ -59,7 +59,7 @@ if (isset($conn) && $conn instanceof mysqli) {
 </head>
 <style>
     body{
-        background-color: #eae3c9;
+        background-color: var(--background);
     }
     .custom-container {
         width: 100%;

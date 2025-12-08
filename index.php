@@ -15,7 +15,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="icon" href="./favicon.ico">
     <link rel="icon" type="image/png" href="./favicon.png">
     <script src="./static/index.js" defer></script>
-    <title>Techoázis | Home</title>
+    <title>Techoázis | A közösség és a technológia egy helyen</title>
     <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
@@ -217,14 +217,14 @@ if ($page === '') {
             <div class="grid-row">
                 <div class="grid-col-4">
                     <div class="footer-brand">
-                        <h3 class="footer-title">Techoázis</h3>
+                        <h3 class="footer-subtitle">Techoázis</h3>
                         <p class="footer-description">
                             A hely, ahol a technológia, a közösség és az innováció találkozik.
                         </p>
                     </div>
                 </div>
                 <div class="grid-col-4 footer-nav">
-                    <h3 class="footer-subtitle">Navigáció</h3>
+                    <h3 class="footer-title">Navigáció</h3>
                     <ul class="footer-links">
                         <li><a href="./index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
                         <li><a href="./shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
@@ -238,7 +238,7 @@ if ($page === '') {
                     </ul>
                 </div>
                 <div class="grid-col-4 footer-social">
-                    <h3 class="footer-subtitle">Kövess minket</h3>
+                    <h3 class="footer-title">Kövess minket</h3>
                     <div class="social-icons-wrapper">
                         <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>

@@ -47,7 +47,7 @@
 .card-footer {
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--border-color);
-    background: var(--neutral-700);
+    background: var(--border-color);
 }
 
 /* ===============================

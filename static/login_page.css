@@ -49,7 +49,7 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--primary-100);
 }
 
 .login-input {

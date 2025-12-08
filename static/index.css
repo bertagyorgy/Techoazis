@@ -30,6 +30,8 @@
     /* 🎨 ALAPVETŐ VÁLTOZÓK */
     --text-color: var(--neutral-900);
     --text-light: var(--neutral-700);
+    --text-light-o: #cbd5e1;
+    --item-name-text: var(--primary-700);
     --background: var(--neutral-100);
     --surface: white;
     --border-color: var(--neutral-300);
@@ -64,6 +66,8 @@
     --surface: var(--dark-surface);
     --text-color: var(--dark-text);
     --text-light: #cbd5e1;
+    --text-light-o: var(--neutral-700);
+    --item-name-text: var(--dark-bg);
     --border-color: #334155;
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);

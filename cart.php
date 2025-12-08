@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once __DIR__ . '/app/db.php';
-include './views/navbar.php';
+
 
 // --- Kosár műveletek ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -102,7 +102,9 @@ if (!empty($cart) && isset($conn)) {
         ];
     }
 }
-?>ss
+include './views/navbar.php';
+?>
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -137,7 +139,10 @@ if (!empty($cart) && isset($conn)) {
 </head>
 <style>
 body{
-    background-color: #eae3c9;
+    background-color: var(--background);
+}
+.item-name-text{
+    color: var(--item-name-text);
 }
 /* Egyedi CSS a kosárhoz, hogy jobban nézzen ki */
 .cart-table th, .cart-table td {
@@ -154,7 +159,7 @@ body{
 }
 
 .cart-card {
-    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    background: var(--border-color);
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0px 8px 32px rgba(0,0,0,0.12), 0px 2px 8px rgba(0,0,0,0.08);
@@ -198,6 +203,7 @@ body{
     border-bottom: 1px solid #e2e8f0;
     vertical-align: middle;
     transition: background-color 0.2s ease;
+    background-color: var(--text-light-o);
 }
 
 .cart-table tbody tr {
@@ -205,11 +211,6 @@ body{
     transition: all 0.2s ease;
 }
 
-.cart-table tbody tr:hover {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    transform: translateY(-1px);
-    box-shadow: 0px 4px 16px rgba(0,0,0,0.08);
-}
 
 .cart-table tbody tr:last-child td {
     border-bottom: none;
@@ -278,7 +279,7 @@ body{
 
 /* Összegző box */
 .total-box {
-    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    background: var(--border-color);
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0px 8px 32px rgba(0,0,0,0.12), 0px 2px 8px rgba(0,0,0,0.08);
@@ -298,7 +299,7 @@ body{
 .checkout-btn {
     display: block;
     text-align: center;
-    background: var(--primary-color)/*linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)*/;
+    background: var(--primary-700)/*linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)*/;
     color: white;
     padding: 18px 0;
     font-size: 1.15rem;
@@ -311,9 +312,10 @@ body{
 }
 
 .checkout-btn:hover {
-    background: #364368ff;
+    background: var(--primary-500);
     transform: translateY(-2px);
     box-shadow: 0px 6px 20px rgba(37, 99, 235, 0.4);
+    color: var(--neutral-100);
 }
 
 .back-to-shop-btn {
@@ -345,12 +347,10 @@ body{
 
 </style>
 <body>
-<div class="gap"></div>
-
 <section class="section-padding">
     <div class="cart-container">
 
-        <h1 class="text-center text-4xl font-bold mb-10 text-gray-800">🛒 A te kosarad</h1>
+        <h1 class="text-center text-4xl font-bold mb-10 text-gray-800">A te kosarad</h1><br>
 
         <?php if (empty($cart_items)): ?>
             
@@ -388,12 +388,12 @@ body{
                             </td>
 
                             <td>
-                                <a href="product_detail.php?id=<?= $item['id'] ?>" class="text-blue-600 font-semibold hover:underline">
+                                <h4><a href="product_detail.php?id=<?= $item['id'] ?>" class="item-name-text">
                                     <?= $item['name'] ?>
-                                </a>
+                                </a></h4>
                             </td>
 
-                            <td class="text-center font-medium">
+                            <td class="item-name-text">
                                 <?= number_format($item['price'], 0, '', ' ') ?> Ft
                             </td>
 
@@ -411,7 +411,7 @@ body{
                                 <?php endif; ?>
                             </td>
 
-                            <td class="text-center font-bold text-lg text-gray-800">
+                            <td class="text-center font-bold text-lg item-name-text">
                                 <?= number_format($item['subtotal'], 0, '', ' ') ?> Ft
                             </td>
 
@@ -436,7 +436,7 @@ body{
         <div class="flex flex-col md:flex-row justify-between mt-10">
 
             <div class="total-box">
-                <h2 class="text-xl font-semibold mb-4">Végösszeg</h2>
+                <h2>Végösszeg:</h2>
 
                 <p class="total-price mb-6">
                     <?= number_format($total_price, 0, '', ' ') ?> Ft

@@ -26,7 +26,7 @@
 
 .forum-left h3,
 .forum-right h3 {
-    color: var(--primary-700);
+    color: var(--text-color);
     margin-bottom: 1rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid var(--accent-200);

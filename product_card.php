@@ -68,8 +68,7 @@ $unique_btn_id = 'add-btn-' . $product_id;
             <button
                 id="<?= $unique_btn_id ?>"
                 data-product-id="<?= $product_id ?>"
-                class="add-to-cart-btn shopnow-small"
-                style="margin-top: 10px; width: 100%;"
+                class="add-to-cart-btn"
                 <?= $is_available ? '' : 'disabled' ?>
             >
                 <i class="fas fa-shopping-cart"></i>
@@ -109,6 +108,7 @@ $unique_btn_id = 'add-btn-' . $product_id;
                         if (data.success) {
                             this.innerHTML = '<i class="fas fa-check"></i> Hozzáadva!';
                             this.style.backgroundColor = "var(--success-icon)";
+                            this.style.color = "var(--text-color)";
 
                             // Frissítjük a jelvényt
                             const badges = document.querySelectorAll('.cart-badge');

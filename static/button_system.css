@@ -67,3 +67,21 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: white;
 }
+
+.add-to-cart-btn{
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 10px 32px;
+    color: var(--neutral-100);
+    background-color: var(--success);
+    border-radius: 50px;
+    font-size: 1.2rem;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: var(--accent-400);
+}
+

@@ -39,6 +39,7 @@
     display: flex;
     gap: 2rem;
     opacity: 0.9;
+    color: var(--dark-text);
 }
 
 .group-meta span {

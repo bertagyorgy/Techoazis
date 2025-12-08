@@ -63,7 +63,7 @@
 .post-title {
     font-size: 1.5rem;
     margin: 1rem 0;
-    color: var(--primary-700);
+    color: var(--text-color);
 }
 
 .post-content {

@@ -53,7 +53,7 @@ $cart_badge = (string)$cart_count_unique;
                     <a href="<?= $root ?>views/login.php" class="icon-button" title='Bejelentkezés'><i class="fa-solid fa-user"></i></a>
                 <?php endif; ?>
                 <button class="icon-button theme-toggle" title="Téma váltás">
-                    <i class="fa-solid fa-circle-half-stroke"></i>
+                    <i class="fa-solid fa-sun"></i>
                 </button>
             </div>
         </div>
