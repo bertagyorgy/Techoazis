@@ -35,6 +35,7 @@
     --background: var(--neutral-100);
     --surface: white;
     --border-color: var(--neutral-300);
+    --background-image: url('../images/desert_evening.jpeg') left/cover;
     
     /* 📐 ÁRNYÉKOK */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -62,6 +63,7 @@
 
 /* 🌓 SÖTÉT TÉMA - manuális váltás */
 .dark {
+    --background-image: url('../images/desert_night2.jpeg') left/cover;
     --background: var(--dark-bg);
     --surface: var(--dark-surface);
     --text-color: var(--dark-text);

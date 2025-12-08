@@ -8,7 +8,7 @@
     position: relative;
     overflow: hidden;
     padding-top: var(--navbar-height);
-    background: url('../images/desert_evening.jpeg') left/cover;
+    background: var(--background-image);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
