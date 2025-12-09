@@ -13,6 +13,7 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
 
 $cart_badge = (string)$cart_count_unique;
 ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <nav class="main-navbar">
     <div class="custom-container nav-container">
         <a class="nav-brand" href="<?= $root ?>"> 
@@ -53,7 +54,7 @@ $cart_badge = (string)$cart_count_unique;
                     <a href="<?= $root ?>views/login.php" class="icon-button" title='Bejelentkezés'><i class="fa-solid fa-user"></i></a>
                 <?php endif; ?>
                 <button class="icon-button theme-toggle" title="Téma váltás">
-                    <i class="fa-solid fa-sun"></i>
+                    <i class="fa-solid fa-moon"></i>
                 </button>
             </div>
         </div>
@@ -71,7 +72,7 @@ $cart_badge = (string)$cart_count_unique;
                 <a href='<?= $root ?>views/login.php' class='icon-button' title='Bejelentkezés'><i class='fa-solid fa-user'></i></a>
             <?php endif; ?>
             <button class="icon-button theme-toggle" title="Téma váltás">
-                <i class="fa-solid fa-circle-half-stroke"></i>
+                <i class="fa-solid fa-moon"></i>
             </button>
         </div>
     </div>

@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url(../images/desert_evening.jpeg) left/cover;
+    background: var(--background-image);
     padding: var(--navbar-height) 20px;
 }
 

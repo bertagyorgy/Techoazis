@@ -55,4 +55,18 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // === 4. Támaváltó (A te kódod) ===
+    const themes = document.querySelectorAll(".theme-toggle");
+
+    themes.forEach(theme => {
+        theme.addEventListener("click", function() {
+
+            // Az ikon az aktuális gombon belül van
+            const icon = this.querySelector("i");
+
+            icon.classList.toggle("fa-sun");
+            icon.classList.toggle("fa-moon");
+        });
+    });
+
 }); // Itt a DOMContentLoaded eseményfigyelő vége
