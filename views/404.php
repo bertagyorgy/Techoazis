@@ -57,6 +57,7 @@
             font-size: 1.5rem;
             margin-top: 1rem;
             opacity: 0.7;
+            color: var(--neutral-100);
         }
 
         .main footer {

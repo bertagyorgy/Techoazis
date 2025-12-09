@@ -149,6 +149,7 @@ body{
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
+    color: var(--item-name-text);
 }
 
 /* --- Modern Kosár Design --- */
@@ -174,7 +175,7 @@ body{
 }
 
 .cart-table thead {
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, var(--admin-secondary), var(--admin-primary));
     position: sticky;
     top: 0;
     z-index: 10;
@@ -185,7 +186,7 @@ body{
     text-transform: uppercase;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
-    color: #475569;
+    color: var(--neutral-100);
     border-bottom: 2px solid #cbd5e1;
     position: relative;
 }
@@ -388,12 +389,12 @@ body{
                             </td>
 
                             <td>
-                                <h4><a href="product_detail.php?id=<?= $item['id'] ?>" class="item-name-text">
-                                    <?= $item['name'] ?>
-                                </a></h4>
+                                <h4>
+                                    <a href="product_detail.php?id=<?= $item['id'] ?>" class="item-name-text"><?= $item['name'] ?></a>
+                                </h4>
                             </td>
 
-                            <td class="item-name-text">
+                            <td style="font-size: 1.25rem; font-weight: 600;">
                                 <?= number_format($item['price'], 0, '', ' ') ?> Ft
                             </td>
 
@@ -411,7 +412,7 @@ body{
                                 <?php endif; ?>
                             </td>
 
-                            <td class="text-center font-bold text-lg item-name-text">
+                            <td class="text-center font-bold text-lg" style="font-size: 1.25rem; font-weight: 600;">
                                 <?= number_format($item['subtotal'], 0, '', ' ') ?> Ft
                             </td>
 

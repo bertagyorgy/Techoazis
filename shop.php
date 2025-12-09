@@ -84,36 +84,138 @@ if (isset($conn) && $conn instanceof mysqli) {
         flex-wrap: wrap;
         margin: -1rem; /* Negatív margó a távolságokhoz */
     }
+    /* ===============================
+   FILTER + PRODUCT LAYOUT 
+    ================================*/
+    .shop-layout {
+        display: flex;
+        gap: 2rem;
+        align-items: flex-start;
+    }
+
+    .shop-sidebar {
+        width: 260px;
+        flex-shrink: 0;
+    }
+
+    .shop-content {
+        flex: 1;
+    }
+
+    /* Reszponzív: telefonon alulról felülre rendeződik */
+    @media (max-width: 992px) {
+        .shop-layout {
+            flex-direction: column;
+        }
+
+        .shop-sidebar {
+            width: 100%;
+        }
+
+        .shop-content {
+            width: 100%;
+        }
+    }
 </style>
 <body>
 <?php include './views/navbar.php'; ?>
-<div class="gap"></div>
 
 <section class="section-padding">
-    <div class="custom-container text-center">
-        <h1 class="section-title">Termékkatalógus</h1>
+    <div class="custom-container">
 
-        <?php if (isset($error_message)): ?>
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
-                <strong class="font-bold">Adatbázis hiba: </strong> <?= $error_message ?>
+        <div class="shop-layout">
+
+            <!-- =============================== -->
+            <!--          ASIDE SZŰRŐ            -->
+            <!-- =============================== -->
+            <aside class="shop-sidebar">
+
+                <div class="filter-section">
+
+                    <div class="filter-header">
+                        <h3 style="color:var(--text-color);">Szűrők</h3>
+                    </div>
+
+                    <!-- Keresőmező -->
+                    <div class="filter-group">
+                        <label for="search">Keresés</label>
+                        <input type="text" id="search" class="filter-select" placeholder="Termék neve...">
+                    </div>
+
+                    <!-- Kategória -->
+                    <div class="filter-group">
+                        <label for="category">Kategória</label>
+                        <select id="category" class="filter-select">
+                            <option value="">Összes kategória</option>
+                            <option value="pc">PC</option>
+                            <option value="kiegészítő">Kiegészítők</option>
+                            <option value="monitor">Monitorok</option>
+                            <option value="egyéb">Egyéb</option>
+                        </select>
+                    </div>
+
+                    <!-- Ár -->
+                    <div class="filter-group">
+                        <label>Ár</label>
+                        <div class="filter-tags">
+                            <div class="filter-tag">0-10 000 Ft</div>
+                            <div class="filter-tag">10 000-50 000 Ft</div>
+                            <div class="filter-tag">50 000-100 000 Ft</div>
+                            <div class="filter-tag">100 000 Ft+</div>
+                        </div>
+                    </div>
+
+                    <!-- Készlet -->
+                    <div class="filter-group">
+                        <label>Készlet</label>
+                        <div class="filter-tags">
+                            <div class="filter-tag">Raktáron</div>
+                            <div class="filter-tag">Kifogyott</div>
+                        </div>
+                    </div>
+
+                    <!-- Gombok -->
+                    <div class="filter-actions">
+                        <button class="btn" style="background:var(--accent-600); color:white;">Szűrés</button>
+                        <button class="btn" style="background:var(--text-color); color:var(--background);">Törlés</button>
+                    </div>
+
+                </div>
+
+            </aside>
+
+            <!-- =============================== -->
+            <!--          TERMÉK LISTA          -->
+            <!-- =============================== -->
+            <div class="shop-content">
+
+                <h1 class="section-title text-center">Termékkatalógus</h1>
+
+                <?php if (isset($error_message)): ?>
+                    <div class="error-box">
+                        <strong>Adatbázis hiba: </strong> <?= $error_message ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (empty($products)): ?>
+                    <p class="text-2xl text-gray-600 text-center">
+                        Jelenleg nincsenek elérhető termékek.
+                    </p>
+                <?php else: ?>
+
+                    <div class="grid-row">
+                        <?php foreach ($products as $product): ?>
+                            <?php include 'product_card.php'; ?>
+                        <?php endforeach; ?>
+                    </div>
+
+                <?php endif; ?>
+
             </div>
-        <?php endif; ?>
-
-        <?php if (empty($products)): ?>
-            <p class="text-2xl text-gray-600">Jelenleg nincsenek elérhető termékek.</p>
-        <?php else: ?>
-
-            <div class="grid-row">
-                <?php foreach ($products as $product): ?>
-
-                    <?php include 'product_card.php'; ?>
-
-                <?php endforeach; ?>
-            </div>
-
-        <?php endif; ?>
+        </div>
     </div>
 </section>
+
 
 </body>
 </html>

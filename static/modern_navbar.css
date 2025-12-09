@@ -199,7 +199,7 @@
     
     .nav-menu {
         flex-direction: column;
-        gap: 0;
+        gap: 5px;
         margin-bottom: 1rem;
     }
     
@@ -208,7 +208,12 @@
         border-bottom: 1px solid var(--border-color);
         width: 100%;
     }
-    
+    .nav-link::after {
+        display: none !important;
+    }
+    .nav-link:hover {
+        color: var(--accent-600) !important; 
+    }
     .nav-link:last-child {
         border-bottom: none;
     }

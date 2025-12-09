@@ -26,6 +26,9 @@
     --warning: #f59e0b;           /* Sárga */
     --danger: #ef4444;            /* Piros */
     --info: #3b82f6;              /* Info kék */
+
+    --admin-primary: #0a192f;
+    --admin-secondary: #1a365d;
     
     /* 🎨 ALAPVETŐ VÁLTOZÓK */
     --text-color: var(--neutral-900);

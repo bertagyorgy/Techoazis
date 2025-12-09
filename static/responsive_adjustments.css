@@ -1,36 +1,98 @@
 /* ===============================
   RESPONSIVE ADJUSTMENTS
 ================================*/
+/* ===========================
+    TABLET NÉZET (max 1200px)
+   =========================== */
 @media (max-width: 1200px) {
     .forum-wrapper {
-        grid-template-columns: 1fr 300px;
+        display: grid;
+        grid-template-columns: 1fr; /* Bal oldalt asides, jobb oldalt content */
+        grid-template-areas:
+            "right center"
+            "left center";
+        gap: 1.5rem;
     }
+
     .forum-left {
-        display: none;
+        grid-area: left;
+        position: static;
+    }
+
+    .forum-right {
+        grid-area: right;
+        position: static;
+    }
+
+    .forum-center {
+        grid-area: center;
     }
 }
 
+
+/* ===========================
+    TELEFON NÉZET (max 992px)
+   =========================== */
 @media (max-width: 992px) {
     .forum-wrapper {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Egy oszlop */
+        grid-template-areas:
+            "right"
+            "left"
+            "center";
         padding: calc(var(--navbar-height) + 1rem) 15px 1rem;
+        gap: 1.5rem;
     }
-    
+
     .forum-right {
+        grid-area: right;
+        order: 1;
         position: static;
     }
-    
+
+    .forum-left {
+        grid-area: left;
+        order: 2;
+        position: static;
+    }
+
+    .forum-center {
+        grid-area: center;
+        order: 3;
+    }
+
+    /* A csoportnézet beállításai is maradjanak */
     .group-header {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
     }
-    
+
     .group-meta {
         justify-content: center;
         flex-wrap: wrap;
     }
 }
+
+
+/* ===========================
+    ULTRA KIS MOBIL (max 576px)
+   =========================== */
+@media (max-width: 576px) {
+    .forum-wrapper {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "right"
+            "left"
+            "center";
+        gap: 1rem;
+    }
+
+    .forum-right { order: 1; }
+    .forum-left  { order: 2; }
+    .forum-center{ order: 3; }
+}
+
 
 @media (max-width: 768px) {
     .profile-container,
