@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!empty($ids)) {
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
-            $sql = "SELECT product_id, stock_quantity FROM products WHERE product_id IN ($placeholders)";
+            $sql = "SELECT product_id, stock FROM products WHERE product_id IN ($placeholders)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param(str_repeat('i', count($ids)), ...$ids);
             $stmt->execute();
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stock_data = [];
             while ($row = $result->fetch_assoc()) {
-                $stock_data[$row['product_id']] = (int)$row['stock_quantity'];
+                $stock_data[$row['product_id']] = (int)$row['stock'];
             }
 
             foreach ($updated_quantities as $pid => $qty) {
@@ -56,7 +56,7 @@ if (!empty($cart) && isset($conn)) {
     $ids = array_keys($cart);
     $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
-    $sql = "SELECT product_id, product_name, price, main_image_url, stock_quantity 
+    $sql = "SELECT product_id, product_name, price, main_image_url, stock
             FROM products WHERE product_id IN ($placeholders)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(str_repeat('i', count($ids)), ...$ids);
@@ -76,8 +76,8 @@ if (!empty($cart) && isset($conn)) {
 
         $p = $products[$pid];
 
-        if ($qty > $p['stock_quantity']) {
-            $qty = $p['stock_quantity'];
+        if ($qty > $p['stock']) {
+            $qty = $p['stock'];
             $_SESSION['cart'][$pid] = $qty;
         }
 
@@ -97,7 +97,7 @@ if (!empty($cart) && isset($conn)) {
             'price' => (float)$p['price'],
             'quantity' => $qty,
             'subtotal' => $subtotal,
-            'stock' => (int)$p['stock_quantity'],
+            'stock' => (int)$p['stock'],
             'image_url' => htmlspecialchars($img)
         ];
     }

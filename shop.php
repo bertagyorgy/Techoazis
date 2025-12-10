@@ -7,7 +7,7 @@ $products = [];
 // JAVÍTÁS: Eltávolítottuk a WHERE stock_quantity > 0 feltételt,
 // így a nulla készletű termékek is megjelennek, és a product_card.php
 // fogja kezelni a "KIFOGYOTT" állapot megjelenítését.
-$sql = "SELECT product_id, product_name, price, main_image_url, stock_quantity 
+$sql = "SELECT product_id, product_name, price, main_image_url, stock
         FROM products 
         ORDER BY product_name ASC";
 

@@ -24,8 +24,8 @@ if (strpos($db_image, 'http') === 0 || strpos($db_image, '//') === 0) {
 }
 
 $image_url = htmlspecialchars($base_url);
-$stock_quantity = (int)($product['stock_quantity'] ?? 0); 
-$is_available = $stock_quantity > 0;
+$stock = (int)($product['stock'] ?? 0); 
+$is_available = $stock > 0;
 
 // --- ÚJÍTÁS: Egyedi ID generálása a gombhoz, hogy a JS pontosan tudja, melyiket kell figyelni ---
 $unique_btn_id = 'add-btn-' . $product_id;
@@ -61,7 +61,7 @@ $unique_btn_id = 'add-btn-' . $product_id;
             <p class="card-text">
                 Készlet:
                 <span style="font-weight: bold; color: <?= $is_available ? 'var(--success-icon)' : 'var(--danger-badge)' ?>;">
-                    <?= $stock_quantity ?> db
+                    <?= $stock ?> db
                 </span>
             </p>
 

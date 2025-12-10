@@ -18,16 +18,27 @@ CREATE TABLE login (
 );
 
 CREATE TABLE products (
-    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    stock_quantity INT NOT NULL DEFAULT 0,
     product_name VARCHAR(255) NOT NULL,
-    category VARCHAR(100),
+    category VARCHAR(255),
     product_description TEXT,
     price DECIMAL(10,2) NOT NULL,
-    stock INT DEFAULT 0,
-    main_image_url VARCHAR(255)
+    stock INT NOT NULL,
+    main_image_url VARCHAR(255),
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL,
 );
+
+CREATE TABLE reviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT NULL,
+    review_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+);
+
 
 CREATE TABLE posts (
     post_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -98,29 +109,35 @@ CREATE TABLE shipping_addresses (
 );
 
 CREATE TABLE orders (
-    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    total_amount DECIMAL(10,2) NOT NULL,
-    shipping_cost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    order_status VARCHAR(50) NOT NULL DEFAULT 'Függőben', 
-    payment_method VARCHAR(50), 
-    transaction_id VARCHAR(255), 
-    shipping_address_id INT NOT NULL, 
-    billing_address_id INT
+    total_price DECIMAL(10,2) NOT NULL,
+    shipping_cost DECIMAL(10,2) NOT NULL,
+    order_status ENUM('pending','paid','shipped','delivered','cancelled') NOT NULL DEFAULT 'pending',
+    payment_method ENUM('card') NOT NULL,
+    shipping_address TEXT NOT NULL,
+    billing_address TEXT NOT NULL,
+    order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    order_comment TEXT NULL,
 );
 
-CREATE TABLE order_details (
-    detail_id INT PRIMARY KEY AUTO_INCREMENT,
+
+CREATE TABLE ordered_products (
+    order_product_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL,
-    price_snapshot DECIMAL(10,2) NOT NULL
+    unit_price DECIMAL(10,2) NOT NULL,
 );
 
-INSERT INTO products (product_id, user_id, stock_quantity, product_name, category, product_description, price, stock, main_image_url) VALUES
-(1, 3, 5, 'Laptop', 'elektronika', 'Jó laptop', 150000.00, 0, 'laptop.png'),
-(2, 3, 11, 'Fényképezőgép', 'fényképezőgépek', 'Jó termék', 50000.00, 0, 'fenykep.jpg');
+INSERT INTO products 
+(product_id, user_id, product_name, category, product_description, price, stock, main_image_url) VALUES
+(1, 1, 'Gaming Egér', 'gaming', 'RGB világítású gamer egér, 6 programozható gombbal.', 8990.00, 10, 'gaming_mouse.png'),
+(2, 1, 'Bluetooth Hangszóró', 'hangtechnika', 'Vízálló hordozható Bluetooth hangszóró erős basszussal.', 12990.00, 7, 'bt_speaker.png'),
+(3, 1, 'Okosóra', 'okosórák', 'Pulzusmérős okosóra több mint 20 sportmóddal.', 19990.00, 15, 'smartwatch.png'),
+(4, 1, 'Laptop', 'laptopok', 'Kiváló minőségű laptop', 149900.00, 6, 'laptop.png'),
+(5, 1, 'Fényképezőgép', 'fényképezőgépek', 'Nagy látószögű precíz kamera', 49900.00, 0, 'fenykep.jpg');
+
 
 INSERT INTO comments (comment_id, post_id, user_id, content, created_at) VALUES
 (1, 1, 1, 'Nagyon egyszerűen', '2025-11-18 20:37:21'),

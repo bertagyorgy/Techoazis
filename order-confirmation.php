@@ -1,0 +1,280 @@
+<?php
+// order-confirmation.php
+$order_number = isset($_GET['order']) ? $_GET['order'] : 'ORD-' . rand(100000, 999999);
+$estimated_delivery = date('Y. m. d.', strtotime('+3 days'));
+?>
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techoazis | Shop</title>
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="./static/index.css">
+    <link rel="stylesheet" href="./static/reset&base_styles.css">
+    <link rel="stylesheet" href="./static/animations_microinteractions.css">
+    <link rel="stylesheet" href="./static/button_system.css">
+    <link rel="stylesheet" href="./static/comments.css">
+    <link rel="stylesheet" href="./static/container&grid_system.css">
+    <link rel="stylesheet" href="./static/create_post.css">
+    <link rel="stylesheet" href="./static/custom_card.css">
+    <link rel="stylesheet" href="./static/feature_cards.css">
+    <link rel="stylesheet" href="./static/filter_system.css">
+    <link rel="stylesheet" href="./static/forum.css">
+    <link rel="stylesheet" href="./static/group_view.css">
+    <link rel="stylesheet" href="./static/hero_section.css">
+    <link rel="stylesheet" href="./static/loading_animation.css">
+    <link rel="stylesheet" href="./static/login_page.css">
+    <link rel="stylesheet" href="./static/modern_footer.css">
+    <link rel="stylesheet" href="./static/modern_navbar.css">
+    <link rel="stylesheet" href="./static/post_card.css">
+    <link rel="stylesheet" href="./static/profile_pages.css">
+    <link rel="stylesheet" href="./static/responsive_adjustments.css">
+    <link rel="stylesheet" href="./static/utility_classes.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="./static/index.js" defer></script>
+</head>
+<style>
+        .confirmation-container {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+        
+        .confirmation-card {
+            background: var(--surface);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 3rem;
+            animation: bounce 1s;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        .order-number {
+            font-size: 2.5rem;
+            color: var(--accent-600);
+            font-weight: bold;
+            margin: 1rem 0;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+        
+        .delivery-info {
+            background: var(--primary-100);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--accent-600);
+        }
+        
+        .next-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .step-card {
+            background: var(--surface);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform var(--transition-normal);
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-200);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--accent-600);
+            font-size: 1.5rem;
+        }
+        
+        .confirmation-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--transition-fast);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--primary-700);
+            border: 2px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary-100);
+        }
+</style>
+
+<body>
+<?php include './views/navbar.php'; ?>
+
+<section class="section-padding">
+    <div class="confirmation-container">
+        <!-- Success Card -->
+        <div class="confirmation-card">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            
+            <h1 style="color: var(--success); font-size: 2.5rem; margin-bottom: 1rem;">
+                Köszönjük a rendelésed!
+            </h1>
+            
+            <p style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem;">
+                Rendelésed sikeresen feldolgoztuk és megkaptuk.
+            </p>
+            
+            <div class="order-number">
+                <?php echo $order_number; ?>
+            </div>
+            
+            <p style="color: var(--text-light);">
+                Ez a rendelési számod, ezzel tudod azonosítani rendelésedet.
+            </p>
+            
+            <!-- Delivery Info -->
+            <div class="delivery-info">
+                <h3 style="color: var(--primary-700); margin-bottom: 0.5rem;">
+                    <i class="fas fa-truck"></i> Becsült szállítási idő
+                </h3>
+                <p style="font-size: 1.2rem; font-weight: bold; color: var(--accent-600);">
+                    <?php echo $estimated_delivery; ?>
+                </p>
+                <p style="color: var(--text-light); margin-top: 0.5rem;">
+                    Megrendelésedet 1-2 munkanapon belül feladjuk.
+                </p>
+            </div>
+            
+            <!-- Email Notice -->
+            <div style="background: var(--accent-200); padding: 1rem; border-radius: var(--border-radius-md); margin-top: 2rem;">
+                <p style="color: var(--accent-600); font-weight: 600;">
+                    <i class="fas fa-envelope"></i> A rendelés részleteit elküldtük emailben is.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Next Steps -->
+        <h2 style="color: var(--primary-700); margin: 3rem 0 1.5rem;">Mi történik most?</h2>
+        
+        <div class="next-steps">
+            <div class="step-card">
+                <div class="step-icon">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <h3>1. Email megerősítés</h3>
+                <p>Rendelésed részleteit elküldtük a megadott email címre.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-icon">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h3>2. Csomag összekészítése</h3>
+                <p>Rendelésedet 24 órán belül összekészítjük és feladjuk.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-icon">
+                    <i class="fas fa-truck-loading"></i>
+                </div>
+                <h3>3. Szállítási követés</h3>
+                <p>Emailben értesítünk, amikor a csomagod úton van.</p>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="confirmation-actions">
+            <a href="index.php" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                Vissza a főoldalra
+            </a>
+            
+            <a href="profile.php?tab=orders" class="btn btn-secondary">
+                <i class="fas fa-clipboard-list"></i>
+                Rendeléseim megtekintése
+            </a>
+            
+            <a href="#" onclick="window.print()" class="btn btn-secondary">
+                <i class="fas fa-print"></i>
+                Nyomtatás
+            </a>
+        </div>
+        
+        <!-- Contact Info -->
+        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+            <p style="color: var(--text-light);">
+                Kérdésed van? Lépj velünk kapcsolatba:
+                <br>
+                <strong><i class="fas fa-phone"></i> +36 1 234 5678</strong> • 
+                <strong><i class="fas fa-envelope"></i> info@techoazis.hu</strong>
+            </p>
+        </div>
+    </div>
+</section>
+    <script>
+        // Automatically print order confirmation (optional)
+        // setTimeout(() => {
+        //     if(confirm('Szeretnéd kinyomtatni a rendelési visszaigazolást?')) {
+        //         window.print();
+        //     }
+        // }, 3000);
+    </script>
+</body>
+</html>
