@@ -1,45 +1,167 @@
 <?php
 session_start();
 include_once __DIR__ . '/app/db.php';
-// Szimulált kosár adatok a frontend teszteléshez
-$cart_items = [
-    [
-        'product_id' => 1,
-        'name' => 'Tech Laptop',
-        'price' => 120000,
-        'quantity' => 1,
-        'image' => 'laptop.jpg'
-    ],
-    [
-        'product_id' => 2,
-        'name' => 'Wireless Headphones',
-        'price' => 45000,
-        'quantity' => 2,
-        'image' => 'headphones.jpg'
-    ],
-    [
-        'product_id' => 3,
-        'name' => 'Smart Watch',
-        'price' => 75000,
-        'quantity' => 1,
-        'image' => 'watch.jpg'
-    ]
-];
 
-// Szállítási költség és összesítések
-$shipping_cost = 1990;
-$subtotal = array_sum(array_map(function($item) {
-    return $item['price'] * $item['quantity'];
-}, $cart_items));
-$total = $subtotal + $shipping_cost;
+$base_url = 'http://localhost/techoazis/';
+// Relatív gyökér útvonal a navigációs linkekhez (pl. CSS, JS, login.php-ra mutató link)
+$root_path = '/techoazis/'; 
 
-// Felhasználó adatok (ha be van jelentkezve)
-$user_data = isset($_SESSION['user_id']) ? [
-    'full_name' => 'Kovács János',
-    'email' => 'kovacs.janos@email.com',
-    'phone' => '+36 30 123 4567'
-] : null;
+// Ha nincs kosár → vissza a shopba
+if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+    header("Location: cart.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'] ?? null;
+$cart_items = $_SESSION['cart_items'] ?? [];
+
+
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['redirect_after_login'] = 'checkout';
+    header("Location: {$root_path}views/login.php");
+    exit();
+}
+
+
+$is_post = $_SERVER['REQUEST_METHOD'] === 'POST';
+
+if ($is_post) {
+
+    // ---------------
+    // 1️⃣  Adatok fogadása
+    // ---------------
+    $full_name = $_POST['full_name'] ?? '';
+    $country = $_POST['country'] ?? '';
+    $zip = $_POST['zip'] ?? '';
+    $city = $_POST['city'] ?? '';
+    $street = $_POST['street'] ?? '';
+
+    $billing_full_name = $_POST['billing_full_name'] ?? '';
+    $billing_country = $_POST['billing_country'] ?? '';
+    $billing_zip = $_POST['billing_zip'] ?? '';
+    $billing_city = $_POST['billing_city'] ?? '';
+    $billing_street = $_POST['billing_street'] ?? '';
+
+    $phone_number = $_POST['phone_number'] ?? '';
+    $shipping_email = $_POST['shipping_email'] ?? '';
+    $order_comment = $_POST['order_comment'] ?? '';
+
+    $payment_method = 'card'; // nincs utánvét
+
+    // Kosár adatai
+    $cart = $_SESSION['cart'];
+    $subtotal = 0;
+
+    foreach ($cart as $item) {
+        $subtotal += $item['price'] * $item['quantity'];
+    }
+
+    $shipping_cost = 1990;
+    $total_price = $subtotal + $shipping_cost;
+
+    // ---------------
+    // 2️⃣  Validálás
+    // ---------------
+    $required = [$full_name, $country, $zip, $city, $street, $phone_number, $shipping_email];
+
+    foreach ($required as $r) {
+        if (empty($r)) {
+            die("Hiányzó mezők! Kérlek tölts ki minden kötelező részt.");
+        }
+    }
+
+    // ---------------
+    // 3️⃣  Címek JSON formátumra alakítása
+    // ---------------
+
+    $shipping_address_json = json_encode([
+        'full_name' => $full_name,
+        'country' => $country,
+        'zip' => $zip,
+        'city' => $city,
+        'street' => $street
+    ], JSON_UNESCAPED_UNICODE);
+
+    $billing_address_json = json_encode([
+        'full_name' => $billing_full_name,
+        'country' => $billing_country,
+        'zip' => $billing_zip,
+        'city' => $billing_city,
+        'street' => $billing_street
+    ], JSON_UNESCAPED_UNICODE);
+
+    // ---------------
+    // 4️⃣  ORDER INSERT
+    // ---------------
+    $stmt = $conn->prepare("
+        INSERT INTO orders 
+        (user_id, total_price, shipping_cost, order_status, payment_method, shipping_address, billing_address, phone_number, shipping_email, order_comment)
+        VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?)
+    ");
+
+    $stmt->bind_param(
+        "iddssssss",
+        $user_id,
+        $total_price,
+        $shipping_cost,
+        $payment_method,
+        $shipping_address_json,
+        $billing_address_json,
+        $phone_number,
+        $shipping_email,
+        $order_comment
+    );
+
+    $stmt->execute();
+    $order_id = $stmt->insert_id;
+    $stmt->close();
+
+    // ---------------
+    // 5️⃣  ORDERED_PRODUCTS beszúrás + raktár csökkentés
+    // ---------------
+    foreach ($cart as $item) {
+
+        // tétel beszúrás
+        $stmt = $conn->prepare("
+            INSERT INTO ordered_products (order_id, product_id, quantity, unit_price)
+            VALUES (?, ?, ?, ?)
+        ");
+
+        $stmt->bind_param(
+            "iiid",
+            $order_id,
+            $item['product_id'],
+            $item['quantity'],
+            $item['price']
+        );
+
+        $stmt->execute();
+        $stmt->close();
+
+        // raktár csökkentés
+        $stmt = $conn->prepare("
+            UPDATE products
+            SET stock = stock - ?
+            WHERE product_id = ?
+        ");
+
+        $stmt->bind_param("ii", $item['quantity'], $item['product_id']);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    // ---------------
+    // 6️⃣  Kosár kiürítése + átirányítás fizetésre
+    // ---------------
+
+    $_SESSION['order_id'] = $order_id;
+    unset($_SESSION['cart']);
+
+    header("Location: payment.php?order_id=" . $order_id);
+    exit;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="hu">
@@ -619,13 +741,7 @@ $user_data = isset($_SESSION['user_id']) ? [
                             
                             <div class="form-group">
                                 <label for="country" class="form-label required">Ország</label>
-                                <select id="country" name="country" class="form-control" required>
-                                    <option value="">Válassz országot</option>
-                                    <option value="HU" selected>Magyarország</option>
-                                    <option value="SK">Szlovákia</option>
-                                    <option value="RO">Románia</option>
-                                    <option value="AT">Ausztria</option>
-                                </select>
+                                <input type="text" id="country" name="country" class="form-control" required>
                             </div>
                             
                             <div class="form-group">
@@ -684,13 +800,7 @@ $user_data = isset($_SESSION['user_id']) ? [
                             
                             <div class="form-group">
                                 <label for="billing_country" class="form-label required">Ország</label>
-                                <select id="billing_country" name="billing_country" class="form-control">
-                                    <option value="">Válassz országot</option>
-                                    <option value="HU">Magyarország</option>
-                                    <option value="SK">Szlovákia</option>
-                                    <option value="RO">Románia</option>
-                                    <option value="AT">Ausztria</option>
-                                </select>
+                                <input type="text" id="billing_country" name="billing_country" class="form-control" required>
                             </div>
                             
                             <div class="form-group">
@@ -887,66 +997,6 @@ $user_data = isset($_SESSION['user_id']) ? [
                 // Show loading overlay
                 loadingOverlay.classList.add('active');
                 
-                // Simulate API call delay
-                setTimeout(() => {
-                    // In a real app, you would send the data to the server here
-                    console.log('Order submitted');
-                    
-                    // Collect form data
-                    const formData = {
-                        shipping: {
-                            full_name: document.getElementById('full_name').value,
-                            country: document.getElementById('country').value,
-                            zip_code: document.getElementById('zip_code').value,
-                            city: document.getElementById('city').value,
-                            street_address: document.getElementById('street_address').value,
-                            phone: document.getElementById('phone').value,
-                            email: document.getElementById('email').value
-                        },
-                        billing: sameAsShipping.checked ? 'same_as_shipping' : {
-                            full_name: document.getElementById('billing_full_name').value,
-                            country: document.getElementById('billing_country').value,
-                            zip_code: document.getElementById('billing_zip_code').value,
-                            city: document.getElementById('billing_city').value,
-                            street_address: document.getElementById('billing_street_address').value
-                        },
-                        payment_method: document.querySelector('.payment-option.selected').dataset.method,
-                        order_comment: document.getElementById('order_comment').value,
-                        total: <?php echo $total; ?>,
-                        shipping_cost: <?php echo $shipping_cost; ?>
-                    };
-                    
-                    console.log('Form data:', formData);
-                    
-                    // Redirect to success page (in real app)
-                    window.location.href = 'payment.php';
-                    
-                    // For demo purposes, just show a success message
-                    loadingOverlay.classList.remove('active');
-                    alert('Sikeres rendelés! Az oldal átirányít a fizetéshez...');
-                    
-                }, 2000);
-            });
-
-            // Auto-fill city based on zip code (demo functionality)
-            const zipCodeInput = document.getElementById('zip_code');
-            const cityInput = document.getElementById('city');
-            
-            zipCodeInput.addEventListener('blur', function() {
-                if (this.value.length === 4 && !cityInput.value) {
-                    // Demo: Simulate API call to get city from zip code
-                    const zipToCity = {
-                        '1011': 'Budapest',
-                        '6720': 'Szeged',
-                        '7621': 'Pécs',
-                        '4025': 'Debrecen',
-                        '3300': 'Eger'
-                    };
-                    
-                    if (zipToCity[this.value]) {
-                        cityInput.value = zipToCity[this.value];
-                    }
-                }
             });
         });
     </script>

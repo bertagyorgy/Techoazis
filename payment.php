@@ -38,114 +38,248 @@ $total_amount = isset($_SESSION['order_total']) ? $_SESSION['order_total'] : 0;
     <script src="./static/index.js" defer></script>
 </head>
 <style>
-        .payment-container {
-            max-width: 800px;
-            margin: 3rem auto;
-            padding: 0 1.5rem;
-        }
-        
-        .payment-steps {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 3rem;
-            gap: 2rem;
-        }
-        
-        .payment-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .payment-step.active .step-number {
-            background: var(--accent-600);
-            color: white;
-        }
-        
-        .payment-step.completed .step-number {
-            background: var(--success);
-            color: white;
-        }
-        
-        .step-number {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        .payment-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .payment-header h1 {
-            color: var(--primary-700);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .payment-card {
-            background: var(--surface);
-            border-radius: var(--border-radius-lg);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-xl);
-            border: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-        }
-        
-        .payment-summary {
-            background: var(--primary-100);
-            border-radius: var(--border-radius-md);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--accent-600);
-        }
-        
-        .payment-form .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .card-input-group {
-            position: relative;
-        }
-        
-        .card-icon {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-        }
-        
+    .payment-container {
+        max-width: 800px;
+        margin: 3rem auto;
+        padding: 0 1.5rem;
+    }
+    
+    .payment-steps {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem;
+        gap: 2rem;
+    }
+    
+    .payment-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .payment-step.active .step-number {
+        background: var(--accent-600);
+        color: white;
+    }
+    
+    .payment-step.completed .step-number {
+        background: var(--success);
+        color: white;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .payment-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .payment-header h1 {
+        color: var(--primary-700);
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .payment-card {
+        background: var(--surface);
+        border-radius: var(--border-radius-lg);
+        padding: 2.5rem;
+        box-shadow: var(--shadow-xl);
+        border: 1px solid var(--border-color);
+        margin-bottom: 2rem;
+    }
+    
+    .payment-summary {
+        background: var(--primary-100);
+        border-radius: var(--border-radius-md);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-left: 4px solid var(--accent-600);
+    }
+    
+    .payment-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .card-input-group {
+        position: relative;
+    }
+    
+    .card-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .payment-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .demo-notice {
+        background: var(--warning);
+        color: white;
+        padding: 1rem;
+        border-radius: var(--border-radius-md);
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: bold;
+    }
+    /* ===============================
+    FORM LABELS & INPUTS
+    =============================== */
+    .form-label {
+        display: block;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 1.1rem;
+    }
+
+    .form-label.required::after {
+        content: " *";
+        color: var(--danger);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1.125rem 1.25rem;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius-md);
+        font-size: 1.125rem;
+        transition: all var(--transition-fast);
+        background: var(--background);
+        color: var(--text-color);
+        font-family: inherit;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent-600);
+        background: var(--surface);
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    }
+
+    .form-control::placeholder {
+        color: var(--text-light);
+        opacity: 0.7;
+    }
+
+    .help-text {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-light);
+        font-style: italic;
+    }
+
+    /* ===============================
+    BUTTON STYLES
+    =============================== */
+    .btn-back {
+        padding: 1rem 2rem;
+        background: var(--surface);
+        color: var(--primary-700);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius-md);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all var(--transition-fast);
+        cursor: pointer;
+    }
+
+    .btn-back:hover {
+        background: var(--primary-100);
+        border-color: var(--primary-300);
+        transform: translateY(-2px);
+    }
+
+    .btn-checkout {
+        padding: 1rem 3rem;
+        background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-md);
+        font-weight: 600;
+        font-size: 1.125rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all var(--transition-normal);
+    }
+
+    .btn-checkout:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-checkout:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-checkout i.fa-spinner {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* ===============================
+    CARD SPECIFIC STYLES
+    =============================== */
+    .card-input-group .form-control {
+        padding-right: 3.5rem; /* Make space for the card icon */
+    }
+
+    /* ===============================
+    RESPONSIVE ADJUSTMENTS
+    =============================== */
+    @media (max-width: 768px) {
         .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            grid-template-columns: 1fr;
         }
         
         .payment-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
+            flex-direction: column;
+            gap: 1rem;
         }
         
-        .demo-notice {
-            background: var(--warning);
-            color: white;
-            padding: 1rem;
-            border-radius: var(--border-radius-md);
-            text-align: center;
-            margin-bottom: 2rem;
-            font-weight: bold;
+        .btn-back, .btn-checkout {
+            width: 100%;
+            justify-content: center;
         }
+        
+        .payment-card {
+            padding: 2rem 1.5rem;
+        }
+    }
 </style>
 
 <body>
