@@ -27,16 +27,16 @@ CREATE TABLE products (
     stock INT NOT NULL,
     main_image_url VARCHAR(255),
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NULL,
+    updated_at DATETIME NULL
 );
 
 CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     user_id INT NOT NULL,
-    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    rating TINYINT NOT NULL,
     comment TEXT NULL,
-    review_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    review_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -118,7 +118,7 @@ CREATE TABLE orders (
     shipping_address TEXT NOT NULL,
     billing_address TEXT NOT NULL,
     order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    order_comment TEXT NULL,
+    order_comment TEXT NULL
 );
 
 
@@ -127,7 +127,7 @@ CREATE TABLE ordered_products (
     order_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL,
-    unit_price DECIMAL(10,2) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
 );
 
 INSERT INTO products 

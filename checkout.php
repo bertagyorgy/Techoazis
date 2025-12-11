@@ -576,12 +576,12 @@ $user_data = isset($_SESSION['user_id']) ? [
         <!-- Checkout Steps -->
         <div class="checkout-steps">
             <div class="checkout-step completed">
-                <div class="step-number">1</div>
+            <div class="step-number"><i class="fas fa-check"></i></div>
                 <div class="step-label">Kosár</div>
             </div>
             <div class="checkout-step active">
                 <div class="step-number">2</div>
-                <div class="step-label">Szállítás & Számlázás</div>
+                <div class="step-label">Szállítás</div>
             </div>
             <div class="checkout-step">
                 <div class="step-number">3</div>
