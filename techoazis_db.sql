@@ -103,7 +103,7 @@ CREATE TABLE shipping_addresses (
     zip_code VARCHAR(10) NOT NULL,
     city VARCHAR(100) NOT NULL,
     street_address VARCHAR(255) NOT NULL,
-    phone_number VARCHAR(50),
+    phone_number VARCHAR(50) DEFAULT NULL,
     is_billing_address BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -117,8 +117,10 @@ CREATE TABLE orders (
     payment_method ENUM('card') NOT NULL,
     shipping_address TEXT NOT NULL,
     billing_address TEXT NOT NULL,
-    order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    order_comment TEXT NULL
+    phone_number VARCHAR(30) NOT NULL,
+    shipping_email VARCHAR(100) NOT NULL,
+    order_comment TEXT NULL,
+    order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 

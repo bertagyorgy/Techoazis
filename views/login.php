@@ -3,7 +3,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+ob_start();
 
+$base_url = 'http://localhost/techoazis/';
+$root_path = '/techoazis/';
 // 1. JAVÍTÁS: Abszolút elérési út az 'app/db.php'-hoz
 // __DIR__ a 'views' mappa. '/../' felvisz a gyökérbe (Techoazis).
 include __DIR__ . '/../app/db.php'; 
@@ -101,10 +104,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             $insert_stmt->execute();
                             $insert_stmt->close();
                         }
+                        
+                        if (isset($_SESSION['redirect_after_login'])) {
+                            $url = $_SESSION['redirect_after_login'];
+                            unset($_SESSION['redirect_after_login']);
+                            header("Location: {$root_path}{$url}.php");
+                            exit();
+                        }
 
-                        // Sikeres belépés után - Vissza a gyökérkönyvtárban lévő index.php-ra
-                        echo "<script>window.location.href='../index.php';</script>"; // ⬅️ JAVÍTVA: Visszalépés a gyökérbe (Techoazis/index.php)
+                        header("Location: {$root_path}index.php");
                         exit();
+                        
                     } else {
                         $error_message = "Hibás jelszó.";
                     }

@@ -86,10 +86,14 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
-
+.login-footer{
+    color: var(--neutral-100);
+    text-align: center;
+}
 .login-alert {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--danger);
+    background: rgba(239, 68, 68, 0.5);
+    color: var(--neutral-100);
+    font-weight: bold;
     border: 1px solid var(--danger);
     padding: 1rem;
     border-radius: var(--border-radius-md);
@@ -98,8 +102,9 @@
 }
 
 .login-success {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--success);
+    background: rgba(16, 185, 129, 0.5);
+    color: var(--neutral-100);
+    font-weight: bold;
     border: 1px solid var(--success);
     padding: 1rem;
     border-radius: var(--border-radius-md);
