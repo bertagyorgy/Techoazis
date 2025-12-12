@@ -1,15 +1,20 @@
 CREATE TABLE users (
-    user_id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(100) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    user_password VARCHAR(255) NOT NULL,
-    is_active CHAR(1) NOT NULL DEFAULT 'A',
-    registration_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    user_role CHAR(1) NOT NULL,
-    ip VARCHAR(45),
-    activation_code VARCHAR(128),
-    profile_image VARCHAR(255) NOT NULL DEFAULT('images/anonymous.png')
-);
+  user_id int(11) NOT NULL,
+  username varchar(100) NOT NULL,
+  email varchar(255) NOT NULL,
+  user_password varchar(255) NOT NULL,
+  is_active char(1) NOT NULL DEFAULT 'A',
+  registration_date datetime DEFAULT current_timestamp(),
+  user_role char(1) NOT NULL,
+  ip varchar(45) DEFAULT NULL,
+  activation_code varchar(128) DEFAULT NULL,
+  profile_image varchar(255) NOT NULL DEFAULT 'images/anonymous.png',
+  total_posts int(11) DEFAULT 0,
+  total_comments int(11) DEFAULT 0,
+  sold_items int(11) DEFAULT 0,
+  bought_items int(11) DEFAULT 0,
+  avg_rating decimal(3,2) DEFAULT 0.00
+)
 
 CREATE TABLE login (
     login_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -19,26 +24,27 @@ CREATE TABLE login (
 
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+    seller_user_id INT NOT NULL,
     product_name VARCHAR(255) NOT NULL,
-    category VARCHAR(255),
-    product_description TEXT,
-    price DECIMAL(10,2) NOT NULL,
-    stock INT NOT NULL,
-    main_image_url VARCHAR(255),
+    category VARCHAR(255) NOT NULL,
+    product_description TEXT NOT NULL,
+    price DECIMAL(10,2) NULL, -- alkuképes / opcionális
+    product_status ENUM('active','sold','hidden') NOT NULL DEFAULT 'active',
+    pickup_location VARCHAR(100) NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL
 );
 
 CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT NOT NULL,
-    user_id INT NOT NULL,
-    rating TINYINT NOT NULL,
+    seller_user_id INT NOT NULL,
+    buyer_user_id INT NOT NULL,
+    deal_id INT NOT NULL,
+    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
     comment TEXT NULL,
-    review_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    review_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (deal_id)
 );
-
 
 CREATE TABLE posts (
     post_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -75,17 +81,11 @@ CREATE TABLE images (
     image_id INT PRIMARY KEY AUTO_INCREMENT,
     post_id INT NULL,
     product_id INT NULL,
-    image_path VARCHAR(255) NOT NULL
+    image_path VARCHAR(255) NOT NULL,
+    is_primary TINYINT(1) NOT NULL DEFAULT 0,
+    sort_order TINYINT NOT NULL DEFAULT 1
 );
 
-CREATE TABLE cart (
-    cart_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NULL,
-    session_id VARCHAR(255) NULL,
-    product_id INT NOT NULL,
-    quantity INT DEFAULT 1,
-    added_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
 
 CREATE TABLE groups (
     group_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -95,50 +95,43 @@ CREATE TABLE groups (
     group_image VARCHAR(255) DEFAULT 'default_group.png'
 );
 
-CREATE TABLE shipping_addresses (
-    address_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    full_name VARCHAR(255) NOT NULL,
-    country VARCHAR(100) NOT NULL,
-    zip_code VARCHAR(10) NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    street_address VARCHAR(255) NOT NULL,
-    phone_number VARCHAR(50) DEFAULT NULL,
-    is_billing_address BOOLEAN DEFAULT FALSE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    total_price DECIMAL(10,2) NOT NULL,
-    shipping_cost DECIMAL(10,2) NOT NULL,
-    order_status ENUM('pending','paid','shipped','delivered','cancelled') NOT NULL DEFAULT 'pending',
-    payment_method ENUM('card') NOT NULL,
-    shipping_address TEXT NOT NULL,
-    billing_address TEXT NOT NULL,
-    phone_number VARCHAR(30) NOT NULL,
-    shipping_email VARCHAR(100) NOT NULL,
-    order_comment TEXT NULL,
-    order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-
-CREATE TABLE ordered_products (
-    order_product_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
+CREATE TABLE conversations (
+    conversation_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
-    quantity INT NOT NULL,
-    unit_price DECIMAL(10,2) NOT NULL
+    seller_user_id INT NOT NULL,
+    buyer_user_id INT NOT NULL,
+    conv_status ENUM('open','deal_made','cancelled') DEFAULT 'open',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL,
+    UNIQUE (product_id, buyer_user_id)
+);
+
+CREATE TABLE messages (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT NOT NULL,
+    sender_user_id INT NOT NULL,
+    user_message TEXT NOT NULL,
+    sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_read TINYINT(1) DEFAULT 0
+);
+
+CREATE TABLE deals (
+    deal_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    seller_user_id INT NOT NULL,
+    buyer_user_id INT NOT NULL,
+    conversation_id INT NOT NULL,
+    completed_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO products 
-(product_id, user_id, product_name, category, product_description, price, stock, main_image_url) VALUES
-(1, 1, 'Gaming Egér', 'gaming', 'RGB világítású gamer egér, 6 programozható gombbal.', 8990.00, 10, 'gaming_mouse.png'),
-(2, 1, 'Bluetooth Hangszóró', 'hangtechnika', 'Vízálló hordozható Bluetooth hangszóró erős basszussal.', 12990.00, 7, 'bt_speaker.png'),
-(3, 1, 'Okosóra', 'okosórák', 'Pulzusmérős okosóra több mint 20 sportmóddal.', 19990.00, 15, 'smartwatch.png'),
-(4, 1, 'Laptop', 'laptopok', 'Kiváló minőségű laptop', 149900.00, 6, 'laptop.png'),
-(5, 1, 'Fényképezőgép', 'fényképezőgépek', 'Nagy látószögű precíz kamera', 49900.00, 0, 'fenykep.jpg');
+(seller_user_id, product_name, category, product_description, price, product_status, pickup_location) VALUES
+(1, 'Gaming Egér', 'gaming', 'RGB világítású gamer egér, 6 programozható gombbal.', 8990.00, 'active', 'Budapest'),
+(1, 'Bluetooth Hangszóró', 'hangtechnika', 'Vízálló hordozható Bluetooth hangszóró erős basszussal.', 12990.00, 'active', 'Debrecen'),
+(1, 'Okosóra', 'okosórák', 'Pulzusmérős okosóra több mint 20 sportmóddal.', 19990.00, 'active', 'Szeged'),
+(1, 'Laptop', 'laptopok', 'Kiváló minőségű laptop.', 149900.00, 'active', 'Budapest XI. kerület'),
+(1, 'Fényképezőgép', 'fényképezőgépek', 'Nagy látószögű precíz kamera.', 49900.00, 'sold', 'Postázás');
+
 
 
 INSERT INTO comments (comment_id, post_id, user_id, content, created_at) VALUES
@@ -154,13 +147,19 @@ INSERT INTO groups (group_id, group_name, group_description, created_at) VALUES
 (3, 'Hardver', 'PC építés, alkatrészek, optimalizálás', '2025-11-18 19:24:56'),
 (4, 'Tech hírek', 'Friss újdonságok a tech világban', '2025-11-18 19:24:56');
 
-INSERT INTO `images` (`image_id`, `post_id`, `image_path`) VALUES
-(1, 1, 'uploads/posts/webdev.jpg'),
-(2, 3, 'uploads/posts/ai.jpg'),
-(3, 1, 'uploads/posts/htmlandcss.jpeg'),
-(4, 4, 'uploads/posts/4_1763756851_4212.jpg'),
-(5, 6, 'uploads/posts/6_1763760130_6025.jpg'),
-(6, 6, 'uploads/posts/6_1763760130_1499.jpg');
+INSERT INTO images (image_id, post_id, product_id, image_path, is_primary, sort_order) VALUES
+(1, 1, NULL, 'uploads/posts/webdev.jpg', 0, 1),
+(2, 3, NULL, 'uploads/posts/ai.jpg', 0, 1),
+(3, 1, NULL, 'uploads/posts/htmlandcss.jpeg', 0, 1),
+(4, 4, NULL, 'uploads/posts/4_1763756851_4212.jpg', 0, 1),
+(5, 6, NULL, 'uploads/posts/6_1763760130_6025.jpg', 0, 1),
+(6, 6, NULL, 'uploads/posts/6_1763760130_1499.jpg', 0, 1),
+(7, NULL, 1, 'uploads/products/gaming_mouse_1.png', 1, 1),
+(8, NULL, 2, 'uploads/products/bt_speaker_1.png', 1, 1),
+(9, NULL, 3, 'uploads/products/smartwatch_1.png', 1, 1),
+(10, NULL, 4, 'uploads/products/laptop_1.png', 1, 1),
+(11, NULL, 5, 'uploads/products/camera_1.png', 1, 1);
+
 
 INSERT INTO posts (post_id, user_id, group_id, title, content, created_at) VALUES
 (1, 1, 1, 'Hogyan kezdjem el a webfejlesztést?', 'Sziasztok! Teljesen új vagyok a webfejlesztésben. Mivel érdemes kezdeni?', '2025-11-18 19:25:47'),
