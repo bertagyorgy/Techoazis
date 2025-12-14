@@ -245,7 +245,7 @@ if ($action === 'delete' && $id && $allow_delete) {
     <link rel="stylesheet" href="../static/profile_pages.css">
     <link rel="stylesheet" href="../static/responsive_adjustments.css">
     <link rel="stylesheet" href="../static/utility_classes.css">
-
+    <script src="../static/index.js" defer></script>
     <link rel="stylesheet" href="../static/admin-modern.css">
     <style>
         body { opacity: 0; transition: opacity 0.3s ease; }
