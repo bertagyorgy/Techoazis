@@ -1,5 +1,5 @@
 CREATE TABLE users (
-  user_id int(11) NOT NULL,
+  user_id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   username varchar(100) NOT NULL,
   email varchar(255) NOT NULL,
   user_password varchar(255) NOT NULL,
