@@ -23,7 +23,7 @@ $config = [
     // Egyéni JOIN-olt lekérdezés, hogy a felhasználónevet lássuk az ID helyett
     'list_query' => "SELECT p.*, u.username 
                      FROM products p 
-                     JOIN users u ON p.user_id = u.user_id 
+                     JOIN users u ON p.seller_user_id = u.user_id 
                      ORDER BY p.product_id",
                      
     // A 'list_columns'-ban lévő kulcsok formázása
