@@ -154,11 +154,11 @@ INSERT INTO images (image_id, post_id, product_id, image_path, is_primary, sort_
 (4, 4, NULL, 'uploads/posts/4_1763756851_4212.jpg', 0, 1),
 (5, 6, NULL, 'uploads/posts/6_1763760130_6025.jpg', 0, 1),
 (6, 6, NULL, 'uploads/posts/6_1763760130_1499.jpg', 0, 1),
-(7, NULL, 1, 'uploads/products/gaming_mouse_1.png', 1, 1),
-(8, NULL, 2, 'uploads/products/bt_speaker_1.png', 1, 1),
-(9, NULL, 3, 'uploads/products/smartwatch_1.png', 1, 1),
-(10, NULL, 4, 'uploads/products/laptop_1.png', 1, 1),
-(11, NULL, 5, 'uploads/products/camera_1.png', 1, 1);
+(7, NULL, 1, 'uploads/products/gaming_mouse.png', 1, 1),
+(8, NULL, 2, 'uploads/products/bt_speaker.png', 1, 1),
+(9, NULL, 3, 'uploads/products/smartwatch.png', 1, 1),
+(10, NULL, 4, 'uploads/products/laptop.png', 1, 1),
+(11, NULL, 5, 'uploads/products/fenykep.png', 1, 1);
 
 
 INSERT INTO posts (post_id, user_id, group_id, title, content, created_at) VALUES
