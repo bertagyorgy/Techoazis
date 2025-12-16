@@ -136,7 +136,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         position: sticky;
         top: 100px;
         max-height: calc(100vh - 120px);
-        overflow-y: auto;
+        /*overflow-y: auto;*/
     }
 
     .shop-content {

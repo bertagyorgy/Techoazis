@@ -17,10 +17,10 @@ $conversation_id = isset($_GET['conv_id']) ? (int)$_GET['conv_id'] : 0;
 /* =========================
    2. TERMÉK LEKÉRÉS
 ========================= */
-if ($product_id <= 0) {
+/*if ($product_id <= 0) {
     header('Location: products.php');
     exit();
-}
+}*/
 
 $stmt = $conn->prepare("
     SELECT 
@@ -47,10 +47,10 @@ $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 $stmt->close();
 
-if (!$product) {
+/*if (!$product) {
     header('Location: products.php');
     exit();
-}
+}*/
 
 $is_seller = ($product['seller_user_id'] === $user_id);
 
@@ -91,10 +91,10 @@ if (!$is_seller && $conversation_id === 0) {
     }
 }
 
-if ($conversation_id <= 0) {
+/*if ($conversation_id <= 0) {
     header('Location: products.php');
     exit();
-}
+}*/
 
 /* =========================
    4. BESZÉLGETÉS ELLENŐRZÉS
