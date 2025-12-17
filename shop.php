@@ -292,64 +292,62 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                 <!--          SZŰRŐK PANEL          -->
                 <!-- =============================== -->
                 <aside class="shop-sidebar">
-                    <div class="filter-section">
-                        <h3>Szűrők</h3>
+                    <h3>Szűrők</h3>
+                    
+                    <form id="filter-form" method="GET">
+                        <!-- Keresés -->
+                        <div class="filter-group">
+                            <label for="search">Keresés</label>
+                            <input type="text" id="search" name="search" class="filter-input" 
+                                    placeholder="Termék neve..." value="<?php echo htmlspecialchars($search_query); ?>">
+                        </div>
                         
-                        <form id="filter-form" method="GET">
-                            <!-- Keresés -->
-                            <div class="filter-group">
-                                <label for="search">Keresés</label>
-                                <input type="text" id="search" name="search" class="filter-input" 
-                                       placeholder="Termék neve..." value="<?php echo htmlspecialchars($search_query); ?>">
+                        <!-- Kategória -->
+                        <div class="filter-group">
+                            <label for="category">Kategória</label>
+                            <select id="category" name="category" class="filter-select">
+                                <option value="">Összes kategória</option>
+                                <?php foreach ($categories as $cat): ?>
+                                    <option value="<?php echo htmlspecialchars($cat['category']); ?>"
+                                        <?php echo $category_filter == $cat['category'] ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($cat['category']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        
+                        <!-- Ár tartomány -->
+                        <div class="filter-group">
+                            <label>Ár tartomány (Ft)</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <input type="number" name="price_min" class="filter-input" 
+                                        placeholder="Min" value="<?php echo htmlspecialchars($price_min); ?>">
+                                <input type="number" name="price_max" class="filter-input" 
+                                        placeholder="Max" value="<?php echo htmlspecialchars($price_max); ?>">
                             </div>
-                            
-                            <!-- Kategória -->
-                            <div class="filter-group">
-                                <label for="category">Kategória</label>
-                                <select id="category" name="category" class="filter-select">
-                                    <option value="">Összes kategória</option>
-                                    <?php foreach ($categories as $cat): ?>
-                                        <option value="<?php echo htmlspecialchars($cat['category']); ?>"
-                                            <?php echo $category_filter == $cat['category'] ? 'selected' : ''; ?>>
-                                            <?php echo htmlspecialchars($cat['category']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                        </div>
+                        
+                        <!-- Gyors ár szűrők -->
+                        <div class="filter-group">
+                            <label>Gyors szűrés</label>
+                            <div class="filter-tags">
+                                <div class="filter-tag" data-price-min="0" data-price-max="10000">0-10 000 Ft</div>
+                                <div class="filter-tag" data-price-min="10000" data-price-max="50000">10-50 000 Ft</div>
+                                <div class="filter-tag" data-price-min="50000" data-price-max="100000">50-100 000 Ft</div>
+                                <div class="filter-tag" data-price-min="100000" data-price-max="">100 000 Ft+</div>
                             </div>
-                            
-                            <!-- Ár tartomány -->
-                            <div class="filter-group">
-                                <label>Ár tartomány (Ft)</label>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-                                    <input type="number" name="price_min" class="filter-input" 
-                                           placeholder="Min" value="<?php echo htmlspecialchars($price_min); ?>">
-                                    <input type="number" name="price_max" class="filter-input" 
-                                           placeholder="Max" value="<?php echo htmlspecialchars($price_max); ?>">
-                                </div>
-                            </div>
-                            
-                            <!-- Gyors ár szűrők -->
-                            <div class="filter-group">
-                                <label>Gyors szűrés</label>
-                                <div class="filter-tags">
-                                    <div class="filter-tag" data-price-min="0" data-price-max="10000">0-10 000 Ft</div>
-                                    <div class="filter-tag" data-price-min="10000" data-price-max="50000">10-50 000 Ft</div>
-                                    <div class="filter-tag" data-price-min="50000" data-price-max="100000">50-100 000 Ft</div>
-                                    <div class="filter-tag" data-price-min="100000" data-price-max="">100 000 Ft+</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Szűrés gombok -->
-                            <div class="filter-actions">
-                                <button type="submit" class="filter-btn apply">
-                                    <i class="fas fa-filter"></i> Szűrés
-                                </button>
-                                <button type="button" id="reset-filters" class="filter-btn reset">
-                                    <i class="fas fa-redo"></i> Törlés
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        
+                        <!-- Szűrés gombok -->
+                        <div class="filter-actions">
+                            <button type="submit" class="filter-btn apply">
+                                <i class="fas fa-filter"></i> Szűrés
+                            </button>
+                            <button type="button" id="reset-filters" class="filter-btn reset">
+                                <i class="fas fa-redo"></i> Törlés
+                            </button>
+                        </div>
+                    </form>
                 </aside>
                 
                 <!-- =============================== -->

@@ -150,7 +150,8 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
     <style>
         /* Profil specifikus stílusok - JAVÍTOTT */
         body {
-            padding-top: 50px;
+            padding-top: 70px;
+
         }
         
         .profile-dashboard {
@@ -177,6 +178,9 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
             box-shadow: var(--shadow-md);
             height: fit-content;
             border: 1px solid var(--border-color);
+            text-align: center;
+            position: sticky;
+            top: 100px;
         }
 
         .profile-main {
@@ -675,44 +679,42 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
 <div class="profile-dashboard">
     <!-- Bal oldali sidebar -->
     <aside class="profile-sidebar">
-        <div class="user-info-card">
-            <img src="<?php echo $profile_image; ?>" alt="Profilkép" class="profile-avatar">
-            <h2 class="profile-username"><?php echo htmlspecialchars($user['username']); ?></h2>
-            <span class="profile-role"><?php echo $user_role_display; ?></span>
-            
-            <div class="rating-display">
-                <strong>Értékelés:</strong>
-                <span class="rating-stars">
-                    <?php
-                    $rating = $user['avg_rating'] ?? 0;
-                    for ($i = 1; $i <= 5; $i++) {
-                        if ($i <= floor($rating)) {
-                            echo '<i class="fas fa-star"></i>';
-                        } elseif ($i == ceil($rating) && fmod($rating, 1) > 0) {
-                            echo '<i class="fas fa-star-half-alt"></i>';
-                        } else {
-                            echo '<i class="far fa-star"></i>';
-                        }
+        <img src="<?php echo $profile_image; ?>" alt="Profilkép" class="profile-avatar">
+        <h2 class="profile-username"><?php echo htmlspecialchars($user['username']); ?></h2>
+        <span class="profile-role"><?php echo $user_role_display; ?></span>
+        
+        <div class="rating-display">
+            <strong>Értékelés:</strong>
+            <span class="rating-stars">
+                <?php
+                $rating = $user['avg_rating'] ?? 0;
+                for ($i = 1; $i <= 5; $i++) {
+                    if ($i <= floor($rating)) {
+                        echo '<i class="fas fa-star"></i>';
+                    } elseif ($i == ceil($rating) && fmod($rating, 1) > 0) {
+                        echo '<i class="fas fa-star-half-alt"></i>';
+                    } else {
+                        echo '<i class="far fa-star"></i>';
                     }
-                    ?>
-                    <span style="margin-left: 0.5rem; font-weight: 600;">(<?php echo number_format($rating, 1); ?>)</span>
-                </span>
-            </div>
+                }
+                ?>
+                <span style="margin-left: 0.5rem; font-weight: 600;">(<?php echo number_format($rating, 1); ?>)</span>
+            </span>
+        </div>
 
-            <div class="profile-actions">
-                <a href="profile_edit.php?action=image" class="profile-btn profile-btn-primary">
-                    <i class="fas fa-camera"></i> Profilkép módosítása
-                </a>
-                <a href="profile_edit.php" class="profile-btn profile-btn-secondary">
-                    <i class="fas fa-user-edit"></i> Profil szerkesztése
-                </a>
-                <a href="shop.php?my_products=1" class="profile-btn profile-btn-secondary">
-                    <i class="fas fa-box"></i> Termékeim
-                </a>
-                <button class="profile-btn profile-btn-danger" onclick="confirmLogout()">
-                    <i class="fas fa-sign-out-alt"></i> Kijelentkezés
-                </button>
-            </div>
+        <div class="profile-actions">
+            <a href="profile_edit.php?action=image" class="profile-btn profile-btn-primary">
+                <i class="fas fa-camera"></i> Profilkép módosítása
+            </a>
+            <a href="profile_edit.php" class="profile-btn profile-btn-secondary">
+                <i class="fas fa-user-edit"></i> Profil szerkesztése
+            </a>
+            <a href="shop.php?my_products=1" class="profile-btn profile-btn-secondary">
+                <i class="fas fa-box"></i> Termékeim
+            </a>
+            <button class="profile-btn profile-btn-danger" onclick="confirmLogout()">
+                <i class="fas fa-sign-out-alt"></i> Kijelentkezés
+            </button>
         </div>
 
         <!-- Kitüntetések -->
