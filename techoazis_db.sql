@@ -14,10 +14,10 @@ CREATE TABLE users (
   sold_items int(11) DEFAULT 0,
   bought_items int(11) DEFAULT 0,
   avg_rating decimal(3,2) DEFAULT 0.00
-)
+);
 
 CREATE TABLE login (
-    login_id INT PRIMARY KEY AUTO_INCREMENT,
+    login_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     login_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -40,7 +40,7 @@ CREATE TABLE reviews (
     seller_user_id INT NOT NULL,
     buyer_user_id INT NOT NULL,
     deal_id INT NOT NULL,
-    rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    rating TINYINT NOT NULL,
     comment TEXT NULL,
     review_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (deal_id)
