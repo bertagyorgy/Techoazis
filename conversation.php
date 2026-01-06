@@ -6,21 +6,146 @@ require_once __DIR__ . '/app/db.php';
    1. AUTH
 ========================= */
 if (!isset($_SESSION['user_id'])) {
+    // Ha AJAX kérés jön de lejárt a session, JSON hibát küldünk
+    if (isset($_REQUEST['ajax'])) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Auth required']);
+        exit();
+    }
     header('Location: login.php');
     exit();
 }
 
 $user_id = (int)$_SESSION['user_id'];
-$product_id = isset($_GET['product_id']) ? (int)$_GET['product_id'] : 0;
-$conversation_id = isset($_GET['conv_id']) ? (int)$_GET['conv_id'] : 0;
+
+// ID-k előkészítése
+$product_id = isset($_REQUEST['product_id']) ? (int)$_REQUEST['product_id'] : 0;
+$conversation_id = isset($_REQUEST['conv_id']) ? (int)$_REQUEST['conv_id'] : 0;
+
+/* =========================
+   1.3 AJAX HANDLER (ÚJ RÉSZ)
+   Ez szolgálja ki a JavaScript fetch kéréseit JSON formátumban.
+   Így nem töltődik újra az oldal, és működik a chat.
+========================= */
+if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == '1') {
+    header('Content-Type: application/json');
+
+    // --- A) ÜZENET KÜLDÉSE ---
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'send') {
+        $msg = trim($_POST['user_message'] ?? '');
+        
+        if ($msg && $conversation_id > 0) {
+            $stmt = $conn->prepare("INSERT INTO messages (conversation_id, sender_user_id, user_message) VALUES (?, ?, ?)");
+            $stmt->bind_param("iis", $conversation_id, $user_id, $msg);
+            
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message_id' => $conn->insert_id]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Adatbázis hiba']);
+            }
+            $stmt->close();
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Hiányzó üzenet vagy ID']);
+        }
+        exit(); // Fontos: Itt megállunk, nem renderelünk HTML-t!
+    }
+
+    // --- B) ÜZENETEK LEKÉRÉSE & LÁTTAMOZÁS (POLLING/PING) ---
+    if (isset($_GET['action']) && ($_GET['action'] === 'get_messages' || isset($_GET['ping']))) {
+        
+        if ($conversation_id > 0) {
+            // 1. LÉPÉS: LÁTTAMOZÁS
+            // Minden olyan üzenetet, ami EBBEN a beszélgetésben van,
+            // NEM én küldtem, és még nincs olvasva, átállítjuk olvasottra.
+            // (Nem kell tudnunk a másik user ID-ját, elég hogy 'sender_user_id != me')
+            $stmt = $conn->prepare("
+                UPDATE messages 
+                SET is_read = 1 
+                WHERE conversation_id = ? 
+                  AND sender_user_id != ? 
+                  AND is_read = 0
+            ");
+            $stmt->bind_param("ii", $conversation_id, $user_id);
+            $stmt->execute();
+            $stmt->close();
+
+            // Ha csak ping volt (státusz frissítés), végzünk is
+            if (isset($_GET['ping']) && !isset($_GET['action'])) {
+                echo json_encode(['success' => true]);
+                exit();
+            }
+
+            // 2. LÉPÉS: LEKÉRÉS
+            // Visszaküldjük az üzeneteket (most már a frissített státuszokkal)
+            $stmt = $conn->prepare("
+                SELECT 
+                    m.message_id, 
+                    m.conversation_id, 
+                    m.sender_user_id, 
+                    m.user_message, 
+                    m.sent_at, 
+                    m.is_read, 
+                    u.username, 
+                    u.profile_image
+                FROM messages m
+                JOIN users u ON m.sender_user_id = u.user_id
+                WHERE m.conversation_id = ?
+                ORDER BY m.sent_at ASC
+            ");
+            $stmt->bind_param("i", $conversation_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $msgs = $result->fetch_all(MYSQLI_ASSOC);
+            
+            echo json_encode(['success' => true, 'messages' => $msgs]);
+            exit();
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Nincs conversation ID']);
+            exit();
+        }
+    }
+    
+    // Ha ismeretlen AJAX kérés
+    exit();
+}
+// --- AJAX HANDLER VÉGE ---
+
+
+/* =========================
+   1.2 FIX: SAJÁT ADATOK LEKÉRÉSE
+========================= */
+$stmt = $conn->prepare("SELECT username, profile_image FROM users WHERE user_id = ? LIMIT 1");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$current_user_data = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+if (!$current_user_data) {
+    $current_user_data = ['username' => 'Én', 'profile_image' => ''];
+}
+
+
+/* =========================
+   1.5 FIX: ID HELYREÁLLÍTÁS
+========================= */
+if ($conversation_id > 0 && $product_id === 0) {
+    $stmt = $conn->prepare("SELECT product_id FROM conversations WHERE conversation_id = ? LIMIT 1");
+    $stmt->bind_param("i", $conversation_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $product_id = (int)$row['product_id'];
+    }
+    $stmt->close();
+}
 
 /* =========================
    2. TERMÉK LEKÉRÉS
 ========================= */
-/*if ($product_id <= 0) {
+if ($product_id <= 0) {
     header('Location: products.php');
     exit();
-}*/
+}
 
 $stmt = $conn->prepare("
     SELECT 
@@ -34,7 +159,8 @@ $stmt = $conn->prepare("
         p.pickup_location,
         p.created_at,
         u.username AS seller_username,
-        u.profile_image AS seller_image
+        u.profile_image AS seller_image,
+        (SELECT image_path FROM images WHERE product_id = p.product_id LIMIT 1) as main_image
     FROM products p
     JOIN users u ON p.seller_user_id = u.user_id
     WHERE p.product_id = ?
@@ -47,10 +173,10 @@ $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 $stmt->close();
 
-/*if (!$product) {
+if (!$product) {
     header('Location: products.php');
     exit();
-}*/
+}
 
 $is_seller = ($product['seller_user_id'] === $user_id);
 
@@ -76,8 +202,8 @@ if (!$is_seller && $conversation_id === 0) {
         $conversation_id = (int)$existing['conversation_id'];
     } else {
         $stmt = $conn->prepare("
-            INSERT INTO conversations (product_id, seller_user_id, buyer_user_id)
-            VALUES (?, ?, ?)
+            INSERT INTO conversations (product_id, seller_user_id, buyer_user_id, conv_status)
+            VALUES (?, ?, ?, 'open')
         ");
         $stmt->bind_param(
             "iii",
@@ -90,11 +216,6 @@ if (!$is_seller && $conversation_id === 0) {
         $stmt->close();
     }
 }
-
-/*if ($conversation_id <= 0) {
-    header('Location: products.php');
-    exit();
-}*/
 
 /* =========================
    4. BESZÉLGETÉS ELLENŐRZÉS
@@ -131,33 +252,47 @@ if (
 }
 
 /* =========================
-   5. MÁS FELHASZNÁLÓ
+  4.2  BESZÉLGETÉS LEZÁRÁSA (ARCHIVÁLÁS)
 ========================= */
-$other_user_id = ($conversation['seller_user_id'] === $user_id)
-    ? (int)$conversation['buyer_user_id']
-    : (int)$conversation['seller_user_id'];
-/* =========================
-   5/B. MÁS FELHASZNÁLÓ ADATAI
-========================= */
-$stmt = $conn->prepare("
-    SELECT user_id, username, profile_image
-    FROM users
-    WHERE user_id = ?
-    LIMIT 1
-");
-$stmt->bind_param("i", $other_user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$other_user = $result->fetch_assoc();
-$stmt->close();
-
-if (!$other_user) {
-    header('Location: products.php');
-    exit();
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' && 
+    isset($_POST['close_conversation']) && 
+    $conversation['conv_status'] !== 'archived'
+) {
+    $stmt = $conn->prepare("UPDATE conversations SET conv_status = 'archived' WHERE conversation_id = ?");
+    $stmt->bind_param("i", $conversation_id);
+    
+    if ($stmt->execute()) {
+        $conversation['conv_status'] = 'archived'; // Frissítjük a lokális változót a megjelenítéshez
+        $success_message = "A beszélgetést lezártad. További üzenetek küldése nem lehetséges.";
+    }
+    $stmt->close();
 }
 
 /* =========================
-   6. ELADVA GOMB (TRANZAKCIÓ!)
+   4.5 LÁTTAMOZÁS (HTML BETÖLTÉSKOR IS)
+========================= */
+$other_user_id = ($conversation['seller_user_id'] === $user_id) ? (int)$conversation['buyer_user_id'] : (int)$conversation['seller_user_id'];
+
+$stmt = $conn->prepare("SELECT user_id, username, profile_image FROM users WHERE user_id = ? LIMIT 1");
+$stmt->bind_param("i", $other_user_id);
+$stmt->execute();
+$other_user = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+$stmt = $conn->prepare("
+    UPDATE messages 
+    SET is_read = 1 
+    WHERE conversation_id = ? 
+      AND sender_user_id = ? 
+      AND is_read = 0
+");
+$stmt->bind_param("ii", $conversation_id, $other_user_id);
+$stmt->execute();
+$stmt->close();
+
+/* =========================
+   6. ELADVA GOMB
 ========================= */
 if (
     $_SERVER['REQUEST_METHOD'] === 'POST' &&
@@ -168,41 +303,22 @@ if (
     $conn->begin_transaction();
 
     try {
-        $stmt = $conn->prepare("
-            UPDATE products
-            SET product_status = 'sold'
-            WHERE product_id = ?
-              AND seller_user_id = ?
-        ");
+        $stmt = $conn->prepare("UPDATE products SET product_status = 'sold' WHERE product_id = ? AND seller_user_id = ?");
         $stmt->bind_param("ii", $product_id, $user_id);
-        $stmt->execute();
-        $stmt->close();
+        $stmt->execute(); $stmt->close();
 
-        $stmt = $conn->prepare("
-            UPDATE conversations
-            SET status = 'deal_made'
-            WHERE conversation_id = ?
-        ");
+        $stmt = $conn->prepare("UPDATE conversations SET conv_status = 'deal_made' WHERE conversation_id = ?");
         $stmt->bind_param("i", $conversation_id);
-        $stmt->execute();
-        $stmt->close();
+        $stmt->execute(); $stmt->close();
 
-        $stmt = $conn->prepare("
-            INSERT INTO deals (product_id, seller_user_id, buyer_user_id, conversation_id)
-            VALUES (?, ?, ?, ?)
-        ");
-        $stmt->bind_param(
-            "iiii",
-            $product_id,
-            $user_id,
-            $other_user_id,
-            $conversation_id
-        );
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $conn->prepare("INSERT INTO deals (product_id, seller_user_id, buyer_user_id, conversation_id) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiii", $product_id, $user_id, $other_user_id, $conversation_id);
+        $stmt->execute(); $stmt->close();
 
         $conn->commit();
         $success_message = "A termék sikeresen eladva.";
+        $conversation['product_status'] = 'sold';
+        $conversation['conv_status'] = 'deal_made';
 
     } catch (Throwable $e) {
         $conn->rollback();
@@ -211,7 +327,23 @@ if (
 }
 
 /* =========================
-   7. ÜZENETEK LEKÉRÉSE
+   6.5 ÜZENET KÜLDÉS (PHP FALLBACK HTML FORMHOZ)
+========================= */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_message']) && !isset($_REQUEST['ajax'])) {
+    $message_text = trim($_POST['user_message']);
+    if (!empty($message_text)) {
+        $stmt = $conn->prepare("INSERT INTO messages (conversation_id, sender_user_id, user_message) VALUES (?, ?, ?)");
+        $stmt->bind_param("iis", $conversation_id, $user_id, $message_text);
+        if ($stmt->execute()) {
+            header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+            exit();
+        }
+        $stmt->close();
+    }
+}
+
+/* =========================
+   7. ÜZENETEK LEKÉRÉSE (HTML MEGJELENÍTÉSHEZ)
 ========================= */
 $stmt = $conn->prepare("
     SELECT 
@@ -228,7 +360,6 @@ $stmt = $conn->prepare("
     WHERE m.conversation_id = ?
     ORDER BY m.sent_at ASC
 ");
-
 $stmt->bind_param("i", $conversation_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -244,424 +375,15 @@ $stmt->close();
     <title>Beszélgetés | Techoázis</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
     <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/comments.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/create_post.css">
-    <link rel="stylesheet" href="./static/custom_card.css">
-    <link rel="stylesheet" href="./static/feature_cards.css">
-    <link rel="stylesheet" href="./static/filter_system.css">
-    <link rel="stylesheet" href="./static/forum.css">
-    <link rel="stylesheet" href="./static/group_view.css">
-    <link rel="stylesheet" href="./static/hero_section.css">
-    <link rel="stylesheet" href="./static/loading_animation.css">
-    <link rel="stylesheet" href="./static/login_page.css">
-    <link rel="stylesheet" href="./static/modern_footer.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/post_card.css">
-    <link rel="stylesheet" href="./static/profile_pages.css">
-    <link rel="stylesheet" href="./static/responsive_adjustments.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
+    <link rel="stylesheet" href="./static/converstation.css">
+    <link rel="stylesheet" href="./static/reset&base_styles.css">
+    <link rel="stylesheet" href="./static/container&grid_system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <style>
-        /* ===============================
-          CONVERSATION STYLES
-        =============================== */
-        .conversation-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-        
-        .conversation-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        .conversation-title h1 {
-            color: var(--primary-700);
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .conversation-info {
-            color: var(--text-light);
-            font-size: 1.1rem;
-        }
-        
-        .conversation-layout {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 2rem;
-            min-height: 600px;
-        }
-        
-        @media (max-width: 992px) {
-            .conversation-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* ===============================
-          CHAT SECTION
-        =============================== */
-        .chat-section {
-            display: flex;
-            flex-direction: column;
-            background: var(--surface);
-            border-radius: var(--border-radius-lg);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-        
-        .chat-header {
-            padding: 1.5rem;
-            background: var(--primary-100);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-        
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .user-info h3 {
-            margin: 0;
-            color: var(--primary-700);
-        }
-        
-        .user-info p {
-            margin: 0.25rem 0 0 0;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-        
-        .messages-container {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            max-height: 500px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .message {
-            display: flex;
-            max-width: 80%;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .message.sent {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-        
-        .message.received {
-            align-self: flex-start;
-        }
-        
-        .message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        
-        .message-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .message-content {
-            margin: 0 1rem;
-            padding: 1rem;
-            border-radius: var(--border-radius-lg);
-            position: relative;
-            max-width: 100%;
-            word-wrap: break-word;
-        }
-        
-        .message.sent .message-content {
-            background: var(--accent-200);
-            color: var(--accent-800);
-            border-bottom-right-radius: 5px;
-        }
-        
-        .message.received .message-content {
-            background: var(--primary-100);
-            color: var(--text-color);
-            border-bottom-left-radius: 5px;
-        }
-        
-        .message-text {
-            margin-bottom: 0.5rem;
-        }
-        
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            text-align: right;
-        }
-        
-        .message-input-container {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            background: var(--surface);
-        }
-        
-        .message-input-form {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .message-input {
-            flex: 1;
-            padding: 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: var(--border-radius-md);
-            font-size: 1rem;
-            background: var(--background);
-            color: var(--text-color);
-            resize: none;
-            min-height: 60px;
-            max-height: 120px;
-        }
-        
-        .message-input:focus {
-            outline: none;
-            border-color: var(--accent-600);
-        }
-        
-        .send-button {
-            padding: 1rem 1.5rem;
-            background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
-            color: white;
-            border: none;
-            border-radius: var(--border-radius-md);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            align-self: flex-end;
-        }
-        
-        .send-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .send-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        /* ===============================
-          PRODUCT SIDEBAR
-        =============================== */
-        .product-sidebar {
-            background: var(--surface);
-            border-radius: var(--border-radius-lg);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-        
-        .product-header {
-            padding: 1.5rem;
-            background: var(--primary-100);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .product-header h3 {
-            margin: 0 0 1rem 0;
-            color: var(--primary-700);
-            font-size: 1.25rem;
-        }
-        
-        .product-status-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .product-status-badge.active {
-            background: var(--success);
-            color: white;
-        }
-        
-        .product-status-badge.sold {
-            background: var(--danger);
-            color: white;
-        }
-        
-        .product-status-badge.hidden {
-            background: var(--text-light);
-            color: white;
-        }
-        
-        .product-images {
-            padding: 1.5rem;
-        }
-        
-        .main-product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: var(--border-radius-md);
-            margin-bottom: 1rem;
-        }
-        
-        .product-details {
-            padding: 0 1.5rem 1.5rem 1.5rem;
-        }
-        
-        .product-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-600);
-            margin-bottom: 1rem;
-        }
-        
-        .product-description {
-            color: var(--text-color);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-        
-        .product-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-light);
-        }
-        
-        .meta-item i {
-            color: var(--accent-600);
-        }
-        
-        /* ===============================
-          DEAL ACTIONS
-        =============================== */
-        .deal-actions {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .deal-button {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(45deg, var(--success), #34d399);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius-md);
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .deal-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .deal-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .deal-button.sold {
-            background: var(--danger);
-        }
-        
-        /* ===============================
-          EMPTY STATE
-        =============================== */
-        .empty-messages {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-light);
-        }
-        
-        .empty-messages i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--border-color);
-        }
-        
-        /* ===============================
-          NOTIFICATION BADGE
-        =============================== */
-        .unread-badge {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-600);
-            border-radius: 50%;
-            margin-left: 0.5rem;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        
-        /* ===============================
-          RESPONSIVE
-        =============================== */
-        @media (max-width: 768px) {
-            .conversation-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .messages-container {
-                max-height: 400px;
-            }
-            
-            .message {
-                max-width: 90%;
-            }
-        }
-    </style>
+    <script src="./static/converstation.js" defer></script>
+
 </head>
 <body>
     <?php include './views/navbar.php'; ?>
@@ -680,7 +402,7 @@ $stmt->close();
                 </div>
                 
                 <?php if ($is_seller): ?>
-                <form method="POST" onsubmit="return confirm('Biztosan eladottként szeretnéd jelölni a terméket?');">
+                <form method="POST" action="conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>" onsubmit="return confirm('Biztosan eladottként szeretnéd jelölni a terméket?');">
                     <button type="submit" name="mark_as_sold" class="deal-button <?php echo $conversation['conv_status'] === 'deal_made' ? 'sold' : ''; ?>"
                             <?php echo $conversation['conv_status'] === 'deal_made' ? 'disabled' : ''; ?>>
                         <i class="fas fa-handshake"></i>
@@ -733,7 +455,7 @@ $stmt->close();
                             </div>
                         <?php else: ?>
                             <?php foreach ($messages as $message): ?>
-                                <div class="message <?php echo $message['sender_user_id'] == $user_id ? 'sent' : 'received'; ?>">
+                                <div class="message <?php echo $message['sender_user_id'] == $user_id ? 'sent' : 'received'; ?>" data-message-id="<?php echo $message['message_id']; ?>">
                                     <div class="message-avatar">
                                         <img src="<?php echo htmlspecialchars($message['profile_image']); ?>" 
                                              alt="<?php echo htmlspecialchars($message['username']); ?>">
@@ -744,8 +466,14 @@ $stmt->close();
                                         </div>
                                         <div class="message-time">
                                             <?php echo date('H:i', strtotime($message['sent_at'])); ?>
-                                            <?php if ($message['sender_user_id'] == $user_id && $message['is_read']): ?>
-                                                <i class="fas fa-check" style="margin-left: 0.5rem; color: var(--accent-600);"></i>
+                                            <?php if ($message['sender_user_id'] == $user_id): ?>
+                                                <?php if ($message['is_read']): ?>
+                                                    <!-- OLVASOTT: Dupla színes pipa -->
+                                                    <i class="fas fa-check-double message-status-icon read" title="Látta" style="margin-left: 0.5rem; color: var(--accent-600);"></i>
+                                                <?php else: ?>
+                                                    <!-- NEM OLVASOTT: Szürke pipa -->
+                                                    <i class="fas fa-check message-status-icon sent" title="Elküldve" style="margin-left: 0.5rem; color: #aaa;"></i>
+                                                <?php endif; ?>
                                             <?php endif; ?>
                                         </div>
                                     </div>
@@ -755,15 +483,20 @@ $stmt->close();
                     </div>
                     
                     <!-- Üzenet küldő -->
-                    <div class="message-input-container">
-                        <form class="message-input-form" id="message-form">
-                            <textarea class="message-input" id="message-input" 
-                                      placeholder="Írd ide az üzeneted..." required></textarea>
-                            <button type="submit" class="send-button" id="send-button">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </form>
-                    </div>
+                    <?php if ($conversation['conv_status'] !== 'archived' && $conversation['conv_status'] !== 'deal_made'): ?>
+                        <div class="message-input-container">
+                            <form class="message-input-form" id="message-form" action="..." method="POST">
+                                <textarea class="message-input" id="message-input" name="user_message" placeholder="Írd ide az üzeneted..." required></textarea>
+                                <button type="submit" class="send-button" id="send-button">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    <?php else: ?>
+                        <div class="message-input-container" style="text-align: center; padding: 1rem; background: #f8f9fa; border-top: 1px solid #ddd;">
+                            <p><i class="fas fa-info-circle"></i> Ez a beszélgetés lezárult, további üzenetek nem küldhetőek.</p>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 
                 <!-- Jobb oldal: Termék információk -->
@@ -775,12 +508,29 @@ $stmt->close();
                             echo $status_text[$conversation['product_status']] ?? $conversation['product_status'];
                             ?>
                         </div>
+                            <form method="POST" action="conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>" 
+                                onsubmit="return confirm('Biztosan le akarod zárni a beszélgetést? Több üzenetet nem tudtok váltani.');" 
+                                style="display: inline-block; margin-left: 10px;">
+                                
+                                <button type="submit" name="close_conversation" class="deal-button" 
+                                        style="background-color: var(--error, #dc3545);"
+                                        <?php echo $conversation['conv_status'] === 'archived' ? 'disabled' : ''; ?>>
+                                    <i class="fas fa-lock"></i>
+                                    <?php echo $conversation['conv_status'] === 'archived' ? 'Lezárva' : 'Beszélgetés lezárása'; ?>
+                                </button>
+                            </form>
                     </div>
                     
                     <div class="product-images">
-                        <!-- Itt jönnének a termék képek -->
-                        <img src="https://via.placeholder.com/300x200/3b82f6/ffffff?text=Term%C3%A9k+k%C3%A9p" 
-                             alt="Termék kép" class="main-product-image">
+                        <?php if (!empty($product['main_image'])): ?>
+                            <img src="<?php echo htmlspecialchars($product['main_image']); ?>" 
+                                alt="<?php echo htmlspecialchars($product['product_name']); ?>" 
+                                class="main-product-image">
+                        <?php else: ?>
+                            <img src="https://via.placeholder.com/300x200/3b82f6/ffffff?text=Nincs+kép" 
+                                alt="Nincs elérhető kép" 
+                                class="main-product-image">
+                        <?php endif; ?>
                     </div>
                     
                     <div class="product-details">
@@ -820,7 +570,7 @@ $stmt->close();
                     
                     <div class="deal-actions">
                         <?php if (!$is_seller): ?>
-                            <a href="product.php?id=<?php echo $product_id; ?>" class="deal-button">
+                            <a href="product_detail.php?id=<?php echo $product_id; ?>" class="deal-button">
                                 <i class="fas fa-external-link-alt"></i>
                                 Termék oldala
                             </a>
@@ -837,151 +587,13 @@ $stmt->close();
     </section>
     
     <script>
-        // Automatikus görgetés az új üzenetekhez
-        const messagesContainer = document.getElementById('messages-container');
-        function scrollToBottom() {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-        
-        // Oldal betöltésekor görgetés le
-        window.addEventListener('load', scrollToBottom);
-        
-        // Üzenet küldés AJAX-al
-        document.getElementById('message-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value.trim();
-            const sendButton = document.getElementById('send-button');
-            
-            if (!message) return;
-            
-            // Gomb letiltása és ikon változtatás
-            sendButton.disabled = true;
-            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            // AJAX kérés
-            fetch('messages.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    'action': 'send',
-                    'conversation_id': <?php echo $conversation_id; ?>,
-                    'message': message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Üzenet hozzáadása a chathez (frontenden)
-                    const messageElement = `
-                        <div class="message sent">
-                            <div class="message-avatar">
-                                <img src="<?php echo $_SESSION['profile_image'] ?? 'images/anonymous.png'; ?>" 
-                                     alt="<?php echo $_SESSION['username']; ?>">
-                            </div>
-                            <div class="message-content">
-                                <div class="message-text">
-                                    ${message.replace(/\n/g, '<br>')}
-                                </div>
-                                <div class="message-time">
-                                    ${new Date().toLocaleTimeString('hu-HU', {hour: '2-digit', minute:'2-digit'})}
-                                    <i class="fas fa-check" style="margin-left: 0.5rem; color: var(--accent-600);"></i>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    // Ha üres volt a chat, eltüntetjük az üres állapotot
-                    const emptyState = document.querySelector('.empty-messages');
-                    if (emptyState) {
-                        emptyState.remove();
-                    }
-                    
-                    // Üzenet hozzáadása
-                    messagesContainer.insertAdjacentHTML('beforeend', messageElement);
-                    
-                    // Input ürítése
-                    messageInput.value = '';
-                    
-                    // Görgetés az új üzenethez
-                    scrollToBottom();
-                } else {
-                    alert('Hiba az üzenet küldésekor: ' + (data.error || 'Ismeretlen hiba'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Hálózati hiba történt. Próbáld újra!');
-            })
-            .finally(() => {
-                // Gomb visszaállítása
-                sendButton.disabled = false;
-                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
-            });
-        });
-        
-        // Automatikus üzenet frissítés (minden 5 másodpercben)
-        let lastMessageId = <?php echo !empty($messages) ? end($messages)['message_id'] : 0; ?>;
-        
-        function fetchNewMessages() {
-            fetch(`messages.php?action=get&conversation_id=<?php echo $conversation_id; ?>&last_id=${lastMessageId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success && data.messages.length > 0) {
-                        data.messages.forEach(message => {
-                            // Csak az új üzeneteket adjuk hozzá
-                            if (message.message_id > lastMessageId) {
-                                const isSent = message.sender_user_id == <?php echo $user_id; ?>;
-                                const messageElement = `
-                                    <div class="message ${isSent ? 'sent' : 'received'}">
-                                        <div class="message-avatar">
-                                            <img src="${message.profile_image}" 
-                                                 alt="${message.username}">
-                                        </div>
-                                        <div class="message-content">
-                                            <div class="message-text">
-                                                ${message.user_message.replace(/\n/g, '<br>')}
-                                            </div>
-                                            <div class="message-time">
-                                                ${new Date(message.sent_at).toLocaleTimeString('hu-HU', {hour: '2-digit', minute:'2-digit'})}
-                                                ${isSent ? '<i class="fas fa-check" style="margin-left: 0.5rem; color: var(--accent-600);"></i>' : ''}
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                                
-                                // Ha üres volt a chat, eltüntetjük az üres állapotot
-                                const emptyState = document.querySelector('.empty-messages');
-                                if (emptyState) {
-                                    emptyState.remove();
-                                }
-                                
-                                messagesContainer.insertAdjacentHTML('beforeend', messageElement);
-                                lastMessageId = message.message_id;
-                            }
-                        });
-                        
-                        // Ha volt új üzenet, görgetünk le
-                        if (data.messages.length > 0) {
-                            scrollToBottom();
-                        }
-                    }
-                })
-                .catch(error => console.error('Error fetching messages:', error));
-        }
-        
-        // Frissítés indítása (minden 5 másodpercben)
-        setInterval(fetchNewMessages, 5000);
-        
-        // Input automatikus magasítás
-        const textarea = document.getElementById('message-input');
-        textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
+        const chatConfig = {
+            conversationId: <?php echo json_encode($conversation_id); ?>,
+            userId: <?php echo json_encode($user_id); ?>,
+            profileImage: <?php echo json_encode(!empty($current_user_data['profile_image']) ? $current_user_data['profile_image'] : 'images/anonymous.png'); ?>,
+            username: <?php echo json_encode($current_user_data['username']); ?>,
+            lastMessageId: <?php echo !empty($messages) ? end($messages)['message_id'] : 0; ?>
+        };
     </script>
 </body>
 </html>
