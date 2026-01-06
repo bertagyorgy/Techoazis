@@ -150,23 +150,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <link rel="stylesheet" href="<?= $root_path ?>static/reset&base_styles.css">
     <link rel="stylesheet" href="<?= $root_path ?>static/animations_microinteractions.css">
     <link rel="stylesheet" href="<?= $root_path ?>static/button_system.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/comments.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/container&grid_system.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/create_post.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/custom_card.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/feature_cards.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/filter_system.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/forum.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/group_view.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/hero_section.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/loading_animation.css">
     <link rel="stylesheet" href="<?= $root_path ?>static/login_page.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/modern_footer.css">
     <link rel="stylesheet" href="<?= $root_path ?>static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/post_card.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/profile_pages.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/responsive_adjustments.css">
-    <link rel="stylesheet" href="<?= $root_path ?>static/utility_classes.css">
+
 
 </head>
 <body>

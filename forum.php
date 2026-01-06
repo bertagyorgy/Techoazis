@@ -45,26 +45,15 @@ while ($img = $images_result->fetch_assoc()) {
     <title>Techoazis | Community</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
     <link rel="stylesheet" href="./static/button_system.css">
     <link rel="stylesheet" href="./static/comments.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/create_post.css">
-    <link rel="stylesheet" href="./static/custom_card.css">
-    <link rel="stylesheet" href="./static/feature_cards.css">
-    <link rel="stylesheet" href="./static/filter_system.css">
     <link rel="stylesheet" href="./static/forum.css">
-    <link rel="stylesheet" href="./static/group_view.css">
-    <link rel="stylesheet" href="./static/hero_section.css">
-    <link rel="stylesheet" href="./static/loading_animation.css">
-    <link rel="stylesheet" href="./static/login_page.css">
-    <link rel="stylesheet" href="./static/modern_footer.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
     <link rel="stylesheet" href="./static/post_card.css">
-    <link rel="stylesheet" href="./static/profile_pages.css">
     <link rel="stylesheet" href="./static/responsive_adjustments.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
+    <link rel="stylesheet" href="./static/reset&base_styles.css">
+    <link rel="stylesheet" href="./static/container&grid_system.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="./static/index.js" defer></script>
@@ -125,6 +114,9 @@ while ($img = $images_result->fetch_assoc()) {
                     </div>
                 <?php endif; ?>
 
+                <div class="comment-count" id="comment-count-<?= $post['post_id'] ?>">
+                    0 komment
+                </div>
 
                 <button class="show-comments-btn" data-post="<?= $post['post_id'] ?>">
                     Kommentek megnyitása

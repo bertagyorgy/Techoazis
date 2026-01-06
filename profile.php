@@ -122,30 +122,16 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
     <title>Techoázis | <?php echo htmlspecialchars($user['username']); ?>'s profile</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
     <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/comments.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/create_post.css">
-    <link rel="stylesheet" href="./static/custom_card.css">
-    <link rel="stylesheet" href="./static/feature_cards.css">
-    <link rel="stylesheet" href="./static/filter_system.css">
-    <link rel="stylesheet" href="./static/forum.css">
-    <link rel="stylesheet" href="./static/group_view.css">
-    <link rel="stylesheet" href="./static/hero_section.css">
-    <link rel="stylesheet" href="./static/loading_animation.css">
-    <link rel="stylesheet" href="./static/login_page.css">
-    <link rel="stylesheet" href="./static/modern_footer.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/post_card.css">
     <link rel="stylesheet" href="./static/profile_pages.css">
-    <link rel="stylesheet" href="./static/responsive_adjustments.css">
     <link rel="stylesheet" href="./static/utility_classes.css">
+    <link rel="stylesheet" href="./static/reset&base_styles.css">
+    <link rel="stylesheet" href="./static/container&grid_system.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
 
     <style>
         /* Profil specifikus stílusok - JAVÍTOTT */
@@ -796,7 +782,7 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
             <?php if (count($conversations) > 0): ?>
                 <?php foreach ($conversations as $conv): ?>
                 <!-- JAVÍTOTT: Helyes link a conversation.php-ra -->
-                <a href="conversation.php?conv_id=<?php echo $conv['conversation_id']; ?>" class="conversation-link">
+                <a href="conversation.php?conv_id=<?php echo $conv['conversation_id']; ?>&product_id=<?php echo $conv['product_id']; ?>" class="conversation-link">
                     <div class="conversation-item <?php echo $conv['unread_count'] > 0 ? 'unread' : ''; ?>">
                         <div class="conversation-product">
                             <?php echo htmlspecialchars($conv['product_name']); ?>
@@ -921,7 +907,7 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
 <script>
 function confirmLogout() {
     if (confirm('Biztosan ki szeretnél jelentkezni?')) {
-        window.location.href = './app/logout.php';
+        window.location.href = '<?= $root ?>views/logout.php';
     }
 }
 
