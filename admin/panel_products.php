@@ -16,7 +16,7 @@ $config = [
         'product_name' => 'Név',
         'category' => 'Kategória',
         'price' => 'Ár',
-        'stock_quantity' => 'Készlet', // JAVÍTVA: stock helyett stock_quantity
+        'product_status' => 'Készlet', // JAVÍTVA: stock helyett stock_quantity
         'main_image_url' => 'Kép', 
     ],
     
@@ -44,12 +44,16 @@ $config = [
              $image_path = '../uploads/products/' . htmlspecialchars($value);
              // Egy kis miniatűr a könnyebb azonosításhoz
              return '<img src="' . $image_path . '" alt="Termékkép" style="max-width: 50px; height: auto; border-radius: 4px;">';
-        }
+        },
+            'product_status' => function($value) {
+                if ($value === 'active') return '🟢 Aktív';
+                if ($value === 'sold') return '🔴 Elfogyott';
+                return htmlspecialchars($value);
+            }
     ],
     
     // Mezők a "Hozzáadás" és "Szerkesztés" űrlapokon
-    // JAVÍTVA: stock helyett stock_quantity - ez kritikus a generic_crud.php működéséhez
-    'form_fields' => ['user_id', 'product_name', 'category', 'product_description', 'price', 'stock_quantity', 'main_image_url'],
+    'form_fields' => ['user_id', 'product_name', 'category', 'product_description', 'price', 'product_status', 'main_image_url'],
 
     // Részletes meződefiníciók az űrlaphoz. Itt az adatbázis oszlop neve a kulcs!
     'fields' => [
@@ -72,9 +76,8 @@ $config = [
         // Ár (egész számra van állítva)
         'price' => ['label' => 'Ár', 'type' => 'number', 'step' => '1', 'required' => true, 'param_type' => 'i'], 
         
-        // Készlet: A kulcs most már megegyezik a fent használt kulcsokkal és a helyes adatbázis oszlopnévvel.
-        'stock_quantity' => ['label' => 'Készlet', 'type' => 'number', 'default' => 10, 'param_type' => 'i'], 
-        
+        'product_status' => [ 'label' => 'Státusz', 'type' => 'select', 'required' => true, 'param_type' => 's', 'options' => [ 'active' => 'Aktív', 'sold' => 'Eladva' ] ],        
+       
         // Kép feltöltő mező.
         'main_image_url' => [
             'label' => 'Termék fő képe (Képfeltöltés)',
