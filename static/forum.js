@@ -63,6 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.success) {
                     container.innerHTML = generateCommentsHTML(data.comments);
                     container.classList.add("open");
+
+                    // kommentek számának frissítése 
+                    updateCommentCount(postId, data.comments.length);
                 }
             }
         });
@@ -154,4 +157,29 @@ function generateCommentsHTML(comments) {
             </div>
         </div>
     `).join("");
+}
+
+// ===========================
+// KOMMENT SZÁMOK BETÖLTÉSE OLDALBETÖLTÉSKOR
+// ===========================
+document.querySelectorAll(".comment-count").forEach(async counter => {
+    const postId = counter.id.replace("comment-count-", "");
+
+    const response = await fetch("./app/get_comment_count.php?post_id=" + postId);
+    const data = await response.json();
+
+    if (data.success) {
+        counter.textContent = data.count + " komment";
+    }
+});
+
+
+// =========================== 
+// KOMMENT SZÁMLÁLÓ FRISSÍTŐ
+//  =========================== 
+function updateCommentCount(postId, count) { 
+    const counter = document.getElementById("comment-count-" + postId); 
+    if (counter) { 
+        counter.textContent = count + " komment"; 
+    } 
 }
