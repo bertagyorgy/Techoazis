@@ -262,7 +262,9 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
     <link rel="stylesheet" href="./static/button_system.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
     <link rel="stylesheet" href="./static/profile_pages.css">
-    <!-- <link rel="stylesheet" href="./static/utility_classes.css"> -->
+    <link rel="stylesheet" href="./static/utility_classes.css">
+    <link rel="stylesheet" href="./static/reset&base_styles.css">
+    <link rel="stylesheet" href="./static/container&grid_system.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="./static/index.js" defer></script>

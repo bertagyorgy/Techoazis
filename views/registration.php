@@ -152,6 +152,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <link rel="stylesheet" href="<?= $root_path ?>static/button_system.css">
     <link rel="stylesheet" href="<?= $root_path ?>static/login_page.css">
     <link rel="stylesheet" href="<?= $root_path ?>static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= $root_path ?>static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= $root_path ?>static/container&grid_system.css">
 
 
 </head>

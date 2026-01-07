@@ -162,12 +162,13 @@ switch ($product_status) {
         overflow: hidden;
         height: 200px;
         background: var(--background);
+        object-fit: scale-down;
     }
     
     .product-image {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: scale-down;
         transition: transform var(--transition-normal);
     }
     

@@ -36,6 +36,8 @@ if (isset($_SESSION['registration_message'])) {
     <link rel="stylesheet" href="../static/button_system.css">
     <link rel="stylesheet" href="../static/login_page.css">
     <link rel="stylesheet" href="../static/modern_navbar.css">
+    <link rel="stylesheet" href="../static/reset&base_styles.css">
+    <link rel="stylesheet" href="../static/container&grid_system.css">
 
 
 </head>

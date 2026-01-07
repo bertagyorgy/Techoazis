@@ -60,7 +60,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($product['product_name']); ?> - TechOázis</title>
+    <title><?php echo htmlspecialchars($product['product_name']); ?> - Techoázis</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
