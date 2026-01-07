@@ -27,6 +27,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="./static/loading_animation.css">
     <link rel="stylesheet" href="./static/modern_footer.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
+    <link rel="stylesheet" href="./static/utility_classes.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,7 +64,7 @@ if ($page === '') {
             </div>
         </div>
     </div>
-
+    <div class="gap"></div>
     <section class="custom-container section-padding">
         <div class="text-center">
             <h2 class="section-title reveal">Mit találsz nálunk?</h2>
