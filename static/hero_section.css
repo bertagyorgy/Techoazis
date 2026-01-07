@@ -2,18 +2,31 @@
   HERO SECTION - MODERN
 ================================*/
 .hero-section {
-    min-height: 100vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
     padding-top: var(--navbar-height);
     background: var(--background-image);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
 }
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 25, 47, 0.5);
+    z-index: 0;               /* ⬅️ tedd 0-ra */
+    pointer-events: none;
+}
+
+.hero-container,
+.hero-section > * {
+    position: relative;
+    z-index: 1;               /* ⬅️ tartalom a sötétítés fölött */
+}
+
+
 
 
 .hero-container {
@@ -26,7 +39,8 @@
 
 .hero-text h1 {
     color: white;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.15em;
     font-size: clamp(2.5rem, 6vw, 4rem);
     background: linear-gradient(45deg, white, var(--primary-300));
     -webkit-background-clip: text;

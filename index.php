@@ -55,21 +55,20 @@ if ($page === '') {
 
     <div class="hero-section">
         <div class="custom-container hero-container">
-            <div class="hero-text reveal">
+            <div class="hero-text">
                 <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
                 <p>Fedezze fel oldalunk nyújtotta szolgáltatásokat.</p>
                 <a href="shop.php">
-                    <button type="button" class="btn btn-primary shopnow">Vásárolj most</button>
+                    <button type="button" class="btn btn-primary shopnow">Vásárolj most ➔</button>
                 </a>
             </div>
         </div>
     </div>
-    <div class="gap"></div>
     <section class="custom-container section-padding">
         <div class="text-center">
-            <h2 class="section-title reveal">Mit találsz nálunk?</h2>
+            <h2 class="section-title">Mit találsz nálunk?</h2>
             <div class="grid-row">
-                <div class="grid-col-3 reveal">
+                <div class="grid-col-3">
                     <a href="./forum.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-users fa-3x icon-primary"></i>
@@ -78,7 +77,7 @@ if ($page === '') {
                         </div>
                     </a>
                 </div>
-                <div class="grid-col-3 reveal">
+                <div class="grid-col-3">
                     <a href="./shop.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-cart-shopping fa-3x icon-success"></i>
@@ -87,7 +86,7 @@ if ($page === '') {
                         </div>
                     </a>
                 </div>
-                <div class="grid-col-3 reveal">
+                <div class="grid-col-3">
                     <a href="#" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-book fa-3x icon-info"></i>
@@ -96,7 +95,7 @@ if ($page === '') {
                         </div>
                     </a>
                 </div>
-                <div class="grid-col-3 reveal">
+                <div class="grid-col-3">
                     <a href="#" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-diagram-project fa-3x icon-warning"></i>

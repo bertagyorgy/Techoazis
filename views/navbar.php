@@ -31,7 +31,6 @@ $cart_badge = (string)$cart_count_unique;
             <ul class="nav-menu">
                 <li class="nav-item"><a class="nav-link active" href="<?= $root ?>index.php">Főoldal</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>articles.php">Tudástár</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= $root ?>projects.php">Projektek</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>forum.php">Közösség</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>shop.php">Vásárlás</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>contact.php">Kapcsolat</a></li>
@@ -42,10 +41,10 @@ $cart_badge = (string)$cart_count_unique;
 
             <div class="nav-icons mobile-icons">
                 <a href='<?= $root ?>shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
-                <a href='<?= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
+                <!--<a href='<= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
                     <i class='fa-solid fa-cart-shopping'></i>
                     <span class='cart-badge'><?php echo $cart_badge; ?></span>
-                </a>
+                </a>-->
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                     <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
                     <a href="<?= $root ?>views/logout.php" class="icon-button" title="Kijelentkezés"> 
@@ -62,10 +61,10 @@ $cart_badge = (string)$cart_count_unique;
 
         <div class="nav-icons desktop-icons">
             <a href='<?= $root ?>shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
-            <a href='<?= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
+            <!--<a href='<?= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
                 <i class='fa-solid fa-cart-shopping'></i>
-                <span class='cart-badge'><?php echo $cart_badge; ?></span>
-            </a>
+                <span class='cart-badge'><php echo $cart_badge; ?></span>
+            </a>-->
             <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
                 <a href='<?= $root ?>views/logout.php' class='icon-button' title='Kijelentkezés'><i class='fa-solid fa-right-from-bracket'></i></a>
