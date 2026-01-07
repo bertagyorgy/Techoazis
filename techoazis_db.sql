@@ -222,6 +222,52 @@ INSERT INTO `login` (`login_id`, `user_id`, `login_date`) VALUES
 (35, 1, '2026-01-06 22:24:19');
 
 -- --------------------------------------------------------
+CREATE TABLE `article_categories` (
+  `category_id` int(11) NOT NULL,
+  `category_name` varchar(120) NOT NULL,
+  `category_slug` varchar(140) NOT NULL,
+  `icon_class` varchar(80) DEFAULT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 100,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO article_categories
+(category_id, category_name, category_slug, icon_class, sort_order)
+VALUES
+(1, 'Webfejlesztés', 'webfejlesztes', 'fa-solid fa-code', 10),
+(2, 'Backend', 'backend', 'fa-solid fa-server', 20),
+(3, 'Frontend', 'frontend', 'fa-solid fa-palette', 30),
+(4, 'Adatbázis', 'adatbazis', 'fa-solid fa-database', 40);
+
+CREATE TABLE `articles` (
+  `article_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `author_user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(280) NOT NULL,
+  `summary` text DEFAULT NULL,
+  `content` longtext NOT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
+  `reading_minutes` int(11) DEFAULT NULL,
+  `status` enum('draft','published','archived') NOT NULL DEFAULT 'draft',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_hungarian_ci;
+
+INSERT INTO articles
+(article_id, category_id, author_user_id, title, slug, summary, content, cover_image, reading_minutes, status)
+VALUES
+(1, 1, 1, 'Mi az AJAX és mikor érdemes használni?', 'mi-az-ajax-es-mikor-erdemes-hasznalni', 'Az AJAX lehetővé teszi, hogy az oldal frissítés nélkül kommunikáljon a szerverrel.', 'Az AJAX (Asynchronous JavaScript and XML) egy technika, amellyel a kliens aszinkron módon adatot kérhet le a szervertől.\n\nGyakori felhasználás:\n- chat rendszerek\n- űrlap validálás\n- értesítések',
+  'uploads/articles/ajax.jpg', 6, 'published'),
+(2, 2, 1, 'Session kezelés PHP-ben érthetően', 'session-kezeles-php-ben-erthetoen', 'A sessionök segítségével állapotot tudunk tárolni PHP alkalmazásokban.', 'A PHP session szerveroldali megoldás, amellyel a felhasználóhoz kötött adatokat kezelhetünk.\n\nTipikus használat:\n- bejelentkezés\n- kosár\n- jogosultság kezelés',
+  'uploads/articles/php-session.jpg', 7, 'published'),
+(3, 3, 3, 'CSS Grid vs Flexbox - mikor melyiket?', 'css-grid-vs-flexbox-mikor-melyiket', 'A Grid és a Flexbox nem egymás konkurensei, hanem másra valók.', 'A Flexbox egy dimenzióban dolgozik, míg a CSS Grid kétdimenziós elrendezést tesz lehetővé.\n\nFlexbox:\n- navbar\n- listák\n\nGrid:\n- layoutok',
+  'uploads/articles/grid-flexbox.jpg', 5, 'published'),
+(4, 4, 6, 'SQL JOIN-ek egyszerű példákkal', 'sql-join-ek-egyszeru-peldakkal', 'JOIN segítségével több tábla adatait kapcsolhatjuk össze.', 'A leggyakoribb JOIN típusok:\n\n- INNER JOIN\n- LEFT JOIN\n- RIGHT JOIN\n\nEzek alapjai nélkül nincs komoly SQL tudás.',
+  'uploads/articles/sql-joins.jpg', 8, 'published'),
+(5, 1, 7, 'MVC architektúra alapjai', 'mvc-architektura-alapjai', 'Az MVC segít átlátható és karbantartható alkalmazásokat készíteni.', 'Az MVC három részből áll:\n\nModel - adatkezelés\nView - megjelenítés\nController - vezérlés\n\nEz a minta skálázható rendszerek alapja.',
+  'uploads/articles/mvc.jpg', 6, 'published');
+
 
 --
 -- Tábla szerkezet ehhez a táblához `messages`
@@ -450,6 +496,18 @@ CREATE TABLE `user_badges` (
 --
 
 --
+-- A tábla indexei `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`article_id`);
+
+--
+-- A tábla indexei `article_categories`
+--
+ALTER TABLE `article_categories`
+  ADD PRIMARY KEY (`category_id`);
+
+--
 -- A tábla indexei `badges`
 --
 ALTER TABLE `badges`
@@ -539,6 +597,18 @@ ALTER TABLE `user_badges`
 --
 ALTER TABLE `badges`
   MODIFY `badge_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT a táblához `article-categories`
+--
+ALTER TABLE `article_categories`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT a táblához `comments`
