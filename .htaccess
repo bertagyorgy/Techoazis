@@ -1,4 +1,22 @@
 RewriteEngine On
+
+# 1. LÉPÉS: A .php kiterjesztés eltüntetése a böngészősávból (Átirányítás)
+# Ha valaki beírja, hogy "fajl.php", átirányítjuk a "fajl"-ra.
+# Ez fontos a SEO miatt, hogy ne legyen duplikált tartalom.
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L,NE]
+
+# 2. LÉPÉS: A kiterjesztés nélküli kérés kiszolgálása
+# Ha a kért dolog nem mappa...
+RewriteCond %{REQUEST_FILENAME} !-d
+# ...és létezik .php kiterjesztéssel rendelkező fájl...
+RewriteCond %{REQUEST_FILENAME}.php -f
+# ...akkor töltse be a .php fájlt a háttérben.
+RewriteRule ^(.+?)/?$ $1.php [L]
+
+# 3. LÉPÉS: A te eredeti kódod (Catch-all / Front Controller)
+# Minden olyan kérést, ami NEM létező fájl és NEM létező mappa
+# (és nem kapta el a fenti szabály), átküld az index.php-nak.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]
