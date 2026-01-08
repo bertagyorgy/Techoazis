@@ -175,23 +175,23 @@ include __DIR__ . '/navbar.php';
                 <form method="POST" action="">
                     <div class="login-form-group">
                         <label for="username" class="login-label">Felhasználónév</label>
-                        <input type="text" name="username" id="username" class="login-input" required>
+                        <input type="text" name="username" id="username" class="login-input" placeholder="Felhasználónév" required>
                     </div>
                     <div class="login-form-group">
                         <label for="email" class="login-label">Email (erre küldjük az aktiváló linket)</label>
-                        <input type="email" name="email" id="email" class="login-input" required>
+                        <input type="email" name="email" id="email" class="login-input" placeholder="Email" required>
                     </div>
                     <div class="login-form-group">
                         <label for="password" class="login-label">Jelszó</label>
                         <div class="password-wrapper">
-                            <input type="password" name="password" id="password" class="login-input" required>
+                            <input type="password" name="password" id="password" class="login-input" placeholder="Jelszó" required>
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
                         </div>
                     </div>
                     <div class="login-form-group">
                         <label for="confirm_password" class="login-label">Jelszó megerősítése</label>
                         <div class="password-wrapper">
-                            <input type="password" name="confirm_password" id="confirm_password" class="login-input" required>
+                            <input type="password" name="confirm_password" id="confirm_password" class="login-input" placeholder="Jelszó újra" required>
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
                         </div>
                     </div>

@@ -19,6 +19,9 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    max-width: 1320px;        /* vagy 1320 / 1200 – ízlés kérdése */
+    margin: 0 auto;
+    padding: 0 1.25rem;
 }
 
 .nav-brand {
@@ -92,8 +95,28 @@
     transition: all var(--transition-fast);
     position: relative;
 }
+.icon-button-re {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    border-radius: var(--border-radius-md);
+    background: var(--dark-surface);
+    color: var(--dark-text);
+    transition: all var(--transition-fast);
+    padding: 10px 15px;
+    border-radius: 50px;
+    position: relative;
+}
 
 .icon-button:hover {
+    background: var(--accent-600);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.icon-button-re:hover {
     background: var(--accent-600);
     color: white;
     transform: translateY(-2px);

@@ -44,8 +44,8 @@ $post_count = $posts->num_rows;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <title><?= htmlspecialchars($group['group_name']) ?> | Techoazis</title>
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
     <link rel="stylesheet" href="./static/button_system.css">
@@ -55,7 +55,9 @@ $post_count = $posts->num_rows;
     <link rel="stylesheet" href="./static/group_view.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
     <link rel="stylesheet" href="./static/post_card.css">
-    <!-- <link rel="stylesheet" href="./static/responsive_adjustments.css"> -->
+    <link rel="stylesheet" href="./static/responsive_adjustments.css">
+    <link rel="stylesheet" href="./static/reset&base_styles.css">
+    <link rel="stylesheet" href="./static/container&grid_system.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="./static/index.js" defer></script>

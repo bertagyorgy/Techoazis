@@ -29,7 +29,7 @@ $cart_badge = (string)$cart_count_unique;
 
         <div class="nav-collapse" id="navCollapseContent">
             <ul class="nav-menu">
-                <li class="nav-item"><a class="nav-link active" href="<?= $root ?>index.php">Főoldal</a></li>
+                <li class="nav-item"><a class="nav-link active" href="<?= $root ?>">Főoldal</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>articles.php">Tudástár</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>forum.php">Közösség</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>shop.php">Vásárlás</a></li>
@@ -43,7 +43,7 @@ $cart_badge = (string)$cart_count_unique;
                 <a href='<?= $root ?>shop.php' class='icon-button' title='Keresés'><i class='fa-solid fa-magnifying-glass'></i></a>
                 <!--<a href='<= $root ?>cart.php' class='icon-button cart-icon' title='Kosár'>
                     <i class='fa-solid fa-cart-shopping'></i>
-                    <span class='cart-badge'><?php echo $cart_badge; ?></span>
+                    <span class='cart-badge'><php echo $cart_badge; ?></span>
                 </a>-->
                 <?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                     <a href='<?= $root ?>profile.php' class='icon-button' title='Profil'><i class='fa-solid fa-user'></i></a>
@@ -52,10 +52,8 @@ $cart_badge = (string)$cart_count_unique;
                     </a>
                 <?php else: ?>
                     <a href="<?= $root ?>views/login.php" class="icon-button" title='Bejelentkezés'><i class="fa-solid fa-user"></i></a>
+                    <a href='<?= $root ?>views/registration.php' class='icon-button-re' title='Regisztráció'>Regisztráció</a>
                 <?php endif; ?>
-                <button class="icon-button theme-toggle" title="Téma váltás">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
             </div>
         </div>
 
@@ -70,10 +68,8 @@ $cart_badge = (string)$cart_count_unique;
                 <a href='<?= $root ?>views/logout.php' class='icon-button' title='Kijelentkezés'><i class='fa-solid fa-right-from-bracket'></i></a>
             <?php else: ?>
                 <a href='<?= $root ?>views/login.php' class='icon-button' title='Bejelentkezés'><i class='fa-solid fa-user'></i></a>
+                <a href='<?= $root ?>views/registration.php' class='icon-button-re' title='Regisztráció'>Regisztráció</a>
             <?php endif; ?>
-            <button class="icon-button theme-toggle" title="Téma váltás">
-                <i class="fa-solid fa-moon"></i>
-            </button>
         </div>
     </div>
     <script>

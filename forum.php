@@ -3,8 +3,27 @@ session_start();
 include './app/db.php';
 
 // ======= CSOPORTOK LEKÉRÉSE =======
-$groups_query = "SELECT group_id, group_name FROM groups ORDER BY group_name ASC";
-$groups_result = $conn->query($groups_query);
+$q = trim($_GET['q'] ?? '');
+$q_like = '%' . $q . '%';
+
+if ($q !== '') {
+    $stmt = $conn->prepare("
+        SELECT group_id, group_name
+        FROM groups
+        WHERE group_name LIKE ?
+        ORDER BY group_name ASC
+    ");
+    $stmt->bind_param("s", $q_like);
+    $stmt->execute();
+    $groups_result = $stmt->get_result();
+    // $stmt->close(); // csak akkor zárd le, ha már nem kell a result (általában ok itt is)
+} else {
+    $groups_result = $conn->query("
+        SELECT group_id, group_name
+        FROM groups
+        ORDER BY group_name ASC
+    ");
+}
 
 // ======= LEGÚJABB POSZTOK JOBB OLDALRA =======
 $latest_query = "
@@ -17,14 +36,28 @@ $latest_query = "
 $latest_posts = $conn->query($latest_query);
 
 // ======= KÖZÉPSŐ RÉSZ – POSZTOK MINDEN CSOPORTBÓL =======
-$posts_query = "
-    SELECT p.*, u.username, g.group_name AS group_name
-    FROM posts p
-    JOIN users u ON p.user_id = u.user_id
-    JOIN groups g ON p.group_id = g.group_id
-    ORDER BY p.created_at DESC
-";
-$posts_result = $conn->query($posts_query);
+if ($q !== '') {
+    $stmt = $conn->prepare("
+        SELECT p.*, u.username, g.group_name AS group_name
+        FROM posts p
+        JOIN users u ON p.user_id = u.user_id
+        JOIN groups g ON p.group_id = g.group_id
+        WHERE (p.title LIKE ? OR p.content LIKE ? OR g.group_name LIKE ? OR u.username LIKE ?)
+        ORDER BY p.created_at DESC
+    ");
+    $stmt->bind_param("ssss", $q_like, $q_like, $q_like, $q_like);
+    $stmt->execute();
+    $posts_result = $stmt->get_result();
+} else {
+    $posts_result = $conn->query("
+        SELECT p.*, u.username, g.group_name AS group_name
+        FROM posts p
+        JOIN users u ON p.user_id = u.user_id
+        JOIN groups g ON p.group_id = g.group_id
+        ORDER BY p.created_at DESC
+    ");
+}
+
 
 // ======= ÖSSZES KÉP LEKÉRÉSE EGYBŐL (N+1 QUERY ELKERÜLÉSÉRE) =======
 $images_query = "SELECT post_id, image_path FROM images WHERE post_id IN (
@@ -69,12 +102,20 @@ while ($img = $images_result->fetch_assoc()) {
         BAL OLDALI SIDENAV
     ====================== -->
     <aside class="forum-left">
-        <input type="text" class="group-search" placeholder="🔍 Csoport keresése...">
-
+        <form method="GET" style="margin-bottom: 1rem;">
+            <input
+                type="text"
+                class="group-search"
+                name="q"
+                value="<?= htmlspecialchars($q) ?>"
+                placeholder="🔍 Keresés a posztokban..."
+            >
+        </form>
+        <h3>Témák</h3>
         <ul class="group-list">
             <?php while($row = $groups_result->fetch_assoc()): ?>
                 <li>
-                    <a href="forum_group.php?group=<?= $row['group_id'] ?>">
+                    <a href="forum_group.php?group=<?= (int)$row['group_id'] ?>">
                         <?= htmlspecialchars($row['group_name']) ?>
                     </a>
                 </li>
@@ -83,11 +124,18 @@ while ($img = $images_result->fetch_assoc()) {
     </aside>
 
 
+
     <!-- ======================
             KÖZÉPSŐ POSZTOS SÁV
     ====================== -->
     <main class="forum-center">
-
+        <?php if ($posts_result->num_rows === 0): ?>
+            <div class="empty-state">
+                <i class="fa-regular fa-face-frown" style="font-size:2rem; margin-bottom:.75rem;"></i>
+                <h2 style="margin:0 0 .5rem 0; color: var(--text-color);">Nincs találat</h2>
+                <p style="margin:0;">Próbálj másik kulcsszót vagy válassz másik témát.</p>
+            </div>
+        <?php endif; ?>
         <?php while($post = $posts_result->fetch_assoc()): ?>
             <div class="post-card">
 

@@ -137,12 +137,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <form method="POST" action="">
                 <div class="login-form-group">
                         <label for="username" class="login-label">Felhasználónév</label>
-                        <input type="text" name="username" id="username" class="login-input" required>
+                        <input type="text" name="username" id="username" class="login-input" placeholder="Felhasználónév" required>
                     </div>
                     <div class="login-form-group">
                         <label for="password" class="login-label">Jelszó</label>
                         <div class="password-wrapper">
-                            <input type="password" name="password" id="password" class="login-input" required>
+                            <input type="password" name="password" id="password" class="login-input" placeholder="Jelszó" required>
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
                         </div>
                     </div>

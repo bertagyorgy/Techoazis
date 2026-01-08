@@ -689,15 +689,15 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
         </div>
 
         <div class="profile-actions">
-            <a href="profile_edit.php?action=image" class="profile-btn profile-btn-primary">
-                <i class="fas fa-camera"></i> Profilkép módosítása
-            </a>
             <a href="profile_edit.php" class="profile-btn profile-btn-secondary">
                 <i class="fas fa-user-edit"></i> Profil szerkesztése
             </a>
             <a href="shop.php?my_products=1" class="profile-btn profile-btn-secondary">
                 <i class="fas fa-box"></i> Termékeim
             </a>
+            <button class="profile-btn profile-btn-secondary theme-toggle">
+                    <i class="fa-solid fa-moon"></i> Téma váltás
+            </button>
             <button class="profile-btn profile-btn-danger" onclick="confirmLogout()">
                 <i class="fas fa-sign-out-alt"></i> Kijelentkezés
             </button>

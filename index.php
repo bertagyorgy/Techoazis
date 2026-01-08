@@ -7,19 +7,21 @@ if (session_status() === PHP_SESSION_NONE) {
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="icon" href="./favicon.ico">
-    <link rel="icon" type="image/png" href="./favicon.png">
-    <script src="./static/index.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoázis | A közösség és a technológia egy helyen</title>
+    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
     <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
     <link rel="stylesheet" href="./static/button_system.css">
+    <link rel="stylesheet" href="./static/comments.css">
+    <link rel="stylesheet" href="./static/create_post.css">
+    <link rel="stylesheet" href="./static/forum.css">
+    <link rel="stylesheet" href="./static/group_view.css">
+    <link rel="stylesheet" href="./static/modern_navbar.css">
+    <link rel="stylesheet" href="./static/post_card.css">
+    <link rel="stylesheet" href="./static/responsive_adjustments.css">
+    <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/container&grid_system.css">
     <link rel="stylesheet" href="./static/custom_card.css">
     <link rel="stylesheet" href="./static/feature_cards.css">
@@ -33,6 +35,10 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="./static/index.js" defer></script>
+    <script src="./static/forum.js" defer></script>
+
 </head>
 <body>
 <?php
