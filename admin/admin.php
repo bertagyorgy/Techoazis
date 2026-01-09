@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
     <title>Techoazis | Adminpanel</title>
     <link rel="stylesheet" href="../static/index.css">
@@ -17,9 +16,14 @@
     <link rel="stylesheet" href="../static/modern_navbar.css">
     <link rel="stylesheet" href="../static/reset&base_styles.css">
     <link rel="stylesheet" href="../static/container&grid_system.css">
-
     <link rel="stylesheet" href="../static/admin-modern.css">
-    <script src="techoazis/static/index.js" defer></script>
+
+    <!-- Inter font hozzáadása -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="./static/index.js" defer></script>
+    <script src="./static/forum.js" defer></script>
 </head>
 <body>
     <div class="up-bar">

@@ -28,7 +28,6 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="./static/hero_section.css">
     <link rel="stylesheet" href="./static/loading_animation.css">
     <link rel="stylesheet" href="./static/modern_footer.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
     <link rel="stylesheet" href="./static/utility_classes.css">
 
     <!-- Inter font hozzáadása -->

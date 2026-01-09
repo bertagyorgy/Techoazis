@@ -11,10 +11,14 @@
     <link rel="stylesheet" href="static/reset&base_styles.css">
     <link rel="stylesheet" href="static/animations_microinteractions.css">
     <link rel="stylesheet" href="static/button_system.css">
-    <link rel="stylesheet" href="static/login_page.css">
     <link rel="stylesheet" href="static/modern_navbar.css">
 
-
+    <!-- Inter font hozzáadása -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="./static/index.js" defer></script>
+    <script src="./static/forum.js" defer></script>
     <style>
         .main {
             margin: 0;

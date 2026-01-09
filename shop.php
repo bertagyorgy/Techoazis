@@ -64,6 +64,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Shop</title>
     <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="./static/index.css">
     <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
@@ -72,8 +73,15 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="./static/filter_system.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
     <link rel="stylesheet" href="./static/utility_classes.css">
+    
+
+    <!-- Inter font hozzáadása -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="./static/index.js" defer></script>
+    <script src="./static/forum.js" defer></script>
 </head>
 <style>
     body {
