@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             // JAVÍTÁS: A PHP által várt paraméterek (conv_id, user_message) és AJAX jelző használata
-            fetch('conversation.php', {
+            fetch('conversation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function markMessagesAsRead() {
         if (!conversationId) return;
 
-        const pageUrl = 'conversation.php'; 
+        const pageUrl = 'conversation'; 
         const timestamp = new Date().getTime();
 
         // A 'ping=1' és 'ajax=1' paraméterrel jelezzük a PHP-nak
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const timestamp = new Date().getTime();
 
         // JAVÍTVA: paraméterek (conv_id, ajax=1)
-        fetch(`conversation.php?action=get_messages&conv_id=${conversationId}&last_id=0&t=${timestamp}&ajax=1`)
+        fetch(`conversation?action=get_messages&conv_id=${conversationId}&last_id=0&t=${timestamp}&ajax=1`)
             .then(response => {
                  return response.text().then(text => {
                     try {
