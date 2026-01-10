@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="static/index.css">
     <link rel="stylesheet" href="static/reset&base_styles.css">
     <link rel="stylesheet" href="static/animations_microinteractions.css">
+    <link rel="stylesheet" href="./static/container&grid_system.css">
     <link rel="stylesheet" href="static/button_system.css">
     <link rel="stylesheet" href="static/modern_navbar.css">
 
