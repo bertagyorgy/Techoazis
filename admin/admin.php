@@ -22,8 +22,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="../static/index.js" defer></script>
+    <script src="../static/forum.js" defer></script>
 </head>
 <body>
     <div class="up-bar">
@@ -48,7 +48,6 @@
                 <li><a href="?page=panel_badges" class="<?php echo ($_GET['page'] ?? '') === 'panel_badges' ? 'active' : ''; ?>"><i class="fa-solid fa-certificate"></i><p>Jelvények</p></a></li>
                 <li><a href="?page=panel_user_badges" class="<?php echo ($_GET['page'] ?? '') === 'panel_user_badges' ? 'active' : ''; ?>"><i class="fa-solid fa-award"></i><p>Felh. jelvények</p></a></li>
                 <li><a href="?page=panel_images" class="<?php echo ($_GET['page'] ?? '') === 'panel_images' ? 'active' : ''; ?>"><i class="fa-solid fa-image"></i><p>Képek</p></a></li>
-                <li><a href="?page=panel_cart" class="<?php echo ($_GET['page'] ?? '') === 'panel_cart' ? 'active' : ''; ?>"><i class="fa-solid fa-cart-shopping"></i><p>Kosár</p></a></li>
                 <li><a href="?page=panel_groups" class="<?php echo ($_GET['page'] ?? '') === 'panel_groups' ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i><p>Csoportok</p></a></li>
                 <li><a href="?page=panel_conversations" class="<?php echo ($_GET['page'] ?? '') === 'panel_conversations' ? 'active' : ''; ?>"><i class="fa-solid fa-comments"></i><p>Beszélgetések</p></a></li>
                 <li><a href="?page=panel_messages" class="<?php echo ($_GET['page'] ?? '') === 'panel_messages' ? 'active' : ''; ?>"><i class="fa-solid fa-envelope"></i><p>Üzenetek</p></a></li>
@@ -60,7 +59,7 @@
         <div class="main">
             <?php
                 $page = $_GET['page'] ?? 'panel_dashboard'; // alapértelmezett oldal
-                $allowed_pages = ['panel_dashboard', 'panel_users', 'panel_login', 'panel_products', 'panel_posts', 'panel_comments', 'panel_badges', 'panel_user_badges', 'panel_images', 'panel_cart', 'panel_groups', 'panel_conversations', 'panel_messages', 'panel_deals'];
+                $allowed_pages = ['panel_dashboard', 'panel_users', 'panel_login', 'panel_products', 'panel_posts', 'panel_comments', 'panel_badges', 'panel_user_badges', 'panel_images', 'panel_groups', 'panel_conversations', 'panel_messages', 'panel_deals'];
 
                 if (in_array($page, $allowed_pages)) {
                     $safe_filename = basename($page . '.php');

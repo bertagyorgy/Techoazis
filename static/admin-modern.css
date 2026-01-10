@@ -1058,7 +1058,7 @@ tbody tr:last-child td {
 /* ===============================
   DARK MODE SUPPORT - manuális váltás
 ================================*/
-.dark {
+html.dark {
     --admin-sidebar: #0f172a;
     --admin-surface: #1e293b;
     --admin-border: #334155;
@@ -1068,44 +1068,68 @@ tbody tr:last-child td {
     --admin-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
 }
 
-.dark body {
+html.dark body {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
-.dark .form-control {
+html.dark .form-control {
     background: #334155;
     color: #f1f5f9;
     border-color: #475569;
 }
 
-.dark .form-control:focus {
+html.dark .form-control:focus {
     background: #475569;
 }
 
-.dark .crud-form input,
-.dark .crud-form textarea,
-.dark .crud-form select {
+html.dark .crud-form input,
+html.dark .crud-form textarea,
+html.dark .crud-form select {
     background: #334155;
     color: #f1f5f9;
     border-color: #475569;
 }
 
-.dark .crud-form input:focus,
-.dark .crud-form textarea:focus,
-.dark .crud-form select:focus {
+html.dark .crud-form input:focus,
+html.dark .crud-form textarea:focus,
+html.dark .crud-form select:focus {
     background: #475569;
 }
 
-.dark .crud-form input::placeholder,
-.dark .crud-form textarea::placeholder {
+html.dark .crud-form input::placeholder,
+html.dark .crud-form textarea::placeholder {
     color: #cbd5e1;
 }
 
-.dark .crud-form .file {
+html.dark .crud-form .file {
     background: #334155;
     border-color: #475569;
 }
 
-.dark .crud-form select {
+html.dark .crud-form select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23f1f5f9' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
 }
+
+.main h1, .main h2, .main p {
+  color: var(--admin-text);
+}
+
+.stat-grid, .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--admin-shadow-md);
+}
+
+.stat-card h3 {
+    margin-top: 0;
+}
+
