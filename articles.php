@@ -171,7 +171,7 @@ $stmt->close();
             border-radius: var(--border-radius-md);
             font-weight: 700;
         }
-        .read-btn:hover{ transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .read-btn:hover{ transform: translateY(-2px); box-shadow: var(--shadow-md); color: white}
 
         .latest-post-item { margin-bottom: 1rem; }
         .latest-post-meta { color: var(--text-light); font-size: .85rem; margin-top: .2rem; }
@@ -208,7 +208,7 @@ $stmt->close();
             <?php endif; ?>
         </form>
 
-        <h3>Témák</h3>
+        <h3>Cikkek</h3>
         <ul class="group-list">
             <li>
                 <a href="articles.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
@@ -225,7 +225,7 @@ $stmt->close();
                 ?>
                 <li>
                     <a href="<?= $href ?>" class="<?= $category_id === (int)$cat['category_id'] ? 'active' : '' ?>">
-                        <i class="<?= htmlspecialchars($cat['icon_class'] ?: 'fa-solid fa-hashtag') ?>"></i>
+                        <!--<i class="<= htmlspecialchars($cat['icon_class'] ?: 'fa-solid fa-hashtag') ?>"></i>-->
                         <?= htmlspecialchars($cat['category_name']) ?>
                     </a>
                 </li>
@@ -265,12 +265,9 @@ $stmt->close();
                         <?php endif; ?>
 
                         <div class="article-actions">
-                            <a class="read-btn" href="article.php?id=<?= (int)$a['article_id'] ?>">
+                            <a class="read-btn" href="article_detail.php?id=<?= (int)$a['article_id'] ?>">
                                 <i class="fa-solid fa-book-open"></i> Elolvasom
                             </a>
-                            <span style="color: var(--text-light); font-size:.9rem;">
-                                ID: <?= (int)$a['article_id'] ?>
-                            </span>
                         </div>
                     </div>
                 </article>
@@ -284,7 +281,7 @@ $stmt->close();
 
         <?php foreach ($latest_articles as $la): ?>
             <div class="latest-post-item">
-                <a href="article.php?id=<?= (int)$la['article_id'] ?>">
+                <a href="article_detail.php?id=<?= (int)$la['article_id'] ?>">
                     <strong><?= htmlspecialchars($la['title']) ?></strong>
                 </a>
                 <p class="latest-post-meta">
