@@ -1120,16 +1120,16 @@ html.dark .crud-form select {
     gap: 1.25rem;
     margin-bottom: 2rem;
 }
-
+.stat-grid .data{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
 .stat-card {
     background: var(--admin-surface);
     border: 1px solid var(--admin-border);
     border-radius: 12px;
     padding: 1.25rem;
     box-shadow: var(--admin-shadow-md);
-}
-
-.stat-card h3 {
-    margin-top: 0;
+    text-align: center;
 }
 

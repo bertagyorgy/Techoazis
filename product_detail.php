@@ -70,6 +70,14 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/container&grid_system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <!-- Inter font hozzáadása -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="./static/index.js" defer></script>
+    <script src="./static/forum.js" defer></script>
     <style>
         /* ===============================
           PRODUCT DETAIL STYLES
@@ -347,7 +355,9 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
         
         .btn-message-seller {
             background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
-            color: white;
+            color: var(--neutral-100);
+            padding: 12px 32px;
+            border-radius: 8px;
         }
         
         .btn-message-seller:hover:not(.disabled) {
@@ -357,12 +367,15 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
         
         .btn-back {
             background: var(--surface);
-            color: var(--primary-700);
+            color: var(--text-light);
             border: 2px solid var(--border-color);
+            padding: 12px 32px;
+            border-radius: 8px;
+            
         }
         
         .btn-back:hover {
-            background: var(--primary-100);
+            background: var(--surface);
             border-color: var(--primary-300);
             transform: translateY(-2px);
         }
@@ -551,7 +564,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                         
                         <div style="text-align: center; margin-top: 1rem;">
                             <a href="profile.php?id=<?php echo $product['seller_id']; ?>" 
-                               class="btn-back" style="display: inline-flex; padding: 0.5rem 1.5rem;">
+                               class="btn-back">
                                 <i class="fas fa-user-circle"></i>
                                 Profil megtekintése
                             </a>

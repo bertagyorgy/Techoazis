@@ -10,7 +10,7 @@ if (!isset($_GET['group'])) {
 $group_id = intval($_GET['group']);
 
 // ===== CSOPORT ADATOK =====
-$group_query = "SELECT group_name, group_image FROM groups WHERE group_id = ?";
+$group_query = "SELECT group_name, group_image, group_description FROM groups WHERE group_id = ?";
 $stmt = $conn->prepare($group_query);
 $stmt->bind_param("i", $group_id);
 $stmt->execute();
@@ -75,6 +75,7 @@ $post_count = $posts->num_rows;
         <div class="group-header-info">
             <h1>#<?= htmlspecialchars($group['group_name']) ?></h1>
             <p class="group-meta"><?= $post_count ?> poszt ebben a csoportban</p>
+            <h4>Leírás:</h4><p class="group-meta"><?= htmlspecialchars($group['group_description']) ?></p>
         </div>
     </div>
     <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
@@ -83,12 +84,14 @@ $post_count = $posts->num_rows;
             
             <input type="hidden" name="group_id" value="<?= $group_id ?>">
 
+            <label for="title">Cím:</label>
             <input type="text" name="title" placeholder="Poszt címe..." required>
 
+            <label for="content">Tartalom:</label>
             <textarea name="content" placeholder="Írd meg a poszt tartalmát..." required></textarea>
 
             <div class="file-inputs">
-                <label>Képek feltöltése (max 3):</label>
+                <label for="images[]">Képek feltöltése (max 3):</label>
                 <input type="file" id="postImages" name="images[]" accept="image/*" multiple>
             </div>
             <div id="imagePreview"></div>

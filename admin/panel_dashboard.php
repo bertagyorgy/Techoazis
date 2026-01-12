@@ -45,47 +45,52 @@ while ($row = $res->fetch_assoc()) {
 </div>
 
 <div class="stat-grid">
-    <div class="stat-card">👤 Felhasználók<br><strong><?= $stats['users'] ?></strong></div>
-    <div class="stat-card">📝 Posztok<br><strong><?= $stats['posts'] ?></strong></div>
-    <div class="stat-card">💬 Kommentek<br><strong><?= $stats['comments'] ?></strong></div>
-    <div class="stat-card">📚 Cikkek<br><strong><?= $stats['articles'] ?></strong></div>
-    <div class="stat-card">🛒 Termékek<br><strong><?= $stats['products'] ?></strong></div>
+    <div class="stat-card">Felhasználók<br><strong class="data"><?= $stats['users'] ?></strong></div>
+    <div class="stat-card">Posztok<br><strong class="data"><?= $stats['posts'] ?></strong></div>
+    <div class="stat-card">Kommentek<br><strong class="data"><?= $stats['comments'] ?></strong></div>
+    <div class="stat-card">Cikkek<br><strong class="data"><?= $stats['articles'] ?></strong></div>
+    <div class="stat-card">Termékek<br><strong class="data"><?= $stats['products'] ?></strong></div>
 </div>
 
 <div class="dashboard-grid">
     <div class="stat-card">
-        <h3>🆕 Legutóbbi felhasználó</h3>
+        <h3>Legutóbbi felhasználó</h3>
         <?= htmlspecialchars($latest['user']['username']) ?><br>
+        <hr>
         <small><?= $latest['user']['registration_date'] ?></small>
     </div>
 
     <div class="stat-card">
-        <h3>📝 Legutóbbi poszt</h3>
+        <h3>Legutóbbi poszt</h3>
         <?= htmlspecialchars($latest['post']['title']) ?><br>
+        <hr>
         <small><?= $latest['post']['created_at'] ?></small>
     </div>
 
     <div class="stat-card">
-        <h3>💬 Legutóbbi komment</h3>
+        <h3>Legutóbbi komment</h3>
         <?= htmlspecialchars(mb_strimwidth($latest['comment']['content'], 0, 80, '…')) ?><br>
+        <hr>
         <small><?= $latest['comment']['created_at'] ?></small>
     </div>
 
     <div class="stat-card">
-        <h3>📚 Legutóbbi cikk</h3>
+        <h3>Legutóbbi cikk</h3>
         <?= htmlspecialchars($latest['article']['title']) ?><br>
+        <hr>
         <small><?= $latest['article']['created_at'] ?></small>
     </div>
 
     <div class="stat-card">
-        <h3>🛒 Legutóbbi termék</h3>
+        <h3>Legutóbbi termék</h3>
         <?= htmlspecialchars($latest['product']['product_name']) ?><br>
+        <hr>
         <small><?= $latest['product']['created_at'] ?></small>
     </div>
 </div>
 
 <div class="stat-card">
-    <h3>📈 Bejelentkezések (utolsó 14 nap)</h3>
+    <h3>Bejelentkezések (utolsó 14 nap)</h3>
     <canvas id="loginChart" height="120"></canvas>
 </div>
 

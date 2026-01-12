@@ -137,7 +137,7 @@ switch ($product_status) {
         background: var(--surface);
         border-radius: var(--border-radius-lg);
         overflow: hidden;
-        border: 1px solid var(--border-color);
+        border: 1px solid var(--neutral-500);
         transition: all var(--transition-normal);
         height: 100%;
         display: flex;
@@ -161,7 +161,7 @@ switch ($product_status) {
         position: relative;
         overflow: hidden;
         height: 200px;
-        background: var(--background);
+        background: var(--border-color);
         object-fit: scale-down;
     }
     
@@ -269,7 +269,7 @@ switch ($product_status) {
     }
     
     .product-title a {
-        color: var(--primary-700);
+        color: var(--text-light);
         text-decoration: none;
         transition: color var(--transition-fast);
     }

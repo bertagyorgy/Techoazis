@@ -34,7 +34,9 @@
     margin: 0 0 0.5rem 0;
     font-size: 2rem;
 }
-
+.group-header-info h4{
+    color: white;
+}
 .group-meta {
     display: flex;
     gap: 2rem;

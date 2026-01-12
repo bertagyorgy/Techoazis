@@ -15,7 +15,11 @@
     flex-direction: column;
     gap: 1.25rem;
 }
-
+.create-post-bar label{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
 .create-post-bar input[type="text"],
 .create-post-bar textarea {
     width: 100%;
@@ -95,3 +99,11 @@
     background: #b91c1c;
     transform: scale(1.1);
 }
+.create-post-btn{
+    background: green;
+    color: var(--dark-text);
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+}
+

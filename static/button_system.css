@@ -43,6 +43,7 @@
     transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
     background: linear-gradient(45deg, var(--accent-400), var(--accent-600));
+    color: white;
 }
 
 .btn-secondary {
@@ -52,7 +53,7 @@
 }
 
 .btn-secondary:hover {
-    background: var(--primary-100);
+    background: var(--neutral-700);
     border-color: var(--accent-600);
     color: var(--accent-600);
 }

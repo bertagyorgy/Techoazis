@@ -59,6 +59,7 @@
     --border-radius-xl: 30px;
     
     /* 🌓 SÖTÉT TÉMA ALAPOK */
+    --dark-bg-alt: #e8f2ff;
     --dark-bg: #0f172a;
     --dark-surface: #1e293b;
     --dark-text: #f1f5f9;
@@ -68,6 +69,7 @@
 .dark {
     --background-image: url('../images/desert_night2.jpeg') left/cover;
     --background: var(--dark-bg);
+    --dark-bg-alt: var(--dark-surface);
     --surface: var(--dark-surface);
     --text-color: var(--dark-text);
     --text-light: #cbd5e1;

@@ -113,9 +113,7 @@ if ($page === '') {
         </div>
     </section>
 
-    <div class="gap"></div>
-
-    <section class="section-padding">
+    <section class="section-padding diff">
         <div class="custom-container text-center">
             <h2 class="section-title reveal">Friss tartalmak előnézete</h2>
             <div class="grid-row">
@@ -158,8 +156,6 @@ if ($page === '') {
             </div>
         </div>
     </section>
-
-    <div class="gap"></div>
 
     <section class="custom-container section-padding">
         <div class="text-center">
@@ -204,8 +200,6 @@ if ($page === '') {
             </div>
         </div>
     </section>
-
-    <div class="gap"></div>
 
     <footer class="footer">
         <div class="custom-container">

@@ -357,11 +357,11 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                     <?php if (empty($products)): ?>
                         <div class="no-products">
                             <i class="fas fa-search"></i>
-                            <h3>Nincs találat</h3>
+                            <h1 class="section-title">Nincs találat</h1>
                             <p>Próbálj más szűrőket, vagy adj fel egy új hirdetést!</p>
                             <?php if (isset($_SESSION['user_id'])): ?>
-                                <a href="add_product.php" class="filter-btn apply" style="margin-top: 1rem; display: inline-block;">
-                                    <i class="fas fa-plus"></i> Új termék feladása
+                                <a href="add_product.php" class="filter-btn apply">
+                                    Új termék feladása
                                 </a>
                             <?php endif; ?>
                         </div>

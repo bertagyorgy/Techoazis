@@ -4,6 +4,7 @@ include './app/db.php';
 
 // ======= CSOPORTOK LEKÉRÉSE =======
 $q = trim($_GET['q'] ?? '');
+$group_id = isset($_GET['group']) ? (int)$_GET['group'] : 0;
 $q_like = '%' . $q . '%';
 
 if ($q !== '') {
@@ -112,12 +113,29 @@ while ($img = $images_result->fetch_assoc()) {
                 class="group-search"
                 name="q"
                 value="<?= htmlspecialchars($q) ?>"
-                placeholder="🔍 Keresés a posztokban..."
+                placeholder="🔍 Poszt keresése..."
             >
         </form>
-        <h3>Témák</h3>
+        
+        <h3>Bejegyzések csoportjai</h3>
         <ul class="group-list">
+            <!-- ÖSSZES -->
+            <li>
+                <a
+                    href="forum.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
+                    class="<?= $group_id === 0 ? 'active' : '' ?>"
+                >
+                    <i class="fa-solid fa-layer-group"></i>
+                    Összes
+                </a>
+            </li>
+
+            <!-- CSOPORTOK (ikon nélkül) -->
             <?php while($row = $groups_result->fetch_assoc()): ?>
+                <?php
+                    $href = "forum.php?group=" . (int)$row['group_id'];
+                    if ($q !== '') $href .= "&q=" . urlencode($q);
+                ?>
                 <li>
                     <a href="forum_group.php?group=<?= (int)$row['group_id'] ?>">
                         <?= htmlspecialchars($row['group_name']) ?>
@@ -126,8 +144,6 @@ while ($img = $images_result->fetch_assoc()) {
             <?php endwhile; ?>
         </ul>
     </aside>
-
-
 
     <!-- ======================
             KÖZÉPSŐ POSZTOS SÁV
@@ -143,14 +159,20 @@ while ($img = $images_result->fetch_assoc()) {
         <?php while($post = $posts_result->fetch_assoc()): ?>
             <div class="post-card">
 
-                <div class="post-header">
-                    <span class="post-group">#<?= htmlspecialchars($post['group_name']) ?></span>
-                    <span class="post-user">
-                        <i class="fa-solid fa-user"></i> 
+                <div class="article-meta">
+                    <span class="article-badge">#<?= htmlspecialchars($post['group_name']) ?></span>
+
+                    <span>
+                        <i class="fa-solid fa-user"></i>
                         <?= htmlspecialchars($post['username']) ?>
                     </span>
-                    <span class="post-date"><?= $post['created_at'] ?></span>
+
+                    <span>
+                        <i class="fa-regular fa-calendar"></i>
+                        <?= substr($post['created_at'], 0, 16) ?>
+                    </span>
                 </div>
+
 
                 <h2 class="post-title"><?= htmlspecialchars($post['title']) ?></h2>
 
