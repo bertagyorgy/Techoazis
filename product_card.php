@@ -342,6 +342,7 @@ switch ($product_status) {
     .btn-message:hover {
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
+        color: white;
     }
     
     .btn-details.disabled,

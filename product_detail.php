@@ -113,7 +113,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             border-radius: var(--border-radius-lg);
             overflow: hidden;
             background: var(--background);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--neutral-500);
             height: 400px;
         }
         
@@ -363,6 +363,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
         .btn-message-seller:hover:not(.disabled) {
             transform: translateY(-3px);
             box-shadow: var(--shadow-lg);
+            color: white;
         }
         
         .btn-back {

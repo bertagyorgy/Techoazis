@@ -91,7 +91,7 @@ $post_count = $posts->num_rows;
             <textarea name="content" placeholder="Írd meg a poszt tartalmát..." required></textarea>
 
             <div class="file-inputs">
-                <label for="images[]">Képek feltöltése (max 3):</label>
+                <label for="postImages">Képek feltöltése (max 3):</label>
                 <input type="file" id="postImages" name="images[]" accept="image/*" multiple>
             </div>
             <div id="imagePreview"></div>
