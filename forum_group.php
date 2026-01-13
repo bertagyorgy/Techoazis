@@ -102,20 +102,37 @@ $post_count = $posts->num_rows;
     <?php endif; ?>
 
     <!-- ==== POSZTOK ==== -->
-    <main class="group-posts">
+    <main class="forum-posts">
         <?php if ($post_count === 0): ?>
-            <p class="no-posts">Ebben a csoportban még nincs poszt.</p>
+            <div class="empty-state">
+                <i class="fa-regular fa-face-frown" style="font-size:2rem; margin-bottom:.75rem;"></i>
+                <h2 style="margin:0 0 .5rem 0; color: var(--text-color);">Nincs találat</h2>
+                <p style="margin:0;">Próbálj másik kulcsszót vagy válassz másik témát.</p>
+            </div>
         <?php endif; ?>
-
+        
         <?php while($post = $posts->fetch_assoc()): ?>
             <div class="post-card">
 
-                <div class="post-header">
-                    <span class="post-user"><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
-                    <span class="post-date"><?= $post['created_at'] ?></span>
+                <div class="article-meta">
+                    <a class="article-badge" href="forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
+                        #<?= htmlspecialchars($group['group_name']) ?>
+                    </a>
+
+                    <span>
+                        <i class="fa-solid fa-user"></i>
+                        <?= htmlspecialchars($post['username']) ?>
+                    </span>
+
+                    <span>
+                        <i class="fa-regular fa-calendar"></i>
+                        <?= substr($post['created_at'], 0, 16) ?>
+                    </span>
                 </div>
 
+
                 <h2 class="post-title"><?= htmlspecialchars($post['title']) ?></h2>
+
                 <p class="post-content"><?= nl2br(htmlspecialchars($post['content'])) ?></p>
 
                 <?php
@@ -133,6 +150,9 @@ $post_count = $posts->num_rows;
                     </div>
                 <?php endif; ?>
 
+                <div class="comment-count" id="comment-count-<?= $post['post_id'] ?>">
+                    0 komment
+                </div>
 
                 <button class="show-comments-btn" data-post="<?= $post['post_id'] ?>">
                     Kommentek megnyitása
@@ -151,6 +171,7 @@ $post_count = $posts->num_rows;
 
             </div>
         <?php endwhile; ?>
+
     </main>
 
 </section>

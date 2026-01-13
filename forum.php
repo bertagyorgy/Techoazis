@@ -2,29 +2,43 @@
 session_start();
 include './app/db.php';
 
-// ======= CSOPORTOK LEKÉRÉSE =======
+// ======= TOP TÉMÁK (legtöbb poszt) - q-val szűrhető név alapján =======
+$top_limit = 12;
+
 $q = trim($_GET['q'] ?? '');
 $group_id = isset($_GET['group']) ? (int)$_GET['group'] : 0;
 $q_like = '%' . $q . '%';
 
 if ($q !== '') {
-    $stmt = $conn->prepare("
-        SELECT group_id, group_name
-        FROM groups
-        WHERE group_name LIKE ?
-        ORDER BY group_name ASC
+    $stmtGroups = $conn->prepare("
+        SELECT 
+            g.group_id,
+            g.group_name,
+            COUNT(p.post_id) AS post_count
+        FROM groups g
+        LEFT JOIN posts p ON p.group_id = g.group_id
+        WHERE g.group_name LIKE ?
+        GROUP BY g.group_id, g.group_name
+        ORDER BY post_count DESC, g.group_name ASC
+        LIMIT $top_limit
     ");
-    $stmt->bind_param("s", $q_like);
-    $stmt->execute();
-    $groups_result = $stmt->get_result();
-    // $stmt->close(); // csak akkor zárd le, ha már nem kell a result (általában ok itt is)
+    $stmtGroups->bind_param('s', $q_like);
+    $stmtGroups->execute();
+    $groups_result = $stmtGroups->get_result();
 } else {
     $groups_result = $conn->query("
-        SELECT group_id, group_name
-        FROM groups
-        ORDER BY group_name ASC
+        SELECT 
+            g.group_id,
+            g.group_name,
+            COUNT(p.post_id) AS post_count
+        FROM groups g
+        LEFT JOIN posts p ON p.group_id = g.group_id
+        GROUP BY g.group_id, g.group_name
+        ORDER BY post_count DESC, g.group_name ASC
+        LIMIT $top_limit
     ");
 }
+
 
 // ======= LEGÚJABB POSZTOK JOBB OLDALRA =======
 $latest_query = "
@@ -117,7 +131,7 @@ while ($img = $images_result->fetch_assoc()) {
             >
         </form>
         
-        <h3>Bejegyzések csoportjai</h3>
+        <h3>Népszerű csoportok</h3>
         <ul class="group-list">
             <!-- ÖSSZES -->
             <li>
@@ -125,23 +139,26 @@ while ($img = $images_result->fetch_assoc()) {
                     href="forum.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
                     class="<?= $group_id === 0 ? 'active' : '' ?>"
                 >
-                    <i class="fa-solid fa-layer-group"></i>
                     Összes
+                    <i class="fa-solid fa-layer-group"></i>
+                    
                 </a>
             </li>
 
-            <!-- CSOPORTOK (ikon nélkül) -->
+            <!-- TOP CSOPORTOK (ikon nélkül) -->
             <?php while($row = $groups_result->fetch_assoc()): ?>
                 <?php
-                    $href = "forum.php?group=" . (int)$row['group_id'];
+                    $href = "forum_group.php?group=" . (int)$row['group_id'];
                     if ($q !== '') $href .= "&q=" . urlencode($q);
                 ?>
                 <li>
-                    <a href="forum_group.php?group=<?= (int)$row['group_id'] ?>">
+                    <a href="<?= $href ?>" class="<?= $group_id === (int)$row['group_id'] ? 'active' : '' ?>">
                         <?= htmlspecialchars($row['group_name']) ?>
+                        <span style="font-weight:bold;right:0;">(<?= (int)$row['post_count'] ?>)</span>
                     </a>
                 </li>
             <?php endwhile; ?>
+
         </ul>
     </aside>
 
@@ -160,7 +177,10 @@ while ($img = $images_result->fetch_assoc()) {
             <div class="post-card">
 
                 <div class="article-meta">
-                    <span class="article-badge">#<?= htmlspecialchars($post['group_name']) ?></span>
+                    <a class="article-badge" href="forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
+                        #<?= htmlspecialchars($post['group_name']) ?>
+                    </a>
+
 
                     <span>
                         <i class="fa-solid fa-user"></i>

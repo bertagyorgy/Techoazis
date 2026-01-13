@@ -213,8 +213,9 @@ $stmt->close();
             <li>
                 <a href="articles.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
                    class="<?= $category_id === 0 ? 'active' : '' ?>">
-                    <i class="fa-solid fa-layer-group"></i>
                     Összes
+                    <i class="fa-solid fa-layer-group"></i>
+                    
                 </a>
             </li>
 

@@ -63,8 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.success) {
                     container.innerHTML = generateCommentsHTML(data.comments);
                     container.classList.add("open");
-
-                    // kommentek számának frissítése 
+                    //kommentek számának frissítése
                     updateCommentCount(postId, data.comments.length);
                 }
             }
