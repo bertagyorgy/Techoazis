@@ -94,6 +94,9 @@
     padding: 10px;
     border: none;
     border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; /* állítsd ízlésre */
 }
 .forum-submit-btn{
     background: green;

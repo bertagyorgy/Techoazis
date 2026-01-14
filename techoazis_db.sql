@@ -395,7 +395,10 @@ CREATE TABLE `posts` (
 INSERT INTO `posts` (`post_id`, `user_id`, `group_id`, `title`, `content`, `created_at`) VALUES
 (1, 1, 1, 'Hogyan kezdjem el a webfejlesztést?', 'Sziasztok! Teljesen új vagyok a webfejlesztésben. Mivel érdemes kezdeni?', '2025-11-18 19:25:47'),
 (2, 2, 2, 'Melyik a jobb kezdőknek: Python vagy C#?', 'Kezdőként gondolkodom, melyik nyelv lenne jobb? Mi a véleményetek?', '2025-11-18 19:25:47'),
-(3, 1, 4, '2025 Tech trendjei', 'Összeszedtem pár érdekességet a 2025-ös év technológiai újításairól.', '2025-11-18 19:25:47');
+(3, 1, 4, '2025 Tech trendjei', 'Összeszedtem pár érdekességet a 2025-ös év technológiai újításairól.', '2025-11-18 19:25:47'),
+(4, 1, 1, 'Milyen hasznuk van keretrendszereknek?', 'Szeretnék saját weboldalon keretrendszereket használni (vue.js, laravel), de nem tudom mennyire éri meg, valaki ki tudná fejteni részletesen?', '2026-01-14 18:45:42'),
+(5, 1, 3, 'MSI vagy ASUS videókártya?', 'Személy szerint az ASUS nvidia geforce szériát jobban preferálom, de azért megkérdezek másokat is, ti mit gondoltok?', '2026-01-14 18:55:40'),
+(6, 1, 4, 'ChatGPT 5.1', 'A legújabb ChatGPT még kifinomultabb érveléssel rendelkezik és be is lehet állítani is akár, hogy mennyire terhelje meg magát bizonyos kérdésekkel, így időt spórolhatunk, továbbá jobb kódírási teljesítménye lett.\r\nVálaszai valódi fejlesztői visszajelzésekkel lett továbbfejlesztve és tisztább, megbízhatóbb kódokat generál.\r\nTovábbi részletek: https://openai.com/index/gpt-5-1/', '2026-01-14 20:27:36');
 
 -- --------------------------------------------------------
 
@@ -656,7 +659,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT a táblához `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT a táblához `products`

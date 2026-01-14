@@ -79,6 +79,7 @@ $post_count = $posts->num_rows;
         </div>
     </div>
     <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+    <button class="display-btn"><i class="fa-solid fa-plus"></i> Új poszt</button>
     <div class="create-post-bar">
         <form action="create_post.php" method="POST" enctype="multipart/form-data">
             
@@ -91,7 +92,7 @@ $post_count = $posts->num_rows;
             <textarea name="content" placeholder="Írd meg a poszt tartalmát..." required></textarea>
 
             <div class="file-inputs">
-                <label for="postImages">Képek feltöltése (max 3):</label>
+                <label for="postImages">Képek feltöltése (max 3)</label>
                 <input type="file" id="postImages" name="images[]" accept="image/*" multiple>
             </div>
             <div id="imagePreview"></div>
@@ -155,7 +156,7 @@ $post_count = $posts->num_rows;
                 </div>
 
                 <button class="show-comments-btn" data-post="<?= $post['post_id'] ?>">
-                    Kommentek megnyitása
+                    Kommentek <i class="fa-solid fa-caret-down"></i>
                 </button>
 
                 <div class="comments-container" id="comments-<?= $post['post_id'] ?>"></div>

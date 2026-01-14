@@ -213,7 +213,7 @@ while ($img = $images_result->fetch_assoc()) {
                 </div>
 
                 <button class="show-comments-btn" data-post="<?= $post['post_id'] ?>">
-                    Kommentek megnyitása
+                    Kommentek <i class="fa-solid fa-caret-down"></i>
                 </button>
 
                 <div class="comments-container" id="comments-<?= $post['post_id'] ?>"></div>

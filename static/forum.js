@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (container.classList.contains("open")) {
                 container.classList.remove("open");
                 container.innerHTML = "";
-                btn.textContent = "Kommentek megnyitása";
+                btn.classList.add('show-comment-btn');
+                btn.innerHTML = 'Kommentek <i class="fa-solid fa-caret-down"></i>';
                 return;
             }
 
@@ -31,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.success) {
                     container.innerHTML = generateCommentsHTML(data.comments);
                     container.classList.add("open");
-                    btn.textContent = "Kommentek elrejtése";
+                    btn.classList.add('show-comment-btn');
+                    btn.innerHTML = 'Kommentek <i class="fa-solid fa-caret-up"></i>';
                 } else {
                     console.error("Szerver hiba:", data.message);
                 }
@@ -81,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         
                         // Gomb szöveg frissítése
                         const btn = document.querySelector(`.show-comments-btn[data-post="${postId}"]`);
-                        if(btn) btn.textContent = "Kommentek elrejtése";
+                        if(btn) btn.innerHTML = 'Kommentek <i class="fa-solid fa-caret-up"></i>';
 
                         // Számláló frissítése
                         updateCommentCountInDOM(postId, data.comments.length);
@@ -199,7 +201,7 @@ function generateCommentsHTML(comments) {
             <img class="comment-avatar" src="${safeImage}" alt="avatar">
             <div class="comment-body">
                 <span class="comment-meta">
-                    <strong>${safeUsername}</strong> • <span>${safeDate}</span>
+                    <strong>${safeUsername}</strong> <span>${safeDate}</span>
                 </span>
                 <p>${safeContent}</p>
             </div>
@@ -216,3 +218,7 @@ function updateCommentCountInDOM(postId, count) {
         console.warn("Nem található a számláló elem ezzel az ID-val: comment-count-" + postId);
     }
 }
+// create post toogle
+document.querySelector('.display-btn').addEventListener('click', () => {
+    document.querySelector('.create-post-bar').classList.toggle('active');
+});
