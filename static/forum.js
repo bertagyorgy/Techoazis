@@ -2,29 +2,33 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Forum.js betöltve, inicializálás...");
 
     // ===========================
-    // 1. KOMMENTEK MEGNYITÁSA
+    // 1. KOMMENTEK MEGNYITÁSA / BEZÁRÁSA
     // ===========================
     document.querySelectorAll(".show-comments-btn").forEach(btn => {
         btn.addEventListener("click", async () => {
             const postId = btn.dataset.post;
             const container = document.getElementById("comments-" + postId);
+            const icon = btn.querySelector(".comment-caret");
 
-            // Ha már nyitva van -> bezárjuk
+            // BEZÁRÁS
             if (container.classList.contains("open")) {
                 container.classList.remove("open");
                 container.innerHTML = "";
-                btn.classList.add('show-comment-btn');
-                btn.innerHTML = 'Kommentek <i class="fa-solid fa-caret-down"></i>';
+
+                icon.classList.remove("fa-caret-up");
+                icon.classList.add("fa-caret-down");
                 return;
             }
 
-            // Betöltés
+            // MEGNYITÁS
             try {
-                const response = await fetch("/Techoazis/app/get_comments.php?post_id=" + postId);
-                // Ellenőrizzük, hogy tényleg JSON jött-e
+                const response = await fetch(
+                    "/Techoazis/app/get_comments.php?post_id=" + postId
+                );
+
                 const contentType = response.headers.get("content-type");
                 if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error("A szerver nem JSON-t küldött! (PHP hiba lehet)");
+                    throw new Error("Nem JSON válasz érkezett");
                 }
 
                 const data = await response.json();
@@ -32,14 +36,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.success) {
                     container.innerHTML = generateCommentsHTML(data.comments);
                     container.classList.add("open");
-                    btn.classList.add('show-comment-btn');
-                    btn.innerHTML = 'Kommentek <i class="fa-solid fa-caret-up"></i>';
-                } else {
-                    console.error("Szerver hiba:", data.message);
+
+                    icon.classList.remove("fa-caret-down");
+                    icon.classList.add("fa-caret-up");
+
+                    // Biztonsági számláló frissítés
+                    updateCommentCountInDOM(postId, data.comments.length);
                 }
             } catch (error) {
-                console.error("Hiba a kommentek betöltésekor:", error);
-                alert("Hiba történt a kommentek betöltésekor. Részletek a konzolon (F12).");
+                console.error("Komment betöltési hiba:", error);
+                alert("Hiba történt a kommentek betöltésekor.");
             }
         });
     });
@@ -59,40 +65,47 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!content) return;
 
             try {
-                const response = await fetch("/Techoazis/app/add_comment.php", {
-                    method: "POST",
-                    body: new URLSearchParams({
-                        post_id: postId,
-                        content: content
-                    }),
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                });
+                const response = await fetch(
+                    "/Techoazis/app/add_comment.php",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            post_id: postId,
+                            content: content
+                        })
+                    }
+                );
 
                 const result = await response.json();
 
                 if (result.success) {
-                    textarea.value = ""; 
+                    textarea.value = "";
 
-                    // Újratöltjük a kommenteket
-                    const load = await fetch("/Techoazis/app/get_comments.php?post_id=" + postId);
-                    const data = await load.json();
+                    const reload = await fetch(
+                        "/Techoazis/app/get_comments.php?post_id=" + postId
+                    );
+                    const data = await reload.json();
 
                     if (data.success) {
                         container.innerHTML = generateCommentsHTML(data.comments);
-                        if (!container.classList.contains("open")) container.classList.add("open");
-                        
-                        // Gomb szöveg frissítése
-                        const btn = document.querySelector(`.show-comments-btn[data-post="${postId}"]`);
-                        if(btn) btn.innerHTML = 'Kommentek <i class="fa-solid fa-caret-up"></i>';
+                        container.classList.add("open");
 
-                        // Számláló frissítése
+                        const btn = document.querySelector(
+                            `.show-comments-btn[data-post="${postId}"]`
+                        );
+                        const icon = btn.querySelector(".comment-caret");
+
+                        icon.classList.remove("fa-caret-down");
+                        icon.classList.add("fa-caret-up");
+
                         updateCommentCountInDOM(postId, data.comments.length);
                     }
-                } else {
-                    alert("Hiba: " + (result.message || "Ismeretlen hiba"));
                 }
             } catch (error) {
-                console.error("Küldési hiba:", error);
+                console.error("Komment küldési hiba:", error);
             }
         });
     });
@@ -100,25 +113,30 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===========================
     // 3. KOMMENT SZÁMLÁLÓK BETÖLTÉSE
     // ===========================
-    const counters = document.querySelectorAll(".comment-count");
-    if (counters.length > 0) {
-        counters.forEach(async counter => {
-            const postId = counter.id.replace("comment-count-", "");
-            try {
-                // Útvonal: .php kiterjesztéssel!
-                const response = await fetch("/Techoazis/app/get_comment_count.php?post_id=" + postId);
-                const data = await response.json();
-                
-                // Biztonsági ellenőrzés: Ha nincs count, akkor 0 legyen
-                const countNum = (data.count !== undefined) ? data.count : 0;
-                
-                counter.textContent = countNum + " komment";
+    document.querySelectorAll(".comment-count").forEach(async counter => {
+        const postId = counter.id.replace("comment-count-", "");
 
-            } catch (error) {
-                console.error(`Hiba a számlálónál (Post: ${postId}):`, error);
-                // Hiba esetén maradjon az eredeti szöveg (pl. "0 komment") vagy írjunk ki hibaüzenetet konzolra
-            }
-        });
+        try {
+            const response = await fetch(
+                "/Techoazis/app/get_comment_count.php?post_id=" + postId
+            );
+            const data = await response.json();
+
+            counter.textContent = data.count ?? 0;
+        } catch (error) {
+            console.error(`Számláló hiba (post ${postId}):`, error);
+        }
+    });
+
+
+    // ===========================
+    // SEGÉDFÜGGVÉNY
+    // ===========================
+    function updateCommentCountInDOM(postId, count) {
+        const counter = document.getElementById("comment-count-" + postId);
+        if (counter) {
+            counter.textContent = count;
+        }
     }
 
     // ===========================

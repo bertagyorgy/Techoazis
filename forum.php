@@ -208,13 +208,14 @@ while ($img = $images_result->fetch_assoc()) {
                     </div>
                 <?php endif; ?>
 
-                <div class="comment-count" id="comment-count-<?= $post['post_id'] ?>">
-                    0 komment
-                </div>
+                
 
                 <button class="show-comments-btn" data-post="<?= $post['post_id'] ?>">
-                    Kommentek <i class="fa-solid fa-caret-down"></i>
+                    Kommentek
+                    <span class="comment-count" id="comment-count-<?= $post['post_id'] ?>">0</span>
+                    <i class="fa-solid fa-caret-down comment-caret"></i>
                 </button>
+
 
                 <div class="comments-container" id="comments-<?= $post['post_id'] ?>"></div>
 
