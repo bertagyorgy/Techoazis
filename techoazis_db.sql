@@ -467,7 +467,9 @@ CREATE TABLE `users` (
   `total_comments` int(11) DEFAULT 0,
   `sold_items` int(11) DEFAULT 0,
   `bought_items` int(11) DEFAULT 0,
-  `avg_rating` decimal(3,2) DEFAULT 0.00
+  `avg_rating` decimal(3,2) DEFAULT 0.00,
+  `reset_token_hash` VARCHAR(64) NULL DEFAULT NULL,
+  `reset_token_expires_at` DATETIME NULL DEFAULT NULL;
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_hungarian_ci;
 
 --
