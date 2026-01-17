@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 <?php endif; ?>
                 
                 <form method="POST" action="">
-                <div class="login-form-group">
+                    <div class="login-form-group">
                         <label for="username" class="login-label">Felhasználónév</label>
                         <input type="text" name="username" id="username" class="login-input" placeholder="Felhasználónév" required>
                     </div>
@@ -145,6 +145,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         <div class="password-wrapper">
                             <input type="password" name="password" id="password" class="login-input" placeholder="Jelszó" required>
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
+                        </div>
+                        <div style="text-align: right; margin-top: 5px;">
+                            <a href="forgot_password.php" style="font-size: 0.85rem; color: #666; text-decoration: none;">Elfelejtett jelszó?</a>
                         </div>
                     </div>
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
