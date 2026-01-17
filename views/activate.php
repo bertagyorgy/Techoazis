@@ -52,6 +52,6 @@ $conn->close();
 <body>
     <h1>Fiók Aktiválása</h1>
     <p><?php echo $message; ?></p>
-    <p><a href="../views/login.php">Tovább a bejelentkezéshez</a></p>
+    <p><a style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;" href="../views/login.php">Tovább a bejelentkezéshez</a></p>
 </body>
 </html>

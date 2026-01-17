@@ -106,10 +106,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     $mail->CharSet = 'UTF-8';
                     $mail->Subject = 'Aktiváld a Techoázis fiókodat!';
                     $mail->Body    = '
-                        <h1>Köszönjük a regisztrációt!</h1>
-                        <p>Kérlek, kattints az alábbi linkre a fiókod aktiválásához:</p>
-                        <p><a href="' . $activation_link . '" style="color: blue;">Fiók aktiválása</a></p>
-                        <p>Ha nem te regisztráltál, hagyd figyelmen kívül ezt az emailt.</p>';
+                        <div style="font-family: Arial, sans-serif;">
+                            <h1>Köszönjük a regisztrációt!</h1>
+                            <p>Kérlek, kattints az alábbi linkre a fiókod aktiválásához:</p>
+                            <p><a href="' . $activation_link . '" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Fiók aktiválása</a></p>
+                            <p>Ha nem te regisztráltál, hagyd figyelmen kívül ezt az emailt.</p>
+                        </div>';
 
                     $mail->send();
                     
