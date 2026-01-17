@@ -142,9 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="icon" type="image/x-icon" href="<?= $root_path ?>images/palmtree_favicon.svg"> 
-    <script src="<?= $root_path ?>static/index.js" defer></script> 
     <title>Techoazis | Registration</title>
     <link rel="stylesheet" href="<?= $root_path ?>static/index.css"> 
     <link rel="stylesheet" href="<?= $root_path ?>static/reset&base_styles.css">
@@ -155,7 +153,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <link rel="stylesheet" href="<?= $root_path ?>static/reset&base_styles.css">
     <link rel="stylesheet" href="<?= $root_path ?>static/container&grid_system.css">
 
-
+    <!-- Inter font hozzáadása -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="<?= $root_path ?>static/index.js" defer></script>
 </head>
 <body>
 <?php 

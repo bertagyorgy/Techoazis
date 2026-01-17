@@ -33,7 +33,7 @@ $cart_badge = (string)$cart_count_unique;
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>articles.php">Tudástár</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>forum.php">Közösség</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= $root ?>shop.php">Vásárlás</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= $root ?>contact.php">Kapcsolat</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= $root ?>about_us.php">Rólunk</a></li>
                 <?php if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
                     <li class="nav-item"><a class="nav-link" href="<?= $root ?>admin/admin.php" >Admin</a></li>
                 <?php endif; ?>
