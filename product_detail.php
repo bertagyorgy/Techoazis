@@ -174,7 +174,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
         
         .thumbnail:hover {
             border-color: var(--accent-400);
-            transform: translateY(-2px);
+            /*transform: translateY(-2px);*/
         }
         
         .thumbnail img {
@@ -187,12 +187,12 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
         .product-info-sidebar {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            /*gap: 2rem;*/
         }
         
         .product-header {
             padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border-color);
+            /*border-bottom: 2px solid var(--border-color);*/
         }
         
         .product-category {
@@ -224,7 +224,17 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             color: var(--text-light);
             font-size: 1.8rem;
         }
-        
+        .gallery-meta-panel {
+            background: var(--surface);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            /*border: 1px solid var(--neutral-500);*/
+        }
+
+        .gallery-meta-panel .meta-item {
+            justify-content: flex-start;
+        }
+
         .product-meta {
             display: flex;
             flex-direction: column;
@@ -237,6 +247,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             align-items: center;
             gap: 0.75rem;
             color: var(--text-color);
+            margin-bottom: 0.5rem;
         }
         
         .meta-item i {
@@ -248,7 +259,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             background: var(--surface);
             border-radius: var(--border-radius-lg);
             padding: 1.5rem;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--neutral-500);
             margin: 1.5rem 0;
         }
         
@@ -314,7 +325,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             padding: 2rem;
             background: var(--surface);
             border-radius: var(--border-radius-lg);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--neutral-500);
             margin: 1.5rem 0;
         }
         
@@ -322,7 +333,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             color: var(--primary-700);
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
+            /*border-bottom: 1px solid var(--border-color);*/
         }
         
         .product-description-content {
@@ -372,7 +383,6 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             border: 2px solid var(--border-color);
             padding: 12px 32px;
             border-radius: 8px;
-            
         }
         
         .btn-back:hover {
@@ -481,9 +491,8 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                     </div>
                     <?php endif; ?>
                 </div>
-                
-                <!-- Right: Product Info -->
-                <div class="product-info-sidebar">
+                <!-- Pickup / dates under the images (left column) -->
+                <div class="gallery-meta-panel">
                     <div class="product-header">
                         <div class="product-category">
                             <i class="fas fa-tag"></i>
@@ -502,120 +511,118 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             ?>
                         </div>
                     </div>
-                    
+                    <?php if ($product['pickup_location']): ?>
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Átvételi hely:</strong>
+                            <div><?php echo htmlspecialchars($product['pickup_location']); ?></div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <strong>Feladva:</strong>
+                            <div><?php echo date('Y. m. d. H:i', strtotime($product['created_at'])); ?></div>
+                        </div>
+                    </div>
+
+                    <?php if ($product['updated_at']): ?>
+                    <div class="meta-item">
+                        <i class="fas fa-sync"></i>
+                        <div>
+                            <strong>Utoljára frissítve:</strong>
+                            <div><?php echo date('Y. m. d. H:i', strtotime($product['updated_at'])); ?></div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <!-- Product Meta -->
                     <div class="product-meta">
-                        <?php if ($product['pickup_location']): ?>
-                        <div class="meta-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <strong>Átvételi hely:</strong>
-                                <div><?php echo htmlspecialchars($product['pickup_location']); ?></div>
+                        <!-- Product Description -->
+                        <div class="product-description">
+                            <h3>Termék leírása</h3>
+                            <div class="product-description-content">
+                                <?php echo nl2br(htmlspecialchars($product['product_description'])); ?>
                             </div>
                         </div>
-                        <?php endif; ?>
-                        
-                        <div class="meta-item">
-                            <i class="fas fa-calendar"></i>
-                            <div>
-                                <strong>Feladva:</strong>
-                                <div><?php echo date('Y. m. d. H:i', strtotime($product['created_at'])); ?></div>
-                            </div>
-                        </div>
-                        
-                        <?php if ($product['updated_at']): ?>
-                        <div class="meta-item">
-                            <i class="fas fa-sync"></i>
-                            <div>
-                                <strong>Utoljára frissítve:</strong>
-                                <div><?php echo date('Y. m. d. H:i', strtotime($product['updated_at'])); ?></div>
-                            </div>
-                        </div>
-                        <?php endif; ?>
                     </div>
-                    
-                    <!-- Seller Card -->
-                    <div class="seller-card">
-                        <div class="seller-header">
-                            <div class="seller-avatar">
-                                <img src="<?php echo htmlspecialchars($product['seller_avatar']); ?>" 
-                                     alt="<?php echo htmlspecialchars($product['seller_username']); ?>">
+                    <!-- Right: Product Info -->
+                    <div class="product-info-sidebar">  
+                        <!-- Seller Card -->
+                        <div class="seller-card">
+                            <div class="seller-header">
+                                <div class="seller-avatar">
+                                    <img src="<?php echo htmlspecialchars($product['seller_avatar']); ?>" 
+                                        alt="<?php echo htmlspecialchars($product['seller_username']); ?>">
+                                </div>
+                                <div class="seller-info">
+                                    <h4><?php echo htmlspecialchars($product['seller_username']); ?></h4>
+                                    <p>Eladó</p>
+                                </div>
                             </div>
-                            <div class="seller-info">
-                                <h4><?php echo htmlspecialchars($product['seller_username']); ?></h4>
-                                <p>Eladó</p>
+                            
+                            <!-- Seller Stats (még nincs implementálva, de placeholder) -->
+                            <div class="seller-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">12</div>
+                                    <div class="stat-label">Termék</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">4.8</div>
+                                    <div class="stat-label">Értékelés</div>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 1rem;">
+                                <a href="profile.php?id=<?php echo $product['seller_id']; ?>" 
+                                class="btn-back">
+                                    <i class="fas fa-user-circle"></i>
+                                    Profil megtekintése
+                                </a>
                             </div>
                         </div>
                         
-                        <!-- Seller Stats (még nincs implementálva, de placeholder) -->
-                        <div class="seller-stats">
-                            <div class="stat-item">
-                                <div class="stat-value">12</div>
-                                <div class="stat-label">Termék</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">4.8</div>
-                                <div class="stat-label">Értékelés</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">98%</div>
-                                <div class="stat-label">Válaszidő</div>
-                            </div>
-                        </div>
                         
-                        <div style="text-align: center; margin-top: 1rem;">
-                            <a href="profile.php?id=<?php echo $product['seller_id']; ?>" 
-                               class="btn-back">
-                                <i class="fas fa-user-circle"></i>
-                                Profil megtekintése
+                        
+                        <!-- Action Buttons -->
+                        <div class="product-actions-detail">
+                            <a href="shop.php" class="btn-back">
+                                <i class="fas fa-arrow-left"></i>
+                                Vissza a termékekhez
                             </a>
-                        </div>
-                    </div>
-                    
-                    <!-- Product Description -->
-                    <div class="product-description">
-                        <h3>Termék leírása</h3>
-                        <div class="product-description-content">
-                            <?php echo nl2br(htmlspecialchars($product['product_description'])); ?>
-                        </div>
-                    </div>
-                    
-                    <!-- Action Buttons -->
-                    <div class="product-actions-detail">
-                        <a href="shop.php" class="btn-back">
-                            <i class="fas fa-arrow-left"></i>
-                            Vissza a termékekhez
-                        </a>
-                        
-                        <?php if ($product['product_status'] === 'active'): ?>
-                            <?php if (isset($_SESSION['user_id'])): ?>
-                                <?php if ($product['seller_id'] != $_SESSION['user_id']): ?>
-                                    <a href="conversation.php?product_id=<?php echo $product_id; ?>" 
-                                       class="btn-message-seller">
-                                        <i class="fas fa-comment-dots"></i>
-                                        Üzenet küldése az eladónak
-                                    </a>
+                            
+                            <?php if ($product['product_status'] === 'active'): ?>
+                                <?php if (isset($_SESSION['user_id'])): ?>
+                                    <?php if ($product['seller_id'] != $_SESSION['user_id']): ?>
+                                        <a href="conversation.php?product_id=<?php echo $product_id; ?>" 
+                                        class="btn-message-seller">
+                                            <i class="fas fa-comment-dots"></i>
+                                            Üzenet küldése az eladónak
+                                        </a>
+                                    <?php else: ?>
+                                        <a href="edit_product.php?id=<?php echo $product_id; ?>" 
+                                        class="btn-message-seller" style="background: var(--primary-500);">
+                                            <i class="fas fa-edit"></i>
+                                            Termék szerkesztése
+                                        </a>
+                                    <?php endif; ?>
                                 <?php else: ?>
-                                    <a href="edit_product.php?id=<?php echo $product_id; ?>" 
-                                       class="btn-message-seller" style="background: var(--primary-500);">
-                                        <i class="fas fa-edit"></i>
-                                        Termék szerkesztése
+                                    <a href="login.php?redirect=product_detail.php?id=<?php echo $product_id; ?>" 
+                                    class="btn-message-seller">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                        Jelentkezz be az üzenethez
                                     </a>
                                 <?php endif; ?>
                             <?php else: ?>
-                                <a href="login.php?redirect=product_detail.php?id=<?php echo $product_id; ?>" 
-                                   class="btn-message-seller">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                    Jelentkezz be az üzenethez
-                                </a>
+                                <button class="btn-message-seller disabled" disabled>
+                                    <i class="fas fa-times-circle"></i>
+                                    Termék már nem elérhető
+                                </button>
                             <?php endif; ?>
-                        <?php else: ?>
-                            <button class="btn-message-seller disabled" disabled>
-                                <i class="fas fa-times-circle"></i>
-                                Termék már nem elérhető
-                            </button>
-                        <?php endif; ?>
-                    </div>
+                        </div>
+                    </div>                
                 </div>
             </div>
             

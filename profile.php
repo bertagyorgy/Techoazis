@@ -697,9 +697,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
             <a href="profile_edit.php" class="profile-btn profile-btn-secondary">
                 <i class="fas fa-user-edit"></i> Profil szerkesztése
             </a>
-            <a href="shop.php?my_products=1" class="profile-btn profile-btn-secondary">
-                <i class="fas fa-box"></i> Termékeim
-            </a>
             <button class="profile-btn profile-btn-secondary theme-toggle">
                     <i class="fa-solid fa-moon"></i> Téma váltás
             </button>
@@ -707,34 +704,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
                 <i class="fas fa-sign-out-alt"></i> Kijelentkezés
             </button>
         </div>
-
-        <!-- Kitüntetések -->
-        <?php
-        $badges_stmt = $conn->prepare("
-            SELECT b.badge_name, b.icon, b.badge_description
-            FROM user_badges ub
-            JOIN badges b ON ub.badge_id = b.badge_id
-            WHERE ub.user_id = ?
-            ORDER BY ub.earned_at DESC
-            LIMIT 3
-        ");
-        $badges_stmt->bind_param('i', $current_user_id);
-        $badges_stmt->execute();
-        $badges_result = $badges_stmt->get_result();
-        if ($badges_result->num_rows > 0): ?>
-        <div class="stats-section">
-            <h3 class="section-title">Kitüntetéseim</h3>
-            <div class="badge-collection">
-                <?php while ($badge = $badges_result->fetch_assoc()): ?>
-                <div class="badge" title="<?php echo htmlspecialchars($badge['badge_description']); ?>">
-                    <i class="fas fa-<?php echo $badge['icon'] ?? 'award'; ?>"></i>
-                    <?php echo htmlspecialchars($badge['badge_name']); ?>
-                </div>
-                <?php endwhile; ?>
-            </div>
-        </div>
-        <?php endif; 
-        $badges_stmt->close(); ?>
     </aside>
 
     <!-- Fő tartalom -->
@@ -779,9 +748,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
         <section class="conversations-list">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h3 class="section-title">Legutóbbi beszélgetések</h3>
-                <a href="conversations.php" class="btn-view-all">
-                    Összes megtekintése
-                </a>
             </div>
             
             <?php if (count($conversations) > 0): ?>
@@ -862,11 +828,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
                 </a>
                 <?php endforeach; ?>
             </div>
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <a href="shop.php?my_products=1" class="profile-btn profile-btn-secondary">
-                    <i class="fas fa-list"></i> Összes termék megtekintése
-                </a>
-            </div>
             <?php else: ?>
             <div class="empty-state">
                 <i class="fas fa-box-open"></i>
@@ -899,11 +860,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
                 </div>
             </div>
             <?php endforeach; ?>
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <a href="reviews.php?user_id=<?php echo $current_user_id; ?>" class="profile-btn profile-btn-secondary">
-                    <i class="fas fa-star"></i> Összes értékelés
-                </a>
-            </div>
         </section>
         <?php endif; ?>
     </main>
