@@ -478,7 +478,7 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztr√°tor' : 'Felhaszn√
         .product-image {
             width: 100%;
             height: 180px;
-            object-fit: cover;
+            object-fit: scale-down;
             border-bottom: 1px solid var(--border-color);
         }
 

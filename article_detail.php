@@ -93,7 +93,7 @@ function render_text($text) {
         .article-cover{
             width: 100%;
             height: 320px;
-            object-fit: cover;
+            object-fit: scale-down;
             display: block;
         }
 
