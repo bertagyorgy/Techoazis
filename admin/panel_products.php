@@ -12,80 +12,66 @@ $config = [
     // Oszlopok a listázó nézetben
     'list_columns' => [
         'product_id' => 'ID',
-        'user_id' => 'Feltöltő', 
+        'seller_user_id' => 'Feltöltő', // JAVÍTVA: user_id -> seller_user_id
         'product_name' => 'Név',
         'category' => 'Kategória',
         'price' => 'Ár',
-        'product_status' => 'Készlet', // JAVÍTVA: stock helyett stock_quantity
+        'product_status' => 'Készlet',
         'main_image_url' => 'Kép', 
     ],
     
-    // Egyéni JOIN-olt lekérdezés, hogy a felhasználónevet lássuk az ID helyett
+    // Egyéni JOIN-olt lekérdezés
     'list_query' => "SELECT p.*, u.username 
                      FROM products p 
                      JOIN users u ON p.seller_user_id = u.user_id 
                      ORDER BY p.product_id",
                      
-    // A 'list_columns'-ban lévő kulcsok formázása
     'list_formatters' => [
-        'user_id' => function($value, $row) {
+        'seller_user_id' => function($value, $row) { // JAVÍTVA: kulcs név
             return htmlspecialchars($row['username']); 
         },
         'price' => function($value, $row) {
-            // Ár formázása
             return number_format((float)$value, 0, '', ' ') . ' HUF';
         },
-        // Kép megjelenítése miniatűrként a listában
         'main_image_url' => function($value, $row) {
-             if (empty($value)) {
-                 return 'Nincs kép';
-             }
-             // FIX: Az admin könyvtárból a gyökérben lévő images/ mappára mutatunk.
+             if (empty($value)) return 'Nincs kép';
              $image_path = '../uploads/products/' . htmlspecialchars($value);
-             // Egy kis miniatűr a könnyebb azonosításhoz
              return '<img src="' . $image_path . '" alt="Termékkép" style="max-width: 50px; height: auto; border-radius: 4px;">';
         },
-            'product_status' => function($value) {
-                if ($value === 'active') return '🟢 Aktív';
-                if ($value === 'sold') return '🔴 Elfogyott';
-                return htmlspecialchars($value);
-            }
+        'product_status' => function($value) {
+            if ($value === 'active') return '🟢 Aktív';
+            if ($value === 'sold') return '🔴 Elfogyott';
+            return htmlspecialchars($value);
+        }
     ],
     
-    // Mezők a "Hozzáadás" és "Szerkesztés" űrlapokon
-    'form_fields' => ['user_id', 'product_name', 'category', 'product_description', 'price', 'product_status', 'main_image_url'],
+    // Mezők az űrlapokon - JAVÍTVA: seller_user_id
+    'form_fields' => ['seller_user_id', 'product_name', 'category', 'product_description', 'price', 'product_status', 'main_image_url'],
 
-    // Részletes meződefiníciók az űrlaphoz. Itt az adatbázis oszlop neve a kulcs!
     'fields' => [
         'product_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
-        'user_id' => [
+        'seller_user_id' => [ // JAVÍTVA: user_id -> seller_user_id
             'label' => 'Feltöltő felhasználó',
             'type' => 'select', 
             'required' => true,
-            'param_type' => 'i', // integer
+            'param_type' => 'i',
             'foreign_key' => [
                 'table' => 'USERS',
-                'value_col' => 'user_id',
+                'value_col' => 'user_id', // Itt maradhat user_id, ha a USERS táblában ez a neve
                 'display_col' => 'username'
             ]
         ],
         'product_name' => ['label' => 'Termék neve', 'type' => 'text', 'required' => true, 'param_type' => 's'],
         'category' => ['label' => 'Kategória', 'type' => 'text', 'param_type' => 's'],
         'product_description' => ['label' => 'Leírás', 'type' => 'textarea', 'param_type' => 's'], 
-        
-        // Ár (egész számra van állítva)
         'price' => ['label' => 'Ár', 'type' => 'number', 'step' => '1', 'required' => true, 'param_type' => 'i'], 
-        
         'product_status' => [ 'label' => 'Státusz', 'type' => 'select', 'required' => true, 'param_type' => 's', 'options' => [ 'active' => 'Aktív', 'sold' => 'Eladva' ] ],        
-       
-        // Kép feltöltő mező.
         'main_image_url' => [
-            'label' => 'Termék fő képe (Képfeltöltés)',
+            'label' => 'Termék fő képe',
             'type' => 'file', 
-            'param_type' => 's', // A mentett adat (az elérési út) string
+            'param_type' => 's',
         ] 
     ]
 ];
 
-// --- SABLON BETÖLTÉSE ---
 require '../app/generic_crud.php';

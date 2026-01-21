@@ -414,6 +414,7 @@ CREATE TABLE `products` (
   `product_description` text NOT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `product_status` enum('active','sold','hidden') NOT NULL DEFAULT 'active',
+  `main_image_url` varchar(255) DEFAULT NULL,
   `pickup_location` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
@@ -423,12 +424,12 @@ CREATE TABLE `products` (
 -- A tábla adatainak kiíratása `products`
 --
 
-INSERT INTO `products` (`product_id`, `seller_user_id`, `product_name`, `category`, `product_description`, `price`, `product_status`, `pickup_location`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Gaming Egér', 'gaming', 'RGB világítású gamer egér, 6 programozható gombbal.', 8990.00, 'active', 'Budapest', '2025-12-14 11:53:39', NULL),
-(2, 1, 'Bluetooth Hangszóró', 'hangtechnika', 'Vízálló hordozható Bluetooth hangszóró erős basszussal.', 12990.00, 'active', 'Debrecen', '2025-12-14 11:53:39', NULL),
-(3, 1, 'Okosóra', 'okosórák', 'Pulzusmérős okosóra több mint 20 sportmóddal.', 19990.00, 'active', 'Szeged', '2025-12-14 11:53:39', NULL),
-(4, 1, 'Laptop', 'laptopok', 'Kiváló minőségű laptop.', 149900.00, 'active', 'Budapest XI. kerület', '2025-12-14 11:53:39', NULL),
-(5, 1, 'Fényképezőgép', 'fényképezőgépek', 'Nagy látószögű precíz kamera.', 49900.00, 'active', 'Postázás', '2025-12-14 11:53:39', NULL);
+INSERT INTO `products` (`product_id`, `seller_user_id`, `product_name`, `category`, `product_description`, `price`, `product_status`, `main_image_url`, `pickup_location`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Gaming Egér', 'gaming', 'RGB világítású gamer egér, 6 programozható gombbal.', 8990.00, 'active', NULL, 'Budapest', '2025-12-14 11:53:39', NULL),
+(2, 1, 'Bluetooth Hangszóró', 'hangtechnika', 'Vízálló hordozható Bluetooth hangszóró erős basszussal.', 12990.00, 'active', NULL, 'Debrecen', '2025-12-14 11:53:39', NULL),
+(3, 1, 'Okosóra', 'okosórák', 'Pulzusmérős okosóra több mint 20 sportmóddal.', 19990.00, 'active', NULL, 'Szeged', '2025-12-14 11:53:39', NULL),
+(4, 1, 'Laptop', 'laptopok', 'Kiváló minőségű laptop.', 149900.00, 'active', NULL, 'Budapest XI. kerület', '2025-12-14 11:53:39', NULL),
+(5, 1, 'Fényképezőgép', 'fényképezőgépek', 'Nagy látószögű precíz kamera.', 49900.00, 'active', NULL, 'Postázás', '2025-12-14 11:53:39', NULL);
 
 -- --------------------------------------------------------
 
