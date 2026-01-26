@@ -1,0 +1,22 @@
+Elvégezendő feladatok:
+termék hozzáadása
+megállapodás: 2/2
+értékeld az eladót új oldalon
+profile megtekintése
+admin panel ugyanaz a stílus mint a termék szerkesztése
+api(akár időjárás api)
+css fájlok átstuktúrálása
+egész kód átstuktúrálása, tisztítása
+dokumentáció elkészítése
+weboldal tesztelése
+weboldal security
+
+Pap Máté | Elkezdés dátuma | Tervezett befejezés dátuma | Befejzés dátuma | Állapot | ezeket módosítja:
+Megállapodás | 2026.01.26 | 2026.01.27 | Ismeretlen | Elkezdve | converstation.php, converstation_logic.php
+értékeld az eladót új oldalon
+termék hozzáadása
+weboldal tesztelése
+
+Berta György:
+admin panel
+profile megtekintés
