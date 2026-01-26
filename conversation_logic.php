@@ -365,4 +365,59 @@ $stmt->execute();
 $result = $stmt->get_result();
 $messages = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
+
+/* =========================
+   9. ÉRTÉKELÉS BEKÜLDÉSE (ÚJ)
+========================= */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
+    // Csak a vevő értékelhet és csak ha 'deal_made' a státusz
+    if (!$is_seller && $conversation['conv_status'] === 'deal_made') {
+        
+        // Megkeressük a hozzá tartozó deal_id-t
+        $stmt = $conn->prepare("SELECT deal_id FROM deals WHERE conversation_id = ? LIMIT 1");
+        $stmt->bind_param("i", $conversation_id);
+        $stmt->execute();
+        $deal = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if ($deal) {
+            $rating = (int)$_POST['rating'];
+            $comment = trim($_POST['review_comment'] ?? '');
+            $deal_id = $deal['deal_id'];
+
+            // Ellenőrizzük, értékelt-e már
+            $stmt = $conn->prepare("SELECT review_id FROM reviews WHERE deal_id = ? LIMIT 1");
+            $stmt->bind_param("i", $deal_id);
+            $stmt->execute();
+            $already_reviewed = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+
+            if (!$already_reviewed) {
+                // Beszúrás a reviews táblába
+                $stmt = $conn->prepare("INSERT INTO reviews (seller_user_id, buyer_user_id, deal_id, rating, comment) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("iiiis", $product['seller_user_id'], $user_id, $deal_id, $rating, $comment);
+                
+                if ($stmt->execute()) {
+                    // Opcionális: Eladó átlagának frissítése (avg_rating a users táblában)
+                    $conn->query("UPDATE users SET avg_rating = (SELECT AVG(rating) FROM reviews WHERE seller_user_id = {$product['seller_user_id']}) WHERE user_id = {$product['seller_user_id']}");
+                    
+                    header("Location: conversation.php?conv_id=$conversation_id&success=reviewed");
+                    exit();
+                }
+                $stmt->close();
+            }
+        }
+    }
+}
+
+// Ellenőrizzük a megjelenítéshez, hogy van-e már értékelés
+$existing_review = null;
+if ($conversation['conv_status'] === 'deal_made') {
+    $stmt = $conn->prepare("SELECT r.* FROM reviews r JOIN deals d ON r.deal_id = d.deal_id WHERE d.conversation_id = ? LIMIT 1");
+    $stmt->bind_param("i", $conversation_id);
+    $stmt->execute();
+    $existing_review = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+}
 ?>
