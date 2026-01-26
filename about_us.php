@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include './app/db.php';
 ?>
 <!DOCTYPE html>

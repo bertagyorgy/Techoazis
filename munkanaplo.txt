@@ -14,7 +14,8 @@ weboldal security
 Pap Máté | Elkezdés dátuma | Tervezett befejezés dátuma | Befejzés dátuma | Állapot | ezeket módosítja:
 Megállapodás | 2026.01.26 | 2026.01.27 | Ismeretlen | Elkezdve | converstation.php, converstation_logic.php
 értékeld az eladót új oldalon
-termék hozzáadása
+profile megtekintése
+termék hozzáadása | 2026.01.26 | 2026.01.26 | 2026.01.26 | Befejezve | add_product.php
 weboldal tesztelése
 
 Berta György:
