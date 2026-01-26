@@ -263,7 +263,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
         }
 
         .profile-btn-primary:hover {
-            background: var(--primary-600);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
             color: white !important;
@@ -832,11 +831,12 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztrátor' : 'Felhaszn�
             <div class="empty-state">
                 <i class="fas fa-box-open"></i>
                 <p>Még nem tettél fel terméket</p>
-                <a href="create_product.php" class="profile-btn profile-btn-primary" style="margin-top: 1rem;">
-                    <i class="fas fa-plus"></i> Új termék feladása
-                </a>
+
             </div>
             <?php endif; ?>
+                <a href="add_product.php" class="profile-btn profile-btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-plus"></i> Új termék feladása
+                </a>
         </section>
 
         <!-- Értékelések -->
