@@ -108,16 +108,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         textarea.form-control { min-height: 150px; resize: vertical; }
         .btn-message-seller {
-            background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
-            color: var(--neutral-100);
+            background: var(--primary-500, #2563eb);
+            color: white;
             padding: 12px 32px;
             border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .btn-message-seller:hover:not(.disabled) {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-            color: white;
+            filter: brightness(1.1);
+            transform: translateY(-2px);
         }
     </style>
 </head>

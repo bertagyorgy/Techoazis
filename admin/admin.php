@@ -44,9 +44,8 @@
                 <li><a href="?page=panel_login" class="<?php echo ($_GET['page'] ?? '') === 'panel_login' ? 'active' : ''; ?>"><i class="fa-solid fa-right-to-bracket"></i><p>Bejelentkezések</p></a></li>
                 <li><a href="?page=panel_products" class="<?php echo ($_GET['page'] ?? '') === 'panel_products' ? 'active' : ''; ?>"><i class="fas fa-box-open"></i><p>Termékek</p></a></li>
                 <li><a href="?page=panel_posts" class="<?php echo ($_GET['page'] ?? '') === 'panel_posts' ? 'active' : ''; ?>"><i class="fa-solid fa-pen-to-square"></i><p>Bejegyzések</p></a></li>
+                <li><a href="?page=panel_articles" class="<?php echo ($_GET['page'] ?? '') === 'panel_articles' ? 'active' : ''; ?>"><i class="fa-solid fa-pen-nib"></i><p>Bejegyzések</p></a></li>
                 <li><a href="?page=panel_comments" class="<?php echo ($_GET['page'] ?? '') === 'panel_comments' ? 'active' : ''; ?>"><i class="fa-solid fa-comments"></i><p>Kommentek</p></a></li>
-                <li><a href="?page=panel_badges" class="<?php echo ($_GET['page'] ?? '') === 'panel_badges' ? 'active' : ''; ?>"><i class="fa-solid fa-certificate"></i><p>Jelvények</p></a></li>
-                <li><a href="?page=panel_user_badges" class="<?php echo ($_GET['page'] ?? '') === 'panel_user_badges' ? 'active' : ''; ?>"><i class="fa-solid fa-award"></i><p>Felh. jelvények</p></a></li>
                 <li><a href="?page=panel_images" class="<?php echo ($_GET['page'] ?? '') === 'panel_images' ? 'active' : ''; ?>"><i class="fa-solid fa-image"></i><p>Képek</p></a></li>
                 <li><a href="?page=panel_groups" class="<?php echo ($_GET['page'] ?? '') === 'panel_groups' ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i><p>Csoportok</p></a></li>
                 <li><a href="?page=panel_conversations" class="<?php echo ($_GET['page'] ?? '') === 'panel_conversations' ? 'active' : ''; ?>"><i class="fa-solid fa-comments"></i><p>Beszélgetések</p></a></li>
@@ -59,7 +58,7 @@
         <div class="main">
             <?php
                 $page = $_GET['page'] ?? 'panel_dashboard'; // alapértelmezett oldal
-                $allowed_pages = ['panel_dashboard', 'panel_users', 'panel_login', 'panel_products', 'panel_posts', 'panel_comments', 'panel_badges', 'panel_user_badges', 'panel_images', 'panel_groups', 'panel_conversations', 'panel_messages', 'panel_deals'];
+                $allowed_pages = ['panel_dashboard', 'panel_users', 'panel_login', 'panel_products', 'panel_posts', 'panel_articles', 'panel_comments', 'panel_images', 'panel_groups', 'panel_conversations', 'panel_messages', 'panel_deals'];
 
                 if (in_array($page, $allowed_pages)) {
                     $safe_filename = basename($page . '.php');
