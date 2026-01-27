@@ -256,7 +256,7 @@ switch ($action):
 ?>
     <div class="edit-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
-            <h2 style="margin:0; color: var(--admin-secondary);">
+            <h2 style="margin:0; color: var(--admin-secondary); text-transform: capitalize;">
                 <i class="fas <?= $is_edit ? 'fa-edit' : 'fa-plus-circle' ?>" style="color: var(--admin-accent); margin-right: 10px;"></i> 
                 <?= htmlspecialchars($config['singular_name']) ?> <?= $is_edit ? 'szerkesztése' : 'hozzáadása' ?>
             </h2>
@@ -279,7 +279,7 @@ switch ($action):
                 } ?>
             </div>
 
-            <div style="margin-top: 2.5rem; pt-2rem; padding-top: 2rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end;">
+            <div style="margin-top: 2.5rem; pt-2rem; padding-top: 2rem; border-top: 1px solid #eee; display: flex; justify-content: flex-start;">
                 <button type="submit" class="btn-submit-style">
                     <i class="fas <?= $is_edit ? 'fa-sync-alt' : 'fa-save' ?>"></i>
                     <?= $is_edit ? 'Módosítások mentése' : 'Új elem rögzítése' ?>
