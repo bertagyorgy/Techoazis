@@ -2,6 +2,7 @@
 session_start();
 
 include './app/db.php';
+require_once 'config.php';
 ?>
 <!DOCTYPE html>
 <html lang="hu">

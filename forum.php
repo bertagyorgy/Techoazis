@@ -1,6 +1,8 @@
 <?php
 session_start();
-include './app/db.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/app/db.php';
+
 
 // ======= TOP TÉMÁK (legtöbb poszt) - q-val szűrhető név alapján =======
 $top_limit = 12;
@@ -91,30 +93,31 @@ while ($img = $images_result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Community</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= ROOT_PATH ?>images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/comments.css">
-    <link rel="stylesheet" href="./static/forum.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/post_card.css">
-    <link rel="stylesheet" href="./static/responsive_adjustments.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/index.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/button_system.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/comments.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/forum.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/post_card.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/responsive_adjustments.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/container&grid_system.css">
 
-    <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= ROOT_PATH ?>static/index.js" defer></script>
+    <script src="<?= ROOT_PATH ?>static/forum.js" defer></script>
 </head>
 <body>
 
-<?php include './views/navbar.php'; ?>
-
+<?php 
+// JAVÍTÁS: A navbar a views mappában van
+include __DIR__ . '/views/navbar.php'; 
+?>
 <section class="forum-wrapper">
 
     <!-- ======================

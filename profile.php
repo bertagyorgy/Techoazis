@@ -3,6 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 include './app/db.php';
+require_once __DIR__ . '/config.php';
+
 
 if (!isset($_SESSION['username'])) {
     echo "<script>window.location.href='../views/login.php';</script>";

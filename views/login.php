@@ -1,21 +1,19 @@
 <?php
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ob_start();
 
-$base_url = 'http://localhost/techoazis/';
-$root_path = '/techoazis/';
-// 1. JAVÍTÁS: Abszolút elérési út az 'app/db.php'-hoz
-// __DIR__ a 'views' mappa. '/../' felvisz a gyökérbe (Techoazis).
+// A config behívása a szülőmappából
+require_once __DIR__ . '/../config.php';
+
+// Adatbázis behívása
 include __DIR__ . '/../app/db.php'; 
 
-// ÚJ RÉSZ: Sikeres regisztráció session üzenetének kezelése
 $info_message = '';
 if (isset($_SESSION['registration_message'])) {
     $info_message = $_SESSION['registration_message'];
-    unset($_SESSION['registration_message']); // Töröljük a megjelenés után
+    unset($_SESSION['registration_message']);
 }
 ?>
 
@@ -25,26 +23,23 @@ if (isset($_SESSION['registration_message'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />  
-    <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= ROOT_PATH ?>images/palmtree_favicon.svg">
     <title>Techoazis | Login</title>
-    <link rel="stylesheet" href="../static/index.css">
-    <link rel="stylesheet" href="../static/reset&base_styles.css">
-    <link rel="stylesheet" href="../static/animations_microinteractions.css">
-    <link rel="stylesheet" href="../static/button_system.css">
-    <link rel="stylesheet" href="../static/login_page.css">
-    <link rel="stylesheet" href="../static/modern_navbar.css">
-    <link rel="stylesheet" href="../static/reset&base_styles.css">
-    <link rel="stylesheet" href="../static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/index.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/button_system.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/login_page.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/container&grid_system.css">
 
-    <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="<?= $root_path ?>static/index.js" defer></script>
+    <script src="<?= ROOT_PATH ?>static/index.js" defer></script>
 </head>
 <body>
 <?php
-// 3. JAVÍTÁS: Navbar beillesztése (mivel a navbar is a views mappában van)
 include __DIR__ . '/navbar.php';
 
 $error_message = '';
@@ -55,9 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     if (empty($username) || empty($password)) {
         $error_message = "Kérlek, tölts ki minden mezőt.";
     } else {
-        // Ellenőrizzük, hogy van-e ilyen felhasználó
         $sql = "SELECT user_id, username, email, user_password, is_active, user_role FROM users WHERE username = ?";
-        // A $conn változó a fent beillesztett db.php fájlból származik
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("s", $username);
 
@@ -66,19 +59,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                 if ($result->num_rows == 1) {
                     $row = $result->fetch_assoc();
 
-                    // MÓDOSÍTOTT RÉSZ: Ellenőrizzük az aktivitást
                     if ($row['is_active'] !== 'A') {
                         if ($row['is_active'] === 'P') {
-                            $error_message = "A fiókod még NINCS MEGERŐSÍTVE. Kérlek, ellenőrizd az emailjeidet (beleértve a spam mappát is) az aktiváló linkért.";
+                            $error_message = "A fiókod még NINCS MEGERŐSÍTVE.";
                         } elseif ($row['is_active'] === 'T') {
-                            $error_message = "A fiókod törölve lett. Ha esetleges hiba történt, akkor kérlek lépj kapcsolatba adminjainkkal";
+                            $error_message = "A fiókod törölve lett.";
                         } else {
                             $error_message = "A fiókod nem aktív."; 
                         }
                     } elseif (password_verify($password, $row['user_password'])) {
-                        // Sikeres belépés (csak az 'A' állapotú felhasználó léphet be)
-
-                        // Login adatainak mentése
                         $user_id = $row['user_id'];
                         $login_date = date('Y-m-d H:i:s');
 
@@ -94,14 +83,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             $insert_stmt->close();
                         }
                         
+                        // JAVÍTÁS: Pont hozzáadva a kiterjesztés elé és fix ROOT_PATH összefűzés
                         if (isset($_SESSION['redirect_after_login'])) {
                             $url = $_SESSION['redirect_after_login'];
                             unset($_SESSION['redirect_after_login']);
-                            header("Location: {$root_path}{$url}.php");
+                            header("Location: " . ROOT_PATH . $url . ".php");
                             exit();
                         }
 
-                        header("Location: {$root_path}index.php");
+                        header("Location: " . ROOT_PATH . "index.php");
                         exit();
                         
                     } else {
@@ -113,11 +103,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             } else {
                 $error_message = "Hiba történt a bejelentkezés során.";
             }
-
             $stmt->close();
         }
     }
-
     $conn->close();
 }
 ?>

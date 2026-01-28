@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/app/db.php';
+require_once 'config.php';
 
 // Szűrők beállítása
 $category_filter = $_GET['category'] ?? '';

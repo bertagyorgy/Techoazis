@@ -1,6 +1,7 @@
 <?php
 session_start();
 include './app/db.php';
+require_once 'config.php';
 
 /* =========================
    GET PARAMS

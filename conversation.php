@@ -1,6 +1,8 @@
 <?php
 // conversation.php - A tiszta megjelenítő fájl
 require_once 'conversation_logic.php'; 
+require_once __DIR__ . '/config.php';
+
 ?>
 
 <!DOCTYPE html>
