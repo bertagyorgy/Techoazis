@@ -44,7 +44,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $page = $_GET['p'] ?? '';
 
 // Whitelist of allowed pages to prevent LFI attacks
-$allowed_pages = ['shop', 'forum', 'forum_group', 'cart', 'profile', 'profile_edit', 'create_post'];
+$allowed_pages = ['shop', 'forum', 'forum_group', 'cart', 'profile', 'profile_edit', 'create_post', 'panel_comments'];
 
 if ($page === '') {
     include 'views/navbar.php';
