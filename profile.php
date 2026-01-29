@@ -484,6 +484,7 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztr√°tor' : 'Felhaszn√
         .product-card:hover {
             transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
+            border-color: var(--accent-600);
         }
 
         .product-image {
@@ -491,6 +492,7 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztr√°tor' : 'Felhaszn√
             height: 180px;
             object-fit: scale-down;
             border-bottom: 1px solid var(--border-color);
+            background: var(--background);
         }
 
         .product-info {
