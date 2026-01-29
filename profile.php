@@ -86,20 +86,29 @@ try {
             c.conversation_id,
             c.product_id,
             p.product_name,
-            u.username as other_user,
-            (SELECT COUNT(*) FROM messages m 
-             WHERE m.conversation_id = c.conversation_id 
-             AND m.sender_user_id != ? 
-             AND m.is_read = 0) as unread_count,
-            c.updated_at
+            u.username AS other_user,
+
+            (SELECT COUNT(*) 
+            FROM messages m
+            WHERE m.conversation_id = c.conversation_id
+            AND m.sender_user_id != ?
+            AND m.is_read = 0
+            ) AS unread_count,
+
+            COALESCE(
+                (SELECT MAX(m2.sent_at) FROM messages m2 WHERE m2.conversation_id = c.conversation_id),
+                c.updated_at,
+                c.created_at
+            ) AS last_activity
+
         FROM conversations c
-        JOIN products p ON c.product_id = p.product_id
+        JOIN products p ON p.product_id = c.product_id
         JOIN users u ON (
-            (c.seller_user_id = u.user_id AND c.seller_user_id != ?) OR 
-            (c.buyer_user_id = u.user_id AND c.buyer_user_id != ?)
+            (c.seller_user_id = u.user_id AND c.seller_user_id != ?) OR
+            (c.buyer_user_id  = u.user_id AND c.buyer_user_id  != ?)
         )
         WHERE (c.seller_user_id = ? OR c.buyer_user_id = ?)
-        ORDER BY c.updated_at DESC
+        ORDER BY last_activity DESC
         LIMIT 5
     ");
     $stmt->bind_param("iiiii", $current_user_id, $current_user_id, $current_user_id, $current_user_id, $current_user_id);
@@ -130,7 +139,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztr√°tor' : 'Felhaszn√
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
     <link rel="stylesheet" href="./static/button_system.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/profile_pages.css">
     <link rel="stylesheet" href="./static/utility_classes.css">
     <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/container&grid_system.css">
@@ -469,7 +477,7 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztr√°tor' : 'Felhaszn√
             overflow: hidden;
             box-shadow: var(--shadow-md);
             transition: all var(--transition-fast);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--neutral-500);
             cursor: pointer;
         }
 
@@ -627,8 +635,6 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztr√°tor' : 'Felhaszn√
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
             border-bottom: 2px solid var(--border-color);
         }
 
@@ -771,7 +777,7 @@ $user_role_display = $user['user_role'] === 'A' ? 'Adminisztr√°tor' : 'Felhaszn√
                             <?php echo htmlspecialchars($conv['other_user']); ?>
                         </div>
                         <div class="conversation-time">
-                            <?php echo date('Y.m.d H:i', strtotime($conv['updated_at'])); ?>
+                            <?php echo date('Y.m.d H:i', strtotime($conv['last_activity'])); ?>
                         </div>
                     </div>
                 </a>

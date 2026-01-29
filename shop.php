@@ -350,7 +350,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                 <!--          TERMÉK LISTA          -->
                 <!-- =============================== -->
                 <div class="shop-content">
-                    <h1 class="section-title">Tech cuccok vásárlása</h1>
+                    <h1 class="section-title">Tech termékek vásárlása</h1>
                     <p class="text-center" style="color: var(--text-light); margin-bottom: 2rem;">
                         Fedezd fel a közösség által felkínált technológiai termékeket
                     </p>

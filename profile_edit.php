@@ -263,7 +263,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
     <link rel="stylesheet" href="./static/animations_microinteractions.css">
     <link rel="stylesheet" href="./static/button_system.css">
     <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/profile_pages.css">
     <link rel="stylesheet" href="./static/utility_classes.css">
     <link rel="stylesheet" href="./static/reset&base_styles.css">
     <link rel="stylesheet" href="./static/container&grid_system.css">
@@ -280,18 +279,33 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
             padding-top: 50px;
         }
         .profile-edit-container {
-            max-width: 1200px;
+            max-width: 980px;
             margin: 2rem auto;
             padding: 0 1rem;
+        }
+
+        .profile-edit-card{
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 1.75rem;
         }
 
         .profile-edit-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .profile-edit-header h1{
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0;
         }
 
         .profile-edit-header h1 {
@@ -303,38 +317,45 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
         .profile-edit-nav {
             display: flex;
             gap: 0.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
             flex-wrap: wrap;
+            padding: 0.5rem;
+            background: var(--neutral-100);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
         }
 
         .nav-tab {
-            padding: 0.75rem 1.5rem;
-            background: var(--neutral-100);
-            border: none;
-            border-radius: var(--border-radius-md);
-            font-weight: 600;
-            color: var(--neutral-700);
+            padding: 0.6rem 1rem;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            font-weight: bold;
+            color: var(--text);
             cursor: pointer;
             transition: all var(--transition-fast);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .nav-tab:hover {
+        .nav-tab:hover{
             background: var(--neutral-200);
+            transform: translateY(-1px);
         }
 
-        .nav-tab.active {
-            background: var(--primary-500);
-            color: white;
+        .nav-tab.active{
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-300));
+            box-shadow: var(--shadow-sm);
+            border-color: rgba(255,255,255,0.22);
         }
 
         .edit-section {
-            background: var(--surface);
-            border-radius: var(--border-radius-lg);
-            padding: 2rem;
-            box-shadow: var(--shadow-md);
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
             margin-bottom: 2rem;
             display: none;
         }
@@ -349,9 +370,19 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .section-title{
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin: 0 0 1.25rem 0;
+            letter-spacing: 0.2px;
+        }
+
         .edit-form {
             max-width: 600px;
             margin: 0 auto;
+            display: grid;
+            gap: 1.25rem;
         }
 
         .form-group {
@@ -408,9 +439,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
             gap: 0.5rem;
         }
 
-        .btn-primary:hover {
-            background: var(--primary-600);
-        }
 
         .btn-secondary {
             background: var(--neutral-200);
@@ -434,6 +462,7 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
             object-fit: cover;
             border: 3px solid var(--primary-300);
             margin-bottom: 1rem;
+            margin: auto;
         }
 
         .file-upload {
@@ -459,10 +488,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
             cursor: pointer;
             transition: background var(--transition-fast);
             text-align: center;
-        }
-
-        .file-upload-label:hover {
-            background: var(--primary-600);
         }
 
         .message {
@@ -497,6 +522,7 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
             align-items: center;
             gap: 0.5rem;
             margin-top: 1rem;
+            margin: auto;
         }
 
         .delete-image-btn:hover {
@@ -560,11 +586,12 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
 <?php include './views/navbar.php'; ?>
 
 <div class="profile-edit-container">
+    <div class="profile-edit-card">
     <div class="profile-edit-header">
+        <h1>Profil szerkesztése</h1>
         <a href="profile.php" class="back-btn">
             <i class="fas fa-arrow-left"></i> Vissza a profilhoz
         </a>
-        <h1>Profil szerkesztése</h1>
     </div>
 
     <?php if ($message): ?>
@@ -590,7 +617,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
 
     <!-- Alapadatok szerkesztése -->
     <section id="general-section" class="edit-section <?php echo $action === 'general' ? 'active' : ''; ?>">
-        <h2><i class="fas fa-user-edit"></i> Alapadatok módosítása</h2>
         
         <!-- Felhasználónév módosítása -->
         <form method="POST" class="edit-form">
@@ -645,7 +671,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
 
     <!-- Profilkép módosítása -->
     <section id="image-section" class="edit-section <?php echo $action === 'image' ? 'active' : ''; ?>">
-        <h2><i class="fas fa-camera"></i> Profilkép módosítása</h2>
         
         <div class="edit-form" style="text-align: center;">
             <img src="<?php echo $profile_image; ?>" alt="Profilkép előnézet" class="image-preview" 
@@ -681,7 +706,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
 
     <!-- Jelszó módosítása -->
     <section id="password-section" class="edit-section <?php echo $action === 'password' ? 'active' : ''; ?>">
-        <h2><i class="fas fa-key"></i> Jelszó módosítása</h2>
         
         <form method="POST" class="edit-form">
             <input type="hidden" name="update_password" value="1">
@@ -727,7 +751,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
 
     <!-- Biztonsági beállítások -->
     <section id="security-section" class="edit-section <?php echo $action === 'security' ? 'active' : ''; ?>">
-        <h2><i class="fas fa-shield-alt"></i> Biztonsági beállítások</h2>
         
         <div class="edit-form">
             <div class="form-group">
@@ -746,18 +769,11 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
                     <button type="button" class="delete-image-btn" onclick="confirmDeleteAccount()">
                         <i class="fas fa-user-slash"></i> Fiók végleges törlése
                     </button>
-                    
-                    <button type="button" class="btn-secondary" onclick="clearChatHistory()">
-                        <i class="fas fa-comment-slash"></i> Chat előzmények törlése
-                    </button>
-                    
-                    <button type="button" class="btn-secondary" onclick="exportUserData()">
-                        <i class="fas fa-download"></i> Adatok exportálása
-                    </button>
                 </div>
             </div>
         </div>
     </section>
+    </div>
 </div>
 
 <script>
