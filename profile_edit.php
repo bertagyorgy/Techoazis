@@ -1,6 +1,7 @@
 <?php
 session_start();
 include './app/db.php';
+require_once 'config.php';
 
 if (!isset($_SESSION['username'])) {
     echo "<script>window.location.href='./views/login.php';</script>";

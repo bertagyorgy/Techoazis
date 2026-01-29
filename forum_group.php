@@ -1,6 +1,8 @@
 <?php
 session_start();
 include './app/db.php';
+require_once 'config.php';
+
 
 if (!isset($_GET['group'])) {
     echo "<script>window.location.href='../forum.php';</script>";

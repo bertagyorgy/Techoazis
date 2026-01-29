@@ -2,6 +2,7 @@
 // edit_product.php
 session_start();
 require_once __DIR__ . '/app/db.php';
+require_once 'config.php';
 
 // Csak bejelentkezett felhasználók szerkeszthetnek
 if (!isset($_SESSION['user_id'])) {
