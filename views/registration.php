@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     
                     // Átirányítás session üzenettel a login.php-ra (a teljes BASE_URL-t használva)
                     $_SESSION['registration_message'] = "Sikeres regisztráció! Kérlek, ellenőrizd az email címedet (beleértve a spam mappát) a fiók aktiválásához.";
-                    echo "<script>window.location.href='{BASE_URL}views/login.php';</script>";
+                    echo "<script>window.location.href='" . BASE_URL . "views/login.php';</script>";
                     exit();
 
                 } catch (Exception $e) {

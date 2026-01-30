@@ -4,8 +4,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$base_url = 'http://localhost/techoazis/';
-$root_path = '/techoazis/';
+// BASE_URL = 'http://localhost/techoazis/';
+// ROOT_PATH = '/techoazis/';
+require_once __DIR__ . '/../config.php';
 
 include __DIR__ . '/../app/db.php';
 include __DIR__ . '/../envreader.php';
@@ -57,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                             $mail->addAddress($email);
                             $mail->isHTML(true);
 
-                            $reset_link = $base_url . "views/reset_password.php?token=" . $token . "&email=" . urlencode($email);
+                            $reset_link = BASE_URL . "views/reset_password.php?token=" . $token . "&email=" . urlencode($email);
 
                             $mail->Subject = 'Jelszó visszaállítása - Techoázis';
                             $mail->Body    = '
@@ -107,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="<?= $root_path ?>static/index.js" defer></script>
+    <script src="<?= ROOT_PATH ?>static/index.js" defer></script>
 </head>
 <body>
 <?php include __DIR__ . '/navbar.php'; ?>
