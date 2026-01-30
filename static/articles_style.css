@@ -1,0 +1,75 @@
+/* gyors articles UI (forum layoutra ül rá) */
+.forum-center { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.article-card{
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+.article-cover{
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+}
+.article-body{
+    padding: 1.25rem 1.25rem 1.1rem;
+}
+.article-meta{
+    display:flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    color: var(--text-light);
+    font-size: .9rem;
+    margin-bottom: .6rem;
+}
+.article-badge{
+    background: var(--primary-100);
+    color: var(--primary-700);
+    padding: .25rem .55rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+.article-title{
+    margin: 0 0 .6rem 0;
+    color: var(--text-color);
+    font-size: 1.35rem;
+    line-height: 1.2;
+}
+.article-summary{
+    margin: 0 0 1rem 0;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+.article-actions{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.read-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
+    color: #fff;
+    padding: .7rem 1rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 700;
+}
+.read-btn:hover{ transform: translateY(-2px); box-shadow: var(--shadow-md); color: white}
+
+.latest-post-item { margin-bottom: 1rem; }
+.latest-post-meta { color: var(--text-light); font-size: .85rem; margin-top: .2rem; }
+
+.empty-state{
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 2rem;
+    color: var(--text-light);
+    text-align: center;
+}

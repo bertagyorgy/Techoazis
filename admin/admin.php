@@ -31,6 +31,7 @@ require_once __DIR__ . '/../app/auth_check.php';
     <link rel="stylesheet" href="<?= ROOT_PATH ?>static/reset&base_styles.css">
     <link rel="stylesheet" href="<?= ROOT_PATH ?>static/container&grid_system.css">
     <link rel="stylesheet" href="<?= ROOT_PATH ?>static/admin-modern.css">
+    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/panel_dashboard_style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
