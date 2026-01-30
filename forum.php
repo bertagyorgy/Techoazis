@@ -93,24 +93,24 @@ while ($img = $images_result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Community</title>
-    <link rel="icon" type="image/x-icon" href="<?= ROOT_PATH ?>images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/index.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/animations_microinteractions.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/button_system.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/comments.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/forum.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/post_card.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/responsive_adjustments.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= ROOT_PATH ?>static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/comments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/forum.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/post_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/responsive_adjustments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>static/container&grid_system.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="<?= ROOT_PATH ?>static/index.js" defer></script>
-    <script src="<?= ROOT_PATH ?>static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>static/forum.js" defer></script>
 </head>
 <body>
 

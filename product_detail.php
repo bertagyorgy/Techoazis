@@ -251,7 +251,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                                         </a>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <a href="login.php?redirect=product_detail.php?id=<?php echo $product_id; ?>" 
+                                    <a href="views/login.php" 
                                     class="btn-message-seller">
                                         <i class="fas fa-sign-in-alt"></i>
                                         Jelentkezz be az üzenethez

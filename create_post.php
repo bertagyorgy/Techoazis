@@ -11,8 +11,10 @@ $group_id = intval($_POST['group_id']);
 $title = trim($_POST['title']);
 $content = trim($_POST['content']);
 
-if ($title == "" || $content == "") {
-    die("Hiányzó adatok.");
+if ($title === "" || $content === "") { 
+    $_SESSION['error'] = "Hiányzó adatok."; 
+    header("Location: ./forum?group={$group_id}"); 
+    exit; 
 }
 
 // POSZT LÉTREHOZÁSA
