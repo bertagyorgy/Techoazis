@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once __DIR__ . '/app/db.php';
+require_once 'config.php';
+
 
 $article_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($article_id <= 0) {

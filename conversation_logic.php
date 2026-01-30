@@ -41,10 +41,10 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == '1') {
             if ($stmt->execute()) {
 
                 // beszélgetés aktivitás frissítése
-                $up = $conn->prepare("UPDATE conversations SET updated_at = NOW() WHERE conversation_id = ?");
-                $up->bind_param("i", $conversation_id);
-                $up->execute();
-                $up->close();
+                // $up = $conn->prepare("UPDATE conversations SET updated_at = NOW() WHERE conversation_id = ?");
+                // $up->bind_param("i", $conversation_id);
+                // $up->execute();
+                // $up->close();
                 echo json_encode(['success' => true, 'message_id' => $conn->insert_id]);
             } else {
                 echo json_encode(['success' => false, 'error' => 'Adatbázis hiba']);
