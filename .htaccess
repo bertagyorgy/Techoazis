@@ -1,23 +1,20 @@
 RewriteEngine On
 RewriteBase /Techoazis/
 
-# 1. KIVÉTEL: Az "app", "static" és "images" mappákat HAGYJA BÉKÉN!
-# Ha a kérés ezekbe a mappákba megy, ne irányítson át, ne írja át.
-RewriteRule ^(app|static|images)/ - [L]
+# Static mappák: soha ne rewrite
+RewriteRule ^(app|static|images|assets)/ - [L]
 
-# 2. .php eltüntetése (CSAK a böngészősávban látható oldalaknál, pl. forum.php)
-# Kizárjuk a POST kéréseket, hogy a kommentküldés ne sérüljön.
+# .php eltüntetés GET-nél
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{THE_REQUEST} \s/Techoazis/(.+?)\.php[\s?] [NC]
-RewriteCond %{REQUEST_URI} !^/Techoazis/app/ [NC]
 RewriteRule ^(.+?)\.php$ $1 [R=301,L,NE]
 
-# 3. Ha beírják kiterjesztés nélkül (pl. localhost/Techoazis/forum), tegye mögé a .php-t
+# ha van ilyen fájl .php-val, kiszolgáljuk
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^(.+?)/?$ $1.php [L]
+RewriteRule ^(.+?)/?$ $1.php [L,QSA]
 
-# 4. Minden más nem létező dolgot az index.php kezeljen
+# minden más megy index.php front-controllerbe
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]

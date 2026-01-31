@@ -7,7 +7,7 @@ require_once 'config.php';
 $product_id = $_GET['id'] ?? 0;
 
 // Termék adatok lekérése
-$sql = "SELECT p.*, u.username as seller_username, u.profile_image as seller_avatar, 
+$sql = "SELECT p.*, u.username as seller_username, u.profile_image as seller_avatar, u.username_slug AS user_slug,
                u.email as seller_email, u.user_id as seller_id
         FROM products p
         JOIN users u ON p.seller_user_id = u.user_id
@@ -217,13 +217,17 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                                 </div>
                             </div>
                             
+                            <?php
+                            $slug = $product['user_slug'] ?? '';
+                            ?>
+                            <?php if ($slug !== ''): ?>
                             <div style="text-align: center; margin-top: 1rem;">
-                                <a href="profile.php?id=<?php echo $product['seller_id']; ?>" 
-                                class="btn-back">
+                                <a href="<?= BASE_URL ?>profile?u=<?= urlencode($slug) ?>" class="btn-back">
                                     <i class="fas fa-user-circle"></i>
                                     Profil megtekintése
                                 </a>
                             </div>
+                            <?php endif; ?>
                         </div>
                         
                         

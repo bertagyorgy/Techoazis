@@ -27,7 +27,8 @@ $stmt = $conn->prepare("
         c.icon_class,
         u.user_id AS author_id,
         u.username AS author_username,
-        u.profile_image AS author_image
+        u.profile_image AS author_image,
+        u.username_slug AS author_slug
     FROM articles a
     JOIN article_categories c ON a.category_id = c.category_id
     JOIN users u ON a.author_user_id = u.user_id
@@ -115,9 +116,11 @@ function render_text($text) {
             <div class="author" style="margin-bottom: 1.25rem;">
                 <img src="<?= htmlspecialchars($article['author_image'] ?: 'images/anonymous.png') ?>" alt="Szerző">
                 <div>
-                    <div style="color: var(--text-color); font-weight: 800;">
-                        <?= htmlspecialchars($article['author_username']) ?>
-                    </div>
+                    <a href="<?= BASE_URL ?>profile?u=<?= urlencode($article['author_slug']) ?>">
+                        <div style="color: var(--text-color); font-weight: 800;">
+                            <?= htmlspecialchars($article['author_username']) ?>
+                        </div>
+                    </a>
                     <div style="color: var(--text-light); font-size: .9rem;">
                         Szerző
                     </div>

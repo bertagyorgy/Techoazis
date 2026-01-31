@@ -4,7 +4,7 @@ include './app/db.php';
 require_once 'config.php';
 
 if (!isset($_SESSION['username'])) {
-    echo "<script>window.location.href='./views/login.php';</script>";
+    echo "<script>window.location.href='../Techoazis/views/login.php';</script>";
     exit();
 }
 
@@ -389,14 +389,6 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
                 </div>
             </form>
             
-            <?php if ($profile_image !== './images/anonymous.png'): ?>
-            <form method="POST">
-                <input type="hidden" name="delete_image" value="1">
-                <button type="submit" class="delete-image-btn" onclick="return confirm('Biztosan törlöd a profilképét?')">
-                    <i class="fas fa-trash"></i> Profilkép törlése
-                </button>
-            </form>
-            <?php endif; ?>
         </div>
     </section>
 
@@ -524,26 +516,6 @@ function confirmDeleteAccount() {
         // Itt lehetne AJAX hívás vagy form beküldés
         window.location.href = './app/delete_account.php';
     }
-}
-
-function clearChatHistory() {
-    if (confirm('Biztosan törlöd az összes chat előzményed?')) {
-        fetch('./app/clear_chat_history.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ user_id: <?php echo $current_user_id; ?> })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-        });
-    }
-}
-
-function exportUserData() {
-    alert('Az adatok exportálása hamarosan elérhető lesz!');
 }
 </script>
 </body>

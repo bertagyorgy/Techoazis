@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
                         </div>
                         <div style="text-align: right; margin-top: 5px;">
-                            <a href="forgot_password.php" style="font-size: 0.85rem; color: #666; text-decoration: none;">Elfelejtett jelszó?</a>
+                            <a href="forgot_password.php">Elfelejtett jelszó?</a>
                         </div>
                     </div>
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>

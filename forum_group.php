@@ -26,7 +26,7 @@ if (!$group) {
 
 // ===== POSZTOK LEKÉRÉSE =====
 $posts_query = "
-    SELECT p.*, u.username
+    SELECT p.*, u.username, u.username_slug AS user_slug
     FROM posts p
     JOIN users u ON p.user_id = u.user_id
     WHERE p.group_id = ?
@@ -126,10 +126,9 @@ $post_count = $posts->num_rows;
                         #<?= htmlspecialchars($group['group_name']) ?>
                     </a>
 
-                    <span>
-                        <i class="fa-solid fa-user"></i>
-                        <?= htmlspecialchars($post['username']) ?>
-                    </span>
+                    <a href="<?= BASE_URL ?>profile?u=<?= urlencode($post['user_slug']) ?>">
+                        <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
+                    </a>
 
                     <span>
                         <i class="fa-regular fa-calendar"></i>

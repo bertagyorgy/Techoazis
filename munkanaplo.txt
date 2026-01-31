@@ -21,6 +21,6 @@ weboldal tesztelése
 
 Berta György | Elkezdés dátuma | Tervezett befejezés dátuma | Befejzés dátuma | Állapot | ezeket módosítja:
 admin panel | kész
-profile megtekintés  | 2026.01.31
-dropdown menu profilehoz
-képek kijavítása
+profile megtekintés  | 2026.01.31 | kész
+dropdown menu profilehoz | ejtve
+képek kijavítása | kész

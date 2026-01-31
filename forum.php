@@ -55,7 +55,7 @@ $latest_posts = $conn->query($latest_query);
 // ======= KÖZÉPSŐ RÉSZ – POSZTOK MINDEN CSOPORTBÓL =======
 if ($q !== '') {
     $stmt = $conn->prepare("
-        SELECT p.*, u.username, g.group_name AS group_name
+        SELECT p.*, u.username, u.username_slug AS user_slug, g.group_name AS group_name
         FROM posts p
         JOIN users u ON p.user_id = u.user_id
         JOIN groups g ON p.group_id = g.group_id
@@ -67,7 +67,7 @@ if ($q !== '') {
     $posts_result = $stmt->get_result();
 } else {
     $posts_result = $conn->query("
-        SELECT p.*, u.username, g.group_name AS group_name
+        SELECT p.*, u.username, u.username_slug AS user_slug, g.group_name AS group_name
         FROM posts p
         JOIN users u ON p.user_id = u.user_id
         JOIN groups g ON p.group_id = g.group_id
@@ -185,10 +185,9 @@ include __DIR__ . '/views/navbar.php';
                     </a>
 
 
-                    <span>
-                        <i class="fa-solid fa-user"></i>
-                        <?= htmlspecialchars($post['username']) ?>
-                    </span>
+                    <a href="<?= BASE_URL ?>profile?u=<?= urlencode($post['user_slug']) ?>">
+                        <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
+                    </a>
 
                     <span>
                         <i class="fa-regular fa-calendar"></i>

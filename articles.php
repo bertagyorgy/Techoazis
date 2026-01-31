@@ -50,6 +50,7 @@ $sql = "
         a.reading_minutes,
         a.cover_image,
         u.username,
+        u.username_slug AS author_slug,
         c.category_name
     FROM articles a
     JOIN users u ON a.author_user_id = u.user_id
@@ -178,7 +179,9 @@ $stmt->close();
                     <div class="article-body">
                         <div class="article-meta">
                             <span class="article-badge">#<?= htmlspecialchars($a['category_name']) ?></span>
-                            <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($a['username']) ?></span>
+                            <a href="<?= BASE_URL ?>profile?u=<?= urlencode($a['author_slug']) ?>">
+                                <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($a['username']) ?></span>
+                            </a>
                             <span><i class="fa-regular fa-clock"></i>
                                 <?= $a['reading_minutes'] ? (int)$a['reading_minutes'] . " perc" : "—" ?>
                             </span>
