@@ -4,51 +4,53 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 require_once __DIR__ . '/config.php';
 
-// Tisztítjuk a bejövő paramétert (levágjuk a felesleges perjeleket)
+// Tisztítás: levágjuk a perjeleket az elejéről és végéről
 $page = isset($_GET['p']) ? trim($_GET['p'], '/') : '';
 
-// Engedélyezett oldalak (MINDENKÉPP add hozzá a 'test'-et, ha próbálod!)
 $allowed_pages = [
     'shop', 'forum', 'forum_group', 'contact', 'cart', 'profile', 
     'product_detail', 'profile_edit', 'create_post', 'articles',    
     'conversation', 'article_detail', 'about_us', 
-    'login', 'registration', 'logout', 'forgot_password', 'test'
+    'login', 'registration', 'logout', 'forgot_password'
 ];
 
-// --- FÁJL BETÖLTÉSI LOGIKA ---
+// --- SZIGORÚ ROUTING ---
 if ($page !== '' && $page !== 'index') {
+    // Ha a kérésben van "/" (pl. asd/asd), vagy nincs a listában, akkor az 404
+    // Kivéve, ha később akarsz aloldalakat, de most a biztonság a cél
     if (in_array($page, $allowed_pages)) {
         $views_file = ROOT_PATH . '/views/' . $page . '.php';
         $root_file = ROOT_PATH . '/' . $page . '.php';
 
         if (file_exists($views_file)) {
             include $views_file;
-            exit; // Ha megvan a fájl, megállunk, nem rajzolunk főoldalt
+            exit; 
         } elseif (file_exists($root_file)) {
             include $root_file;
             exit;
         }
     }
     
-    // Ha nem találtuk meg vagy nincs a listában
+    // Ha ide eljut (pl. asd/asd vagy ismeretlen oldal), tiszta 404-et dobunk
     http_response_code(404);
     if (file_exists(ROOT_PATH . '/views/404.php')) {
         include ROOT_PATH . '/views/404.php';
     } else {
-        echo "404 - Az oldal nem található ($page)";
+        echo "<h1>404 - Az oldal nem található</h1>";
     }
-    exit;
+    exit; // FONTOS: Megállítjuk a futást, nem töltünk be semmi mást!
 }
-// --- FŐOLDAL TARTALMA INNENTŐL ---
-include ROOT_PATH . '/views/navbar.php';
-
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Techoázis: hardver piactér, tech közösség, cikkek és biztonságos adás-vétel. Vásárolj, adj el és beszélgess biztonságosan.">
+    <base href="<?= BASE_URL ?>/">
     <title>Techoázis - A közösség és a technológia egy helyen</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
@@ -78,6 +80,7 @@ include ROOT_PATH . '/views/navbar.php';
 
 </head>
 <body>
+    <?php include ROOT_PATH . '/views/navbar.php';?>
 
         <!-- Loading screen hozzáadása -->
         <!--<div id="loader">
@@ -86,7 +89,17 @@ include ROOT_PATH . '/views/navbar.php';
             </div>
             <div class="spinner"></div>
         </div>-->
-
+    <div class="hero-section">
+        <div class="custom-container hero-container">
+            <div class="hero-text">
+                <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
+                <p>Fedezze fel oldalunk nyújtotta szolgáltatásokat.</p>
+                <a href="<?= BASE_URL ?>/shop.php">
+                    <button type="button" class="btn btn-primary shopnow">Vásárolj most ➔</button>
+                </a>
+            </div>
+        </div>
+    </div>
         
     <section class="custom-container section-padding">
         <div class="text-center">
