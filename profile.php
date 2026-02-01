@@ -3,17 +3,22 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include './app/db.php';
+// 1. Config betöltése (ez definiálja a ROOT_PATH-ot és a BASE_URL-t)
 require_once __DIR__ . '/config.php';
 
+// 2. Adatbázis betöltése ROOT_PATH használatával
+require_once ROOT_PATH . '/app/db.php';
+
+// 3. Biztonsági ellenőrzés javítása
 if (!isset($_SESSION['username'])) {
-    echo "<script>window.location.href='../Techoazis/views/login.php';</script>";
+    // PHP alapú átirányítás a BASE_URL használatával
+    header("Location: " . BASE_URL . "/views/login.php");
     exit();
 }
 
 $viewer_id = (int)($_SESSION['user_id'] ?? 0);
 if ($viewer_id <= 0) {
-    echo "<script>window.location.href='../views/login.php';</script>";
+    header("Location: " . BASE_URL . "/views/login.php");
     exit();
 }
 
@@ -82,7 +87,7 @@ $stmt->execute();
 $products_result = $stmt->get_result();
 $user_products = [];
 while ($row = $products_result->fetch_assoc()) {
-    $row['image_path'] = $row['image_path'] ?? './images/no-image.png';
+    $row['image_path'] = $row['image_path'] ?? BASE_URL . '/images/no-image.png';
     $user_products[] = $row;
 }
 $stmt->close();
@@ -151,8 +156,9 @@ if ($is_owner) {
     }
 }
 
-$profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profile_image']) : './images/anonymous.png';
-$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
+$profile_image = !empty($user['profile_image']) 
+    ? BASE_URL . '/' . htmlspecialchars($user['profile_image']) 
+    : BASE_URL . '/images/anonymous.png';$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -160,25 +166,23 @@ $user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'F
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoázis | <?php echo htmlspecialchars($user['username']); ?>'s profile</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/profile_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/profile_style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
 </head>
 <body>
-<?php include './views/navbar.php'; ?>
+<?php include ROOT_PATH . '/views/navbar.php'; ?>
 
 <div class="profile-dashboard">
     <aside class="profile-sidebar">
@@ -207,7 +211,7 @@ $user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'F
 
         <?php if ($is_owner): ?>
         <div class="profile-actions">
-            <a href="profile_edit.php" class="profile-btn profile-btn-secondary">
+            <a href="<?= BASE_URL ?>/profile_edit.php" class="profile-btn profile-btn-secondary">
                 <i class="fas fa-user-edit"></i> Profil szerkesztése
             </a>
             <button class="profile-btn profile-btn-secondary theme-toggle">
@@ -264,7 +268,7 @@ $user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'F
 
             <?php if (count($conversations) > 0): ?>
                 <?php foreach ($conversations as $conv): ?>
-                <a href="conversation.php?conv_id=<?php echo $conv['conversation_id']; ?>&product_id=<?php echo $conv['product_id']; ?>" class="conversation-link">
+                <a href="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conv['conversation_id']; ?>&product_id=<?php echo $conv['product_id']; ?>" class="conversation-link">
                     <div class="conversation-item <?php echo $conv['unread_count'] > 0 ? 'unread' : ''; ?>">
                         <div class="conversation-product">
                             <?php echo htmlspecialchars($conv['product_name']); ?>
@@ -309,12 +313,13 @@ $user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'F
             <?php if (count($user_products) > 0): ?>
             <div class="products-grid">
                 <?php foreach ($user_products as $product): ?>
-                <a href="product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-card-link">
+                <a href="<?= BASE_URL ?>/product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-card-link">
                     <div class="product-card">
-                        <img src="<?php echo htmlspecialchars($product['image_path']); ?>"
-                             alt="<?php echo htmlspecialchars($product['product_name']); ?>"
-                             class="product-image"
-                             onerror="this.src='./images/no-image.png'">
+                        <img src="<?= htmlspecialchars(BASE_URL . "/". $product['image_path']) ?>"
+                            alt="<?= htmlspecialchars($product['product_name']) ?>"
+                            class="product-image"
+                            onerror="this.src='<?= BASE_URL ?>/images/no-image.png'">
+
                         <div class="product-info">
                             <div class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></div>
                             <?php if ($product['price']): ?>
@@ -346,7 +351,7 @@ $user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'F
             <?php endif; ?>
 
             <?php if ($is_owner): ?>
-            <a href="add_product.php" class="profile-btn profile-btn-primary" style="margin-top: 1rem;">
+            <a href="<?= BASE_URL ?>/add_product.php" class="profile-btn profile-btn-primary" style="margin-top: 1rem;">
                 <i class="fas fa-plus"></i> Új termék feladása
             </a>
             <?php endif; ?>
@@ -381,23 +386,17 @@ $user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'F
 <script>
 function confirmLogout() {
     if (confirm('Biztosan ki szeretnél jelentkezni?')) {
-        window.location.href = '<?= $root ?>views/logout.php';
+        window.location.href = '<?= BASE_URL ?>/views/logout.php';
     }
 }
 
 function confirmDeleteAccount() {
     if (confirm('⚠️ Figyelem! A fiók törlésével minden adatod véglegesen törlődik.\n\nBiztosan folytatod?')) {
-        window.location.href = './app/delete_account.php';
+        window.location.href = '<?= BASE_URL ?>/app/delete_account.php';
     }
 }
 
-document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-        setTimeout(() => {
-            location.reload();
-        }, 1000);
-    }
-});
+
 </script>
 </body>
 </html>

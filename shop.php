@@ -1,7 +1,9 @@
 <?php
 session_start();
-require_once __DIR__ . '/app/db.php';
-require_once 'config.php';
+
+require_once __DIR__ . '/config.php';
+
+require_once ROOT_PATH . '/app/db.php';
 
 // Szűrők beállítása
 $category_filter = $_GET['category'] ?? '';
@@ -64,17 +66,17 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Shop</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/filter_system.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
-    <link rel="stylesheet" href="./static/shop_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/filter_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/shop_style.css">
     
 
     <!-- Inter font hozzáadása -->
@@ -82,12 +84,12 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 </head>
 
 <body>
-    <?php include './views/navbar.php'; ?>
+    <?php include ROOT_PATH . '/views/navbar.php'; ?>
     
     <section class="section-padding">
         <div class="custom-container">
@@ -170,7 +172,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                             <h1 class="section-title">Nincs találat</h1>
                             <p>Próbálj más szűrőket, vagy adj fel egy új hirdetést!</p>
                             <?php if (isset($_SESSION['user_id'])): ?>
-                                <a href="add_product.php" class="filter-btn apply">
+                                <a href="<?= BASE_URL ?>/add_product.php" class="filter-btn apply">
                                     Új termék feladása
                                 </a>
                             <?php endif; ?>
@@ -191,7 +193,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                                     'created_at' => $product['created_at']
                                 ];
                                 ?>
-                                <?php include 'product_card.php'; ?>
+                                <?php include ROOT_PATH . '/product_card.php'; ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
@@ -215,7 +217,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         
         // Szűrők törlése
         document.getElementById('reset-filters').addEventListener('click', function() {
-            window.location.href = 'shop.php';
+            window.location.href = '<?= BASE_URL ?>/shop.php';
         });
         
         // Aktív szűrők jelölése

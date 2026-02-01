@@ -8,9 +8,9 @@ if (session_status() === PHP_SESSION_NONE) {
 // ROOT_PATH = '/techoazis/';
 require_once __DIR__ . '/../config.php';
 
-include __DIR__ . '/../app/db.php';
-include __DIR__ . '/../envreader.php';
-require __DIR__ . '/../vendor/autoload.php';
+require_once ROOT_PATH . '/app/db.php';
+require_once ROOT_PATH . '/envreader.php';
+require_once ROOT_PATH . '/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                             $mail->addAddress($email);
                             $mail->isHTML(true);
 
-                            $reset_link = BASE_URL . "views/reset_password.php?token=" . $token . "&email=" . urlencode($email);
+                            $reset_link = BASE_URL . "/views/reset_password.php?token=" . $token . "&email=" . urlencode($email);
 
                             $mail->Subject = 'Jelszó visszaállítása - Techoázis';
                             $mail->Body    = '
@@ -94,24 +94,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" /> 
-    <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <title>Techoazis | Elfelejtett jelszó</title>
     
-    <link rel="stylesheet" href="../static/index.css">
-    <link rel="stylesheet" href="../static/reset&base_styles.css">
-    <link rel="stylesheet" href="../static/animations_microinteractions.css">
-    <link rel="stylesheet" href="../static/button_system.css">
-    <link rel="stylesheet" href="../static/login_page.css">
-    <link rel="stylesheet" href="../static/modern_navbar.css">
-    <link rel="stylesheet" href="../static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/login_page.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="<?= BASE_URL ?>static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
 </head>
 <body>
-<?php include __DIR__ . '/navbar.php'; ?>
+<?php include ROOT_PATH . '/views/navbar.php'; ?>
     <div class="background">
         <div class="login-container">
             <section class="login-box">
@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     <button type="submit" name="submit" class="login-button">Link küldése</button>
                 </form>
 
-                <p class="login-footer"><a href="login.php">Vissza a bejelentkezéshez</a></p>
+                <p class="login-footer"><a href="<?= BASE_URL ?>/views/login.php">Vissza a bejelentkezéshez</a></p>
             </section>
         </div>
     </div>

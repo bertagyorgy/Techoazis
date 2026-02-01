@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -11,33 +11,33 @@ require_once 'config.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoázis | A közösség és a technológia egy helyen</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/comments.css">
-    <link rel="stylesheet" href="./static/create_post.css">
-    <link rel="stylesheet" href="./static/forum.css">
-    <link rel="stylesheet" href="./static/group_view.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/post_card.css">
-    <link rel="stylesheet" href="./static/responsive_adjustments.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/custom_card.css">
-    <link rel="stylesheet" href="./static/feature_cards.css">
-    <link rel="stylesheet" href="./static/hero_section.css">
-    <link rel="stylesheet" href="./static/loading_animation.css">
-    <link rel="stylesheet" href="./static/modern_footer.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/comments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/create_post.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/forum.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/group_view.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/post_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/responsive_adjustments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/custom_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/feature_cards.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/hero_section.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/loading_animation.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_footer.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
 </head>
 <body>
@@ -48,7 +48,7 @@ $page = $_GET['p'] ?? '';
 $allowed_pages = ['shop', 'forum', 'forum_group', 'cart', 'profile', 'profile_edit', 'create_post', 'panel_comments'];
 
 if ($page === '') {
-    include 'views/navbar.php';
+    include ROOT_PATH . '/views/navbar.php';
 ?>
 
     <!-- Loading screen hozzáadása -->
@@ -64,7 +64,7 @@ if ($page === '') {
             <div class="hero-text">
                 <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
                 <p>Fedezze fel oldalunk nyújtotta szolgáltatásokat.</p>
-                <a href="shop.php">
+                <a href="<?= BASE_URL ?>/shop.php">
                     <button type="button" class="btn btn-primary shopnow">Vásárolj most ➔</button>
                 </a>
             </div>
@@ -75,7 +75,7 @@ if ($page === '') {
             <h2 class="section-title">Mit találsz nálunk?</h2>
             <div class="grid-row">
                 <div class="grid-col-3">
-                    <a href="./forum.php" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/forum.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-users fa-3x icon-primary"></i>
                             <h4>Közösség</h4>
@@ -84,7 +84,7 @@ if ($page === '') {
                     </a>
                 </div>
                 <div class="grid-col-3">
-                    <a href="./shop.php" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/shop.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-cart-shopping fa-3x icon-success"></i>
                             <h4>Vásárlás</h4>
@@ -93,7 +93,7 @@ if ($page === '') {
                     </a>
                 </div>
                 <div class="grid-col-3">
-                    <a href="#" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/articles.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-book fa-3x icon-info"></i>
                             <h4>Tudástár</h4>
@@ -120,7 +120,7 @@ if ($page === '') {
             <div class="grid-row">
                 <div class="grid-col-4 reveal">
                     <div class="custom-card">
-                        <img src="images/nikon_z50.jpg" class="card-img-top" alt="Cikk 1">
+                        <img src="<?= BASE_URL ?>/images/nikon_z50.jpg" class="card-img-top" alt="Cikk 1">
                         <div class="card-body">
                             <h5 class="card-title">Új projekt: SmartHub</h5>
                             <p class="card-text">Egy közösségi okos eszköz kezelő, amely forradalmasítja az IoT-t.</p>
@@ -132,7 +132,7 @@ if ($page === '') {
                 </div>
                 <div class="grid-col-4 reveal">
                     <div class="custom-card">
-                        <img src="images/ipad_air.jpg" class="card-img-top" alt="Cikk 2">
+                        <img src="<?= BASE_URL ?>/images/ipad_air.jpg" class="card-img-top" alt="Cikk 2">
                         <div class="card-body">
                             <h5 class="card-title">Legújabb TechCikk</h5>
                             <p class="card-text">Miként változtatja meg az AI a mindennapi vásárlást?</p>
@@ -144,7 +144,7 @@ if ($page === '') {
                 </div>
                 <div class="grid-col-4 reveal">
                     <div class="custom-card">
-                        <img src="images/macbook_air_m2.jpg" class="card-img-top" alt="Cikk 3">
+                        <img src="<?= BASE_URL ?>/images/macbook_air_m2.jpg" class="card-img-top" alt="Cikk 3">
                         <div class="card-body">
                             <h5 class="card-title">Új termék a shopban</h5>
                             <p class="card-text">Fedezd fel a legújabb tech kiegészítőket kedvező áron!</p>
@@ -216,14 +216,14 @@ if ($page === '') {
                 <div class="grid-col-4 footer-nav">
                     <h3 class="footer-title">Navigáció</h3>
                     <ul class="footer-links">
-                        <li><a href="./index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
-                        <li><a href="./shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
-                        <li><a href="./forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
-                        <!-- <li><a href="./articles.php" class="footer-link">Cikkek</a></li> -->
-                        <!-- <li><a href="./contact.php" class="footer-link">Kapcsolat</a></li> -->
+                        <li><a href="<?= BASE_URL ?>/index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
+                        <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
+                        <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
+                        <!-- <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link">Cikkek</a></li> -->
+                        <!-- <li><a href="<?= BASE_URL ?>/contact.php" class="footer-link">Kapcsolat</a></li> -->
                         <?php
                         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
-                            <li><a href="admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
+                            <li><a href="<?= BASE_URL ?>/admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
                         <?php endif; ?>
                     </ul>
                 </div>

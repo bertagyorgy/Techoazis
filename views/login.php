@@ -8,7 +8,7 @@ ob_start();
 require_once __DIR__ . '/../config.php';
 
 // Adatbázis behívása
-include __DIR__ . '/../app/db.php'; 
+require_once ROOT_PATH . '/app/db.php';
 
 
 $info_message = '';
@@ -24,24 +24,23 @@ if (isset($_SESSION['registration_message'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />  
-    <link rel="icon" type="image/x-icon" href="<?= BASE_URL  ?>images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <title>Techoazis | Login</title>
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/index.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/animations_microinteractions.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/button_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/login_page.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/login_page.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="<?= BASE_URL  ?>static/index.js" defer></script>
 </head>
 <body>
 <?php
-include __DIR__ . '/navbar.php';
+include ROOT_PATH . '/views/navbar.php';
 
 $error_message = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
@@ -88,11 +87,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                         if (isset($_SESSION['redirect_after_login'])) {
                             $url = $_SESSION['redirect_after_login'];
                             unset($_SESSION['redirect_after_login']);
-                            header("Location: " . BASE_URL  . $url . ".php");
+                            header("Location: " . BASE_URL  . "/". $url . ".php");
                             exit();
                         }
 
-                        header("Location: " . BASE_URL  . "index.php");
+                        header("Location: " . BASE_URL  . "/" . "index.php");
                         exit();
                         
                     } else {
@@ -136,13 +135,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
                         </div>
                         <div style="text-align: right; margin-top: 5px;">
-                            <a href="forgot_password.php">Elfelejtett jelszó?</a>
+                            <a href="<?= BASE_URL ?>/views/forgot_password.php">Elfelejtett jelszó?</a>
                         </div>
                     </div>
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
 
-                <p class="login-footer">Nincs fiókod? <a href="registration.php">Regisztráció</a></p>
+                <p class="login-footer">Nincs fiókod? <a href="<?= BASE_URL ?>/views/registration.php">Regisztráció</a></p>
             </section>
         </div>
     </div>

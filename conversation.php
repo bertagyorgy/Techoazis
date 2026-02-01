@@ -1,7 +1,7 @@
 <?php
 // conversation.php - A tiszta megjelenítő fájl
-require_once 'conversation_logic.php'; 
 require_once __DIR__ . '/config.php';
+require_once ROOT_PATH . '/conversation_logic.php';
 
 ?>
 
@@ -11,19 +11,19 @@ require_once __DIR__ . '/config.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beszélgetés | Techoázis</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/converstation.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/converstation.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <script src="./static/converstation.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/converstation.js" defer></script>
 </head>
 <body>
-    <?php include './views/navbar.php'; ?>
+    <?php include ROOT_PATH . '/views/navbar.php'; ?>
     
     <section class="section-padding">
         <div class="conversation-container">
@@ -99,7 +99,7 @@ require_once __DIR__ . '/config.php';
                     <?php if ($conversation['conv_status'] === 'open'): ?>
                         
                         <div class="message-input-container">
-                            <form class="message-input-form" id="message-form" method="POST" action="conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
+                            <form class="message-input-form" id="message-form" method="POST" action="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
                                 <textarea class="message-input" id="message-input" name="user_message" placeholder="Írd ide az üzeneted..." required></textarea>
                                 <button type="submit" class="send-button" id="send-button">
                                     <i class="fas fa-paper-plane"></i>
@@ -157,7 +157,7 @@ require_once __DIR__ . '/config.php';
                             <?php echo $status_map[$conversation['product_status']] ?? $conversation['product_status']; ?>
                         </div>
                         
-                        <form method="POST" action="conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>" 
+                        <form method="POST" action="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>" 
                               onsubmit="return confirm('Biztosan le akarod zárni a beszélgetést?');" 
                               style="display: inline-block; margin-left: 10px;">
                             

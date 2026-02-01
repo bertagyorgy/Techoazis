@@ -1,105 +1,66 @@
-// Várunk, amíg a teljes HTML dokumentum betöltődik
 document.addEventListener("DOMContentLoaded", function() {
+    
+    // --- 1. Téma váltó (Egyesített logika) ---
+    const themeButtons = document.querySelectorAll(".theme-toggle");
+    const htmlElement = document.documentElement;
+    const storageKey = 'theme';
 
-    // === 1. Mobil menü (hamburger) ===
-    const navToggle = document.getElementById('navToggle');
-    const navbarMenu = document.getElementById('navCollapseContent'); 
+    // Segédfüggvény az ikonok és a téma szinkronizálásához
+    function applyTheme(isDark) {
+        if (isDark) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
 
-    // Csak akkor futtatjuk, ha ezek az elemek LÉTEZNEK ezen az oldalon
-    if (navToggle && navbarMenu) {
-        navToggle.addEventListener('click', () => {
-            navToggle.classList.toggle('active'); // animáció
-            navbarMenu.classList.toggle('show'); // menü nyit/zár
+        themeButtons.forEach(btn => {
+            const icon = btn.querySelector("i");
+            if (icon) {
+                // Ha sötét, napocska kell (hogy világosra válthass), ha világos, hold
+                if (isDark) {
+                    icon.classList.replace("fa-moon", "fa-sun");
+                } else {
+                    icon.classList.replace("fa-sun", "fa-moon");
+                }
+            }
         });
     }
 
-    // === 2. Scroll Reveal animáció ===
-    const reveals = document.querySelectorAll(".reveal");
+    // Kezdeti beállítás betöltése
+    const savedTheme = localStorage.getItem(storageKey);
+    applyTheme(savedTheme === 'dark');
 
-    // Csak akkor futtatjuk, ha LÉTEZNEK .reveal elemek ezen az oldalon
-    if (reveals.length > 0) {
-        function reveal() {
-            const windowHeight = window.innerHeight;
-            const elementVisible = 150; 
+    // Egyetlen eseményfigyelő a gombokra
+    themeButtons.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            const newIsDark = !htmlElement.classList.contains('dark');
+            
+            localStorage.setItem(storageKey, newIsDark ? 'dark' : 'light');
+            applyTheme(newIsDark);
+        });
+    });
 
-            for (let i = 0; i < reveals.length; i++) {
-                const elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                } else {
-                    /*reveals[i].classList.remove("active");*/
-                }
-            }
-        }
-        window.addEventListener("scroll", reveal);
-        reveal(); // Oldal betöltésekor is fusson le
+    // --- 2. Mobil menü ---
+    const navToggle = document.getElementById('navToggle');
+    const navbarMenu = document.getElementById('navCollapseContent'); 
+    if (navToggle && navbarMenu) {
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navbarMenu.classList.toggle('show');
+        });
     }
 
-
-    // === 3. Jelszó Váltó (A te kódod) ===
-    const toggles = document.querySelectorAll(".toggle-password");
-
-    toggles.forEach(toggle => {
+    // --- 3. Jelszó mutató ---
+    document.querySelectorAll(".toggle-password").forEach(toggle => {
         toggle.addEventListener("click", function() {
-            // Az ikonhoz tartozó input a legközelebbi password-wrapper-en belül van
-            const passwordInput = this.closest(".password-wrapper").querySelector("input");
-
+            const passwordInput = this.closest(".password-wrapper")?.querySelector("input");
             if (passwordInput) {
                 const isPassword = passwordInput.type === "password";
                 passwordInput.type = isPassword ? "text" : "password";
-
-                // Ikon váltás
                 this.classList.toggle("fa-eye");
                 this.classList.toggle("fa-eye-slash");
             }
-        });
-    });
-
-    // === 4. Támaváltó (A te kódod) ===
-    const themes = document.querySelectorAll(".theme-toggle");
-
-    themes.forEach(theme => {
-        theme.addEventListener("click", function() {
-
-            // Az ikon az aktuális gombon belül van
-            const icon = this.querySelector("i");
-
-            icon.classList.toggle("fa-sun");
-            icon.classList.toggle("fa-moon");
-        });
-    });
-
-}); // Itt a DOMContentLoaded eseményfigyelő vége
-
-
-// Light-Dark theme swich
-document.addEventListener("DOMContentLoaded", function() {
-    const themeButtons = document.querySelectorAll(".theme-toggle");
-    const htmlElement = document.documentElement;
-    const storageKey = 'theme'; // Kulcs, amit a localStorage-ban használunk
-
-    // --- 1. Téma Betöltése a localStorage-ból ---
-    const savedTheme = localStorage.getItem(storageKey);
-
-    if (savedTheme === 'dark') {
-        // Ha el van mentve a 'dark' téma, hozzáadjuk az 'dark' osztályt
-        htmlElement.classList.add('dark');
-    } else if (savedTheme === 'light' && htmlElement.classList.contains('dark')) {
-        // Ha el van mentve a 'light' téma (de az alapértelmezett beállítás 'dark' lenne), eltávolítjuk az 'dark' osztályt
-        htmlElement.classList.remove('dark');
-    }
-
-    // --- 2. Gombok Eseménykezelése és Téma Mentése ---
-    themeButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            // Váltja a 'dark' osztályt
-            htmlElement.classList.toggle("dark");
-
-            // A jelenlegi állapot meghatározása
-            const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
-
-            // Az új téma elmentése a localStorage-ba
-            localStorage.setItem(storageKey, currentTheme);
         });
     });
 });

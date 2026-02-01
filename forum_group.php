@@ -1,11 +1,10 @@
 <?php
 session_start();
-include './app/db.php';
-require_once 'config.php';
-
+require_once __DIR__ . '/config.php';
+require_once ROOT_PATH . '/app/db.php';
 
 if (!isset($_GET['group'])) {
-    echo "<script>window.location.href='../forum.php';</script>";
+    echo "<script>window.location.href='" . BASE_URL . "/forum.php';</script>";
     exit();
 }
 
@@ -47,37 +46,37 @@ $post_count = $posts->num_rows;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($group['group_name']) ?> | Techoazis</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/comments.css">
-    <link rel="stylesheet" href="./static/create_post.css">
-    <link rel="stylesheet" href="./static/forum.css">
-    <link rel="stylesheet" href="./static/group_view.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/post_card.css">
-    <link rel="stylesheet" href="./static/responsive_adjustments.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/comments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/create_post.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/forum.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/group_view.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/post_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/responsive_adjustments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 </head>
 <body>
 
-<?php include './views/navbar.php'; ?>
+<?php include ROOT_PATH . '/views/navbar.php'; ?>
 
 <section class="group-wrapper">
 
     <!-- ==== CSOPORT HEADER ==== -->
     <div class="group-header">
-        <img src="./uploads/groups/<?= htmlspecialchars($group['group_image']) ?>" class="group-banner">
+        <img src="<?= BASE_URL ?>/uploads/groups/<?= htmlspecialchars($group['group_image']) ?>" class="group-banner">
         <div class="group-header-info">
             <h1>#<?= htmlspecialchars($group['group_name']) ?></h1>
             <p class="group-meta"><?= $post_count ?> poszt ebben a csoportban</p>
@@ -87,7 +86,7 @@ $post_count = $posts->num_rows;
     <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
     <button class="display-btn"><i class="fa-solid fa-plus"></i> Új poszt</button>
     <div class="create-post-bar">
-        <form action="create_post.php" method="POST" enctype="multipart/form-data">
+        <form action="<?= BASE_URL ?>/create_post.php" method="POST" enctype="multipart/form-data">
             
             <input type="hidden" name="group_id" value="<?= $group_id ?>">
 
@@ -122,11 +121,11 @@ $post_count = $posts->num_rows;
             <div class="post-card">
 
                 <div class="article-meta">
-                    <a class="article-badge" href="forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
+                    <a class="article-badge" href="<?= BASE_URL ?>/forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
                         #<?= htmlspecialchars($group['group_name']) ?>
                     </a>
 
-                    <a href="<?= BASE_URL ?>profile?u=<?= urlencode($post['user_slug']) ?>">
+                    <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($post['user_slug']) ?>">
                         <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
                     </a>
 
@@ -151,7 +150,7 @@ $post_count = $posts->num_rows;
                 if ($images->num_rows > 0): ?>
                     <div class="post-images">
                         <?php while ($img = $images->fetch_assoc()): ?>
-                            <img src="./<?= htmlspecialchars($img['image_path']) ?>" class="post-image">
+                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($img['image_path']) ?>" class="post-image">
                         <?php endwhile; ?>
                     </div>
                 <?php endif; ?>

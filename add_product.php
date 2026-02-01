@@ -1,13 +1,13 @@
 <?php
 // add_product.php
 session_start();
-require_once __DIR__ . '/app/db.php';
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
+require_once ROOT_PATH . '/app/db.php';
 
 
 // Csak bejelentkezett felhasználók tölthetnek fel terméket
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header("Location: " . BASE_URL . "/views/login.php");
     exit();
 }
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             $new_id = $conn->insert_id;
             // Sikeres feltöltés után átirányíthatjuk a termék adatlapjára vagy maradhatunk itt
-            header("Location: product_detail.php?id=$new_id&msg=success");
+            header("Location: " . BASE_URL . "/product_detail.php?id=$new_id&msg=success");
             exit();
         } else {
             $error_msg = "Hiba történt a mentés során: " . $conn->error;
@@ -64,12 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Új termék feltöltése</title>
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -98,13 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <?php include './views/navbar.php'; ?>
+<?php include ROOT_PATH . '/views/navbar.php'; ?>
 
     <div class="container section-padding">
         <div class="edit-container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2><i class="fas fa-plus-circle"></i> Új termék hirdetése</h2>
-                <a href="shop.php" class="btn-back" style="text-decoration: none; color: var(--text-muted);">
+                <a href="<?= BASE_URL ?>/shop.php" class="btn-back" style="text-decoration: none; color: var(--text-muted);">
                     <i class="fas fa-arrow-left"></i> Vissza a shopba
                 </a>
             </div>
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-danger"><?php echo $error_msg; ?></div>
             <?php endif; ?>
 
-            <form action="add_product.php" method="POST">
+            <form action="<?= BASE_URL ?>/add_product.php" method="POST">
                 <div class="form-group">
                     <label for="product_name">Termék neve</label>
                     <input type="text" id="product_name" name="product_name" class="form-control" 

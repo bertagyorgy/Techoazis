@@ -1,12 +1,12 @@
 <?php
 // edit_product.php
 session_start();
-require_once __DIR__ . '/app/db.php';
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
+require_once ROOT_PATH . '/app/db.php';
 
 // Csak bejelentkezett felhasználók szerkeszthetnek
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header("Location: " . BASE_URL . "/views/login.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ $product = $result->fetch_assoc();
 
 // Ha a termék nem létezik, vagy nem a felhasználóé
 if (!$product) {
-    header('Location: shop.php');
+    header("Location: " . BASE_URL . "/shop.php");
     exit();
 }
 
@@ -81,14 +81,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Termék szerkesztése - <?php echo htmlspecialchars($product['product_name']); ?></title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 
     <!-- Inter font hozzáadása -->
@@ -96,8 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
     <style>
         .edit-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
@@ -126,13 +126,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <?php include './views/navbar.php'; ?>
+    <?php include ROOT_PATH . '/views/navbar.php'; ?>
 
     <div class="container section-padding">
         <div class="edit-container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2><i class="fas fa-edit"></i> Termék szerkesztése</h2>
-                <a href="product_detail.php?id=<?php echo $product_id; ?>" class="btn-back">
+                <a href="<?= BASE_URL ?>/product_detail.php?id=<?php echo $product_id; ?>" class="btn-back">
                     <i class="fas fa-eye"></i> Megtekintés
                 </a>
             </div>

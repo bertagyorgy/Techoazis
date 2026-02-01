@@ -1,8 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/app/db.php';
-
+require_once ROOT_PATH . '/app/db.php';
 
 // ======= TOP TÉMÁK (legtöbb poszt) - q-val szűrhető név alapján =======
 $top_limit = 12;
@@ -93,30 +92,30 @@ while ($img = $images_result->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Community</title>
-    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/index.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/animations_microinteractions.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/button_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/comments.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/forum.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/post_card.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/responsive_adjustments.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/comments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/forum.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/post_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/responsive_adjustments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="<?= BASE_URL ?>static/index.js" defer></script>
-    <script src="<?= BASE_URL ?>static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 </head>
 <body>
 
 <?php 
 // JAVÍTÁS: A navbar a views mappában van
-include __DIR__ . '/views/navbar.php'; 
+include ROOT_PATH . '/views/navbar.php'; 
 ?>
 <section class="forum-wrapper">
 
@@ -139,7 +138,7 @@ include __DIR__ . '/views/navbar.php';
             <!-- ÖSSZES -->
             <li>
                 <a
-                    href="forum.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
+                    href="<?= BASE_URL ?>/forum.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
                     class="<?= $group_id === 0 ? 'active' : '' ?>"
                 >
                     Összes
@@ -151,7 +150,7 @@ include __DIR__ . '/views/navbar.php';
             <!-- TOP CSOPORTOK (ikon nélkül) -->
             <?php while($row = $groups_result->fetch_assoc()): ?>
                 <?php
-                    $href = "forum_group.php?group=" . (int)$row['group_id'];
+                    $href =  BASE_URL . "/forum_group.php?group=" . (int)$row['group_id'];
                     if ($q !== '') $href .= "&q=" . urlencode($q);
                 ?>
                 <li>
@@ -180,12 +179,12 @@ include __DIR__ . '/views/navbar.php';
             <div class="post-card">
 
                 <div class="article-meta">
-                    <a class="article-badge" href="forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
+                    <a class="article-badge" href="<?= BASE_URL ?>/forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
                         #<?= htmlspecialchars($post['group_name']) ?>
                     </a>
 
 
-                    <a href="<?= BASE_URL ?>profile?u=<?= urlencode($post['user_slug']) ?>">
+                    <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($post['user_slug']) ?>">
                         <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
                     </a>
 
@@ -205,7 +204,7 @@ include __DIR__ . '/views/navbar.php';
                 if (isset($post_images[$post['post_id']]) && !empty($post_images[$post['post_id']])): ?>
                     <div class="post-images">
                         <?php foreach ($post_images[$post['post_id']] as $image_path): ?>
-                            <img src="./<?= htmlspecialchars($image_path) ?>" class="post-image">
+                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($image_path) ?>" class="post-image">
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
@@ -244,7 +243,7 @@ include __DIR__ . '/views/navbar.php';
 
         <?php while($lp = $latest_posts->fetch_assoc()): ?>
             <div class="latest-post-item">
-                <a href="post.php?id=<?= $lp['post_id'] ?>">
+                <a href="<?= BASE_URL ?>/post.php?id=<?= $lp['post_id'] ?>">
                     <strong><?= htmlspecialchars($lp['title']) ?></strong>
                 </a>
                 <p class="latest-post-meta">

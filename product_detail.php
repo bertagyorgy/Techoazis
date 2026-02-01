@@ -1,9 +1,9 @@
 <?php
 // product_detail.php
 session_start();
-require_once __DIR__ . '/app/db.php';
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
+require_once ROOT_PATH . '/app/db.php';
 $product_id = $_GET['id'] ?? 0;
 
 // Termék adatok lekérése
@@ -20,7 +20,7 @@ $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 
 if (!$product) {
-    header('Location: shop.php');
+    header('Location: ' . BASE_URL . '/shop.php');
     exit();
 }
 
@@ -34,7 +34,7 @@ $images = $images_result->fetch_all(MYSQLI_ASSOC);
 
 // Ha nincs kép, alapértelmezettet használunk
 if (empty($images)) {
-    $images = [['image_path' => 'images/default_product.jpg']];
+    $images = [['image_path' =>  BASE_URL . '/images/default_product.jpg']];
 }
 
 // Hasonló termékek (ugyanabban a kategóriában, de más eladótól)
@@ -62,34 +62,34 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($product['product_name']); ?> - Techoázis</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/product_detail_style.css">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/product_detail_style.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
 </head>
 <body>
-    <?php include './views/navbar.php'; ?>
+    <?php include ROOT_PATH . '/views/navbar.php'; ?>
     
     <section class="section-padding">
         <div class="product-detail-container">
             
             <!-- Breadcrumb -->
             <div style="margin-bottom: 2rem; color: var(--text-light);">
-                <a href="shop.php" style="color: var(--accent-600); text-decoration: none;">Termékek</a>
+                <a href="<?= BASE_URL ?>/shop.php" style="color: var(--accent-600); text-decoration: none;">Termékek</a>
                 <span> / </span>
                 <span><?php echo htmlspecialchars($product['category']); ?></span>
                 <span> / </span>
@@ -103,7 +103,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                 <div class="product-gallery">
                     <div class="main-image-container">
                         <img id="main-product-image" 
-                             src="<?php echo htmlspecialchars($images[0]['image_path']); ?>" 
+                            src="<?= htmlspecialchars(BASE_URL . '/' . $images[0]['image_path']) ?>"
                              alt="<?php echo htmlspecialchars($product['product_name']); ?>"
                              class="main-image">
                         
@@ -196,7 +196,8 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                         <div class="seller-card">
                             <div class="seller-header">
                                 <div class="seller-avatar">
-                                    <img src="<?php echo htmlspecialchars($product['seller_avatar']); ?>" 
+                                    
+                                    <img src="<?php echo htmlspecialchars(BASE_URL . "/" . $product['seller_avatar']); ?>" 
                                         alt="<?php echo htmlspecialchars($product['seller_username']); ?>">
                                 </div>
                                 <div class="seller-info">
@@ -222,7 +223,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             ?>
                             <?php if ($slug !== ''): ?>
                             <div style="text-align: center; margin-top: 1rem;">
-                                <a href="<?= BASE_URL ?>profile?u=<?= urlencode($slug) ?>" class="btn-back">
+                                <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($slug) ?>" class="btn-back">
                                     <i class="fas fa-user-circle"></i>
                                     Profil megtekintése
                                 </a>
@@ -234,7 +235,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                         
                         <!-- Action Buttons -->
                         <div class="product-actions-detail">
-                            <a href="shop.php" class="btn-back">
+                            <a href="<?= BASE_URL ?>/shop.php" class="btn-back">
                                 <i class="fas fa-arrow-left"></i>
                                 Vissza a termékekhez
                             </a>
@@ -242,20 +243,20 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             <?php if ($product['product_status'] === 'active'): ?>
                                 <?php if (isset($_SESSION['user_id'])): ?>
                                     <?php if ($product['seller_id'] != $_SESSION['user_id']): ?>
-                                        <a href="conversation.php?product_id=<?php echo $product_id; ?>" 
+                                        <a href="<?= BASE_URL ?>/conversation.php?product_id=<?php echo $product_id; ?>" 
                                         class="btn-message-seller">
                                             <i class="fas fa-comment-dots"></i>
                                             Üzenet küldése az eladónak
                                         </a>
                                     <?php else: ?>
-                                        <a href="edit_product.php?id=<?php echo $product_id; ?>" 
+                                        <a href="<?= BASE_URL ?>/edit_product.php?id=<?php echo $product_id; ?>" 
                                         class="btn-message-seller" style="background: var(--primary-500);">
                                             <i class="fas fa-edit"></i>
                                             Termék szerkesztése
                                         </a>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <a href="views/login.php" 
+                                    <a href="<?= BASE_URL ?>/views/login.php" 
                                     class="btn-message-seller">
                                         <i class="fas fa-sign-in-alt"></i>
                                         Jelentkezz be az üzenethez
@@ -290,7 +291,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             'created_at' => $similar['created_at']
                         ];
                         ?>
-                        <?php include 'product_card.php'; ?>
+                        <?php include ROOT_PATH . '/product_card.php'; ?>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -300,10 +301,13 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
     </section>
     
     <script>
+        const baseUrl = '<?= BASE_URL ?>/';
+        const images = <?php echo json_encode(array_column($images, 'image_path')); ?>;
+
         // Képváltó funkció
         function changeMainImage(imageSrc, thumbnailElement) {
             // Fő kép frissítése
-            document.getElementById('main-product-image').src = imageSrc;
+            document.getElementById('main-product-image').src = baseUrl + imageSrc;
             
             // Thumbnail aktív állapot frissítése
             document.querySelectorAll('.thumbnail').forEach(thumb => {

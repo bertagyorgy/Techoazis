@@ -1,10 +1,15 @@
 <?php
 session_start();
-include './app/db.php';
-require_once 'config.php';
+// 1. Config betöltése (ez hozza létre a ROOT_PATH-ot és a BASE_URL-t)
+require_once __DIR__ . '/config.php';
 
+// 2. Adatbázis betöltése ROOT_PATH használatával
+require_once ROOT_PATH . '/app/db.php';
+
+// 3. Biztonsági ellenőrzés javítása BASE_URL-lel
 if (!isset($_SESSION['username'])) {
-    echo "<script>window.location.href='../Techoazis/views/login.php';</script>";
+    // PHP alapú átirányítás biztonságosabb és tisztább
+    header("Location: " . BASE_URL . "/views/login.php");
     exit();
 }
 
@@ -24,11 +29,11 @@ $message_type = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete_image'])) {
-        if (!empty($user['profile_image']) && $user['profile_image'] !== './images/anonymous.png') {
+        if (!empty($user['profile_image']) && $user['profile_image'] !==  BASE_URL . '/images/anonymous.png') {
             if (file_exists($user['profile_image'])) {
                 unlink($user['profile_image']);
             }
-            $default_image = './images/anonymous.png';
+            $default_image = BASE_URL . '/images/anonymous.png';
             $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");
             $stmt->bind_param("si", $default_image, $user['user_id']);
             if ($stmt->execute()) {
@@ -146,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $file = $_FILES['profile_image'];
         $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
         $max_size = 5 * 1024 * 1024; // 5 MB
-        $upload_dir = "./uploads/profile_images/";
+        $upload_dir = BASE_URL . "/uploads/profile_images/";
         
         if (!file_exists($upload_dir)) {
             mkdir($upload_dir, 0777, true);
@@ -155,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (in_array($file['type'], $allowed_types)) {
             if ($file['size'] <= $max_size) {
                 // Régi kép törlése (ha nem az alapértelmezett)
-                if (!empty($user['profile_image']) && $user['profile_image'] !== './images/anonymous.png') {
+                if (!empty($user['profile_image']) && $user['profile_image'] !== BASE_URL .'/images/anonymous.png') {
                     if (file_exists($user['profile_image'])) {
                         unlink($user['profile_image']);
                     }
@@ -220,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     imagedestroy($resized);
                     
                     // Adatbázis frissítése
-                    $relative_path = "./uploads/profile_images/" . $new_filename;
+                    $relative_path = BASE_URL . "/uploads/profile_images/" . $new_filename;
                     $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");
                     $stmt->bind_param("si", $relative_path, $current_user_id);
                     if ($stmt->execute()) {
@@ -248,7 +253,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profile_image']) : './images/anonymous.png';
+$profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profile_image']) : BASE_URL . '/images/anonymous.png';
 ?>
 
 <!DOCTYPE html>
@@ -257,35 +262,35 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoazis | Edit profile</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/utility_classes.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/profile_edit_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/profile_edit_style.css">
 
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
 
 </head>
 <body>
-<?php include './views/navbar.php'; ?>
+<?php include ROOT_PATH . '/views/navbar.php'; ?>
 
 <div class="profile-edit-container">
     <div class="profile-edit-card">
     <div class="profile-edit-header">
         <h1>Profil szerkesztése</h1>
-        <a href="profile.php" class="back-btn">
+        <a href="<?= BASE_URL ?>/profile.php" class="back-btn">
             <i class="fas fa-arrow-left"></i> Vissza a profilhoz
         </a>
     </div>
@@ -370,7 +375,7 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
         
         <div class="edit-form" style="text-align: center;">
             <img src="<?php echo $profile_image; ?>" alt="Profilkép előnézet" class="image-preview" 
-                 onerror="this.src='./images/anonymous.png'">
+                 onerror="this.src='<?= BASE_URL ?>/images/anonymous.png'">
             
             <form method="POST" enctype="multipart/form-data">
                 <div class="file-upload">
@@ -514,7 +519,7 @@ function togglePassword(inputId) {
 function confirmDeleteAccount() {
     if (confirm('⚠️ VIGYÁZAT!\n\nA fiók törlésével:\n• Minden adatod véglegesen törlődik\n• Termékeid eltűnnek\n• Beszélgetéseid törlődnek\n• Nem vonható vissza!\n\nBiztos, hogy folytatod?')) {
         // Itt lehetne AJAX hívás vagy form beküldés
-        window.location.href = './app/delete_account.php';
+        window.location.href = '<?= BASE_URL ?>/app/delete_account.php';
     }
 }
 </script>

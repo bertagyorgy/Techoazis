@@ -12,16 +12,16 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // 2. FÁJL BETÖLTÉSEK JAVÍTÁSA: ../ a views mappából
 // db.php: views/ -> app/db.php
-include __DIR__ . '/../app/db.php'; 
-include __DIR__ . '/../envreader.php';
 require_once __DIR__ . '/../config.php';
+require_once ROOT_PATH . '/app/db.php';
+require_once ROOT_PATH . '/envreader.php';
 
 // PHPMailer komponensek importálása
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // vendor/autoload.php: views/ -> vendor/autoload.php
-require __DIR__ . '/../vendor/autoload.php';
+require_once ROOT_PATH . '/vendor/autoload.php';
 
 $_SESSION['registration_message'] = "";
 $error_message = '';
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     $mail->isHTML(true); 
                     
                     // Aktivációs link létrehozása: a BASE_URL-t használjuk
-                    $activation_link = BASE_URL . "views/activate.php?email=" . urlencode($email) . "&code=" . urlencode($activation_code);
+                    $activation_link = BASE_URL . "/views/activate.php?email=" . urlencode($email) . "&code=" . urlencode($activation_code);
                     $mail->CharSet = 'UTF-8';
                     $mail->Subject = 'Aktiváld a Techoázis fiókodat!';
                     $mail->Body    = '
@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     
                     // Átirányítás session üzenettel a login.php-ra (a teljes BASE_URL-t használva)
                     $_SESSION['registration_message'] = "Sikeres regisztráció! Kérlek, ellenőrizd az email címedet (beleértve a spam mappát) a fiók aktiválásához.";
-                    echo "<script>window.location.href='" . BASE_URL . "views/login.php';</script>";
+                    echo "<script>window.location.href='" . BASE_URL . "/views/login.php';</script>";
                     exit();
 
                 } catch (Exception $e) {
@@ -145,27 +145,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="icon" type="image/x-icon" href="<?= BASE_URL  ?>images/palmtree_favicon.svg"> 
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg"> 
     <title>Techoazis | Registration</title>
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/index.css"> 
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/animations_microinteractions.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/button_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/login_page.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL  ?>static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css"> 
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/login_page.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="<?= BASE_URL  ?>static/index.js" defer></script>
 </head>
 <body>
 <?php 
 // navbar.php a views mappában van
-include __DIR__ . '/navbar.php'; 
+include ROOT_PATH . '/views/navbar.php';
 ?>
     <div class="background">
         <div class="login-container">
@@ -203,7 +202,7 @@ include __DIR__ . '/navbar.php';
                     <button type="submit" name="submit" class="login-button">Regisztráció</button>
                 </form>
 
-                <p class="login-footer">Van már fiókod? <a href="<?= BASE_URL  ?>views/login.php">Bejelentkezés</a></p>
+                <p class="login-footer">Van már fiókod? <a href="<?= BASE_URL ?>/views/login.php">Bejelentkezés</a></p>
             </section>
         </div>
     </div>

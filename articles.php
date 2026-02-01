@@ -1,7 +1,7 @@
 <?php
 session_start();
-include './app/db.php';
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
+require_once ROOT_PATH . '/app/db.php';
 
 /* =========================
    GET PARAMS
@@ -91,32 +91,32 @@ $stmt->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoázis | Tudástár</title>
-    <link rel="icon" type="image/x-icon" href="./images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="./static/index.css">
-    <link rel="stylesheet" href="./static/animations_microinteractions.css">
-    <link rel="stylesheet" href="./static/button_system.css">
-    <link rel="stylesheet" href="./static/comments.css">
-    <link rel="stylesheet" href="./static/forum.css">
-    <link rel="stylesheet" href="./static/modern_navbar.css">
-    <link rel="stylesheet" href="./static/post_card.css">
-    <link rel="stylesheet" href="./static/responsive_adjustments.css">
-    <link rel="stylesheet" href="./static/reset&base_styles.css">
-    <link rel="stylesheet" href="./static/container&grid_system.css">
-    <link rel="stylesheet" href="./static/articles_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/comments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/forum.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/post_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/responsive_adjustments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/articles_style.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="./static/index.js" defer></script>
-    <script src="./static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
 
 </head>
 <body>
 
-<?php include './views/navbar.php'; ?>
+<?php include ROOT_PATH . '/views/navbar.php'; ?>
 
 <section class="forum-wrapper">
 
@@ -138,7 +138,7 @@ $stmt->close();
         <h3>Cikkek</h3>
         <ul class="group-list">
             <li>
-                <a href="articles.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
+                <a href="<?= BASE_URL ?>/articles.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
                    class="<?= $category_id === 0 ? 'active' : '' ?>">
                     Összes
                     <i class="fa-solid fa-layer-group"></i>
@@ -148,7 +148,7 @@ $stmt->close();
 
             <?php foreach ($categories as $cat): ?>
                 <?php
-                    $href = "articles.php?category=" . (int)$cat['category_id'];
+                    $href = BASE_URL . '/articles.php?category=' . (int)$cat['category_id'];
                     if ($q !== '') $href .= "&q=" . urlencode($q);
                 ?>
                 <li>
@@ -173,13 +173,13 @@ $stmt->close();
             <?php foreach ($articles as $a): ?>
                 <article class="article-card">
                     <?php if (!empty($a['cover_image'])): ?>
-                        <img class="article-cover" src="<?= htmlspecialchars($a['cover_image']) ?>" alt="Cikk borítókép">
+                        <img class="article-cover" src="<?= htmlspecialchars(BASE_URL . "/". $a['cover_image']) ?>" alt="Cikk borítókép">
                     <?php endif; ?>
 
                     <div class="article-body">
                         <div class="article-meta">
                             <span class="article-badge">#<?= htmlspecialchars($a['category_name']) ?></span>
-                            <a href="<?= BASE_URL ?>profile?u=<?= urlencode($a['author_slug']) ?>">
+                            <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($a['author_slug']) ?>">
                                 <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($a['username']) ?></span>
                             </a>
                             <span><i class="fa-regular fa-clock"></i>
@@ -195,7 +195,7 @@ $stmt->close();
                         <?php endif; ?>
 
                         <div class="article-actions">
-                            <a class="read-btn" href="article_detail.php?id=<?= (int)$a['article_id'] ?>">
+                            <a class="read-btn" href="<?= BASE_URL ?>/article_detail.php?id=<?= (int)$a['article_id'] ?>">
                                 <i class="fa-solid fa-book-open"></i> Elolvasom
                             </a>
                         </div>
@@ -211,7 +211,7 @@ $stmt->close();
 
         <?php foreach ($latest_articles as $la): ?>
             <div class="latest-post-item">
-                <a href="article_detail.php?id=<?= (int)$la['article_id'] ?>">
+                <a href="<?= BASE_URL ?>/article_detail.php?id=<?= (int)$la['article_id'] ?>">
                     <strong><?= htmlspecialchars($la['title']) ?></strong>
                 </a>
                 <p class="latest-post-meta">
