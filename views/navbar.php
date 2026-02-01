@@ -6,12 +6,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include_once ROOT_PATH . '/app/db.php';
 
-$cart_count_unique = 0;
-if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
-    $cart_count_unique = count($_SESSION['cart']); 
-}
-
-$cart_badge = (string)$cart_count_unique;
 ?>
 <script src="/static/index.js" defer></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -33,7 +27,7 @@ $cart_badge = (string)$cart_count_unique;
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>articles.php">Tudástár</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>forum.php">Közösség</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>shop.php">Vásárlás</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>about_us.php">Rólunk</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>contact.php">Kapcsolat</a></li>
                 <?php if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>admin/admin.php" >Admin</a></li>
                 <?php endif; ?>
