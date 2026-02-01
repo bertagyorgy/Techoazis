@@ -168,7 +168,7 @@ require_once __DIR__ . '/config.php';
                     <li><a href="<?= BASE_URL ?>/about_us.php" class="footer-link"><i class="fa-solid fa-address-card"></i>Rólunk</a></li>
                     <?php
                     if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
-                        <li><a href="admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
+                        <li><a href="<?= BASE_URL ?>/admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
                     <?php endif; ?>
                 </ul>
             </div>
