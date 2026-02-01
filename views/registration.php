@@ -5,9 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // 1. URL ÉS ÚTVONAL DEFINÍCIÓK
 // A teljes URL a JS átirányításhoz és az email linkhez.
-//BASE_URL = 'http://localhost/techoazis/';
-// Relatív gyökér útvonal a navigációs linkekhez (pl. CSS, JS, login.php-ra mutató link)
-//BASE_URL  = '/techoazis/'; 
+
 
 
 // 2. FÁJL BETÖLTÉSEK JAVÍTÁSA: ../ a views mappából

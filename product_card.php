@@ -15,9 +15,10 @@ $category = htmlspecialchars($product['category'] ?? 'Egyéb');
 $product_status = $product['product_status'] ?? 'active';
 $created_date = date('Y.m.d.', strtotime($product['created_at'] ?? 'now'));
 
-// Kép kezelés
+// Kép kezelés - BASE_URL használata az abszolút eléréshez
 $main_image = $product['main_image'] ?? 'images/default_product.jpg';
-$image_url = htmlspecialchars($main_image);
+$image_url = BASE_URL . '/' . htmlspecialchars($main_image);
+$default_image = BASE_URL . '/images/default_product.jpg';
 
 // Státusz szöveg és stílus
 $status_text = '';
@@ -50,7 +51,7 @@ switch ($product_status) {
                 <img src="<?= $image_url ?>" 
                      alt="<?= $product_name ?>"
                      class="product-image"
-                     onerror="this.onerror=null;this.src='images/default_product.jpg';">
+                     onerror="this.onerror=null;this.src='<?= $default_image ?>';">
                 
                 <!-- Státusz badge -->
                 <div class="product-status-badge <?= $status_class ?>">
@@ -75,7 +76,7 @@ switch ($product_status) {
             
             <!-- Termék név -->
             <h3 class="product-title">
-                <a href="product_detail.php?id=<?= $product_id ?>">
+                <a href="<?= BASE_URL ?>/product_detail?id=<?= $product_id ?>">
                     <?= $product_name ?>
                 </a>
             </h3>
@@ -109,7 +110,7 @@ switch ($product_status) {
                 
                 <!-- Gyors üzenet az eladónak (ha be van jelentkezve és nem saját termék) -->
                 <?php if (isset($_SESSION['user_id']) && $product['seller_user_id'] != $_SESSION['user_id']): ?>
-                    <a href="conversation.php?product_id=<?= $product_id ?>" class="btn-message">
+                    <a href="<?= BASE_URL ?>/conversation?product_id=<?= $product_id ?>" class="btn-message">
                         <i class="fas fa-comment-dots"></i>
                         Üzenet
                     </a>
@@ -131,4 +132,4 @@ switch ($product_status) {
     </div>
 </div>
 
-<link rel="stylesheet" href="./static/product_card_style.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/static/product_card_style.css">

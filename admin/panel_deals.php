@@ -1,4 +1,8 @@
 <?php
+// /opt/lampp/htdocs/Techoazis/admin/panel_deals.php
+
+// 1. Config betöltése kötelező a ROOT_PATH és BASE_URL miatt
+require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- ÜGYLETEK KONFIGURÁCIÓJA ---
@@ -6,7 +10,8 @@ $config = [
     // --- ALAPBEÁLLÍTÁSOK ---
     'table' => 'deals',
     'pk' => 'deal_id',
-    'page_file' => '../admin/panel_deals.php',
+    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
+    'page_file' => BASE_URL . '/admin/admin?page=panel_deals',
     'page_title' => 'Megkötött Ügyletek',
     'singular_name' => 'ügylet',
 
@@ -31,11 +36,10 @@ $config = [
                      JOIN users b ON d.buyer_user_id = b.user_id
                      ORDER BY d.completed_at DESC",
 
-    // Nincs szükség külön formázóra, mivel nincsenek speciális mezők
+    // Nincs szükség külön formázóra
     'list_formatters' => [],
     
     // --- ŰRLAP KONFIGURÁCIÓ ---
-    // A completed_at mezőt a DB kezeli, így nem kell a formon szerepelnie (hacsak nem akarjuk manuálisan szerkeszteni)
     'form_fields' => ['product_id', 'seller_user_id', 'buyer_user_id', 'conversation_id'],
 
     'fields' => [
@@ -77,7 +81,7 @@ $config = [
             'foreign_key' => [
                 'table' => 'conversations', 
                 'value_col' => 'conversation_id', 
-                'display_col' => 'conversation_id' // A conversation_id megjelenítése, mivel nincs egyszerű címe
+                'display_col' => 'conversation_id'
             ]
         ],
 
@@ -86,5 +90,6 @@ $config = [
     ]
 ];
 
-require '../app/generic_crud.php';
+// JAVÍTÁS: Sablon betöltése ROOT_PATH használatával
+require_once ROOT_PATH . '/app/generic_crud.php';
 ?>

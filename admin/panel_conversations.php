@@ -1,19 +1,24 @@
 <?php
+// /opt/lampp/htdocs/Techoazis/admin/panel_conversations.php
+
+// 1. Config betöltése kötelező a ROOT_PATH és BASE_URL miatt
+require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- BESZÉLGETÉSEK KONFIGURÁCIÓJA ---
 $config = [
     // --- ALAPBEÁLLÍTÁSOK ---
     'table' => 'conversations',
-    'pk' => 'conversation_id', // Elsődleges kulcs
-    'page_file' => '../admin/panel_conversations.php',
+    'pk' => 'conversation_id',
+    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
+    'page_file' => BASE_URL . '/admin/admin?page=panel_conversations',
     'page_title' => 'Beszélgetések',
     'singular_name' => 'beszélgetés',
 
     // --- LISTÁZÁS KONFIGURÁCIÓ ---
     'list_columns' => [
         'conversation_id' => 'ID',
-        'product_name' => 'Termék', // Ezt használjuk az oszlop nevére
+        'product_name' => 'Termék',
         'seller_username' => 'Eladó', 
         'buyer_username' => 'Vevő', 
         'conv_status' => 'Státusz',
@@ -23,7 +28,7 @@ $config = [
     
     // JOIN-ok a termék nevéhez, az eladó és a vevő felhasználónevéhez
     'list_query' => "SELECT c.*, 
-                            p.product_name AS product_name, -- JAVÍTVA: p.name helyett p.product_name
+                            p.product_name AS product_name, 
                             s.username AS seller_username, 
                             b.username AS buyer_username
                      FROM conversations c
@@ -59,7 +64,7 @@ $config = [
             'foreign_key' => [
                 'table' => 'products', 
                 'value_col' => 'product_id', 
-                'display_col' => 'product_name' // JAVÍTVA: name helyett product_name
+                'display_col' => 'product_name'
             ]
         ],
         
@@ -87,14 +92,11 @@ $config = [
             'type' => 'select', 
             'required' => true, 
             'param_type' => 's',
-            
-            // JAVÍTÁS: Egyszerűbb kulcs => érték formátum használata
             'options' => [
                 'open' => '💬 Nyitott',
                 'deal_made' => '💰 Megkötve',
                 'cancelled' => '🚫 Törölve'
             ],
-            
             'default' => 'open'
         ],
 
@@ -104,5 +106,6 @@ $config = [
     ]
 ];
 
-require '../app/generic_crud.php';
+// JAVÍTÁS: Sablon betöltése ROOT_PATH használatával
+require_once ROOT_PATH . '/app/generic_crud.php';
 ?>

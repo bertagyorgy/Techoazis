@@ -1,11 +1,16 @@
 <?php
+// /opt/lampp/htdocs/Techoazis/admin/panel_posts.php
+
+// 1. Config betöltése kötelező a ROOT_PATH és BASE_URL eléréséhez
+require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- POSZTOK KONFIGURÁCIÓJA ---
 $config = [
-    'table' => 'POSTS',
+    'table' => 'posts', // Kisbetűs táblanév a kompatibilitásért
     'pk' => 'post_id',
-    'page_file' => '../admin/panel_posts.php',
+    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
+    'page_file' => BASE_URL . '/admin/admin?page=panel_posts',
     'page_title' => 'Posztok',
     'singular_name' => 'poszt',
 
@@ -28,7 +33,7 @@ $config = [
             return htmlspecialchars($row['username']); 
         },
         'group_id' => function($value, $row) { 
-            return htmlspecialchars($row['group_name']); 
+            return htmlspecialchars($row['group_name'] ?? 'Nincs csoport'); 
         }
     ],
 
@@ -41,7 +46,7 @@ $config = [
             'required' => true,
             'param_type' => 'i',
             'foreign_key' => [
-                'table' => 'USERS',
+                'table' => 'users',
                 'value_col' => 'user_id',
                 'display_col' => 'username'
             ]
@@ -53,7 +58,7 @@ $config = [
             'required' => true,
             'param_type' => 'i',
             'foreign_key' => [
-                'table' => 'GROUPS',
+                'table' => 'groups',
                 'value_col' => 'group_id',
                 'display_col' => 'group_name'
             ]
@@ -73,5 +78,6 @@ $config = [
     ]
 ];
 
-require '../app/generic_crud.php';
+// 2. A CRUD sablon behívása ROOT_PATH használatával
+require_once ROOT_PATH . '/app/generic_crud.php';
 ?>

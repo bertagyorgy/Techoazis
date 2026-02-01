@@ -1,18 +1,21 @@
 <?php
+// 1. Config betöltése kötelező, hogy legyen ROOT_PATH és BASE_URL
+require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- TERMÉKEK KONFIGURÁCIÓJA ---
 $config = [
-    'table' => 'PRODUCTS',
+    'table' => 'products',
     'pk' => 'product_id',
-    'page_file' => '../admin/panel_products.php',
+    // JAVÍTÁS: A page_file az admin.php-ra mutasson, paraméterként átadva a panelt
+    'page_file' => BASE_URL . '/admin/admin?page=panel_products',
     'page_title' => 'Termékek',
     'singular_name' => 'termék',
 
     // Oszlopok a listázó nézetben
     'list_columns' => [
         'product_id' => 'ID',
-        'seller_user_id' => 'Feltöltő', // JAVÍTVA: user_id -> seller_user_id
+        'seller_user_id' => 'Feltöltő',
         'product_name' => 'Név',
         'category' => 'Kategória',
         'price' => 'Ár',
@@ -27,7 +30,7 @@ $config = [
                      ORDER BY p.product_id",
                      
     'list_formatters' => [
-        'seller_user_id' => function($value, $row) { // JAVÍTVA: kulcs név
+        'seller_user_id' => function($value, $row) {
             return htmlspecialchars($row['username']); 
         },
         'price' => function($value, $row) {
@@ -35,7 +38,8 @@ $config = [
         },
         'main_image_url' => function($value, $row) {
              if (empty($value)) return 'Nincs kép';
-             $image_path = '../uploads/products/' . htmlspecialchars($value);
+             // JAVÍTÁS: Kép elérési útja BASE_URL-el
+             $image_path = BASE_URL . '/uploads/products/' . htmlspecialchars($value);
              return '<img src="' . $image_path . '" alt="Termékkép" style="max-width: 50px; height: auto; border-radius: 4px;">';
         },
         'product_status' => function($value) {
@@ -45,19 +49,18 @@ $config = [
         }
     ],
     
-    // Mezők az űrlapokon - JAVÍTVA: seller_user_id
     'form_fields' => ['seller_user_id', 'product_name', 'category', 'product_description', 'price', 'product_status', 'main_image_url'],
 
     'fields' => [
         'product_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
-        'seller_user_id' => [ // JAVÍTVA: user_id -> seller_user_id
+        'seller_user_id' => [
             'label' => 'Feltöltő felhasználó',
             'type' => 'select', 
             'required' => true,
             'param_type' => 'i',
             'foreign_key' => [
-                'table' => 'USERS',
-                'value_col' => 'user_id', // Itt maradhat user_id, ha a USERS táblában ez a neve
+                'table' => 'users',
+                'value_col' => 'user_id',
                 'display_col' => 'username'
             ]
         ],
@@ -74,4 +77,5 @@ $config = [
     ]
 ];
 
-require '../app/generic_crud.php';
+// JAVÍTÁS: ROOT_PATH használata a CRUD behívásához
+require_once ROOT_PATH . '/app/generic_crud.php';

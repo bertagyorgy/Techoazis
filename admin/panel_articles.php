@@ -1,11 +1,16 @@
 <?php
+// /opt/lampp/htdocs/Techoazis/admin/panel_articles.php
+
+// 1. Config betöltése kötelező a ROOT_PATH és BASE_URL miatt
+require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- CIKKEK (ARTICLES) KONFIGURÁCIÓ ---
 $config = [
     'table' => 'articles',
     'pk' => 'article_id',
-    'page_file' => '../admin/panel_articles.php',
+    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
+    'page_file' => BASE_URL . '/admin/admin?page=panel_articles',
     'page_title' => 'Cikkek',
     'singular_name' => 'cikk',
 
@@ -60,7 +65,6 @@ $config = [
 
     // ===== MEZŐ DEFINÍCIÓK =====
     'fields' => [
-
         'category_id' => [
             'label' => 'Kategória',
             'type' => 'select',
@@ -135,4 +139,5 @@ $config = [
     ]
 ];
 
-require '../app/generic_crud.php';
+// 2. A CRUD behívása ROOT_PATH használatával
+require_once ROOT_PATH . '/app/generic_crud.php';

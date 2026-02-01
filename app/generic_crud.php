@@ -1,11 +1,11 @@
 <?php
-// generic_crud.php - Egységesített modern dizájn
+// generic_crud.php - JAVÍTOTT BACKEND, ÉRINTETLEN FRONTEND
 if (!isset($conn) || !isset($config)) {
     echo "<div class='message error'>Hiba: A konfiguráció vagy az adatbázis-kapcsolat hiányzik.</div>";
     exit();
 }
 
-// --- Űrlapmezők generálása a referencia stílusában ---
+// --- Űrlapmezők generálása (Változatlan) ---
 function build_form_field($name, $field_config, $current_value = null, $conn = null) {
     $label = htmlspecialchars($field_config['label']);
     $type = $field_config['type'];
@@ -63,6 +63,11 @@ function build_form_field($name, $field_config, $current_value = null, $conn = n
         $html .= "<button type='button' class='password-toggle' style='position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--admin-text-light);'><i class='fas fa-eye'></i></button>";
         $html .= "</div>";
 
+    } else if ($type === 'file') { // Fájl input kezelése
+        $html .= "<input type='file' name='$name' id='$name' class='form-control' $required>";
+        if ($current_value) {
+            $html .= "<small style='display:block; margin-top:5px;'>Jelenlegi: " . htmlspecialchars($current_value) . "</small>";
+        }
     } else {
         $step = isset($field_config['step']) ? "step='{$field_config['step']}'" : "";
         $html .= "<input type='$type' name='$name' id='$name' value='$val' class='form-control' $required $step placeholder='...'>";
@@ -72,26 +77,47 @@ function build_form_field($name, $field_config, $current_value = null, $conn = n
     return $html;
 }
 
-// --- ALAPVÁLTOZÓK ÉS POST KEZELÉS (Változatlan) ---
+// --- ALAPVÁLTOZÓK ---
 $action = $_GET['action'] ?? 'list';
 $id = $_GET['id'] ?? null;
 $message = $_GET['message'] ?? '';
 $table = $config['table'];
 $pk = $config['pk'];
-$page_file = $config['page_file'];
-$page_name = basename($page_file, ".php");
+
+// BACKEND FIX: A page_name a GET paraméterből jöjjön, vagy fallback a configból
+$page_name = $_GET['page'] ?? basename($config['page_file'] ?? '', ".php");
+// BACKEND FIX: Központi router útvonal
+$page_route = BASE_URL . "/admin/admin?page=" . $page_name;
+
 $page_title = $config['page_title'];
 $allow_add = $config['allow_add'] ?? true;
 $allow_edit = $config['allow_edit'] ?? true;
 $allow_delete = $config['allow_delete'] ?? true;
 
+// --- POST KEZELÉS ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post_data = $_POST;
+    
+    // Preprocess hook
     if (isset($config['preprocess_data']) && is_callable($config['preprocess_data'])) {
         $maybe = $config['preprocess_data']($post_data);
         if (is_array($maybe)) $post_data = $maybe;
     }
-    // Hozzáadás és Módosítás logika maradt...
+
+    // BACKEND FIX: Fájlfeltöltés kezelése
+    foreach ($config['fields'] as $name => $f_cfg) {
+        if (($f_cfg['type'] ?? '') === 'file' && isset($_FILES[$name]) && $_FILES[$name]['error'] === 0) {
+            $upload_dir = ROOT_PATH . '/uploads/products/'; // Alapértelmezett mappa
+            if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+            
+            $file_name = time() . '_' . basename($_FILES[$name]['name']);
+            if (move_uploaded_file($_FILES[$name]['tmp_name'], $upload_dir . $file_name)) {
+                $post_data[$name] = $file_name;
+            }
+        }
+    }
+
+    // Hozzáadás
     if (isset($post_data['save']) && $allow_add) {
         $columns = []; $placeholders = []; $types = ""; $params = [];
         foreach ($config['form_fields'] as $field) {
@@ -107,14 +133,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($types !== "") $stmt->bind_param($types, ...$params);
                 $stmt->execute();
                 $stmt->close();
-                header("Location: admin.php?page={$page_name}&message=" . urlencode("Sikeres hozzáadás!")); exit();
+                // BACKEND FIX: Redirect BASE_URL-el
+                header("Location: $page_route&message=" . urlencode("Sikeres hozzáadás!")); 
+                exit();
             } catch (mysqli_sql_exception $e) { $message = "Hiba: " . $e->getMessage(); }
         }
     }
+
+    // Frissítés
     if (isset($post_data['update']) && $allow_edit) {
         $safe_id = (int)$post_data[$pk];
         $updates = []; $types = ""; $params = [];
         foreach ($config['form_fields'] as $field) {
+            // Checkbox és egyéb mezők kezelése
             if (isset($post_data[$field]) || ($config['fields'][$field]['type'] ?? '') === 'checkbox') {
                 $val = $post_data[$field] ?? ($config['fields'][$field]['false_value'] ?? '0');
                 if (($config['fields'][$field]['type'] ?? '') === 'password' && empty($val)) continue;
@@ -129,19 +160,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bind_param($types, ...$params);
                 $stmt->execute();
                 $stmt->close();
-                header("Location: admin.php?page={$page_name}&message=" . urlencode("Sikeres frissítés!")); exit();
+                // BACKEND FIX: Redirect BASE_URL-el
+                header("Location: $page_route&message=" . urlencode("Sikeres frissítés!")); 
+                exit();
             } catch (mysqli_sql_exception $e) { $message = "Hiba: " . $e->getMessage(); }
         }
     }
 }
 
+// Törlés
 if ($action === 'delete' && $id && $allow_delete) {
     $safe_id = (int)$id;
     try {
         $stmt = $conn->prepare("DELETE FROM $table WHERE $pk = ?");
         $stmt->bind_param("i", $safe_id);
         $stmt->execute();
-        header("Location: admin.php?page={$page_name}&message=" . urlencode("Sikeres törlés!")); exit();
+        // BACKEND FIX: Redirect BASE_URL-el
+        header("Location: $page_route&message=" . urlencode("Sikeres törlés!")); 
+        exit();
     } catch (mysqli_sql_exception $e) { $message = "Hiba a törlés során."; }
 }
 ?>
@@ -152,10 +188,10 @@ if ($action === 'delete' && $id && $allow_delete) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin | <?= htmlspecialchars($page_title) ?></title>
-    <link rel="icon" type="image/x-icon" href="../images/palmtree_favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="../static/admin-modern.css">
-    <link rel="stylesheet" href="../static/generic_crud_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/admin-modern.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/generic_crud_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
@@ -202,12 +238,12 @@ switch ($action):
                 <i class="fas <?= $is_edit ? 'fa-edit' : 'fa-plus-circle' ?>" style="color: var(--admin-accent); margin-right: 10px;"></i> 
                 <?= htmlspecialchars($config['singular_name']) ?> <?= $is_edit ? 'szerkesztése' : 'hozzáadása' ?>
             </h2>
-            <a href="admin.php?page=<?= $page_name ?>" class="btn-back">
+            <a href="<?= $page_route ?>" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Vissza a listához
             </a>
         </div>
 
-        <form method="POST" class="modern-form">
+        <form method="POST" action="<?= $page_route ?>&action=<?= $action ?><?= $id ? "&id=$id" : "" ?>" class="modern-form" enctype="multipart/form-data">
             <?php if($is_edit): ?>
                 <input type="hidden" name="update" value="1">
                 <input type="hidden" name="<?= $pk ?>" value="<?= $item[$pk] ?>">
@@ -232,12 +268,12 @@ switch ($action):
 <?php
     break;
 
-    default: // LIST VIEW (Változatlanul hagyva a táblázat részt)
+    default: // LIST VIEW
 ?>
     <div class="top-bar">
         <h1><i class="fas fa-table"></i> <?= htmlspecialchars($page_title) ?></h1>
         <?php if ($allow_add): ?>
-            <a href="<?= $page_file ?>?action=add" class="btn btn-success">
+            <a href="<?= $page_route ?>&action=add" class="btn btn-success">
                 <i class="fas fa-plus"></i> Új <?= htmlspecialchars($config['singular_name']) ?>
             </a>
         <?php endif; ?>
@@ -272,12 +308,12 @@ switch ($action):
                     <td class="actions" style="text-align: right;">
                         <div class="action-buttons" style="justify-content: flex-end;">
                             <?php if ($allow_edit): ?>
-                                <a href="<?= $page_file ?>?action=edit&id=<?= $row[$pk] ?>" class="btn btn-secondary btn-sm" title="Szerkesztés">
+                                <a href="<?= $page_route ?>&action=edit&id=<?= $row[$pk] ?>" class="btn btn-secondary btn-sm" title="Szerkesztés">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
                             <?php endif; ?>
                             <?php if ($allow_delete): ?>
-                                <a href="<?= $page_file ?>?action=delete&id=<?= $row[$pk] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Törli az elemet?');">
+                                <a href="<?= $page_route ?>&action=delete&id=<?= $row[$pk] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Törli az elemet?');">
                                     <i class="fa-solid fa-trash"></i>
                                 </a>
                             <?php endif; ?>

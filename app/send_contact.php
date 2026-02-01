@@ -1,10 +1,14 @@
 <?php
+// 1. Config behívása a konstansok miatt
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../envreader.php';
+// 2. ROOT_PATH használata a biztos eléréshez
+require_once ROOT_PATH . '/envreader.php';
 loadEnv();
 
+// Ellenőrizzük a metódust
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: " . BASE_URL . "/contact.php");
+    // JAVÍTÁS: Szép URL (.php nélkül)
+    header("Location: " . BASE_URL . "/contact");
     exit();
 }
 
@@ -22,11 +26,13 @@ if (mb_strlen($title) > 120) $errors[] = "A tárgy túl hosszú.";
 if ($message === '' || mb_strlen($message) < 10) $errors[] = "Az üzenet túl rövid.";
 
 if (!empty($errors)) {
-    header("Location: " . BASE_URL . "/contact.php?status=error&msg=" . urlencode(implode(" ", $errors)));
+    // JAVÍTÁS: Szép URL (.php nélkül)
+    header("Location: " . BASE_URL . "/contact?status=error&msg=" . urlencode(implode(" ", $errors)));
     exit();
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
+// 3. Vendor behívása ROOT_PATH-al
+require_once ROOT_PATH . '/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -34,7 +40,7 @@ use PHPMailer\PHPMailer\Exception;
 $mail = new PHPMailer(true);
 
 try {
-
+    // ... (SMTP beállítások változatlanok) ...
     $mail->isSMTP();
     $mail->Host = getenv('SMTP_HOST');
     $mail->SMTPAuth = true;
@@ -44,18 +50,11 @@ try {
     $mail->Port = getenv('SMTP_PORT');
     $mail->CharSet = 'UTF-8';
 
-    // Küldő (az SMTP fiók)
     $mail->setFrom(getenv('SMTP_EMAIL'), 'Techoázis Support');
-
-    // Címzett (support)
     $mail->addAddress(getenv('SMTP_EMAIL'), 'Techoázis Support');
-
-    // Reply-To legyen a felhasználó emailje
     $mail->addReplyTo($email, $name);
 
     $mail->isHTML(true);
-
-    // SUBJECT: legyen benne a title
     $mail->Subject = $title;
 
     $safeName  = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
@@ -72,20 +71,17 @@ try {
         <p><strong>Üzenet:</strong><br>{$safeMsg}</p>
     ";
 
-    $mail->AltBody =
-        "Név: {$name}\n" .
-        "Email: {$email}\n" .
-        "Tárgy: {$title}\n\n" .
-        "Üzenet:\n{$message}\n";
+    $mail->AltBody = "Név: {$name}\nEmail: {$email}\nTárgy: {$title}\n\nÜzenet:\n{$message}\n";
 
     $mail->send();
 
-    header("Location: " . BASE_URL . "/contact.php?status=success");
+    // JAVÍTÁS: Szép URL (.php nélkül)
+    header("Location: " . BASE_URL . "/contact?status=success");
     exit();
 
 } catch (Exception $e) {
-    // Ne szivárogjon ki túl sok infó, de fejlesztés alatt oké lehet
     $err = $mail->ErrorInfo ?: $e->getMessage();
-    header("Location: " . BASE_URL . "/contact.php?status=error&msg=" . urlencode("Küldési hiba: " . $err));
+    // JAVÍTÁS: Szép URL (.php nélkül)
+    header("Location: " . BASE_URL . "/contact?status=error&msg=" . urlencode("Küldési hiba: " . $err));
     exit();
 }

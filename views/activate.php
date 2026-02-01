@@ -1,5 +1,11 @@
 <?php
-include '../app/db.php';
+// 1. Config behívása a konstansok (ROOT_PATH, BASE_URL) miatt
+// Ha az index.php routeren keresztül jössz, ez már be van töltve, 
+// de a biztonság kedvéért (ha közvetlen linkről jönnek) érdemes így hagyni:
+require_once __DIR__ . '/../config.php';
+
+// 2. Adatbázis behívása ROOT_PATH használatával
+require_once ROOT_PATH . '/app/db.php';
 
 $email = $_GET['email'] ?? '';
 $code = $_GET['code'] ?? '';
@@ -45,13 +51,23 @@ if (empty($email) || empty($code)) {
 $conn->close();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="hu">
 <head>
-    <title>Fiók Aktiválása</title>
+    <meta charset="UTF-8">
+    <title>Fiók Aktiválása | Techoázis</title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <style>
+        .activation-container { text-align: center; padding: 50px; font-family: 'Inter', sans-serif; }
+        .btn-login { background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+    </style>
 </head>
 <body>
-    <h1>Fiók Aktiválása</h1>
-    <p><?php echo $message; ?></p>
-    <p><a style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;" href="../views/login.php">Tovább a bejelentkezéshez</a></p>
+    <div class="activation-container">
+        <h1>Fiók Aktiválása</h1>
+        <p><?php echo $message; ?></p>
+        
+        <p><a class="btn-login" href="<?= BASE_URL ?>/login">Tovább a bejelentkezéshez</a></p>
+    </div>
 </body>
 </html>

@@ -1,11 +1,14 @@
 <?php
+// 1. Config betöltése kötelező a ROOT_PATH és BASE_URL miatt
+require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- KOMMENTEK KONFIGURÁCIÓJA ---
 $config = [
-    'table' => 'COMMENTS',
+    'table' => 'comments',
     'pk' => 'comment_id',
-    'page_file' => '../admin/panel_comments.php',
+    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
+    'page_file' => BASE_URL . '/admin/admin?page=panel_comments',
     'page_title' => 'Kommentek',
     'singular_name' => 'komment',
 
@@ -42,7 +45,7 @@ $config = [
             'required' => true,
             'param_type' => 'i',
             'foreign_key' => [
-                'table' => 'POSTS',
+                'table' => 'posts',
                 'value_col' => 'post_id',
                 'display_col' => 'title'
             ]
@@ -53,7 +56,7 @@ $config = [
             'required' => true,
             'param_type' => 'i',
             'foreign_key' => [
-                'table' => 'USERS',
+                'table' => 'users',
                 'value_col' => 'user_id',
                 'display_col' => 'username'
             ]
@@ -63,5 +66,6 @@ $config = [
 ];
 
 // --- SABLON BETÖLTÉSE ---
-require '../app/generic_crud.php';
+// JAVÍTÁS: ROOT_PATH használata a CRUD behívásához
+require_once ROOT_PATH . '/app/generic_crud.php';
 ?>

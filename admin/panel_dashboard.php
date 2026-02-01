@@ -1,10 +1,16 @@
 <?php
-// panel_dashboard.php - Techoázis card layout
+// /opt/lampp/htdocs/Techoazis/admin/panel_dashboard.php
+
+// 1. Biztonsági ellenőrzés és környezet betöltése
+require_once __DIR__ . '/../config.php';
+require_once ROOT_PATH . '/app/auth_check.php';
 
 function getCount($conn, $sql) {
-    return (int)$conn->query($sql)->fetch_row()[0];
+    $res = $conn->query($sql);
+    return $res ? (int)$res->fetch_row()[0] : 0;
 }
 
+// Statisztikák lekérése
 $stats = [
     'users'    => ['val' => getCount($conn, "SELECT COUNT(*) FROM users"), 'icon' => 'fa-users', 'bg' => 'linear-gradient(135deg, #4f46e5, #818cf8)', 'label' => 'Felhasználók'],
     'posts'    => ['val' => getCount($conn, "SELECT COUNT(*) FROM posts"), 'icon' => 'fa-paper-plane', 'bg' => 'linear-gradient(135deg, #0891b2, #22d3ee)', 'label' => 'Posztok'],
@@ -13,6 +19,7 @@ $stats = [
     'products' => ['val' => getCount($conn, "SELECT COUNT(*) FROM products"), 'icon' => 'fa-box', 'bg' => 'linear-gradient(135deg, #10b981, #34d399)', 'label' => 'Termékek'],
 ];
 
+// Legutóbbi aktivitások
 $latest = [];
 $latest['user']    = $conn->query("SELECT username, registration_date FROM users ORDER BY registration_date DESC LIMIT 1")->fetch_assoc();
 $latest['post']    = $conn->query("SELECT title, created_at FROM posts ORDER BY created_at DESC LIMIT 1")->fetch_assoc();
@@ -20,38 +27,37 @@ $latest['comment'] = $conn->query("SELECT content, created_at FROM comments ORDE
 $latest['article'] = $conn->query("SELECT title, created_at FROM articles ORDER BY created_at DESC LIMIT 1")->fetch_assoc();
 $latest['product'] = $conn->query("SELECT product_name, created_at FROM products ORDER BY created_at DESC LIMIT 1")->fetch_assoc();
 
+// Grafikon adatok (utolsó 14 nap)
 $loginLabels = []; $loginData = [];
 $res = $conn->query("SELECT DATE(login_date) AS day, COUNT(*) AS cnt FROM login WHERE login_date >= DATE_SUB(CURDATE(), INTERVAL 14 DAY) GROUP BY DATE(login_date) ORDER BY day");
-while ($row = $res->fetch_assoc()) {
-    $loginLabels[] = $row['day'];
-    $loginData[] = (int)$row['cnt'];
+if ($res) {
+    while ($row = $res->fetch_assoc()) {
+        $loginLabels[] = $row['day'];
+        $loginData[] = (int)$row['cnt'];
+    }
 }
 ?>
-
-
 
 <div class="dashboard-wrap">
 
     <div class="top-bar">
-        <h1><i class="fa-solid fa-chart-simple"></i> Üdv az Admin Panelben, <?= htmlspecialchars($_SESSION['username']); ?>!</h1>
+        <h1><i class="fa-solid fa-chart-simple"></i> Üdv az Admin Panelben, <?= htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?>!</h1>
     </div>
 
-    <!-- ===== GYORS HOZZÁADÁS ===== -->
     <section class="section-card">
         <div class="section-head">
             <h2 class="section-title"><i class="fa-solid fa-bolt"></i> Hozzáadás gyorsmenü</h2>
         </div>
         <div class="section-body">
             <div class="quick-actions">
-                <a href="panel_products.php?action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új termék</a>
-                <a href="panel_posts.php?action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új poszt</a>
-                <a href="panel_articles.php?action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új cikk</a>
-                <a href="panel_users.php?action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új felhasználó</a>
+                <a href="<?= BASE_URL ?>/admin/admin?page=panel_products&action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új termék</a>
+                <a href="<?= BASE_URL ?>/admin/admin?page=panel_posts&action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új poszt</a>
+                <a href="<?= BASE_URL ?>/admin/admin?page=panel_articles&action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új cikk</a>
+                <a href="<?= BASE_URL ?>/admin/admin?page=panel_users&action=add" class="btn-quick"><i class="fa-solid fa-plus"></i> Új felhasználó</a>
             </div>
         </div>
     </section>
 
-    <!-- ===== STATISZTIKA ===== -->
     <section class="section-card">
         <div class="section-head">
             <h2 class="section-title"><i class="fa-solid fa-chart-line"></i> Rendszer statisztika</h2>
@@ -73,7 +79,6 @@ while ($row = $res->fetch_assoc()) {
         </div>
     </section>
 
-    <!-- ===== LEGUTÓBBI AKTIVITÁSOK ===== -->
     <section class="section-card">
         <div class="section-head">
             <h2 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Legutóbbi aktivitások</h2>
@@ -85,25 +90,21 @@ while ($row = $res->fetch_assoc()) {
                     <div class="latest-box"><?= htmlspecialchars($latest['user']['username'] ?? '-') ?></div>
                     <span class="latest-date"><?= htmlspecialchars($latest['user']['registration_date'] ?? '') ?></span>
                 </div>
-
                 <div class="stat-card">
                     <h3>Legutóbbi poszt</h3>
                     <div class="latest-box"><?= htmlspecialchars($latest['post']['title'] ?? '-') ?></div>
                     <span class="latest-date"><?= htmlspecialchars($latest['post']['created_at'] ?? '') ?></span>
                 </div>
-
                 <div class="stat-card">
                     <h3>Legutóbbi komment</h3>
                     <div class="latest-box"><?= htmlspecialchars(mb_strimwidth($latest['comment']['content'] ?? '-', 0, 70, '…')) ?></div>
                     <span class="latest-date"><?= htmlspecialchars($latest['comment']['created_at'] ?? '') ?></span>
                 </div>
-
                 <div class="stat-card">
                     <h3>Legutóbbi cikk</h3>
                     <div class="latest-box"><?= htmlspecialchars($latest['article']['title'] ?? '-') ?></div>
                     <span class="latest-date"><?= htmlspecialchars($latest['article']['created_at'] ?? '') ?></span>
                 </div>
-
                 <div class="stat-card">
                     <h3>Legutóbbi termék</h3>
                     <div class="latest-box"><?= htmlspecialchars($latest['product']['product_name'] ?? '-') ?></div>
@@ -113,7 +114,6 @@ while ($row = $res->fetch_assoc()) {
         </div>
     </section>
 
-    <!-- ===== LOGIN TREND ===== -->
     <section class="section-card">
         <div class="section-head">
             <h2 class="section-title"><i class="fa-solid fa-signal"></i> Bejelentkezési trendek (14 nap)</h2>
@@ -129,6 +129,7 @@ while ($row = $res->fetch_assoc()) {
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+// Chart konfiguráció marad eredeti
 new Chart(document.getElementById('loginChart'), {
     type: 'line',
     data: {

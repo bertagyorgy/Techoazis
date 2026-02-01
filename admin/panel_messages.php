@@ -1,4 +1,8 @@
 <?php
+// /opt/lampp/htdocs/Techoazis/admin/panel_messages.php
+
+// 1. Config betöltése kötelező a ROOT_PATH és BASE_URL eléréséhez
+require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- ÜZENETEK KONFIGURÁCIÓJA ---
@@ -6,71 +10,60 @@ $config = [
     // --- ALAPBEÁLLÍTÁSOK ---
     'table' => 'messages',
     'pk' => 'message_id',
-    'page_file' => '../admin/panel_messages.php',
+    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
+    'page_file' => BASE_URL . '/admin/admin?page=panel_messages',
     'page_title' => 'Beszélgetés Üzenetek',
     'singular_name' => 'üzenet',
 
     // --- LISTÁZÁS KONFIGURÁCIÓ (JOIN-nal a küldőhöz és a beszélgetéshez) ---
     'list_columns' => [
         'message_id' => 'ID',
-        'conversation_summary' => 'Beszélgetés', // JOIN-nal töltjük be
-        'sender_username' => 'Küldő',          // JOIN-nal töltjük be
+        'conversation_summary' => 'Beszélgetés', 
+        'sender_username' => 'Küldő',          
         'user_message' => 'Üzenet',
         'sent_at' => 'Elküldve',
         'is_read' => 'Olvasott?'
     ],
     
-    // JOIN-ok a küldő felhasználónévhez (users) és a beszélgetés összefoglalójához (conversations)
-    // Megjegyzés: A conversation_summary-t a products és users táblák JOIN-olásával hozzuk létre
     'list_query' => "SELECT m.*, 
                             u.username AS sender_username, 
-                            CONCAT(p.product_name, ' (Vevő: ', b.username, ')') AS conversation_summary -- Összefoglaló a listához
+                            CONCAT(p.product_name, ' (Vevő: ', b.username, ')') AS conversation_summary 
                      FROM messages m
                      JOIN users u ON m.sender_user_id = u.user_id
                      JOIN conversations c ON m.conversation_id = c.conversation_id
                      JOIN products p ON c.product_id = p.product_id
-                     JOIN users b ON c.buyer_user_id = b.user_id -- A vevő neve az összefoglalóhoz
+                     JOIN users b ON c.buyer_user_id = b.user_id 
                      ORDER BY m.sent_at DESC",
 
     // Formázók
     'list_formatters' => [
-        // Rövidítés a lista nézetben (első 50 karakter)
         'user_message' => function ($value, $row) {
-            return strlen($value) > 50 ? htmlspecialchars(substr($value, 0, 50)) . '...' : htmlspecialchars($value);
+            // JAVÍTÁS: mb_substr használata az ékezetes karakterek védelmében
+            return mb_strlen($value) > 50 ? htmlspecialchars(mb_substr($value, 0, 50)) . '...' : htmlspecialchars($value);
         },
-        // Logikai mező formázása
         'is_read' => function ($value, $row) {
             return $value ? '✅ Igen' : '❌ Nem';
         }
     ],
     
     // --- ŰRLAP KONFIGURÁCIÓ ---
-    // Az 'is_read' mezőt is kezelni kell a formon, ha azt adminisztrátorként szerkeszteni szeretnénk
     'form_fields' => ['conversation_id', 'sender_user_id', 'user_message', 'is_read'],
 
     'fields' => [
         'message_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
         
-        // Beszélgetés kiválasztása
         'conversation_id' => [
-            'label' => 'Beszélgetés', 
+            'label' => 'Beszélgetés ID', 
             'type' => 'select', 
             'required' => true, 
             'param_type' => 'i',
-            // Itt a 'display_col' a JOIN-nal létrehozott mezőre hivatkozik, ami nem a foreign_key táblában van,
-            // ezért a 'foreign_key' csak az ID és a megjelenítéshez szükséges. 
-            // Megjegyzés: A generikus CRUD-nak tudnia kell kezelni a dinamikus megjelenítő oszlopokat, ha a list_query alapján tölti be az opciókat.
-            // Egyszerűbb és stabilabb megoldás, ha a conversation_id alapján választunk ki valamit a formon:
             'foreign_key' => [
                 'table' => 'conversations', 
                 'value_col' => 'conversation_id', 
-                // Mivel a conversations táblában nincs egyszerű megjelenítendő oszlop, 
-                // a 'display_col' itt lehetne a 'conversation_id' vagy 'created_at'.
-                'display_col' => 'conversation_id' // Ezt lehet, hogy manuálisan kell felülírni a formnál
+                'display_col' => 'conversation_id' 
             ]
         ],
         
-        // Küldő felhasználó kiválasztása
         'sender_user_id' => [
             'label' => 'Küldő felhasználó', 
             'type' => 'select', 
@@ -79,7 +72,6 @@ $config = [
             'foreign_key' => ['table' => 'users', 'value_col' => 'user_id', 'display_col' => 'username']
         ],
         
-        // Üzenet tartalma
         'user_message' => [
             'label' => 'Üzenet', 
             'type' => 'textarea', 
@@ -87,10 +79,8 @@ $config = [
             'param_type' => 's'
         ],
 
-        // Elküldve (csak listázáshoz)
         'sent_at' => ['label' => 'Elküldve', 'type' => 'datetime', 'list_only' => true],
         
-        // Olvasott státusz
         'is_read' => [
             'label' => 'Olvasott?', 
             'type' => 'checkbox', 
@@ -101,5 +91,6 @@ $config = [
     ]
 ];
 
-require '../app/generic_crud.php';
+// JAVÍTÁS: Sablon betöltése ROOT_PATH használatával
+require_once ROOT_PATH . '/app/generic_crud.php';
 ?>
