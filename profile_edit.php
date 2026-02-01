@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 // 1. Config betöltése (ez hozza létre a ROOT_PATH-ot és a BASE_URL-t)
 require_once __DIR__ . '/config.php';
 
@@ -12,6 +12,7 @@ if (!isset($_SESSION['username'])) {
     header("Location: " . BASE_URL . "/views/login.php");
     exit();
 }
+
 
 $username = $_SESSION['username'];
 $current_user_id = $_SESSION['user_id'];

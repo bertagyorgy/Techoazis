@@ -3,8 +3,46 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once __DIR__ . '/config.php';
-?>
 
+// Tisztítjuk a bejövő paramétert (levágjuk a felesleges perjeleket)
+$page = isset($_GET['p']) ? trim($_GET['p'], '/') : '';
+
+// Engedélyezett oldalak (MINDENKÉPP add hozzá a 'test'-et, ha próbálod!)
+$allowed_pages = [
+    'shop', 'forum', 'forum_group', 'contact', 'cart', 'profile', 
+    'product_detail', 'profile_edit', 'create_post', 'articles',    
+    'conversation', 'article_detail', 'about_us', 
+    'login', 'registration', 'logout', 'forgot_password', 'test'
+];
+
+// --- FÁJL BETÖLTÉSI LOGIKA ---
+if ($page !== '' && $page !== 'index') {
+    if (in_array($page, $allowed_pages)) {
+        $views_file = ROOT_PATH . '/views/' . $page . '.php';
+        $root_file = ROOT_PATH . '/' . $page . '.php';
+
+        if (file_exists($views_file)) {
+            include $views_file;
+            exit; // Ha megvan a fájl, megállunk, nem rajzolunk főoldalt
+        } elseif (file_exists($root_file)) {
+            include $root_file;
+            exit;
+        }
+    }
+    
+    // Ha nem találtuk meg vagy nincs a listában
+    http_response_code(404);
+    if (file_exists(ROOT_PATH . '/views/404.php')) {
+        include ROOT_PATH . '/views/404.php';
+    } else {
+        echo "404 - Az oldal nem található ($page)";
+    }
+    exit;
+}
+// --- FŐOLDAL TARTALMA INNENTŐL ---
+include ROOT_PATH . '/views/navbar.php';
+
+?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -40,35 +78,16 @@ require_once __DIR__ . '/config.php';
 
 </head>
 <body>
-<?php
-$page = $_GET['p'] ?? '';
 
-// Whitelist of allowed pages to prevent LFI attacks
-$allowed_pages = ['shop', 'forum', 'forum_group', 'cart', 'profile', 'profile_edit', 'create_post', 'panel_comments'];
-
-if ($page === '') {
-    include ROOT_PATH . '/views/navbar.php';
-?>
-
-    <!-- Loading screen hozzáadása -->
-    <!--<div id="loader">
-        <div class="loader-logo">
-            <span class="gradient-text">Techo</span><span class="text-accent">ázis</span>
-        </div>
-        <div class="spinner"></div>
-    </div>-->
-
-    <div class="hero-section">
-        <div class="custom-container hero-container">
-            <div class="hero-text">
-                <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
-                <p>Fedezze fel oldalunk nyújtotta szolgáltatásokat.</p>
-                <a href="<?= BASE_URL ?>/shop.php">
-                    <button type="button" class="btn btn-primary shopnow">Vásárolj most ➔</button>
-                </a>
+        <!-- Loading screen hozzáadása -->
+        <!--<div id="loader">
+            <div class="loader-logo">
+                <span class="gradient-text">Techo</span><span class="text-accent">ázis</span>
             </div>
-        </div>
-    </div>
+            <div class="spinner"></div>
+        </div>-->
+
+        
     <section class="custom-container section-padding">
         <div class="text-center">
             <h2 class="section-title">Mit találsz nálunk?</h2>
@@ -242,22 +261,7 @@ if ($page === '') {
             </div>
         </div>
     </footer>
-<?php
-} else {
-    // Dinamikusan betöltjük az adott oldal fájlját, ha létezik és engedélyezett
-    if (in_array($page, $allowed_pages)) {
-        $file = $page . '.php';
-
-        if (file_exists($file)) {
-            include $file;
-        } else {
-            include 'views/404.php';
-        }
-    } else {
-        include 'views/404.php';
-    }
-}
-?>
+                    
 
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-require '../app/auth_check.php'; // Adatbázis $conn és authentikáció
+require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- TERMÉKEK KONFIGURÁCIÓJA ---
 $config = [

@@ -1,7 +1,7 @@
 <?php
 // panel_groups.php
 // Feltételezzük, hogy a $conn kapcsolat és az auth_check.php elérhető.
-require '../app/auth_check.php';
+require_once ROOT_PATH . '/app/auth_check.php';
 
 $config = [
     // --- ALAPBEÁLLÍTÁSOK ---

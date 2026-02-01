@@ -1,5 +1,5 @@
 <?php
-require '../app/auth_check.php';
+require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- ÜGYLETEK KONFIGURÁCIÓJA ---
 $config = [
