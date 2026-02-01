@@ -22,8 +22,7 @@ require_once ROOT_PATH . '/app/auth_check.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
-    <title>Techoazis | Adminpanel</title>
-    
+    <title>Techoázis | Adminpanel</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
@@ -36,9 +35,7 @@ require_once ROOT_PATH . '/app/auth_check.php';
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <script src="<?= BASE_URL ?>/static/index.js" defer></script>
-    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 </head>
 <body>
     <div class="up-bar">
@@ -59,7 +56,7 @@ require_once ROOT_PATH . '/app/auth_check.php';
                 <li><a href="?page=panel_login" class="<?php echo ($_GET['page'] ?? '') === 'panel_login' ? 'active' : ''; ?>"><i class="fa-solid fa-right-to-bracket"></i><p>Bejelentkezések</p></a></li>
                 <li><a href="?page=panel_products" class="<?php echo ($_GET['page'] ?? '') === 'panel_products' ? 'active' : ''; ?>"><i class="fas fa-box-open"></i><p>Termékek</p></a></li>
                 <li><a href="?page=panel_posts" class="<?php echo ($_GET['page'] ?? '') === 'panel_posts' ? 'active' : ''; ?>"><i class="fa-solid fa-pen-to-square"></i><p>Bejegyzések</p></a></li>
-                <li><a href="?page=panel_articles" class="<?php echo ($_GET['page'] ?? '') === 'panel_articles' ? 'active' : ''; ?>"><i class="fa-solid fa-pen-nib"></i><p>Bejegyzések</p></a></li>
+                <li><a href="?page=panel_articles" class="<?php echo ($_GET['page'] ?? '') === 'panel_articles' ? 'active' : ''; ?>"><i class="fa-solid fa-pen-nib"></i><p>Cikkek</p></a></li>
                 <li><a href="?page=panel_comments" class="<?php echo ($_GET['page'] ?? '') === 'panel_comments' ? 'active' : ''; ?>"><i class="fa-solid fa-comments"></i><p>Kommentek</p></a></li>
                 <li><a href="?page=panel_images" class="<?php echo ($_GET['page'] ?? '') === 'panel_images' ? 'active' : ''; ?>"><i class="fa-solid fa-image"></i><p>Képek</p></a></li>
                 <li><a href="?page=panel_groups" class="<?php echo ($_GET['page'] ?? '') === 'panel_groups' ? 'active' : ''; ?>"><i class="fa-solid fa-users"></i><p>Csoportok</p></a></li>

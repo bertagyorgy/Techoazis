@@ -45,7 +45,7 @@ $post_count = $posts->num_rows;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($group['group_name']) ?> | Techoazis</title>
+    <title>Techoázis | <?= htmlspecialchars($group['group_name']) ?></title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
@@ -91,10 +91,10 @@ $post_count = $posts->num_rows;
             <input type="hidden" name="group_id" value="<?= $group_id ?>">
 
             <label for="title">Cím:</label>
-            <input type="text" name="title" placeholder="Poszt címe..." required>
+            <input type="text" name="title" id="title" placeholder="Poszt címe..." required>
 
             <label for="content">Tartalom:</label>
-            <textarea name="content" placeholder="Írd meg a poszt tartalmát..." required></textarea>
+            <textarea name="content" id="content" placeholder="Írd meg a poszt tartalmát..." required></textarea>
 
             <div class="file-inputs">
                 <label for="postImages">Képek feltöltése (max 3)</label>

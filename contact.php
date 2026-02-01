@@ -26,7 +26,6 @@ require_once __DIR__ . '/config.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/custom_card.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/feature_cards.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/hero_section.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/loading_animation.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/contact_style.css">
@@ -36,7 +35,6 @@ require_once __DIR__ . '/config.php';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="<?= BASE_URL ?>/static/index.js" defer></script>
-    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
 </head>
 <body>

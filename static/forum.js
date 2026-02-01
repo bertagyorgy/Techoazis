@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Forum.js betöltve, inicializálás...");
 
     // ===========================
     // 1. KOMMENTEK MEGNYITÁSA / BEZÁRÁSA

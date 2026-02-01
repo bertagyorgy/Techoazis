@@ -65,7 +65,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Techoazis | Shop</title>
+    <title>Techoázis | Vásárlás</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
@@ -86,7 +86,6 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="<?= BASE_URL ?>/static/index.js" defer></script>
-    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 </head>
 
 <body>

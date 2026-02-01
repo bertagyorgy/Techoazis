@@ -60,7 +60,7 @@ function render_text($text) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($article['title']) ?> | Techoázis Tudástár</title>
+    <title>Techoázis | <?= htmlspecialchars($article['title']) ?> cikk</title>
 
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">

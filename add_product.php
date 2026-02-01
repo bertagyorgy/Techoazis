@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Új termék feltöltése</title>
+    <title>Techoázis | Új termék feltöltése</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">

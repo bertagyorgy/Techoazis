@@ -10,7 +10,7 @@ require_once ROOT_PATH . '/conversation_logic.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beszélgetés | Techoázis</title>
+    <title>Techoázis | Beszélgetés</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">

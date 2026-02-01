@@ -10,7 +10,8 @@ require_once __DIR__ . '/config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Techoázis | A közösség és a technológia egy helyen</title>
+    <meta name="description" content="Techoázis: hardver piactér, tech közösség, cikkek és biztonságos adás-vétel. Vásárolj, adj el és beszélgess biztonságosan.">
+    <title>Techoázis - A közösség és a technológia egy helyen</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
@@ -27,7 +28,6 @@ require_once __DIR__ . '/config.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/custom_card.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/feature_cards.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/hero_section.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/loading_animation.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
 
@@ -37,7 +37,6 @@ require_once __DIR__ . '/config.php';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="<?= BASE_URL ?>/static/index.js" defer></script>
-    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
 </head>
 <body>
