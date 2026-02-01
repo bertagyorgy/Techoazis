@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
     
     // --- 1. Téma váltó (Egyesített logika) ---
+    // A CSS-ben győződj meg róla, hogy az elemek a :root .dark szelektorra változnak
     const themeButtons = document.querySelectorAll(".theme-toggle");
     const htmlElement = document.documentElement;
     const storageKey = 'theme';
 
-    // Segédfüggvény az ikonok és a téma szinkronizálásához
     function applyTheme(isDark) {
         if (isDark) {
             htmlElement.classList.add('dark');
@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function() {
         themeButtons.forEach(btn => {
             const icon = btn.querySelector("i");
             if (icon) {
-                // Ha sötét, napocska kell (hogy világosra válthass), ha világos, hold
                 if (isDark) {
                     icon.classList.replace("fa-moon", "fa-sun");
                 } else {
@@ -26,16 +25,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Kezdeti beállítás betöltése
     const savedTheme = localStorage.getItem(storageKey);
-    applyTheme(savedTheme === 'dark');
+    // Ellenőrizzük a rendszerbeállítást is, ha még nincs mentett téma
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(savedTheme === 'dark' || (!savedTheme && prefersDark));
 
-    // Egyetlen eseményfigyelő a gombokra
     themeButtons.forEach(btn => {
         btn.addEventListener("click", function(e) {
             e.preventDefault();
             const newIsDark = !htmlElement.classList.contains('dark');
-            
             localStorage.setItem(storageKey, newIsDark ? 'dark' : 'light');
             applyTheme(newIsDark);
         });
@@ -63,4 +61,24 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+
+    // --- 4. Scroll Reveal (Hogy az index.php szekciói megjelenjenek) ---
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                // Ha egyszer megjelent, ne figyeljük tovább
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15 // 15% láthatóság után aktiválódik
+    });
+
+    revealElements.forEach(el => {
+        revealObserver.observe(el);
+    });
+
 });
