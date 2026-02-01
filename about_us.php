@@ -331,8 +331,8 @@ require_once ROOT_PATH . '/app/db.php';
                         <li><a href="<?= BASE_URL ?>/index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
                         <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
                         <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
-                        <!-- <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link">Cikkek</a></li> -->
-                        <!-- <li><a href="<?= BASE_URL ?>/contact.php" class="footer-link">Kapcsolat</a></li> -->
+                        <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link"><i class="fa-solid fa-pen"></i> Csevegés</a></li>
+                        <li><a href="<?= BASE_URL ?>/about_us.php" class="footer-link"><i class="fa-solid fa-address-card"></i> Rólunk</a></li>
                         <?php
                         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
                             <li><a href="<?= BASE_URL ?>/admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>

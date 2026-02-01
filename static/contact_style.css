@@ -1,0 +1,180 @@
+/* ===============================
+   CONTACT PAGE - TECHOAZIS STYLE
+================================ */
+
+/* page spacing */
+.contact-page {
+  min-height: calc(100vh - var(--navbar-height));
+  padding: calc(var(--navbar-height) + 2rem) 20px 2rem;
+}
+
+.contact-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* head */
+.contact-head {
+  margin: 1rem 0 1.25rem;
+}
+
+.contact-lead {
+  color: var(--text-muted, #667085);
+  line-height: 1.6;
+  margin-top: .5rem;
+  text-align: center;
+}
+
+/* === FORM CARD (1:1 style) === */
+.contact-card {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.contact-card-titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.contact-card-titlebar h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+/* alerts (1:1 style) */
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* form groups (1:1 style) */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-dark, #111827);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.6);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+textarea.form-control {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* submit button (1:1 style) */
+.btn-message-seller {
+  background: var(--primary-500, #2563eb);
+  color: white;
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-message-seller:hover:not(.disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+/* helper text */
+.form-hint {
+  margin-top: .35rem;
+  font-size: .875rem;
+  color: var(--text-muted, #6b7280);
+}
+
+/* === FAQ section === */
+.faq-card {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.faq-card h2 {
+  margin: 0 0 1.25rem;
+  font-size: 1.35rem;
+}
+
+.faq {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faq-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  background: #fafafa;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text-dark, #111827);
+}
+
+.faq-item p {
+  margin: 0.6rem 0 0;
+  color: var(--text-muted, #6b7280);
+  line-height: 1.6;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .contact-card,
+  .faq-card {
+    padding: 1.25rem;
+    margin: 1.25rem auto;
+  }
+
+  .contact-card-titlebar {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+}
