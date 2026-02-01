@@ -4,7 +4,7 @@ require_once __DIR__ . '/../envreader.php';
 loadEnv();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: " . BASE_URL . "contact.php");
+    header("Location: " . BASE_URL . "/contact.php");
     exit();
 }
 
@@ -22,7 +22,7 @@ if (mb_strlen($title) > 120) $errors[] = "A tárgy túl hosszú.";
 if ($message === '' || mb_strlen($message) < 10) $errors[] = "Az üzenet túl rövid.";
 
 if (!empty($errors)) {
-    header("Location: " . BASE_URL . "contact.php?status=error&msg=" . urlencode(implode(" ", $errors)));
+    header("Location: " . BASE_URL . "/contact.php?status=error&msg=" . urlencode(implode(" ", $errors)));
     exit();
 }
 
@@ -80,12 +80,12 @@ try {
 
     $mail->send();
 
-    header("Location: " . BASE_URL . "contact.php?status=success");
+    header("Location: " . BASE_URL . "/contact.php?status=success");
     exit();
 
 } catch (Exception $e) {
     // Ne szivárogjon ki túl sok infó, de fejlesztés alatt oké lehet
     $err = $mail->ErrorInfo ?: $e->getMessage();
-    header("Location: " . BASE_URL . "contact.php?status=error&msg=" . urlencode("Küldési hiba: " . $err));
+    header("Location: " . BASE_URL . "/contact.php?status=error&msg=" . urlencode("Küldési hiba: " . $err));
     exit();
 }
