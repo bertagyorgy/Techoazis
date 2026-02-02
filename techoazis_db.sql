@@ -456,6 +456,7 @@ CREATE TABLE `reviews` (
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
+  `username_slug` VARCHAR(100) NULL,
   `email` varchar(255) NOT NULL,
   `user_password` varchar(255) NOT NULL,
   `is_active` char(1) NOT NULL DEFAULT 'A',
