@@ -297,38 +297,74 @@ $stmt->bind_param("ii", $conversation_id, $other_user_id);
 $stmt->execute();
 $stmt->close();
 
+
 /* =========================
-   6. ELADVA GOMB
+   6. MEGÁLLAPODÁS KEZELÉSE (KÉTOLDALÚ)
 ========================= */
 if (
     $_SERVER['REQUEST_METHOD'] === 'POST' &&
     isset($_POST['mark_as_sold']) &&
-    $is_seller &&
-    $conversation['product_status'] === 'active'
+    $conversation['product_status'] === 'active' &&
+    $conversation['conv_status'] === 'open'
 ) {
-    $conn->begin_transaction();
+    // Eldöntjük, hogy a jelenlegi felhasználó eladó vagy vevő
+    $is_current_seller = ($conversation['seller_user_id'] == $user_id);
+    
+    // Melyik mezőt kell frissíteni?
+    $field_to_update = $is_current_seller ? 'is_seller_agreed' : 'is_buyer_agreed';
+    
+    // 1. Frissítjük a jelenlegi felhasználó státuszát 1-re
+    $stmt = $conn->prepare("UPDATE conversations SET $field_to_update = 1 WHERE conversation_id = ?");
+    $stmt->bind_param("i", $conversation_id);
+    $stmt->execute();
+    $stmt->close();
+    
+    // Frissítjük a lokális változót is, hogy a lenti ellenőrzésnél aktuális legyen
+    $conversation[$field_to_update] = 1;
+    
+    // Üzenet a felhasználónak
+    $success_message = "Megerősítetted a megállapodást. Várakozás a másik félre...";
 
-    try {
-        $stmt = $conn->prepare("UPDATE products SET product_status = 'sold' WHERE product_id = ? AND seller_user_id = ?");
-        $stmt->bind_param("ii", $product_id, $user_id);
-        $stmt->execute(); $stmt->close();
+    // 2. Ellenőrizzük, hogy MOST már mindkét fél elfogadta-e?
+    if ($conversation['is_seller_agreed'] == 1 && $conversation['is_buyer_agreed'] == 1) {
+        
+        // HA MINDKETTŐ IGAZ -> Zárjuk az üzletet (Ez a régi logika)
+        $conn->begin_transaction();
 
-        $stmt = $conn->prepare("UPDATE conversations SET conv_status = 'deal_made' WHERE conversation_id = ?");
-        $stmt->bind_param("i", $conversation_id);
-        $stmt->execute(); $stmt->close();
+        try {
+            // Termék státusz: sold
+            $stmt = $conn->prepare("UPDATE products SET product_status = 'sold' WHERE product_id = ?");
+            $stmt->bind_param("i", $product_id);
+            $stmt->execute(); 
+            $stmt->close();
 
-        $stmt = $conn->prepare("INSERT INTO deals (product_id, seller_user_id, buyer_user_id, conversation_id) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iiii", $product_id, $user_id, $other_user_id, $conversation_id);
-        $stmt->execute(); $stmt->close();
+            // Beszélgetés státusz: deal_made
+            $stmt = $conn->prepare("UPDATE conversations SET conv_status = 'deal_made' WHERE conversation_id = ?");
+            $stmt->bind_param("i", $conversation_id);
+            $stmt->execute(); 
+            $stmt->close();
 
-        $conn->commit();
-        $success_message = "A termék sikeresen eladva.";
-        $conversation['product_status'] = 'sold';
-        $conversation['conv_status'] = 'deal_made';
+            // Létrehozzuk a deal-t
+            $other_user_id_for_deal = $is_current_seller ? $conversation['buyer_user_id'] : $conversation['seller_user_id'];
+            
+            // Figyelem: A paraméterek sorrendje fontos a deals táblánál! 
+            // Az eredeti kódodban: seller, buyer. Itt biztosra megyünk a conversation tömbből.
+            $stmt = $conn->prepare("INSERT INTO deals (product_id, seller_user_id, buyer_user_id, conversation_id) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("iiii", $product_id, $conversation['seller_user_id'], $conversation['buyer_user_id'], $conversation_id);
+            $stmt->execute(); 
+            $stmt->close();
 
-    } catch (Throwable $e) {
-        $conn->rollback();
-        $error_message = "Hiba történt az eladás lezárásakor.";
+            $conn->commit();
+            $success_message = "Gratulálunk! Az üzlet sikeresen megköttetett mindkét fél részéről.";
+            
+            // Frissítjük a változókat a nézethez
+            $conversation['product_status'] = 'sold';
+            $conversation['conv_status'] = 'deal_made';
+
+        } catch (Throwable $e) {
+            $conn->rollback();
+            $error_message = "Hiba történt az eladás lezárásakor: " . $e->getMessage();
+        }
     }
 }
 

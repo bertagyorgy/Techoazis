@@ -158,23 +158,46 @@ require_once ROOT_PATH . '/conversation_logic.php';
                         </div>
                         
                         <form method="POST" action="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>" 
-                              onsubmit="return confirm('Biztosan le akarod zárni a beszélgetést?');" 
                               style="display: inline-block; margin-left: 10px;">
                             
                             <button type="submit" name="close_conversation" class="deal-button" 
-                                    style="background-color: var(--error, #dc3545);"
+                                    style="background-color: var(--error, #dc3545); margin-bottom: 5px;"
+                                    onclick="return confirm('Biztosan le akarod zárni a beszélgetést?');"
                                     <?php echo $conversation['conv_status'] !== 'open' ? 'disabled' : ''; ?>>
                                 <i class="fas fa-lock"></i>
                                 <?php echo $conversation['conv_status'] === 'archived' ? 'Lezárva' : 'Lezárás'; ?>
                             </button>
 
-                            <?php if ($is_seller): ?>
-                            <button type="submit" name="mark_as_sold" class="deal-button <?php echo $conversation['conv_status'] === 'deal_made' ? 'sold' : ''; ?>"
-                                <?php echo $conversation['conv_status'] !== 'open' ? 'disabled' : ''; ?>>
-                                <i class="fas fa-handshake"></i>
-                                <?php echo $conversation['conv_status'] === 'deal_made' ? 'Megállapodva' : 'Megállapodtunk'; ?>
-                            </button>
+                            <?php if ($conversation['conv_status'] === 'open' && $conversation['product_status'] === 'active'): ?>
+                                
+                                <?php 
+                                    // Megnézzük, hogy ÉN (a bejelentkezett user) megnyomtam-e már
+                                    $i_have_agreed = ($is_seller && $conversation['is_seller_agreed']) || (!$is_seller && $conversation['is_buyer_agreed']);
+                                    
+                                    // Megnézzük, hogy a MÁSIK fél megnyomta-e már
+                                    $other_has_agreed = ($is_seller && $conversation['is_buyer_agreed']) || (!$is_seller && $conversation['is_seller_agreed']);
+                                ?>
+
+                                <?php if ($i_have_agreed): ?>
+                                    <button type="button" class="deal-button" disabled style="background-color: #f0ad4e; cursor: not-allowed; opacity: 0.8;">
+                                        <i class="fas fa-clock"></i> 
+                                        <?php echo $other_has_agreed ? 'Feldolgozás...' : 'Várakozás a partnerre...'; ?>
+                                    </button>
+                                <?php else: ?>
+                                    <button type="submit" name="mark_as_sold" class="deal-button" onclick="return confirm('Megerősíted, hogy megállapodtatok az üzletben? Ha a másik fél is rányom, a termék eladottá válik.');">
+                                        <i class="fas fa-handshake"></i> Megállapodtunk
+                                        <?php if ($other_has_agreed): ?>
+                                            <span style="font-size: 0.8em; display: block;">(A partner már jóváhagyta!)</span>
+                                        <?php endif; ?>
+                                    </button>
+                                <?php endif; ?>
+
+                            <?php elseif ($conversation['conv_status'] === 'deal_made'): ?>
+                                <button type="button" class="deal-button sold" disabled>
+                                    <i class="fas fa-check-circle"></i> Üzlet megkötve
+                                </button>
                             <?php endif; ?>
+
                         </form>
                     </div>
                     
