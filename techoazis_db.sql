@@ -478,13 +478,13 @@ CREATE TABLE `users` (
 -- A tábla adatainak kiíratása `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `user_password`, `is_active`, `registration_date`, `user_role`, `ip`, `activation_code`, `profile_image`, `total_posts`, `total_comments`, `sold_items`, `bought_items`, `avg_rating`) VALUES
-(1, 'kistamáska', 'bertagyorgy@gmail.com', '$2y$10$kyug83mm.Kc5/ieyX5G3JOx/kRYCt753zQezR2YAe51r7Fe.AVqUO', 'A', '2025-11-11 18:57:24', 'A', '::1', '', './uploads/profile_images/profile_1.jpg', 0, 0, 0, 0, 0.00),
-(2, 'kunbéla', 'kunbela17@gmail.com', '$2y$10$er./MPIDc3o41MWuUpV.0.zZft3q/s1fEP8G9IDu8CShqfGYlmYm.', 'A', '2025-11-12 20:03:21', 'F', '::1', '', './images/anonymous.png', 0, 0, 0, 0, 0.00),
-(3, 'bertagyorgy', 'bertagyorgy222@gmail.com', '$2y$10$wL5BJkrX8vpjXZKeWemdEu2y3nPUB2kR1bHYwsrYeJdPR1jSYome2', 'P', '2025-11-12 20:11:19', 'F', '::1', 'a685256573e5ccbffda4ae4d5463d1da', './images/anonymous.png', 0, 0, 0, 0, 0.00),
-(5, 'proba123', 'proba123@gmail.com', '$2y$10$jbYznXaB9ZWM8NoE1x.PfurjeM86wPmwsvOfumFU3aBJhauvDFRIy', 'A', '2025-11-12 21:09:56', 'F', '::1', '', './images/anonymous.png', 0, 0, 0, 0, 0.00),
-(6, 'kisalma', 'kisalma4378@gmail.com', '$2y$10$vDhjwSaSz3705UpDjKqzheTHHDGV0mC0Lty107/HhReeaohMy3el6', 'A', '2025-11-16 21:50:38', 'F', '::1', NULL, './uploads/profile_images/profile_6.jpg', 0, 0, 0, 0, 0.00),
-(7, 'admin', 'papmd2014@gmail.com', '$2y$10$kyug83mm.Kc5/ieyX5G3JOx/kRYCt753zQezR2YAe51r7Fe.AVqUO', 'A', '2025-12-14 12:00:18', 'A', '::1', NULL, './uploads/profile_images/profile_7_1766229028.jpg', 0, 0, 0, 0, 0.00);
+INSERT INTO `users` (`user_id`, `username`, `username_slug` ,`email`, `user_password`, `is_active`, `registration_date`, `user_role`, `ip`, `activation_code`, `profile_image`, `total_posts`, `total_comments`, `sold_items`, `bought_items`, `avg_rating`) VALUES
+(1, 'kistamáska', 'kistamaska','bertagyorgy@gmail.com', '$2y$10$kyug83mm.Kc5/ieyX5G3JOx/kRYCt753zQezR2YAe51r7Fe.AVqUO', 'A', '2025-11-11 18:57:24', 'A', '::1', '', './uploads/profile_images/profile_1.jpg', 0, 0, 0, 0, 0.00),
+(2, 'kunbéla', 'kunbela','kunbela17@gmail.com', '$2y$10$er./MPIDc3o41MWuUpV.0.zZft3q/s1fEP8G9IDu8CShqfGYlmYm.', 'A', '2025-11-12 20:03:21', 'F', '::1', '', './images/anonymous.png', 0, 0, 0, 0, 0.00),
+(3, 'bertagyorgy', 'bertagyorgy','bertagyorgy222@gmail.com', '$2y$10$wL5BJkrX8vpjXZKeWemdEu2y3nPUB2kR1bHYwsrYeJdPR1jSYome2', 'P', '2025-11-12 20:11:19', 'F', '::1', 'a685256573e5ccbffda4ae4d5463d1da', './images/anonymous.png', 0, 0, 0, 0, 0.00),
+(5, 'proba123', 'proba123','proba123@gmail.com', '$2y$10$jbYznXaB9ZWM8NoE1x.PfurjeM86wPmwsvOfumFU3aBJhauvDFRIy', 'A', '2025-11-12 21:09:56', 'F', '::1', '', './images/anonymous.png', 0, 0, 0, 0, 0.00),
+(6, 'kisalma', 'kisalma','kisalma4378@gmail.com', '$2y$10$vDhjwSaSz3705UpDjKqzheTHHDGV0mC0Lty107/HhReeaohMy3el6', 'A', '2025-11-16 21:50:38', 'F', '::1', NULL, './uploads/profile_images/profile_6.jpg', 0, 0, 0, 0, 0.00),
+(7, 'admin', 'admin','papmd2014@gmail.com', '$2y$10$kyug83mm.Kc5/ieyX5G3JOx/kRYCt753zQezR2YAe51r7Fe.AVqUO', 'A', '2025-12-14 12:00:18', 'A', '::1', NULL, './uploads/profile_images/profile_7_1766229028.jpg', 0, 0, 0, 0, 0.00);
 
 -- --------------------------------------------------------
 

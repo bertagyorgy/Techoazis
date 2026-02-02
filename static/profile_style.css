@@ -169,6 +169,12 @@ body {
     }
 }
 
+@media only screen and (max-width: 992px) {
+    .profile-sidebar{
+        position: static;
+    }
+}
+
 .stat-card {
     background: var(--surface);
     padding: 1.25rem;
@@ -485,6 +491,11 @@ body {
     align-items: center;
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 10px;
+}
+@media (max-width: 387px) {
+    .main-content-header{
+        flex-direction: column;
+    }
 }
 
 .main-content-header h1 {

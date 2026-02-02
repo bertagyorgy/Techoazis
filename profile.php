@@ -226,7 +226,7 @@ $profile_image = !empty($user['profile_image'])
 
     <main class="profile-main">
         <div class="main-content-header">
-            <h1>Profil statisztikák</h1>
+            <h1>Statisztika</h1>
             <div class="product-status-badges">
                 <span class="product-count-badge" style="background: var(--success); color: white;">
                     <i class="fas fa-check-circle"></i> <?php echo $active_products; ?> aktív
@@ -300,14 +300,7 @@ $profile_image = !empty($user['profile_image'])
         <section class="products-section">
             <div class="products-header">
                 <h3 class="section-title"><?php echo $is_owner ? 'Termékeim' : 'Termékei'; ?></h3>
-                <div class="product-status-badges">
-                    <span class="product-count-badge" style="background: var(--success); color: white;">
-                        <i class="fas fa-check-circle"></i> <?php echo $active_products; ?> aktív
-                    </span>
-                    <span class="product-count-badge" style="background: var(--neutral-500); color: white;">
-                        <i class="fas fa-check"></i> <?php echo $sold_products; ?> eladott
-                    </span>
-                </div>
+
             </div>
 
             <?php if (count($user_products) > 0): ?>

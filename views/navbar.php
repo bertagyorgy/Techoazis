@@ -7,8 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include_once ROOT_PATH . '/app/db.php';
 
 ?>
-<script src="<?= BASE_URL ?>/static/index.js" defer></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
 <nav class="main-navbar">
     <div class="custom-container nav-container">
         <a class="nav-brand" href="<?= BASE_URL ?>/"> 
