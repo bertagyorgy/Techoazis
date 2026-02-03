@@ -180,6 +180,7 @@ $profile_image = !empty($user['profile_image'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
 </head>
 <body>
 <?php include ROOT_PATH . '/views/navbar.php'; ?>
@@ -208,7 +209,13 @@ $profile_image = !empty($user['profile_image'])
                 <span style="margin-left: 0.5rem; font-weight: 600;">(<?php echo number_format((float)$rating, 1); ?>)</span>
             </span>
         </div>
-
+        <div class="rating-display">
+            <strong>Regisztrált:<br></strong>
+            <?php 
+                $date = new DateTime($user['registration_date']);
+                echo htmlspecialchars($date->format('Y-m-d'));
+            ?>
+        </div>
         <?php if ($is_owner): ?>
         <div class="profile-actions">
             <a href="<?= BASE_URL ?>/profile_edit.php" class="profile-btn profile-btn-secondary">

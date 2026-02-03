@@ -9,6 +9,29 @@ if (!isset($_GET['group'])) {
 }
 
 $group_id = intval($_GET['group']);
+$q = isset($_GET['q']) ? trim($_GET['q']) : '';
+
+if ($q !== '') {
+    $sql = "
+        SELECT p.*
+        FROM posts p
+        WHERE p.group_id = ?
+        ORDER BY (p.title = ?) DESC, p.created_at DESC
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("is", $group_id, $q);
+} else {
+    $sql = "
+        SELECT p.*
+        FROM posts p
+        WHERE p.group_id = ?
+        ORDER BY p.created_at DESC
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $group_id);
+}
 
 // ===== CSOPORT ADATOK =====
 $group_query = "SELECT group_name, group_image, group_description FROM groups WHERE group_id = ?";
@@ -84,7 +107,10 @@ $post_count = $posts->num_rows;
         </div>
     </div>
     <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-    <button class="display-btn"><i class="fa-solid fa-plus"></i> Új poszt</button>
+    <div class="btn-section">
+        <button class="display-btn"><i class="fa-solid fa-plus"></i> Új poszt</button>
+        <a href="<?= BASE_URL ?>/forum.php" class="display-btn back">Vissza a fórumhoz</a> 
+    </div>
     <div class="create-post-bar">
         <form action="<?= BASE_URL ?>/create_post.php" method="POST" enctype="multipart/form-data">
             
@@ -104,6 +130,10 @@ $post_count = $posts->num_rows;
 
             <button type="submit" class="create-post-btn">Poszt létrehozása</button>
         </form>
+    </div>
+    <?php else: ?>
+    <div class="btn-section">
+        <a href="<?= BASE_URL ?>/forum.php" class="display-btn back">Vissza a fórumhoz</a>
     </div>
     <?php endif; ?>
 

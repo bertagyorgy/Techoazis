@@ -134,6 +134,7 @@ body {
 }
 
 .profile-btn-secondary:hover {
+    border: 1px solid var(--accent-600);
     background: var(--neutral-200);
     transform: translateY(-2px);
     color: var(--neutral-900) !important;

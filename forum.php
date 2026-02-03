@@ -43,7 +43,12 @@ if ($q !== '') {
 
 // ======= LEGÚJABB POSZTOK JOBB OLDALRA =======
 $latest_query = "
-    SELECT p.post_id, p.title, p.created_at, g.group_name AS group_name 
+    SELECT 
+        p.post_id, 
+        p.title, 
+        p.created_at, 
+        g.group_id AS group_id,
+        g.group_name AS group_name
     FROM posts p
     JOIN groups g ON p.group_id = g.group_id
     ORDER BY p.created_at DESC
@@ -243,7 +248,7 @@ include ROOT_PATH . '/views/navbar.php';
 
         <?php while($lp = $latest_posts->fetch_assoc()): ?>
             <div class="latest-post-item">
-                <a href="<?= BASE_URL ?>/post.php?id=<?= $lp['post_id'] ?>">
+                <a href="<?= BASE_URL ?>/forum_group.php?group=<?= (int)$lp['group_id'] ?>&q=<?= urlencode($lp['title']) ?>">
                     <strong><?= htmlspecialchars($lp['title']) ?></strong>
                 </a>
                 <p class="latest-post-meta">

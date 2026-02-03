@@ -50,11 +50,11 @@
     gap: 6px;
 }
 .display-btn{
-    display: block;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 32px;
+    padding: 8px 32px;
     border-radius: var(--border-radius-md);
     font-weight: 600;
     text-decoration: none;
@@ -70,8 +70,23 @@
     margin-bottom: 1rem;
 }
 .display-btn:hover{
-    transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
     background: linear-gradient(45deg, var(--accent-400), var(--accent-600));
     color: white;
+}
+.display-btn.back{
+    background: var(--danger);
+    flex: 0 0 25%;
+}
+.display-btn.back:hover{
+    transform: none;
+    box-shadow: none;
+    background: var(--danger);
+}
+
+.btn-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 20px;
 }
