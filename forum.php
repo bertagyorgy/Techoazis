@@ -4,7 +4,7 @@ require_once __DIR__ . '/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
 // ======= TOP TÉMÁK (legtöbb poszt) - q-val szűrhető név alapján =======
-$top_limit = 12;
+$top_limit = 10;
 
 $q = trim($_GET['q'] ?? '');
 $group_id = isset($_GET['group']) ? (int)$_GET['group'] : 0;
@@ -167,6 +167,7 @@ include ROOT_PATH . '/views/navbar.php';
             <?php endwhile; ?>
 
         </ul>
+        <a href="<?= BASE_URL ?>/create_group.php" class="new_group"><i class="fa-solid fa-circle-plus"></i>Új csoport</a>
     </aside>
 
     <!-- ======================

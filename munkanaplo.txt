@@ -26,9 +26,15 @@ dropdown menu profilehoz | ejtve
 képek kijavítása | kész
 admin panel ugyanaz a stílus mint a termék szerkesztése | 2026.01.31 | 2026.01.31 | kész
 
-NAGYON FONTOS SZERDÁRA:
-- adminpanel helyes hozzáadás (egyes tartalmak null, értéket kapnak)
-- profilképhiba, eltűnik az eredeti kép+más útvonalon van az anonim és felhasználó profilkép,
-- beszélgetésnél képernyő újratöltését megszüntetni
-- profilstatisztika feltöltés adatokkal
+NAGYON FONTOS:
+- adminpanel helyes hozzáadás (egyes tartalmak null, értéket kapnak) - Máté
+- profilképhiba, eltűnik az eredeti kép+más útvonalon van az anonim és felhasználó profilkép, - Máté
+- beszélgetésnél képernyő újratöltését megszüntetni - Máté
+- profilstatisztika feltöltés adatokkal - Gyuri
+- képek teljesképernyős megtekintése - Gyuri
+- üres lapok feltöltése
+
+KÉRDÉSES:
+- képek tábla szétszedése
+- id-k eltüntetése a linkeknél
 
