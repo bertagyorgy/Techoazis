@@ -362,10 +362,13 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
     </div>
 
 <script>
+// Globális tömb az új fájlok tárolására
+let selectedFiles = [];
+
 function updateUploadButtonVisibility() {
     const uploadCard = document.getElementById('uploadCard');
     const existingCount = document.querySelectorAll('#existingImages .image-card').length;
-    const previewCount = document.querySelectorAll('#imagePreview .image-card').length;
+    const previewCount = selectedFiles.length;
     
     if ((existingCount + previewCount) >= 3) {
         uploadCard.classList.add('hidden-upload');
@@ -377,7 +380,7 @@ function updateUploadButtonVisibility() {
 function removeExistingImage(imageId) {
     if (confirm('Biztosan törlöd ezt a képet?')) {
         const container = document.getElementById('img-container-' + imageId);
-        container.remove();
+        if (container) container.remove();
         
         const input = document.createElement('input');
         input.type = 'hidden';
@@ -389,35 +392,28 @@ function removeExistingImage(imageId) {
     }
 }
 
-// Új: Függvény egy újonnan kiválasztott (még nem mentett) kép eltávolításához
+// Új: Egy fájl eltávolítása a listából
 function removeNewImage(index) {
+    selectedFiles.splice(index, 1);
+    syncInputAndRender();
+}
+
+// Szinkronizálja a rejtett inputot a tömbbel és újrarajzolja a nézetet
+function syncInputAndRender() {
     const input = document.getElementById('postImages');
     const dt = new DataTransfer();
-    const { files } = input;
     
-    for (let i = 0; i < files.length; i++) {
-        if (i !== index) dt.items.add(files[i]);
-    }
-    
-    input.files = dt.files;
-    // Újra generáljuk az előnézetet a frissített fájllistával
+    selectedFiles.forEach(file => dt.items.add(file));
+    input.files = dt.files; // Fontos: a PHP így fogja látni a fájlokat
+
     renderPreviews();
 }
 
 function renderPreviews() {
-    const input = document.getElementById('postImages');
     const previewContainer = document.getElementById('imagePreview');
     previewContainer.innerHTML = '';
     
-    const existingCount = document.querySelectorAll('#existingImages .image-card').length;
-    const files = Array.from(input.files);
-    
-    const remainingSlots = 3 - existingCount;
-    const filesToProcess = files.slice(0, remainingSlots);
-
-    filesToProcess.forEach((file, index) => {
-        if (!file.type.startsWith('image/')) return;
-
+    selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = function(event) {
             const card = document.createElement('div');
@@ -427,7 +423,6 @@ function renderPreviews() {
             img.src = event.target.result;
             img.className = 'managed-image';
             
-            // X GOMB AZ ÚJ KÉPEKHEZ
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
             removeBtn.className = 'btn-remove-overlay';
@@ -442,8 +437,6 @@ function renderPreviews() {
             card.appendChild(removeBtn);
             card.appendChild(badge);
             previewContainer.appendChild(card);
-            
-            updateUploadButtonVisibility();
         }
         reader.readAsDataURL(file);
     });
@@ -451,7 +444,28 @@ function renderPreviews() {
     updateUploadButtonVisibility();
 }
 
-document.getElementById('postImages').addEventListener('change', renderPreviews);
+document.getElementById('postImages').addEventListener('change', function(e) {
+    const existingCount = document.querySelectorAll('#existingImages .image-card').length;
+    const newFiles = Array.from(this.files);
+    
+    newFiles.forEach(file => {
+        const currentTotal = existingCount + selectedFiles.length;
+        if (currentTotal < 3) {
+            // Csak akkor adjuk hozzá, ha még nem szerepel a listában (név és méret alapján)
+            const isDuplicate = selectedFiles.some(f => f.name === file.name && f.size === file.size);
+            if (!isDuplicate) {
+                selectedFiles.push(file);
+            }
+        }
+    });
+
+    syncInputAndRender();
+    
+    // Ha több fájlt akartak, mint amennyi belefér
+    if (existingCount + newFiles.length > 3) {
+        alert("Maximum 3 képet tárolhatsz. Csak az első szabad helyek lettek feltöltve.");
+    }
+});
 </script>
 </body>
 </html>
