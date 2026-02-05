@@ -87,7 +87,7 @@ $stmt->execute();
 $products_result = $stmt->get_result();
 $user_products = [];
 while ($row = $products_result->fetch_assoc()) {
-    $row['image_path'] = $row['image_path'] ?? BASE_URL . '/images/no-image.png';
+    $row['image_path'] = $row['image_path'] ?? BASE_URL . '/uploads/products/no-image.png';
     $user_products[] = $row;
 }
 $stmt->close();
@@ -158,7 +158,7 @@ if ($is_owner) {
 
 $profile_image = !empty($user['profile_image']) 
     ? BASE_URL . '/' . htmlspecialchars($user['profile_image']) 
-    : BASE_URL . '/images/anonymous.png';$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
+    : BASE_URL . '/images/profile_images/anonymous.png';$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
 ?>
 <!DOCTYPE html>
 <html lang="hu">
