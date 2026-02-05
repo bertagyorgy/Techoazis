@@ -4,7 +4,6 @@ session_start();
 require_once __DIR__ . '/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
-// Csak bejelentkezett felhasználók szerkeszthetnek
 if (!isset($_SESSION['user_id'])) {
     header("Location: " . BASE_URL . "/views/login.php");
     exit();
@@ -13,7 +12,6 @@ if (!isset($_SESSION['user_id'])) {
 $product_id = $_GET['id'] ?? 0;
 $user_id = $_SESSION['user_id'];
 
-// 1. Termék adatok lekérése és jogosultság ellenőrzése
 $sql = "SELECT * FROM products WHERE product_id = ? AND seller_user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('ii', $product_id, $user_id);
@@ -21,7 +19,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 
-// Ha a termék nem létezik, vagy nem a felhasználóé
 if (!$product) {
     header("Location: " . BASE_URL . "/shop.php");
     exit();
@@ -30,16 +27,14 @@ if (!$product) {
 $success_msg = "";
 $error_msg = "";
 
-// 2. Form beküldés kezelése (Update)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_name = $_POST['product_name'] ?? '';
     $category = $_POST['category'] ?? '';
-    $price = (int)$_POST['price'] ?? 0;
+    $price = (int)($_POST['price'] ?? 0);
     $pickup_location = $_POST['pickup_location'] ?? '';
     $product_status = $_POST['product_status'] ?? 'active';
     $description = $_POST['product_description'] ?? '';
 
-    // Egyszerű validálás
     if (empty($product_name) || empty($category)) {
         $error_msg = "A név és a kategória megadása kötelező!";
     } else {
@@ -60,8 +55,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
 
         if ($update_stmt->execute()) {
-            $success_msg = "Termék sikeresen frissítve!";
-            // Frissítjük a lokális $product változót is a megjelenítéshez
+            if (!empty($_POST['removed_images'])) {
+                foreach ($_POST['removed_images'] as $img_id) {
+                    $img_id = (int)$img_id;
+                    $path_sql = "SELECT image_path FROM images WHERE image_id = ? AND product_id = ?";
+                    $p_stmt = $conn->prepare($path_sql);
+                    $p_stmt->bind_param('ii', $img_id, $product_id);
+                    $p_stmt->execute();
+                    $p_res = $p_stmt->get_result();
+                    
+                    if ($row = $p_res->fetch_assoc()) {
+                        $full_path = ROOT_PATH . '/' . $row['image_path'];
+                        if (file_exists($full_path)) {
+                            unlink($full_path);
+                        }
+                    }
+                    $del_sql = "DELETE FROM images WHERE image_id = ? AND product_id = ?";
+                    $d_stmt = $conn->prepare($del_sql);
+                    $d_stmt->bind_param('ii', $img_id, $product_id);
+                    $d_stmt->execute();
+                }
+            }
+
+            if (!empty($_FILES['images']['name'][0])) {
+                $upload_dir = ROOT_PATH . '/uploads/products/';
+                if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+
+                $count_sql = "SELECT COUNT(*) as total FROM images WHERE product_id = ?";
+                $c_stmt = $conn->prepare($count_sql);
+                $c_stmt->bind_param('i', $product_id);
+                $c_stmt->execute();
+                $current_count = $c_stmt->get_result()->fetch_assoc()['total'];
+
+                $img_sql = "INSERT INTO images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
+                $img_stmt = $conn->prepare($img_sql);
+
+                foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
+                    if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                        $file_ext = pathinfo($_FILES['images']['name'][$key], PATHINFO_EXTENSION);
+                        $file_name = time() . '_' . $key . '_' . uniqid() . '.' . $file_ext;
+                        $target_file = $upload_dir . $file_name;
+                        $db_path = 'uploads/products/' . $file_name;
+
+                        if (move_uploaded_file($tmp_name, $target_file)) {
+                            $is_primary = ($current_count == 0 && $key === 0) ? 1 : 0;
+                            $sort_order = $current_count + $key + 1;
+                            $img_stmt->bind_param('isii', $product_id, $db_path, $is_primary, $sort_order);
+                            $img_stmt->execute();
+                        }
+                    }
+                }
+                $img_stmt->close();
+            }
+            $success_msg = "Termék és képek sikeresen frissítve!";
             $product['product_name'] = $product_name;
             $product['category'] = $category;
             $product['price'] = $price;
@@ -69,10 +115,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product['product_status'] = $product_status;
             $product['product_description'] = $description;
         } else {
-            $error_msg = "Hiba történt a mentés során.";
+            $error_msg = "Hiba történt a mentés során: " . $conn->error;
         }
     }
 }
+
+$count_query = "SELECT COUNT(*) as total FROM images WHERE product_id = ?";
+$c_stmt = $conn->prepare($count_query);
+$c_stmt->bind_param('i', $product_id);
+$c_stmt->execute();
+$current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
 ?>
 
 <!DOCTYPE html>
@@ -83,21 +135,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Termék szerkesztése - <?php echo htmlspecialchars($product['product_name']); ?></title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-
-    <!-- Inter font hozzáadása -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="<?= BASE_URL ?>/static/index.js" defer></script>
-    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
 
     <style>
         .edit-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
@@ -107,8 +152,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
         .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        textarea.form-control { min-height: 150px; resize: vertical; }
-        .btn-message-seller {
+        
+        .btn-submit-style {
             background: var(--primary-500, #2563eb);
             color: white;
             padding: 12px 32px;
@@ -118,11 +163,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: 600;
             transition: all 0.3s ease;
         }
-        
-        .btn-message-seller:hover:not(.disabled) {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
+
+        .image-management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 120px);
+            gap: 15px;
+            margin-top: 10px;
         }
+
+        .image-card {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #eee;
+            background: #f8f9fa;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .image-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .managed-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-remove-overlay {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+        .btn-remove-overlay:hover { transform: scale(1.1); background: #b91c1c; }
+
+        .badge-status {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            color: white;
+            font-size: 10px;
+            text-align: center;
+            padding: 2px 0;
+            font-weight: 600;
+        }
+        .badge-primary { background: rgba(37, 99, 235, 0.85); }
+        .badge-new { background: rgba(16, 185, 129, 0.85); }
+
+        .upload-card-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: all 0.2s;
+            background: #fafafa;
+        }
+
+        .upload-card-label:hover {
+            border-color: var(--primary-500);
+            color: var(--primary-500);
+            background: #f0f7ff;
+        }
+
+        .upload-card-label i { font-size: 1.5rem; margin-bottom: 5px; }
+        .upload-card-label span { font-size: 11px; font-weight: 600; text-align: center; }
+        
+        .hidden-upload { display: none !important; }
     </style>
 </head>
 <body>
@@ -141,11 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-success"><?php echo $success_msg; ?></div>
             <?php endif; ?>
 
-            <?php if ($error_msg): ?>
-                <div class="alert alert-danger"><?php echo $error_msg; ?></div>
-            <?php endif; ?>
-
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="product_name">Termék neve</label>
                     <input type="text" id="product_name" name="product_name" class="form-control" 
@@ -190,15 +315,143 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <textarea id="product_description" name="product_description" class="form-control"><?php echo htmlspecialchars($product['product_description']); ?></textarea>
                 </div>
 
-                <div style="margin-top: 2rem;">
-                    <button type="submit" class="btn-message-seller btn-submit-style" style="background: var(--primary-500);">
-                        <i class="fas fa-save"></i>
-                        Változtatások mentése
-                    </button>
+                <div class="form-group">
+                    <label>Termék képei (Max. 3)</label>
                     
+                    <div class="image-management-grid">
+                        <div id="existingImages" style="display: contents;">
+                            <?php
+                            $img_query = "SELECT * FROM images WHERE product_id = ? ORDER BY sort_order ASC";
+                            $i_stmt = $conn->prepare($img_query);
+                            $i_stmt->bind_param('i', $product_id);
+                            $i_stmt->execute();
+                            $imgs = $i_stmt->get_result();
+                            while ($img = $imgs->fetch_assoc()):
+                            ?>
+                                <div class="image-card" id="img-container-<?= $img['image_id'] ?>">
+                                    <img src="<?= BASE_URL . '/' . $img['image_path'] ?>" class="managed-image">
+                                    <button type="button" class="btn-remove-overlay" onclick="removeExistingImage(<?= $img['image_id'] ?>)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <?php if($img['is_primary']): ?>
+                                        <span class="badge-status badge-primary">Borítókép</span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endwhile; ?>
+                        </div>
+
+                        <div id="imagePreview" style="display: contents;"></div>
+
+                        <label for="postImages" id="uploadCard" class="upload-card-label <?= ($current_image_count >= 3) ? 'hidden-upload' : '' ?>">
+                            <i class="fas fa-plus"></i>
+                            <span>Új kép</span>
+                        </label>
+                        <input type="file" id="postImages" name="images[]" accept="image/*" multiple style="display: none;">
+                    </div>
+                    
+                    <div id="removedImagesInputs"></div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" class="btn-submit-style">
+                        <i class="fas fa-save"></i> Változtatások mentése
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+
+<script>
+function updateUploadButtonVisibility() {
+    const uploadCard = document.getElementById('uploadCard');
+    const existingCount = document.querySelectorAll('#existingImages .image-card').length;
+    const previewCount = document.querySelectorAll('#imagePreview .image-card').length;
+    
+    if ((existingCount + previewCount) >= 3) {
+        uploadCard.classList.add('hidden-upload');
+    } else {
+        uploadCard.classList.remove('hidden-upload');
+    }
+}
+
+function removeExistingImage(imageId) {
+    if (confirm('Biztosan törlöd ezt a képet?')) {
+        const container = document.getElementById('img-container-' + imageId);
+        container.remove();
+        
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'removed_images[]';
+        input.value = imageId;
+        document.getElementById('removedImagesInputs').appendChild(input);
+        
+        updateUploadButtonVisibility();
+    }
+}
+
+// Új: Függvény egy újonnan kiválasztott (még nem mentett) kép eltávolításához
+function removeNewImage(index) {
+    const input = document.getElementById('postImages');
+    const dt = new DataTransfer();
+    const { files } = input;
+    
+    for (let i = 0; i < files.length; i++) {
+        if (i !== index) dt.items.add(files[i]);
+    }
+    
+    input.files = dt.files;
+    // Újra generáljuk az előnézetet a frissített fájllistával
+    renderPreviews();
+}
+
+function renderPreviews() {
+    const input = document.getElementById('postImages');
+    const previewContainer = document.getElementById('imagePreview');
+    previewContainer.innerHTML = '';
+    
+    const existingCount = document.querySelectorAll('#existingImages .image-card').length;
+    const files = Array.from(input.files);
+    
+    const remainingSlots = 3 - existingCount;
+    const filesToProcess = files.slice(0, remainingSlots);
+
+    filesToProcess.forEach((file, index) => {
+        if (!file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const card = document.createElement('div');
+            card.className = 'image-card';
+            
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            img.className = 'managed-image';
+            
+            // X GOMB AZ ÚJ KÉPEKHEZ
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'btn-remove-overlay';
+            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            removeBtn.onclick = () => removeNewImage(index);
+            
+            const badge = document.createElement('span');
+            badge.className = 'badge-status badge-new';
+            badge.textContent = 'Új feltöltés';
+            
+            card.appendChild(img);
+            card.appendChild(removeBtn);
+            card.appendChild(badge);
+            previewContainer.appendChild(card);
+            
+            updateUploadButtonVisibility();
+        }
+        reader.readAsDataURL(file);
+    });
+    
+    updateUploadButtonVisibility();
+}
+
+document.getElementById('postImages').addEventListener('change', renderPreviews);
+</script>
 </body>
 </html>
