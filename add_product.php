@@ -35,33 +35,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param('ssisssi', $product_name, $category, $price, $pickup_location, $product_status, $description, $user_id);
 
         if ($stmt->execute()) {
-            $product_id = $conn->insert_id;
+            $product_id = $conn->insert_id; // Megvan az új termék ID
             
             // 2. Képek kezelése
             if (!empty($_FILES['images']['name'][0])) {
-                $upload_dir = __DIR__ . '/uploads/products/';
+                $upload_dir = ROOT_PATH . '/uploads/products/';
                 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
+                // SQL előkészítése a cikluson kívül (optimalizálás)
+                // FIGYELEM: Itt adtuk hozzá az is_primary és sort_order mezőket!
+                $img_sql = "INSERT INTO images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
+                $img_stmt = $conn->prepare($img_sql);
+
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-                    $file_name = time() . '_' . $_FILES['images']['name'][$key];
-                    $target_file = $upload_dir . $file_name;
-                    $db_path = 'uploads/products/' . $file_name;
+                    if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                        $file_ext = pathinfo($_FILES['images']['name'][$key], PATHINFO_EXTENSION);
+                        // Egyedi név generálás: time + key + eredeti név (hogy ne írják felül egymást)
+                        $file_name = time() . '_' . $key . '_' . uniqid() . '.' . $file_ext;
+                        $target_file = $upload_dir . $file_name;
+                        $db_path = 'uploads/products/' . $file_name;
 
-                    if (move_uploaded_file($tmp_name, $target_file)) {
-                        // Az első kép (index 0) lesz a primary
-                        $is_primary = ($key === 0) ? 1 : 0;
-                        $sort_order = $key + 1;
+                        if (move_uploaded_file($tmp_name, $target_file)) {
+                            // Az első feltöltött kép (index 0) legyen a primary
+                            $is_primary = ($key === 0) ? 1 : 0;
+                            $sort_order = $key + 1;
 
-                        $img_sql = "INSERT INTO images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
-                        $img_stmt = $conn->prepare($img_sql);
-                        $img_stmt->bind_param('isii', $product_id, $db_path, $is_primary, $sort_order);
-                        $img_stmt->execute();
+                            // Paraméterek kötése: id(int), path(string), primary(int), sort(int) -> "isii"
+                            $img_stmt->bind_param('isii', $product_id, $db_path, $is_primary, $sort_order);
+                            $img_stmt->execute();
+                        }
                     }
                 }
+                $img_stmt->close();
             }
 
             header("Location: " . BASE_URL . "/product_detail.php?id=$product_id&msg=success");
-            exit();
+            exit(); 
         } else {
             $error_msg = "Hiba: " . $conn->error;
         }
@@ -95,83 +104,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; }
         .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         textarea.form-control { min-height: 150px; resize: vertical; }
-        .file-inputs {
-            position: relative;
-        }
-        .file-inputs label{
-            background: var(--dark-bg);
-            padding: 10px 15px;
-            border-radius: 8px;
-            color: white;
-            font-size: 1rem;
-        }
-        .file-inputs input[type="file"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px dashed var(--border-color);
-            border-radius: var(--border-radius-md);
-            cursor: pointer;
-            background: var(--surface);
-            display: none;
-        }
-
-        #imagePreview {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .preview-item {
-            position: relative;
-            width: 100px;
-            height: 100px;
-        }
-
-        .preview-thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: var(--border-radius-md);
-            border: 2px solid var(--primary-300);
-        }
-
-        .remove-image {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--danger);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all var(--transition-fast);
-        }
-
-        .remove-image:hover {
-            background: #b91c1c;
-            transform: scale(1.1);
-        }
-
-        .btn-submit-style {
-            background: var(--primary-500, #2563eb);
-            color: white;
-            padding: 12px 32px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .btn-submit-style:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-        }
+        .file-inputs { position: relative; }
+        .file-inputs label{ background: var(--dark-bg); padding: 10px 15px; border-radius: 8px; color: white; font-size: 1rem; }
+        .file-inputs input[type="file"] { width: 100%; padding: 0.75rem; border: 2px dashed var(--border-color); border-radius: var(--border-radius-md); cursor: pointer; background: var(--surface); display: none; }
+        #imagePreview { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+        .preview-item { position: relative; width: 100px; height: 100px; }
+        .preview-thumb { width: 100%; height: 100%; object-fit: cover; border-radius: var(--border-radius-md); border: 2px solid var(--primary-300); }
+        .remove-image { position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; background: var(--danger); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); }
+        .remove-image:hover { background: #b91c1c; transform: scale(1.1); }
+        .btn-submit-style { background: var(--primary-500, #2563eb); color: white; padding: 12px 32px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
+        .btn-submit-style:hover { filter: brightness(1.1); transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -190,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-danger"><?php echo $error_msg; ?></div>
             <?php endif; ?>
 
-            <form action="<?= BASE_URL ?>/add_product.php" method="POST">
+            <form action="<?= BASE_URL ?>/add_product.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="product_name">Termék neve</label>
                     <input type="text" id="product_name" name="product_name" class="form-control" 

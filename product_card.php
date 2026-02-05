@@ -16,9 +16,9 @@ $product_status = $product['product_status'] ?? 'active';
 $created_date = date('Y.m.d.', strtotime($product['created_at'] ?? 'now'));
 
 // Kép kezelés - BASE_URL használata az abszolút eléréshez
-$main_image = $product['main_image'] ?? 'images/default_product.jpg';
+$main_image = $product['main_image'] ?? 'uploads/products/default_product.png';
 $image_url = BASE_URL . '/' . htmlspecialchars($main_image);
-$default_image = BASE_URL . '/images/default_product.jpg';
+$default_image = BASE_URL . '/uploads/products/default_product.png';
 
 // Státusz szöveg és stílus
 $status_text = '';

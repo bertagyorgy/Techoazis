@@ -87,7 +87,7 @@ $stmt->execute();
 $products_result = $stmt->get_result();
 $user_products = [];
 while ($row = $products_result->fetch_assoc()) {
-    $row['image_path'] = $row['image_path'] ?? BASE_URL . '/uploads/products/no-image.png';
+    $row['image_path'] = $row['image_path'] ?? BASE_URL . '/uploads/products/default_product.png';
     $user_products[] = $row;
 }
 $stmt->close();
@@ -318,7 +318,7 @@ $profile_image = !empty($user['profile_image'])
                         <img src="<?= htmlspecialchars(BASE_URL . "/". $product['image_path']) ?>"
                             alt="<?= htmlspecialchars($product['product_name']) ?>"
                             class="product-image"
-                            onerror="this.src='<?= BASE_URL ?>/images/no-image.png'">
+                            onerror="this.src='<?= BASE_URL ?>/uploads/products/default_product.png'">
 
                         <div class="product-info">
                             <div class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></div>

@@ -24,22 +24,27 @@ if (!$product) {
     exit();
 }
 
-// Termék képek lekérése
-$sql = "SELECT image_path FROM images WHERE product_id = ? ORDER BY image_id ASC";
+// Termék képek lekérése - sorrend a feltöltés szerint (vagy is_primary szerint)
+$sql = "SELECT image_path FROM images WHERE product_id = ? ORDER BY is_primary DESC, sort_order ASC, image_id ASC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $product_id);
 $stmt->execute();
 $images_result = $stmt->get_result();
 $images = $images_result->fetch_all(MYSQLI_ASSOC);
 
+// Debug: ezt élesben majd vedd ki, ha zavar
+// echo "Keresett termék ID: " . $product_id . "<br>";
+// echo "Talált képek száma: " . count($images) . "<br>";
+
 // Ha nincs kép, alapértelmezettet használunk
 if (empty($images)) {
-    $images = [['image_path' =>  BASE_URL . '/images/default_product.jpg']];
+    // Csak a relatív útvonalat adjuk meg, perjel nélkül az elején
+    $images = [['image_path' => 'uploads/products/default_product.png']];
 }
 
-// Hasonló termékek (ugyanabban a kategóriában, de más eladótól)
+// Hasonló termékek
 $sql = "SELECT p.*, u.username as seller_username,
-               (SELECT image_path FROM images WHERE product_id = p.product_id LIMIT 1) as main_image
+               (SELECT image_path FROM images WHERE product_id = p.product_id ORDER BY is_primary DESC LIMIT 1) as main_image
         FROM products p
         JOIN users u ON p.seller_user_id = u.user_id
         WHERE p.category = ? 
@@ -72,7 +77,6 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/product_detail_style.css">
 
-    <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -87,7 +91,6 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
     <section class="section-padding">
         <div class="product-detail-container">
             
-            <!-- Breadcrumb -->
             <div style="margin-bottom: 2rem; color: var(--text-light);">
                 <a href="<?= BASE_URL ?>/shop.php" style="color: var(--accent-600); text-decoration: none;">Termékek</a>
                 <span> / </span>
@@ -96,14 +99,12 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                 <span><?php echo htmlspecialchars($product['product_name']); ?></span>
             </div>
             
-            <!-- Main Product Layout -->
             <div class="product-detail-layout">
                 
-                <!-- Left: Image Gallery -->
                 <div class="product-gallery">
                     <div class="main-image-container">
                         <img id="main-product-image" 
-                            src="<?= htmlspecialchars(BASE_URL . '/' . $images[0]['image_path']) ?>"
+                            src="<?= BASE_URL . '/' . ltrim(htmlspecialchars($images[0]['image_path']), '/') ?>"
                              alt="<?php echo htmlspecialchars($product['product_name']); ?>"
                              class="main-image">
                         
@@ -119,21 +120,20 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                         </div>
                     </div>
                     
-                    <!-- Thumbnails -->
                     <?php if (count($images) > 1): ?>
                     <div class="thumbnails-container">
-                        <?php foreach ($images as $index => $image): ?>
-                            <div class="thumbnail <?php echo $index === 0 ? 'active' : ''; ?>" 
-                                 data-image="<?php echo htmlspecialchars($image['image_path']); ?>"
-                                 onclick="changeMainImage('<?php echo htmlspecialchars($image['image_path']); ?>', this)">
-                                <img src="<?php echo htmlspecialchars($image['image_path']); ?>" 
-                                     alt="Termék kép <?php echo $index + 1; ?>">
-                            </div>
-                        <?php endforeach; ?>
+                    <?php foreach ($images as $index => $image): ?>
+                        <div class="thumbnail <?php echo $index === 0 ? 'active' : ''; ?>" 
+                            data-image="<?php echo htmlspecialchars(ltrim($image['image_path'], '/')); ?>"
+                            onclick="changeMainImage('<?php echo htmlspecialchars(ltrim($image['image_path'], '/')); ?>', this)">
+                            <img src="<?php echo BASE_URL . '/' . ltrim(htmlspecialchars($image['image_path']), '/'); ?>" 
+                                alt="Termék kép <?php echo $index + 1; ?>">
+                        </div>
+                    <?php endforeach; ?>
                     </div>
                     <?php endif; ?>
                 </div>
-                <!-- Pickup / dates under the images (left column) -->
+                
                 <div class="gallery-meta-panel">
                     <div class="product-header">
                         <div class="product-category">
@@ -180,9 +180,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                         </div>
                     </div>
                     <?php endif; ?>
-                    <!-- Product Meta -->
                     <div class="product-meta">
-                        <!-- Product Description -->
                         <div class="product-description">
                             <h3>Termék leírása</h3>
                             <div class="product-description-content">
@@ -190,14 +188,11 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             </div>
                         </div>
                     </div>
-                    <!-- Right: Product Info -->
                     <div class="product-info-sidebar">  
-                        <!-- Seller Card -->
                         <div class="seller-card">
                             <div class="seller-header">
                                 <div class="seller-avatar">
-                                    
-                                    <img src="<?php echo htmlspecialchars(BASE_URL . "/" . $product['seller_avatar']); ?>" 
+                                    <img src="<?php echo htmlspecialchars(BASE_URL . "/" . ($product['seller_avatar'] ?? 'images/default_avatar.png')); ?>" 
                                         alt="<?php echo htmlspecialchars($product['seller_username']); ?>">
                                 </div>
                                 <div class="seller-info">
@@ -206,7 +201,6 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                                 </div>
                             </div>
                             
-                            <!-- Seller Stats (még nincs implementálva, de placeholder) -->
                             <div class="seller-stats">
                                 <div class="stat-item">
                                     <div class="stat-value">12</div>
@@ -231,9 +225,6 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             <?php endif; ?>
                         </div>
                         
-                        
-                        
-                        <!-- Action Buttons -->
                         <div class="product-actions-detail">
                             <a href="<?= BASE_URL ?>/shop.php" class="btn-back">
                                 <i class="fas fa-arrow-left"></i>
@@ -273,19 +264,20 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                 </div>
             </div>
             
-            <!-- Similar Products -->
             <?php if (!empty($similar_products)): ?>
             <div class="similar-products">
                 <h2 class="section-title">Hasonló termékek</h2>
                 <div class="similar-grid">
                     <?php foreach ($similar_products as $similar): ?>
                         <?php 
+                        // Itt is figyelünk a kép elérési útra
+                        $main_img = $similar['main_image'] ?? 'uploads/products/default_product.png';
                         $similar_card_data = [
                             'product_id' => $similar['product_id'],
                             'product_name' => $similar['product_name'],
                             'price' => $similar['price'],
                             'seller_username' => $similar['seller_username'],
-                            'main_image' => $similar['main_image'] ?? 'images/default_product.jpg',
+                            'main_image' => $main_img, 
                             'category' => $similar['category'],
                             'product_status' => $similar['product_status'],
                             'created_at' => $similar['created_at']
@@ -301,45 +293,47 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
     </section>
     
     <script>
-        const baseUrl = '<?= BASE_URL ?>/';
-        const images = <?php echo json_encode(array_column($images, 'image_path')); ?>;
+        // Biztosítjuk, hogy ne legyen dupla perjel (rtrim)
+        const baseUrl = '<?= rtrim(BASE_URL, '/') ?>'; 
+        
+        // PHP-ból átvett képlista (csak a relatív utak)
+        const productImages = <?php echo json_encode(array_column($images, 'image_path')); ?>;
 
         // Képváltó funkció
         function changeMainImage(imageSrc, thumbnailElement) {
-            // Fő kép frissítése
-            document.getElementById('main-product-image').src = baseUrl + imageSrc;
+            // Ha a path relatív (nincs előtte perjel), akkor rakunk elé
+            // Ha már van, nem rakunk.
+            const cleanPath = imageSrc.startsWith('/') ? imageSrc : '/' + imageSrc;
+            
+            document.getElementById('main-product-image').src = baseUrl + cleanPath;
             
             // Thumbnail aktív állapot frissítése
             document.querySelectorAll('.thumbnail').forEach(thumb => {
                 thumb.classList.remove('active');
             });
-            
             thumbnailElement.classList.add('active');
         }
         
-        // Automatikus képváltás (opcionális)
         let currentImageIndex = 0;
-        const images = <?php echo json_encode(array_column($images, 'image_path')); ?>;
-        
         function autoRotateImages() {
-            if (images.length > 1) {
-                currentImageIndex = (currentImageIndex + 1) % images.length;
-                changeMainImage(images[currentImageIndex], 
-                    document.querySelectorAll('.thumbnail')[currentImageIndex]);
+            if (productImages.length > 1) {
+                currentImageIndex = (currentImageIndex + 1) % productImages.length;
+                const nextImage = productImages[currentImageIndex];
+                const nextThumb = document.querySelectorAll('.thumbnail')[currentImageIndex];
+                
+                // Mivel a productImages tömbben nyers stringek vannak (pl "uploads/.."),
+                // a changeMainImage ezt majd korrigálja a perjellel.
+                changeMainImage(nextImage, nextThumb);
             }
         }
         
-        // 5 másodpercenként vált (opcionális, ki lehet kapcsolni)
-        // let rotationInterval = setInterval(autoRotateImages, 5000);
-        
-        // Ha rámegy az egér a galériára, állítsd meg a váltást
-        document.querySelector('.product-gallery').addEventListener('mouseenter', function() {
-            // clearInterval(rotationInterval);
-        });
-        
-        document.querySelector('.product-gallery').addEventListener('mouseleave', function() {
-            // rotationInterval = setInterval(autoRotateImages, 5000);
-        });
+        // Eseményfigyelők
+        const gallery = document.querySelector('.product-gallery');
+        if(gallery){
+            gallery.addEventListener('mouseenter', function() {
+                // clearInterval(rotationInterval); // Ha használnál automatikus váltást
+            });
+        }
     </script>
 </body>
 </html>
