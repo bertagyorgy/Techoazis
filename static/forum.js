@@ -236,6 +236,13 @@ function updateCommentCountInDOM(postId, count) {
     }
 }
 // create post toogle
-document.querySelector('.display-btn').addEventListener('click', () => {
-    document.querySelector('.create-post-bar').classList.toggle('active');
-});
+const displayBtn = document.querySelector('.display-btn');
+
+if (displayBtn) {
+    displayBtn.addEventListener('click', () => {
+        const postBar = document.querySelector('.create-post-bar');
+        if (postBar) {
+            postBar.classList.toggle('active');
+        }
+    });
+}
