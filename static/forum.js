@@ -21,9 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // MEGNYITÁS
             try {
-                const response = await fetch(
-                    "/Techoazis/app/get_comments.php?post_id=" + postId
-                );
+                const response = await fetch(APP_BASE_URL + "/app/get_comments.php?post_id=" + postId);
 
                 const contentType = response.headers.get("content-type");
                 if (!contentType || !contentType.includes("application/json")) {
@@ -64,8 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!content) return;
 
             try {
-                const response = await fetch(
-                    "/Techoazis/app/add_comment.php",
+                const response = await fetch(APP_BASE_URL + "/app/add_comment.php",
                     {
                         method: "POST",
                         headers: {
@@ -83,8 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (result.success) {
                     textarea.value = "";
 
-                    const reload = await fetch(
-                        "/Techoazis/app/get_comments.php?post_id=" + postId
+                    const reload = await fetch(APP_BASE_URL + "/app/get_comments.php?post_id=" + postId
                     );
                     const data = await reload.json();
 
@@ -116,8 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const postId = counter.id.replace("comment-count-", "");
 
         try {
-            const response = await fetch(
-                "/Techoazis/app/get_comment_count.php?post_id=" + postId
+            const response = await fetch(APP_BASE_URL + "/app/get_comment_count.php?post_id=" + postId
             );
             const data = await response.json();
 
