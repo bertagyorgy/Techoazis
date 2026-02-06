@@ -1,20 +1,29 @@
 RewriteEngine On
-RewriteBase /Techoazis/
+
+# Dinamikus RewriteBase: Ha van Techoazis mappa az elérési útban, azt használja, ha nincs, akkor a gyökeret.
+RewriteCond %{REQUEST_URI} ^/Techoazis/
+RewriteRule ^ - [E=BASE:/Techoazis/]
+RewriteCond %{REQUEST_URI} !^/Techoazis/
+RewriteRule ^ - [E=BASE:/]
+
+# Most már az %{ENV:BASE} változót használjuk a RewriteBase helyett
+# Megjegyzés: A RewriteBase-t nem lehet változóval megadni, 
+# így a szabályoknál fogjuk alkalmazni a változót.
 
 # Static mappák: soha ne rewrite
 RewriteRule ^(app|static|images|assets)/ - [L]
 
-# .php eltüntetés GET-nél
+# .php eltüntetés GET-nél (Kezeli a XAMPP és Docker útvonalat is)
 RewriteCond %{REQUEST_METHOD} GET
-RewriteCond %{THE_REQUEST} \s/Techoazis/(.+?)\.php[\s?] [NC]
-RewriteRule ^(.+?)\.php$ $1 [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(?:Techoazis/)?(.+?)\.php[\s?] [NC]
+RewriteRule ^(.+?)\.php$ %{ENV:BASE}$1 [R=301,L,NE]
 
-# ha van ilyen fájl .php-val, kiszolgáljuk
+# Ha van ilyen fájl .php-val, kiszolgáljuk
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.+?)/?$ $1.php [L,QSA]
 
-# minden más megy index.php front-controllerbe
+# Minden más megy index.php front-controllerbe
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]
