@@ -190,7 +190,7 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
         .managed-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: scale-down;
         }
 
         .btn-remove-overlay {

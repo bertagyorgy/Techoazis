@@ -47,7 +47,7 @@ $sql = "SELECT p.*, u.username as seller_username,
                (SELECT image_path FROM images WHERE product_id = p.product_id ORDER BY is_primary DESC LIMIT 1) as main_image
         FROM products p
         JOIN users u ON p.seller_user_id = u.user_id
-        WHERE p.category = ? 
+        WHERE p.category = ?
           AND p.product_status = 'active'
           AND p.product_id != ?
           AND p.seller_user_id != ?
