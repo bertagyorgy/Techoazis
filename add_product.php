@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="" disabled selected>Válassz kategóriát...</option>
                             <option value="Hardver">Hardver</option>
                             <option value="Periféria">Periféria</option>
-                            <option value="Laptop">Laptop</option>
+                            <option value="Laptop">laptopok</option>
                             <option value="Egyéb">Egyéb</option>
                         </select>
                     </div>

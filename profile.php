@@ -158,7 +158,7 @@ if ($is_owner) {
 
 $profile_image = !empty($user['profile_image']) 
     ? BASE_URL . '/' . htmlspecialchars($user['profile_image']) 
-    : BASE_URL . '/images/profile_images/anonymous.png';$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
+    : BASE_URL . '/profile_images/anonymous.png';$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -315,11 +315,10 @@ $profile_image = !empty($user['profile_image'])
                 <?php foreach ($user_products as $product): ?>
                 <a href="<?= BASE_URL ?>/product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-card-link">
                     <div class="product-card">
-                        <img src="<?= htmlspecialchars(BASE_URL . "/". $product['image_path']) ?>"
+                        <img src="<?= htmlspecialchars($product['image_path']) ?>"
                             alt="<?= htmlspecialchars($product['product_name']) ?>"
                             class="product-image"
                             onerror="this.src='<?= BASE_URL ?>/uploads/products/default_product.png'">
-
                         <div class="product-info">
                             <div class="product-name"><?php echo htmlspecialchars($product['product_name']); ?></div>
                             <?php if ($product['price']): ?>
