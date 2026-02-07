@@ -27,16 +27,16 @@ services:
       - techoazis-net
 
   phpmyadmin:
-      image: phpmyadmin
-      restart: always
-      ports:
-        - "8081:80"
-      environment:
-        - PMA_HOST=db
-        - PMA_USER=user
-        - PMA_PASSWORD=user_password
-      networks:
-        - techoazis-net
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=root_password
+    networks:
+      - techoazis-net
 
 networks:
   techoazis-net:
