@@ -21,7 +21,7 @@ $config = [
         'author_user_id' => 'Szerző',
         'title' => 'Cím',
         'reading_minutes' => 'Olvasási idő (perc)',
-        'status' => 'Státusz',
+        'article_status' => 'Státusz',
         'created_at' => 'Létrehozva'
     ],
 
@@ -45,7 +45,7 @@ $config = [
         'category_id' => function ($value, $row) {
             return htmlspecialchars($row['category_name']);
         },
-        'status' => function ($value) {
+        'article_status' => function ($value) {
             return ucfirst($value);
         }
     ],
@@ -60,7 +60,7 @@ $config = [
         'content',
         'cover_image',
         'reading_minutes',
-        'status'
+        'article_status'
     ],
 
     // ===== MEZŐ DEFINÍCIÓK =====
@@ -126,7 +126,7 @@ $config = [
             'param_type' => 'i'
         ],
 
-        'status' => [
+        'article_status' => [
             'label' => 'Státusz',
             'type' => 'select',
             'required' => true,

@@ -281,10 +281,47 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
                     <div class="form-group">
                         <label for="category">Kategória</label>
                         <select id="category" name="category" class="form-control">
-                            <option value="Hardver" <?php echo $product['category'] == 'Hardver' ? 'selected' : ''; ?>>Hardver</option>
-                            <option value="Periféria" <?php echo $product['category'] == 'Periféria' ? 'selected' : ''; ?>>Periféria</option>
-                            <option value="Laptop" <?php echo $product['category'] == 'Laptop' ? 'selected' : ''; ?>>Laptop</option>
-                            <option value="Egyéb" <?php echo $product['category'] == 'Egyéb' ? 'selected' : ''; ?>>Egyéb</option>
+                            <option value="Adattárolók" <?php echo ($product['category'] ?? '') == 'Adattárolók' ? 'selected' : ''; ?>>Adattárolók</option>
+                            <option value="Alkatrészek" <?php echo ($product['category'] ?? '') == 'Alkatrészek' ? 'selected' : ''; ?>>Alkatrészek</option>
+                            <option value="Audio technika" <?php echo ($product['category'] ?? '') == 'Audio technika' ? 'selected' : ''; ?>>Audio technika</option>
+                            <option value="Autós elektronika" <?php echo ($product['category'] ?? '') == 'Autós elektronika' ? 'selected' : ''; ?>>Autós elektronika</option>
+                            <option value="Drónok" <?php echo ($product['category'] ?? '') == 'Drónok' ? 'selected' : ''; ?>>Drónok</option>
+                            <option value="Elektromos rollerek" <?php echo ($product['category'] ?? '') == 'Elektromos rollerek' ? 'selected' : ''; ?>>Elektromos rollerek</option>
+                            <option value="Fejhallgatók" <?php echo ($product['category'] ?? '') == 'Fejhallgatók' ? 'selected' : ''; ?>>Fejhallgatók</option>
+                            <option value="Fülhallgatók" <?php echo ($product['category'] ?? '') == 'Fülhallgatók' ? 'selected' : ''; ?>>Fülhallgatók</option>
+                            <option value="Fényképezőgépek" <?php echo ($product['category'] ?? '') == 'Fényképezőgépek' ? 'selected' : ''; ?>>Fényképezőgépek</option>
+                            <option value="Gaming" <?php echo ($product['category'] ?? '') == 'Gaming' ? 'selected' : ''; ?>>Gaming</option>
+                            <option value="GPS & Navigáció" <?php echo ($product['category'] ?? '') == 'GPS & Navigáció' ? 'selected' : ''; ?>>GPS & Navigáció</option>
+                            <option value="Hálózati eszközök" <?php echo ($product['category'] ?? '') == 'Hálózati eszközök' ? 'selected' : ''; ?>>Hálózati eszközök</option>
+                            <option value="Hangfalak" <?php echo ($product['category'] ?? '') == 'Hangfalak' ? 'selected' : ''; ?>>Hangfalak</option>
+                            <option value="Hangtechnika" <?php echo ($product['category'] ?? '') == 'Hangtechnika' ? 'selected' : ''; ?>>Hangtechnika</option>
+                            <option value="Hardver" <?php echo ($product['category'] ?? '') == 'Hardver' ? 'selected' : ''; ?>>Hardver</option>
+                            <option value="Háztartási kisgépek" <?php echo ($product['category'] ?? '') == 'Háztartási kisgépek' ? 'selected' : ''; ?>>Háztartási kisgépek</option>
+                            <option value="Hordozható hangszórók" <?php echo ($product['category'] ?? '') == 'Hordozható hangszórók' ? 'selected' : ''; ?>>Hordozható hangszórók</option>
+                            <option value="Ipari elektronika" <?php echo ($product['category'] ?? '') == 'Ipari elektronika' ? 'selected' : ''; ?>>Ipari elektronika</option>
+                            <option value="Játékkonzolok" <?php echo ($product['category'] ?? '') == 'Játékkonzolok' ? 'selected' : ''; ?>>Játékkonzolok</option>
+                            <option value="Kábelek és adapterek" <?php echo ($product['category'] ?? '') == 'Kábelek és adapterek' ? 'selected' : ''; ?>>Kábelek és adapterek</option>
+                            <option value="Kamerák" <?php echo ($product['category'] ?? '') == 'Kamerák' ? 'selected' : ''; ?>>Kamerák</option>
+                            <option value="Kiegészítők" <?php echo ($product['category'] ?? '') == 'Kiegészítők' ? 'selected' : ''; ?>>Kiegészítők</option>
+                            <option value="Kivetítők" <?php echo ($product['category'] ?? '') == 'Kivetítők' ? 'selected' : ''; ?>>Kivetítők</option>
+                            <option value="Laptopok" <?php echo ($product['category'] ?? '') == 'Laptopok' ? 'selected' : ''; ?>>Laptopok</option>
+                            <option value="Megfigyelő rendszerek" <?php echo ($product['category'] ?? '') == 'Megfigyelő rendszerek' ? 'selected' : ''; ?>>Megfigyelő rendszerek</option>
+                            <option value="Mikrofonok" <?php echo ($product['category'] ?? '') == 'Mikrofonok' ? 'selected' : ''; ?>>Mikrofonok</option>
+                            <option value="Mobiltelefonok" <?php echo ($product['category'] ?? '') == 'Mobiltelefonok' ? 'selected' : ''; ?>>Mobiltelefonok</option>
+                            <option value="Monitorok" <?php echo ($product['category'] ?? '') == 'Monitorok' ? 'selected' : ''; ?>>Monitorok</option>
+                            <option value="Nyomtatók és scannerek" <?php echo ($product['category'] ?? '') == 'Nyomtatók és scannerek' ? 'selected' : ''; ?>>Nyomtatók és scannerek</option>
+                            <option value="Okosóra" <?php echo ($product['category'] ?? '') == 'Okosóra' ? 'selected' : ''; ?>>Okosóra</option>
+                            <option value="Okosotthon eszközök" <?php echo ($product['category'] ?? '') == 'Okosotthon eszközök' ? 'selected' : ''; ?>>Okosotthon eszközök</option>
+                            <option value="PC konfigurációk" <?php echo ($product['category'] ?? '') == 'PC konfigurációk' ? 'selected' : ''; ?>>PC konfigurációk</option>
+                            <option value="Periféria" <?php echo ($product['category'] ?? '') == 'Periféria' ? 'selected' : ''; ?>>Periféria</option>
+                            <option value="Szoftverek" <?php echo ($product['category'] ?? '') == 'Szoftverek' ? 'selected' : ''; ?>>Szoftverek</option>
+                            <option value="Szünetmentes tápegységek" <?php echo ($product['category'] ?? '') == 'Szünetmentes tápegységek' ? 'selected' : ''; ?>>Szünetmentes tápegységek</option>
+                            <option value="Tabletek" <?php echo ($product['category'] ?? '') == 'Tabletek' ? 'selected' : ''; ?>>Tabletek</option>
+                            <option value="Tápellátás" <?php echo ($product['category'] ?? '') == 'Tápellátás' ? 'selected' : ''; ?>>Tápellátás</option>
+                            <option value="Televíziók" <?php echo ($product['category'] ?? '') == 'Televíziók' ? 'selected' : ''; ?>>Televíziók</option>
+                            <option value="Videókártyák" <?php echo ($product['category'] ?? '') == 'Videókártyák' ? 'selected' : ''; ?>>Videókártyák</option>
+                            <option value="Zenelejátszók" <?php echo ($product['category'] ?? '') == 'Zenelejátszók' ? 'selected' : ''; ?>>Zenelejátszók</option>
+                            <option value="Egyéb" <?php echo ($product['category'] ?? '') == 'Egyéb' ? 'selected' : ''; ?>>Egyéb</option>
                         </select>
                     </div>
                     <div class="form-group">

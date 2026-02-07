@@ -202,7 +202,7 @@ require_once ROOT_PATH . '/conversation_logic.php';
                     </div>
                     
                     <div class="product-images">
-                        <img src="<?php echo htmlspecialchars($product['main_image'] ?? 'https://via.placeholder.com/300x200'); ?>" 
+                        <img src="<?php echo htmlspecialchars($product['main_image'] ?? BASE_URL . '/uploads/products/default_product.png'); ?>"    
                              alt="<?php echo htmlspecialchars($product['product_name']); ?>" class="main-product-image">
                     </div>
                     

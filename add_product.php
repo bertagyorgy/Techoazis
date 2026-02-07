@@ -144,9 +144,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="category">Kategória</label>
                         <select id="category" name="category" class="form-control" required>
                             <option value="" disabled selected>Válassz kategóriát...</option>
+                            <option value="Adattárolók">Adattárolók</option>
+                            <option value="Alkatrészek">Alkatrészek</option>
+                            <option value="Audio technika">Audio technika</option>
+                            <option value="Autós elektronika">Autós elektronika</option>
+                            <option value="Drónok">Drónok</option>
+                            <option value="Elektromos rollerek">Elektromos rollerek</option>
+                            <option value="Fejhallgatók">Fejhallgatók</option>
+                            <option value="Fejhallgatók">Fülhallgatók</option>
+                            <option value="Fényképezőgépek">Fényképezőgépek</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="GPS & Navigáció">GPS & Navigáció</option>
+                            <option value="Hálózati eszközök">Hálózati eszközök</option>
+                            <option value="Hangfalak">Hangfalak</option>
+                            <option value="Hangtechnika">Hangtechnika</option>
                             <option value="Hardver">Hardver</option>
+                            <option value="Háztartási kisgépek">Háztartási kisgépek</option>
+                            <option value="Hordozható hangszórók">Hordozható hangszórók</option>
+                            <option value="Ipari elektronika">Ipari elektronika</option>
+                            <option value="Játékkonzolok">Játékkonzolok</option>
+                            <option value="Kábelek és adapterek">Kábelek és adapterek</option>
+                            <option value="Kamerák">Kamerák</option>
+                            <option value="Kiegészítők">Kiegészítők</option>
+                            <option value="Kivetítők">Kivetítők</option>
+                            <option value="Laptopok">Laptopok</option>
+                            <option value="Megfigyelő rendszerek">Megfigyelő rendszerek</option>
+                            <option value="Mikrofonok">Mikrofonok</option>
+                            <option value="Mobiltelefonok">Mobiltelefonok</option>
+                            <option value="Monitorok">Monitorok</option>
+                            <option value="Nyomtatók és scannerek">Nyomtatók és scannerek</option>
+                            <option value="Okosóra">Okosóra</option>
+                            <option value="Okosotthon eszközök">Okosotthon eszközök</option>
+                            <option value="PC konfigurációk">PC konfigurációk</option>
                             <option value="Periféria">Periféria</option>
-                            <option value="Laptop">laptopok</option>
+                            <option value="Szoftverek">Szoftverek</option>
+                            <option value="Szünetmentes tápegységek">Szünetmentes tápegységek</option>
+                            <option value="Tabletek">Tabletek</option>
+                            <option value="Tápellátás">Tápellátás</option>
+                            <option value="Televíziók">Televíziók</option>
+                            <option value="Videókártyák">Videókártyák</option>
+                            <option value="Zenelejátszók">Zenelejátszók</option>
                             <option value="Egyéb">Egyéb</option>
                         </select>
                     </div>

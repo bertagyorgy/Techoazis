@@ -65,7 +65,7 @@ INSERT INTO `deals` (`deal_id`, `product_id`, `seller_user_id`, `buyer_user_id`,
 (2, 5, 7, 6, 2, '2025-12-14 18:38:13');
 
 -- Cikkek tábla feltöltése
-INSERT INTO `articles` (`article_id`, `category_id`, `author_user_id`, `title`, `slug`, `summary`, `content`, `cover_image`, `reading_minutes`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `articles` (`article_id`, `category_id`, `author_user_id`, `title`, `slug`, `summary`, `content`, `cover_image`, `reading_minutes`, `article_status`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 'Mi az AJAX és mikor érdemes használni?', 'mi-az-ajax-es-mikor-erdemes-hasznalni', 'Az AJAX lehetővé teszi, hogy az oldal frissítés nélkül kommunikáljon a szerverrel.', 'Az AJAX (Asynchronous JavaScript and XML) egy technika, amellyel a kliens aszinkron módon adatot kérhet le a szervertől.\n\nGyakori felhasználás:\n- chat rendszerek\n- űrlap validálás\n- értesítések', 'uploads/articles/ajax.png', 6, 'published', '2026-02-05 21:10:34', NULL),
 (2, 2, 1, 'Session kezelés PHP-ben érthetően', 'session-kezeles-php-ben-erthetoen', 'A sessionök segítségével állapotot tudunk tárolni PHP alkalmazásokban.', 'A PHP session szerveroldali megoldás, amellyel a felhasználóhoz kötött adatokat kezelhetünk. Tipikus használat: bejelentkezés, kosár, jogosultság kezelés', 'uploads/articles/php-session.png', 7, 'published', '2026-02-05 21:10:34', NULL),
 (3, 3, 3, 'CSS Grid vs Flexbox - mikor melyiket?', 'css-grid-vs-flexbox-mikor-melyiket', 'A Grid és a Flexbox nem egymás konkurensei, hanem másra valók.', 'A Flexbox egy dimenzióban dolgozik, míg a CSS Grid kétdimenziós elrendezést tesz lehetővé.\n\nFlexbox:\n- navbar\n- listák\n\nGrid:\n- layoutok', 'uploads/articles/grid-flexbox.png', 5, 'published', '2026-02-05 21:10:34', NULL),

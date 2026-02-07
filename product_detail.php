@@ -42,20 +42,20 @@ if (empty($images)) {
     $images = [['image_path' => 'uploads/products/default_product.png']];
 }
 
-// Hasonló termékek
+// Hasonló termékek lekérése
 $sql = "SELECT p.*, u.username as seller_username,
                (SELECT image_path FROM images WHERE product_id = p.product_id ORDER BY is_primary DESC LIMIT 1) as main_image
         FROM products p
         JOIN users u ON p.seller_user_id = u.user_id
-        WHERE p.category = ?
+        WHERE p.category = ? 
+          AND p.product_id != ?           -- Kizárjuk az aktuális terméket
           AND p.product_status = 'active'
-          AND p.product_id != ?
-          AND p.seller_user_id != ?
         ORDER BY p.created_at DESC
         LIMIT 4";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('sii', $product['category'], $product_id, $product['seller_id']);
+// Csak a kategóriát és az aktuális ID-t adjuk át
+$stmt->bind_param('si', $product['category'], $product_id); 
 $stmt->execute();
 $similar_result = $stmt->get_result();
 $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
@@ -268,22 +268,14 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
             <div class="similar-products">
                 <h2 class="section-title">Hasonló termékek</h2>
                 <div class="similar-grid">
-                    <?php foreach ($similar_products as $similar): ?>
+                    <?php foreach ($similar_products as $product): // $similar helyett legyen $product! ?>
                         <?php 
-                        // Itt is figyelünk a kép elérési útra
-                        $main_img = $similar['main_image'] ?? 'uploads/products/default_product.png';
-                        $similar_card_data = [
-                            'product_id' => $similar['product_id'],
-                            'product_name' => $similar['product_name'],
-                            'price' => $similar['price'],
-                            'seller_username' => $similar['seller_username'],
-                            'main_image' => $main_img, 
-                            'category' => $similar['category'],
-                            'product_status' => $similar['product_status'],
-                            'created_at' => $similar['created_at']
-                        ];
+                        // Itt előkészítjük a képet a kártya számára
+                        $product['main_image'] = $product['main_image'] ?? 'uploads/products/default_product.png';
+                        
+                        // Most már a product_card.php az aktuális "hasonló" terméket fogja használni
+                        include ROOT_PATH . '/product_card.php'; 
                         ?>
-                        <?php include ROOT_PATH . '/product_card.php'; ?>
                     <?php endforeach; ?>
                 </div>
             </div>

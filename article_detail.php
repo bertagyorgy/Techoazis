@@ -18,7 +18,7 @@ $stmt = $conn->prepare("
         a.content,
         a.cover_image,
         a.reading_minutes,
-        a.status,
+        a.article_status,
         a.created_at,
         a.updated_at,
         c.category_id,
@@ -32,7 +32,7 @@ $stmt = $conn->prepare("
     JOIN article_categories c ON a.category_id = c.category_id
     JOIN users u ON a.author_user_id = u.user_id
     WHERE a.article_id = ?
-      AND a.status = 'published'
+      AND a.article_status = 'published'
     LIMIT 1
 ");
 $stmt->bind_param("i", $article_id);

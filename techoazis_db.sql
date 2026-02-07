@@ -142,7 +142,7 @@ CREATE TABLE articles (
   content longtext NOT NULL,
   cover_image varchar(255) DEFAULT NULL,
   reading_minutes int(11) DEFAULT NULL,
-  status enum('draft','published','archived') NOT NULL DEFAULT 'draft',
+  article_status enum('draft','published','archived') NOT NULL DEFAULT 'draft',
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
   updated_at datetime DEFAULT NULL
 );

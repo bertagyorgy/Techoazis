@@ -15,7 +15,7 @@ $stats = [
     'users'    => ['val' => getCount($conn, "SELECT COUNT(*) FROM users"), 'icon' => 'fa-users', 'bg' => 'linear-gradient(135deg, #4f46e5, #818cf8)', 'label' => 'Felhasználók'],
     'posts'    => ['val' => getCount($conn, "SELECT COUNT(*) FROM posts"), 'icon' => 'fa-paper-plane', 'bg' => 'linear-gradient(135deg, #0891b2, #22d3ee)', 'label' => 'Posztok'],
     'comments' => ['val' => getCount($conn, "SELECT COUNT(*) FROM comments"), 'icon' => 'fa-comments', 'bg' => 'linear-gradient(135deg, #f59e0b, #fbbf24)', 'label' => 'Kommentek'],
-    'articles' => ['val' => getCount($conn, "SELECT COUNT(*) FROM articles WHERE status='published'"), 'icon' => 'fa-newspaper', 'bg' => 'linear-gradient(135deg, #3b82f6, #60a5fa)', 'label' => 'Cikkek'],
+    'articles' => ['val' => getCount($conn, "SELECT COUNT(*) FROM articles WHERE article_status='published'"), 'icon' => 'fa-newspaper', 'bg' => 'linear-gradient(135deg, #3b82f6, #60a5fa)', 'label' => 'Cikkek'],
     'products' => ['val' => getCount($conn, "SELECT COUNT(*) FROM products"), 'icon' => 'fa-box', 'bg' => 'linear-gradient(135deg, #10b981, #34d399)', 'label' => 'Termékek'],
 ];
 

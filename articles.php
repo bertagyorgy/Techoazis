@@ -30,7 +30,7 @@ $latest_stmt = $conn->prepare("
     SELECT a.article_id, a.title, a.created_at, c.category_name
     FROM articles a
     JOIN article_categories c ON a.category_id = c.category_id
-    WHERE a.status = 'published'
+    WHERE a.article_status = 'published'
     ORDER BY a.created_at DESC
     LIMIT 6
 ");
@@ -55,7 +55,7 @@ $sql = "
     FROM articles a
     JOIN users u ON a.author_user_id = u.user_id
     JOIN article_categories c ON a.category_id = c.category_id
-    WHERE a.status = 'published'
+    WHERE a.article_status = 'published'
 ";
 
 $params = [];
