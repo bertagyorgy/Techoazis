@@ -35,34 +35,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param('ssisssi', $product_name, $category, $price, $pickup_location, $product_status, $description, $user_id);
 
         if ($stmt->execute()) {
-            $product_id = $conn->insert_id; // Megvan az új termék ID
+            $product_id = $conn->insert_id; 
             
-            // 2. Képek kezelése
             if (!empty($_FILES['images']['name'][0])) {
                 $upload_dir = ROOT_PATH . '/uploads/products/';
                 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
-                // SQL előkészítése a cikluson kívül (optimalizálás)
-                // FIGYELEM: Itt adtuk hozzá az is_primary és sort_order mezőket!
                 $img_sql = "INSERT INTO images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
                 $img_stmt = $conn->prepare($img_sql);
 
+                $upload_index = 0; // Manuális számláló a sorrendhez
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
                     if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
                         $file_ext = pathinfo($_FILES['images']['name'][$key], PATHINFO_EXTENSION);
-                        // Egyedi név generálás: time + key + eredeti név (hogy ne írják felül egymást)
-                        $file_name = time() . '_' . $key . '_' . uniqid() . '.' . $file_ext;
+                        $file_name = time() . '_' . $upload_index . '_' . uniqid() . '.' . $file_ext;
                         $target_file = $upload_dir . $file_name;
                         $db_path = 'uploads/products/' . $file_name;
 
                         if (move_uploaded_file($tmp_name, $target_file)) {
-                            // Az első feltöltött kép (index 0) legyen a primary
-                            $is_primary = ($key === 0) ? 1 : 0;
-                            $sort_order = $key + 1;
+                            // Az abszolút első sikeresen feltöltött kép a borítókép
+                            $is_primary = ($upload_index === 0) ? 1 : 0;
+                            $sort_order = $upload_index + 1;
 
-                            // Paraméterek kötése: id(int), path(string), primary(int), sort(int) -> "isii"
                             $img_stmt->bind_param('isii', $product_id, $db_path, $is_primary, $sort_order);
                             $img_stmt->execute();
+                            $upload_index++; // Csak sikeres mentés után növeljük
                         }
                     }
                 }
@@ -109,11 +106,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .file-inputs input[type="file"] { width: 100%; padding: 0.75rem; border: 2px dashed var(--border-color); border-radius: var(--border-radius-md); cursor: pointer; background: var(--surface); display: none; }
         #imagePreview { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
         .preview-item { position: relative; width: 100px; height: 100px; }
-        .preview-thumb { width: 100%; height: 100%; object-fit: cover; border-radius: var(--border-radius-md); border: 2px solid var(--primary-300); }
+        .preview-thumb { width: 100%; height: 100%; object-fit: scale-down; border-radius: var(--border-radius-md); border: 2px solid var(--primary-300); }
         .remove-image { position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; background: var(--danger); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); }
         .remove-image:hover { background: #b91c1c; transform: scale(1.1); }
         .btn-submit-style { background: var(--primary-500, #2563eb); color: white; padding: 12px 32px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
         .btn-submit-style:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        /* Badge alapstílusok */
+        .badge-status {
+            flex-direction: column;
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
+            padding: 2px 5px;
+            font-size: 10px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            pointer-events: none; /* Ne zavarja a kattintást */
+        }
+        .badge-primary { background: #2563eb; } /* Kék a borítóképnek */
+        .badge-new { background: #10b981; }     /* Zöld az újnak */
+        .hidden-upload { display: none !important; }
     </style>
 </head>
 <body>
@@ -222,4 +237,96 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </body>
+<script>
+let selectedFiles = [];
+
+function updateBadges() {
+    const cards = document.querySelectorAll('#imagePreview .preview-item');
+    cards.forEach((card, index) => {
+        let badge = card.querySelector('.badge-status');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'badge-status';
+            card.appendChild(badge);
+        }
+        if (index === 0) {
+            badge.textContent = 'Borítókép';
+            badge.className = 'badge-status badge-primary';
+        } else {
+            badge.textContent = 'Új feltöltés';
+            badge.className = 'badge-status badge-new';
+        }
+    });
+}
+
+function updateUploadVisibility() {
+    const inputField = document.getElementById('postImages');
+    // Itt nem eltüntetjük, hanem letiltjuk, ha megvan a 3 kép
+    if (selectedFiles.length >= 3) {
+        inputField.parentElement.style.opacity = '0.5';
+        inputField.disabled = true;
+    } else {
+        inputField.parentElement.style.opacity = '1';
+        inputField.disabled = false;
+    }
+    updateBadges();
+}
+
+function removeImage(index) {
+    selectedFiles.splice(index, 1);
+    syncInputAndRender();
+}
+
+function syncInputAndRender() {
+    const input = document.getElementById('postImages');
+    const dt = new DataTransfer();
+    
+    selectedFiles.forEach(file => dt.items.add(file));
+    input.files = dt.files;
+
+    renderPreviews();
+}
+
+function renderPreviews() {
+    const previewContainer = document.getElementById('imagePreview');
+    previewContainer.innerHTML = '';
+    
+    selectedFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            div.innerHTML = `
+                <img src="${e.target.result}" class="preview-thumb">
+                <button type="button" class="remove-image" onclick="removeImage(${index})">
+                    <i class="fas fa-times"></i>
+                </button>
+                <span class="badge-status"></span>
+            `;
+            previewContainer.appendChild(div);
+            updateUploadVisibility();
+        }
+        reader.readAsDataURL(file);
+    });
+
+    if (selectedFiles.length === 0) updateUploadVisibility();
+}
+
+document.getElementById('postImages').addEventListener('change', function(e) {
+    const newFiles = Array.from(this.files);
+    
+    newFiles.forEach(file => {
+        if (selectedFiles.length < 3) {
+            const isDuplicate = selectedFiles.some(f => f.name === file.name && f.size === file.size);
+            if (!isDuplicate) {
+                selectedFiles.push(file);
+            }
+        }
+    });
+
+    syncInputAndRender();
+    // Fontos: kiürítjük az inputot, hogy a DataTransfer vegye át az uralmat
+    e.target.value = ''; 
+});
+</script>
 </html>

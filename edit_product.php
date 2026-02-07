@@ -370,9 +370,9 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
                                     <button type="button" class="btn-remove-overlay" onclick="removeExistingImage(<?= $img['image_id'] ?>)">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    <?php if($img['is_primary']): ?>
-                                        <span class="badge-status badge-primary">Borítókép</span>
-                                    <?php endif; ?>
+                                    <span class="badge-status <?= $img['is_primary'] ? 'badge-primary' : '' ?>">
+                                        <?= $img['is_primary'] ? 'Borítókép' : '' ?>
+                                    </span>
                                 </div>
                             <?php endwhile; ?>
                         </div>
@@ -402,10 +402,52 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
 // Globális tömb az új fájlok tárolására
 let selectedFiles = [];
 
+/**
+ * Frissíti a jelvényeket (Borítókép / Új feltöltés) a sorrend alapján
+ */
+function updateBadges() {
+    // Összeszedjük az összes kártyát: előbb a már meglévőket, aztán az újakat
+    const allCards = document.querySelectorAll('#existingImages .image-card, #imagePreview .image-card');
+    
+    allCards.forEach((card, index) => {
+        let badge = card.querySelector('.badge-status');
+        
+        // Ha valamiért nincs badge elem, létrehozzuk
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'badge-status';
+            card.appendChild(badge);
+        }
+
+        if (index === 0) {
+            // Mindig a legelső elem a borítókép
+            badge.textContent = 'Borítókép';
+            badge.className = 'badge-status badge-primary';
+        } else {
+            // A többi elemnél megnézzük, hogy új-e vagy régi
+            const isNew = card.closest('#imagePreview') !== null;
+            if (isNew) {
+                badge.textContent = 'Új feltöltés';
+                badge.className = 'badge-status badge-new';
+            } else {
+                // Régi kép, ami nem az első: ne legyen felirat
+                badge.textContent = '';
+                badge.className = 'badge-status'; 
+            }
+        }
+    });
+}
+
+/**
+ * Kezeli a feltöltő gomb láthatóságát és frissíti a jelvényeket
+ */
 function updateUploadButtonVisibility() {
     const uploadCard = document.getElementById('uploadCard');
     const existingCount = document.querySelectorAll('#existingImages .image-card').length;
     const previewCount = selectedFiles.length;
+    
+    // Frissítjük a sorrend alapú jelöléseket
+    updateBadges();
     
     if ((existingCount + previewCount) >= 3) {
         uploadCard.classList.add('hidden-upload');
@@ -414,11 +456,15 @@ function updateUploadButtonVisibility() {
     }
 }
 
+/**
+ * Meglévő (szerveroldali) kép eltávolítása
+ */
 function removeExistingImage(imageId) {
     if (confirm('Biztosan törlöd ezt a képet?')) {
         const container = document.getElementById('img-container-' + imageId);
         if (container) container.remove();
         
+        // Elküldjük a PHP-nak a törlendő ID-t
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = 'removed_images[]';
@@ -429,23 +475,30 @@ function removeExistingImage(imageId) {
     }
 }
 
-// Új: Egy fájl eltávolítása a listából
+/**
+ * Frissen kiválasztott kép eltávolítása a listából
+ */
 function removeNewImage(index) {
     selectedFiles.splice(index, 1);
     syncInputAndRender();
 }
 
-// Szinkronizálja a rejtett inputot a tömbbel és újrarajzolja a nézetet
+/**
+ * Szinkronizálja a rejtett inputot a tömbbel és újraépíti a nézetet
+ */
 function syncInputAndRender() {
     const input = document.getElementById('postImages');
     const dt = new DataTransfer();
     
     selectedFiles.forEach(file => dt.items.add(file));
-    input.files = dt.files; // Fontos: a PHP így fogja látni a fájlokat
+    input.files = dt.files; 
 
     renderPreviews();
 }
 
+/**
+ * Az újonnan kiválasztott képek előnézetének generálása
+ */
 function renderPreviews() {
     const previewContainer = document.getElementById('imagePreview');
     previewContainer.innerHTML = '';
@@ -466,43 +519,59 @@ function renderPreviews() {
             removeBtn.innerHTML = '<i class="fas fa-times"></i>';
             removeBtn.onclick = () => removeNewImage(index);
             
+            // Üres badge, amit az updateBadges fog feltölteni
             const badge = document.createElement('span');
-            badge.className = 'badge-status badge-new';
-            badge.textContent = 'Új feltöltés';
+            badge.className = 'badge-status';
             
             card.appendChild(img);
             card.appendChild(removeBtn);
             card.appendChild(badge);
             previewContainer.appendChild(card);
+            
+            // Minden renderelés végén (vagy az utolsó fájlnál) frissítünk
+            if (index === selectedFiles.length - 1) {
+                updateUploadButtonVisibility();
+            }
         }
         reader.readAsDataURL(file);
     });
     
-    updateUploadButtonVisibility();
+    // Ha kiürült a lista, akkor is frissíteni kell
+    if (selectedFiles.length === 0) {
+        updateUploadButtonVisibility();
+    }
 }
 
+/**
+ * Input változás eseménykezelő
+ */
 document.getElementById('postImages').addEventListener('change', function(e) {
     const existingCount = document.querySelectorAll('#existingImages .image-card').length;
     const newFiles = Array.from(this.files);
     
+    let rejectedCount = 0;
+    
     newFiles.forEach(file => {
         const currentTotal = existingCount + selectedFiles.length;
         if (currentTotal < 3) {
-            // Csak akkor adjuk hozzá, ha még nem szerepel a listában (név és méret alapján)
             const isDuplicate = selectedFiles.some(f => f.name === file.name && f.size === file.size);
             if (!isDuplicate) {
                 selectedFiles.push(file);
             }
+        } else {
+            rejectedCount++;
         }
     });
 
     syncInputAndRender();
     
-    // Ha több fájlt akartak, mint amennyi belefér
-    if (existingCount + newFiles.length > 3) {
-        alert("Maximum 3 képet tárolhatsz. Csak az első szabad helyek lettek feltöltve.");
+    if (rejectedCount > 0) {
+        alert("Maximum 3 képet tárolhatsz. Néhány kép nem került hozzáadásra.");
     }
 });
+
+// Oldalbetöltéskor is ellenőrizzük a badge-eket
+document.addEventListener('DOMContentLoaded', updateBadges);
 </script>
 </body>
 </html>
