@@ -94,19 +94,6 @@ INSERT INTO `images` (`image_id`, `post_id`, `product_id`, `image_path`, `is_pri
 (10, NULL, 4, 'uploads/products/laptop.png', 1, 1),
 (11, NULL, 5, 'uploads/products/camera.png', 1, 1);
 
--- 1. Jelvények (Badges) - Ezek eddig teljesen hiányoztak
-INSERT INTO `badges` (`badge_id`, `badge_name`, `badge_description`, `icon`) VALUES
-(1, 'Újonc', 'A regisztráció utáni első hét.', 'newbie.png'),
-(2, 'Segítőkész', 'Több mint 10 hozzászólás a fórumban.', 'helper.png'),
-(3, 'Megbízható Eladó', 'Legalább 5 sikeres eladás 4+ csillagos értékeléssel.', 'trusted_seller.png'),
-(4, 'Tech Guru', 'Legalább 3 publikált szakmai cikk.', 'guru.png');
-
--- 2. Felhasználói jelvények összekötése (User Badges)
-INSERT INTO `user_badges` (`user_id`, `badge_id`, `earned_at`) VALUES
-(1, 4, '2026-02-05 10:00:00'), -- kistamáska sokat ír
-(7, 3, '2025-12-15 09:00:00'), -- admin sokat ad el
-(6, 1, '2025-11-17 12:00:00');
-
 -- 3. Cikk kategóriák (Article Categories) - Eddig üres volt, de a cikkek hivatkoztak rá
 -- (A cikkeknél láttam 1, 2, 3, 4-es kategória id-t használni)
 INSERT INTO `article_categories` (`category_id`, `category_name`, `category_slug`, `icon_class`, `sort_order`) VALUES
