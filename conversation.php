@@ -21,6 +21,7 @@ require_once ROOT_PATH . '/conversation_logic.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <script src="<?= BASE_URL ?>/static/converstation.js" defer></script>
+    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
 </head>
 <body>
     <?php include ROOT_PATH . '/views/navbar.php'; ?>
