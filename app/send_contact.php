@@ -44,14 +44,14 @@ try {
     $mail->isSMTP();
     $mail->Host = getenv('SMTP_HOST');
     $mail->SMTPAuth = true;
-    $mail->Username = getenv('SMTP_EMAIL');
-    $mail->Password = getenv('SMTP_EMAIL_PASSWORD');
+    $mail->Username = getenv('SMTP_SUP_EMAIL');
+    $mail->Password = getenv('SMTP_SUP_EMAIL_PASSWORD');
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = getenv('SMTP_PORT');
     $mail->CharSet = 'UTF-8';
 
-    $mail->setFrom(getenv('SMTP_EMAIL'), 'Techoázis Support');
-    $mail->addAddress(getenv('SMTP_EMAIL'), 'Techoázis Support');
+    $mail->setFrom(getenv('SMTP_SUP_EMAIL'), 'Techoázis Támogatás');
+    $mail->addAddress(getenv('SMTP_SUP_EMAIL'), 'Techoázis Támogatás');
     $mail->addReplyTo($email, $name);
 
     $mail->isHTML(true);
