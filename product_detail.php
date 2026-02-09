@@ -68,21 +68,21 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Techoázis | <?php echo htmlspecialchars($product['product_name']); ?></title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/product_detail_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/product_detail_style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
-    <script src="<?= BASE_URL ?>/static/forum.js" defer></script>
+    <script src="<?= BASE_URL ?>/assets/js/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/assets/js/forum.js" defer></script>
 
 </head>
 <body>

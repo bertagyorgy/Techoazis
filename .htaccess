@@ -11,7 +11,7 @@ RewriteRule ^ - [E=BASE:/]
 # így a szabályoknál fogjuk alkalmazni a változót.
 
 # Static mappák: soha ne rewrite
-RewriteRule ^(app|static|images|assets)/ - [L]
+RewriteRule ^(app|assets|images|assets)/ - [L]
 
 # .php eltüntetés GET-nél (Kezeli a XAMPP és Docker útvonalat is)
 RewriteCond %{REQUEST_METHOD} GET

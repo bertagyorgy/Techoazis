@@ -190,8 +190,8 @@ if ($action === 'delete' && $id && $allow_delete) {
     <title>Admin | <?= htmlspecialchars($page_title) ?></title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/admin-modern.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/generic_crud_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin-modern.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/generic_crud_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>

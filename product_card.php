@@ -132,4 +132,4 @@ switch ($product_status) {
     </div>
 </div>
 
-<link rel="stylesheet" href="<?= BASE_URL ?>/static/product_card_style.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/product_card_style.css">

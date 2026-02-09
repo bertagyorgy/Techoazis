@@ -53,23 +53,23 @@ if ($page !== '' && $page !== 'index') {
     <base href="<?= BASE_URL ?>/">
     <title>Techoázis - A közösség és a technológia egy helyen</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/comments.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/create_post.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/forum.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/group_view.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/post_card.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/responsive_adjustments.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/custom_card.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/feature_cards.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/hero_section.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_footer.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/utility_classes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/comments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/create_post.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/forum.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/group_view.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/post_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/responsive_adjustments.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/custom_card.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/feature_cards.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/hero_section.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_footer.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/utility_classes.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,7 +77,7 @@ if ($page !== '' && $page !== 'index') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script src="<?= BASE_URL ?>/static/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/assets/js/index.js" defer></script>
 
 </head>
 <body>

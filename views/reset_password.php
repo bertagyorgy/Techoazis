@@ -75,13 +75,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <title>Techoazis | Új jelszó</title>
     
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/animations_microinteractions.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/button_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/login_page.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/modern_navbar.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/container&grid_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/button_system.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/login_page.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/container&grid_system.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

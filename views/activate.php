@@ -55,8 +55,8 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Fiók Aktiválása | Techoázis</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/reset&base_styles.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/static/index.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
     <style>
         .activation-container { text-align: center; padding: 50px; font-family: 'Inter', sans-serif; }
         .btn-login { background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
