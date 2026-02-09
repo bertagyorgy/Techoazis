@@ -130,9 +130,7 @@ textarea.form-control {
   max-width: 800px;
   margin: 0 auto 2rem;
   padding: 2rem;
-  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   user-select: none;
 }
 
@@ -149,8 +147,9 @@ textarea.form-control {
 .faq-item {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  padding: 0.9rem 1rem;
+  padding: 1.25rem 1.5rem;
   background: #fafafa;
+  text-align: start;
 }
 
 .faq-item summary {

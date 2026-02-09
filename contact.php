@@ -95,35 +95,9 @@ require_once __DIR__ . '/config.php';
         </div>
       </form>
     </section>
-
-    <section class="faq-card">
-      <h2><i class="fas fa-circle-question"></i> GYIK</h2>
-
-      <div class="faq">
-        <details class="faq-item">
-          <summary>Hogyan működik a biztonságos adás-vétel?</summary>
-          <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. Lezárás után értékelheted az eladót.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>Miért nem tudok üzenetet küldeni?</summary>
-          <p>Ellenőrizd, hogy be vagy-e jelentkezve és a beszélgetés nincs-e lezárva.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>Hol látom az értékeléseket?</summary>
-          <p>Az értékelések az eladó profilján jelennek meg az utolsó értékelések szekcióban.</p>
-        </details>
-
-        <details class="faq-item">
-          <summary>Mennyi idő alatt válaszoltok?</summary>
-          <p>Általában 24-48 órán belül.</p>
-        </details>
-      </div>
-    </section>
-
   </div>
 </main>
+
 <footer class="footer">
     <div class="custom-container">
         <div class="grid-row">

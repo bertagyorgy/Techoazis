@@ -150,53 +150,37 @@ require_once ROOT_PATH . '/app/db.php';
         </div>
     </section>
 
-    <!-- 3. FEHÉR: Számokban (kártyák!) -->
-     <section class="custom-container section-padding">
+    <!-- 5. FEHÉR: Jelen + irány -->
+    <section class="custom-container section-padding">
         <div class="text-center">
-            <h2 class="section-title">A Techoázis számokban</h2>
+            <h2 class="section-title">Hol tartunk most?</h2>
             <p class="lead">
-                A projekt még fiatal, de már most jól látszik a struktúra és a bővíthetőség.
+                Friss platform vagyunk — ezért a legfontosabb számunkra a stabil alap és a fejlődés, emellett a felhasználóinkra is figyelmet fordítunk.
             </p>
-            <div class="grid-row">
-                <div class="grid-col-3">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-user"></i>
-                            <h4>100+</h4>
-                            <p>Felhasználó</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-col-3">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-pen-nib"></i>
-                            <h4>50+</h4>
-                            <p>Poszt és cikk</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-col-3">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-layer-group"></i>
-                            <h4>20+</h4>
-                            <p>Témakör</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-col-3">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-tag"></i>
-                            <h4>10+</h4>
-                            <p>Feltöltött termék</p>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <div class="two-col">
+            <div>
+                <p>
+                    A Techoázis jelenleg egy olyan fázisban van, ahol az alapfunkciók már együtt működnek,
+                    és a visszajelzések alapján finomhangoljuk a felhasználói élményt.
+                    A célunk nem üres ígéreteket tenni: inkább stabilan építkezünk.
+                </p>
+                <p>
+                    A következő nagy lépések általában akkor születnek meg, ahol a közösség már használni kezdi a rendszert:
+                    mi működik, mi hiányzik, mit lehet egyszerűsíteni, mit érdemes erősíteni.
+                </p>
+            </div>
+
+            <div class="callout">
+                <h3>Minőségi alap</h3>
+                <p>
+                    A vizsgaremeken túl is fontos, hogy a platform átlátható, karbantartható és bővíthető maradjon -
+                    ezért a fejlesztés során végig erre építünk.
+                </p>
             </div>
         </div>
     </section>
+
 
     <!-- 4. HALVÁNYKÉK: Csapat -->
     <section class="section-padding diff">
@@ -234,42 +218,12 @@ require_once ROOT_PATH . '/app/db.php';
         </div>
     </section>
 
-    <!-- 5. FEHÉR: Jelen + irány -->
-    <section class="custom-container section-padding">
-        <div class="text-center">
-            <h2 class="section-title">Hol tartunk most?</h2>
-            <p class="lead">
-                Friss platform vagyunk — ezért a legfontosabb számunkra a stabil alap és a fejlődés, emellett a felhasználóinkra is figyelmet fordítunk.
-            </p>
-        </div>
-        <div class="two-col">
-            <div>
-                <p>
-                    A Techoázis jelenleg egy olyan fázisban van, ahol az alapfunkciók már együtt működnek,
-                    és a visszajelzések alapján finomhangoljuk a felhasználói élményt.
-                    A célunk nem üres ígéreteket tenni: inkább stabilan építkezünk.
-                </p>
-                <p>
-                    A következő nagy lépések általában akkor születnek meg, ahol a közösség már használni kezdi a rendszert:
-                    mi működik, mi hiányzik, mit lehet egyszerűsíteni, mit érdemes erősíteni.
-                </p>
-            </div>
-
-            <div class="callout">
-                <h3>Minőségi alap</h3>
-                <p>
-                    A vizsgaremeken túl is fontos, hogy a platform átlátható, karbantartható és bővíthető maradjon -
-                    ezért a fejlesztés során végig erre építünk.
-                </p>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- 6. HALVÁNYKÉK: Hamarosan (kártyák csak itt) -->
-    <section class="section-padding diff">
+    <section class="section-padding">
         <div class="container">
-            <div class="section-head">
-                <h2>Hamarosan</h2>
+            <div class="text-center">
+                <h2 class="section-title">Hamarosan</h2>
                 <p class="lead">
                     Ezek a bővítések már tervben vannak - a platform jövőjét a közösség és a folyamatos fejlesztés együtt formálja.
                 </p>
