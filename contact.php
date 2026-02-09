@@ -49,27 +49,6 @@ require_once __DIR__ . '/config.php';
         Kérdésed van, hibát találtál, vagy javaslatod lenne? Írj nekünk, és 24-48 órán belül válaszolunk.
       </p>
     </header>
-
-    <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-      <div class="contact-alert success">
-        <i class="fa-solid fa-circle-check"></i>
-        <div>
-          <div class="title">Üzenet elküldve</div>
-          <div class="text">Köszönjük! Megkaptuk az üzenetedet, hamarosan válaszolunk.</div>
-        </div>
-      </div>
-    <?php elseif (isset($_GET['status']) && $_GET['status'] === 'error'): ?>
-      <div class="contact-alert error">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <div>
-          <div class="title">Hiba történt</div>
-          <div class="text">
-            <?= htmlspecialchars($_GET['msg'] ?? 'Ismeretlen hiba', ENT_QUOTES, 'UTF-8'); ?>
-          </div>
-        </div>
-      </div>
-    <?php endif; ?>
-
       <section class="contact-card">
       <div class="contact-card-titlebar">
         <h2><i class="fas fa-envelope"></i> Üzenet küldése</h2>
