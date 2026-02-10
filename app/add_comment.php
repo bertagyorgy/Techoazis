@@ -20,6 +20,7 @@ try {
         throw new Exception("Rendszerhiba: Az adatbázis fájl nem található.");
     }
     require_once __DIR__ . '/db.php';
+    require_once __DIR__ . '/profile_stats.php';
 
     // 3. Bemenő adatok feldolgozása
     // A $_SESSION['user_id']-t feltételezzük, hogy létezik, ha loggedin true
@@ -48,6 +49,7 @@ try {
     if ($stmt->execute()) {
         $response['success'] = true;
         $response['message'] = "Komment sikeresen elküldve.";
+        refreshUserStats($conn, $user_id);
     } else {
         throw new Exception("Nem sikerült menteni a kommentet: " . $stmt->error);
     }

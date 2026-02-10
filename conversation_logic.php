@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/app/db.php';
+require_once __DIR__ . '/app/profile_stats.php';
 
 /* =========================
    1. AUTH
@@ -360,6 +361,10 @@ if (
             // Frissítjük a változókat a nézethez
             $conversation['product_status'] = 'sold';
             $conversation['conv_status'] = 'deal_made';
+
+            refreshUserStats($conn, (int)$conversation['seller_user_id']);
+            refreshUserStats($conn, (int)$conversation['buyer_user_id']);
+
 
         } catch (Throwable $e) {
             $conn->rollback();

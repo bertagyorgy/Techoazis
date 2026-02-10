@@ -8,6 +8,13 @@ require_once __DIR__ . '/config.php';
 
 // 2. Adatbázis betöltése ROOT_PATH használatával
 require_once ROOT_PATH . '/app/db.php';
+require_once ROOT_PATH . '/app/profile_stats.php';
+
+$profile_user_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($profile_user_id > 0) {
+    refreshUserStats($conn, $profile_user_id);
+}
+
 
 // 3. Biztonsági ellenőrzés javítása
 if (!isset($_SESSION['username'])) {

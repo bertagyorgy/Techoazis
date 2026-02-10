@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // 1. Config és DB betöltése a konzisztencia miatt
 require_once __DIR__ . '/config.php';
 require_once ROOT_PATH . '/app/db.php';
+require_once ROOT_PATH . '/app/profile_stats.php';
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     die("Hozzáférés megtagadva.");
@@ -24,7 +25,7 @@ if ($title === "" || $content === "") {
 
 // === TRANZAKCIÓ INDÍTÁSA VAGY BIZTONSÁGI SORREND ===
 // Előbb ellenőrizzük a fájlokat, mielőtt bármit írnánk a DB-be
-$allowed_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+$allowed_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'jfif'];
 $max_size = 5 * 1024 * 1024;
 $upload_dir = ROOT_PATH . "/uploads/posts/"; // Abszolút útvonal!
 
@@ -66,6 +67,7 @@ if ($stmt->execute()) {
     }
     
     $_SESSION['success'] = "Poszt sikeresen létrehozva!";
+    refreshUserStats($conn, $user_id);
 } else {
     $_SESSION['error'] = "Hiba történt a mentés során.";
 }

@@ -41,16 +41,19 @@ KÉRDÉSES:
 - képek tábla szétszedése
 - id-k eltüntetése a linkeknél
 
-
+---------------------------------- UTOLSÓ LÉPÉSEK ---------------------------------------------------------------------------------------
 MATE:
 - a disszertációs alert még mindig bent van, KÉSZ
-- a poszt és termékképek miért ugyanabban a táblában vannak, nincs kész: külön szedni 2 táblába, post_images, product_images
-- az adminpanelnél a beállítások felét lehet módosítani, nincs kész
-
+- a poszt és termékképek miért ugyanabban a táblában vannak, nincs kész: külön szedni 2 táblába, post_images, product_images MÁTÉ DOLGA
+- az adminpanelnél a beállítások felét lehet módosítani, MÁTÉ DOLGA
 BESZÉLGETÉS:
-- a beszélgetésnél nincs rendes értékelő megcsinálva, nincs kész: értékelés: popup html dialog
-- elcsúszott beszélgetés gombok, nincs kész: flexboxal
-
+- a beszélgetésnél nincs rendes értékelő megcsinálva, nincs kész: értékelés: popup html dialog KÉSZ
+- elcsúszott beszélgetés gombok, nincs kész: flexboxal KÉSZ
+- beszélgetésnél képernyő újratöltését megszüntetni MÁTÉ DOLGA
+PROFIL:
+- profilstatsztika KÉSZ
+- username slugot betöltése GYURI DOLGA
+- képek teljesképernyős megtekintése - GYURI DOLGA
 
 
 TRELLOBA FELTÖLTENI
