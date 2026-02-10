@@ -22,7 +22,8 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: user_password
     volumes:
-      - ./techoazis_db.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./techoazis_db.sql:/docker-entrypoint-initdb.d/01_structure.sql
+      - ./techoazis_db_datas.sql:/docker-entrypoint-initdb.d/02_data.sql
     networks:
       - techoazis-net
 
