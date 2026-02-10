@@ -80,19 +80,22 @@ INSERT INTO `login` (`login_id`, `user_id`, `login_date`) VALUES
 (4, 1, '2025-12-20 11:48:28'),
 (5, 7, '2025-12-20 11:54:42');
 
--- Képek tábla feltöltése
-INSERT INTO `images` (`image_id`, `post_id`, `product_id`, `image_path`, `is_primary`, `sort_order`) VALUES
-(1, 1, NULL, 'uploads/posts/webdev.jpg', 0, 1),
-(2, 3, NULL, 'uploads/posts/ai.jpg', 0, 1),
-(3, 1, NULL, 'uploads/posts/htmlandcss.jpeg', 0, 1),
-(4, 4, NULL, 'uploads/posts/4_1763756851_4212.jpg', 0, 1),
-(5, 6, NULL, 'uploads/posts/6_1763760130_6025.jpg', 0, 1),
-(6, 6, NULL, 'uploads/posts/6_1763760130_1499.jpg', 0, 1),
-(7, NULL, 1, 'uploads/products/gaming_mouse.png', 1, 1),
-(8, NULL, 2, 'uploads/products/bt_speaker.png', 1, 1),
-(9, NULL, 3, 'uploads/products/smartwatch.png', 1, 1),
-(10, NULL, 4, 'uploads/products/laptop.png', 1, 1),
-(11, NULL, 5, 'uploads/products/camera.png', 1, 1);
+-- Poszt képek tábla feltöltése
+INSERT INTO `post_images` (`image_id`, `post_id`, `image_path`, `sort_order`) VALUES
+(1, 1, 'uploads/posts/webdev.jpg', 1),
+(2, 3, 'uploads/posts/ai.jpg', 1),
+(3, 1, 'uploads/posts/htmlandcss.jpeg', 1),
+(4, 4, 'uploads/posts/4_1763756851_4212.jpg', 1),
+(5, 6, 'uploads/posts/6_1763760130_6025.jpg', 1),
+(6, 6, 'uploads/posts/6_1763760130_1499.jpg', 1);
+
+-- Termék képek tábla feltöltése
+INSERT INTO `product_images` (`image_id`, `product_id`, `image_path`, `is_primary`, `sort_order`) VALUES
+(7, 1, 'uploads/products/gaming_mouse.png', 1, 1),
+(8, 2, 'uploads/products/bt_speaker.png', 1, 1),
+(9, 3, 'uploads/products/smartwatch.png', 1, 1),
+(10, 4, 'uploads/products/laptop.png', 1, 1),
+(11, 5, 'uploads/products/camera.png', 1, 1);
 
 -- 3. Cikk kategóriák (Article Categories) - Eddig üres volt, de a cikkek hivatkoztak rá
 -- (A cikkeknél láttam 1, 2, 3, 4-es kategória id-t használni)

@@ -167,7 +167,7 @@ $stmt = $conn->prepare("
         p.created_at,
         u.username AS seller_username,
         u.profile_image AS seller_image,
-        (SELECT image_path FROM images WHERE product_id = p.product_id LIMIT 1) as main_image
+        (SELECT image_path FROM product_images WHERE product_id = p.product_id LIMIT 1) as main_image
     FROM products p
     JOIN users u ON p.seller_user_id = u.user_id
     WHERE p.product_id = ?

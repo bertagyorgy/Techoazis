@@ -57,7 +57,7 @@ if ($stmt->execute()) {
                 $db_path = "uploads/posts/" . $new_name;
 
                 if (move_uploaded_file($tmp, $destination)) {
-                    $stmt_img = $conn->prepare("INSERT INTO images (post_id, image_path) VALUES (?, ?)");
+                    $stmt_img = $conn->prepare("INSERT INTO post_images (post_id, image_path) VALUES (?, ?)");
                     $stmt_img->bind_param("is", $post_id, $db_path);
                     $stmt_img->execute();
                     $stmt_img->close();

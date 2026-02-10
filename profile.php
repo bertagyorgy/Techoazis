@@ -83,7 +83,7 @@ $stmt->close();
 // Feltett termékek (max 6) (nézett profilhoz!)
 $stmt = $conn->prepare("
     SELECT product_id, product_name, category, price, product_status, 
-           created_at, (SELECT image_path FROM images WHERE product_id = products.product_id AND is_primary = 1 LIMIT 1) as image_path
+           created_at, (SELECT image_path FROM product_images WHERE product_id = products.product_id AND is_primary = 1 LIMIT 1) as image_path
     FROM products 
     WHERE seller_user_id = ?
     ORDER BY created_at DESC 

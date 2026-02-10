@@ -13,7 +13,7 @@ $price_max = $_GET['price_max'] ?? '';
 
 // SQL query - CSAK AKTÍV termékek, nincs készlet ellenőrzés
 $sql = "SELECT p.*, u.username as seller_username, u.username_slug AS user_slug,
-               (SELECT image_path FROM images WHERE product_id = p.product_id LIMIT 1) as main_image
+               (SELECT image_path FROM product_images WHERE product_id = p.product_id LIMIT 1) as main_image
         FROM products p
         JOIN users u ON p.seller_user_id = u.user_id
         WHERE p.product_status = 'active'";

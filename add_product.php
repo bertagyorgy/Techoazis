@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $upload_dir = ROOT_PATH . '/uploads/products/';
                 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
-                $img_sql = "INSERT INTO images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
+                $img_sql = "INSERT INTO product_images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
                 $img_stmt = $conn->prepare($img_sql);
 
                 $upload_index = 0; // Manuális számláló a sorrendhez
@@ -326,7 +326,7 @@ document.getElementById('postImages').addEventListener('change', function(e) {
 
     syncInputAndRender();
     // Fontos: kiürítjük az inputot, hogy a DataTransfer vegye át az uralmat
-    e.target.value = ''; 
+    //e.target.value = ''; 
 });
 </script>
 </html>

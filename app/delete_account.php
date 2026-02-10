@@ -20,7 +20,7 @@ $conn->begin_transaction();
 
 try {
     // 1. Termékképek törlése - ROOT_PATH használata a törléshez!
-    $stmt = $conn->prepare("SELECT image_path FROM images WHERE product_id IN (SELECT product_id FROM products WHERE seller_user_id = ?)");
+    $stmt = $conn->prepare("SELECT image_path FROM product_images WHERE product_id IN (SELECT product_id FROM products WHERE seller_user_id = ?)");
     $stmt->bind_param('i', $user_id);
     $stmt->execute();
     $images = $stmt->get_result();

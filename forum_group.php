@@ -173,7 +173,7 @@ $post_count = $posts->num_rows;
 
                 <?php
                 // ===== KÉPEK LEKÉRÉSE =====
-                $img_stmt = $conn->prepare("SELECT image_path FROM images WHERE post_id = ?");
+                $img_stmt = $conn->prepare("SELECT image_path FROM post_images WHERE post_id = ?");
                 $img_stmt->bind_param("i", $post['post_id']);
                 $img_stmt->execute();
                 $images = $img_stmt->get_result();

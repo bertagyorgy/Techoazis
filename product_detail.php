@@ -25,7 +25,7 @@ if (!$product) {
 }
 
 // Termék képek lekérése - sorrend a feltöltés szerint (vagy is_primary szerint)
-$sql = "SELECT image_path FROM images WHERE product_id = ? ORDER BY is_primary DESC, sort_order ASC, image_id ASC";
+$sql = "SELECT image_path FROM product_images WHERE product_id = ? ORDER BY is_primary DESC, sort_order ASC, image_id ASC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $product_id);
 $stmt->execute();
@@ -44,7 +44,7 @@ if (empty($images)) {
 
 // Hasonló termékek lekérése
 $sql = "SELECT p.*, u.username as seller_username,
-               (SELECT image_path FROM images WHERE product_id = p.product_id ORDER BY is_primary DESC LIMIT 1) as main_image
+               (SELECT image_path FROM product_images WHERE product_id = p.product_id ORDER BY is_primary DESC LIMIT 1) as main_image
         FROM products p
         JOIN users u ON p.seller_user_id = u.user_id
         WHERE p.category = ? 

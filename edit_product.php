@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_POST['removed_images'])) {
                 foreach ($_POST['removed_images'] as $img_id) {
                     $img_id = (int)$img_id;
-                    $path_sql = "SELECT image_path FROM images WHERE image_id = ? AND product_id = ?";
+                    $path_sql = "SELECT image_path FROM product_images WHERE image_id = ? AND product_id = ?";
                     $p_stmt = $conn->prepare($path_sql);
                     $p_stmt->bind_param('ii', $img_id, $product_id);
                     $p_stmt->execute();
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             unlink($full_path);
                         }
                     }
-                    $del_sql = "DELETE FROM images WHERE image_id = ? AND product_id = ?";
+                    $del_sql = "DELETE FROM product_images WHERE image_id = ? AND product_id = ?";
                     $d_stmt = $conn->prepare($del_sql);
                     $d_stmt->bind_param('ii', $img_id, $product_id);
                     $d_stmt->execute();
@@ -81,13 +81,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $upload_dir = ROOT_PATH . '/uploads/products/';
                 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
-                $count_sql = "SELECT COUNT(*) as total FROM images WHERE product_id = ?";
+                $count_sql = "SELECT COUNT(*) as total FROM product_images WHERE product_id = ?";
                 $c_stmt = $conn->prepare($count_sql);
                 $c_stmt->bind_param('i', $product_id);
                 $c_stmt->execute();
                 $current_count = $c_stmt->get_result()->fetch_assoc()['total'];
 
-                $img_sql = "INSERT INTO images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
+                $img_sql = "INSERT INTO product_images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
                 $img_stmt = $conn->prepare($img_sql);
 
                 foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$count_query = "SELECT COUNT(*) as total FROM images WHERE product_id = ?";
+$count_query = "SELECT COUNT(*) as total FROM product_images WHERE product_id = ?";
 $c_stmt = $conn->prepare($count_query);
 $c_stmt->bind_param('i', $product_id);
 $c_stmt->execute();
@@ -358,7 +358,7 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
                     <div class="image-management-grid">
                         <div id="existingImages" style="display: contents;">
                             <?php
-                            $img_query = "SELECT * FROM images WHERE product_id = ? ORDER BY sort_order ASC";
+                            $img_query = "SELECT * FROM product_images WHERE product_id = ? ORDER BY sort_order ASC";
                             $i_stmt = $conn->prepare($img_query);
                             $i_stmt->bind_param('i', $product_id);
                             $i_stmt->execute();

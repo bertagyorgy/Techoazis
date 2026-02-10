@@ -81,7 +81,7 @@ if ($q !== '') {
 
 
 // ======= ÖSSZES KÉP LEKÉRÉSE EGYBŐL (N+1 QUERY ELKERÜLÉSÉRE) =======
-$images_query = "SELECT post_id, image_path FROM images WHERE post_id IN (
+$images_query = "SELECT post_id, image_path FROM post_images WHERE post_id IN (
     SELECT post_id FROM posts
 ) ORDER BY post_id";
 $images_result = $conn->query($images_query);

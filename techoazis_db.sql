@@ -83,12 +83,19 @@ CREATE TABLE user_badges (
   PRIMARY KEY (user_id, badge_id)
 );
 
-CREATE TABLE images (
+CREATE TABLE product_images (
   image_id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  post_id int(11) DEFAULT NULL,
-  product_id int(11) DEFAULT NULL,
+  product_id int(11) NOT NULL,
   image_path varchar(255) NOT NULL,
   is_primary tinyint(1) NOT NULL DEFAULT 0,
+  sort_order tinyint(4) NOT NULL DEFAULT 1
+);
+
+
+CREATE TABLE post_images (
+  image_id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  post_id int(11) NOT NULL,
+  image_path varchar(255) NOT NULL,
   sort_order tinyint(4) NOT NULL DEFAULT 1
 );
 
