@@ -11,6 +11,12 @@ dokumentáció elkészítése
 weboldal tesztelése
 
 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 Berta György | Elkezdés dátuma | Tervezett befejezés dátuma | Befejzés dátuma | Állapot | ezeket módosítja:
 admin panel | kész
 profile megtekintés  | 2026.01.31 | kész
@@ -18,39 +24,41 @@ dropdown menu profilehoz | ejtve
 képek kijavítása | kész
 admin panel ugyanaz a stílus mint a termék szerkesztése | 2026.01.31 | 2026.01.31 | kész
 a téma váltásnál nincsenek meg a változók visszatöltése
+BESZÉLGETÉS:
+- a beszélgetésnél nincs rendes értékelő megcsinálva, kész
+- elcsúszott beszélgetés gombok, kész
+képek teljesképernyős megtekintése, FONTOS
+profilstatisztika feltöltés adatokkal, FONTOS
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 
 Pap Máté | Elkezdés dátuma | Tervezett befejezés dátuma | Befejzés dátuma | Állapot | ezeket módosítja:
 Megállapodás | 2026.01.26 | 2026.01.27 | 2026.02.02 | kész | converstation.php, converstation_logic.php
-értékeld az eladót új oldalon 
+értékeld az eladót új oldalon, ejtve
 termék hozzáadása | 2026.01.26 | 2026.01.26 | 2026.01.26 | Befejezve | add_product.php
-weboldal tesztelése
+weboldal tesztelése, elkezdve
 útvonalak véglegesítése | 2026.01.30 | 2026.02.02 |  2026.02.02 | Befejezve
 weboldal security | 2026.01.30 | 2026.01.30
+rofilképhiba, eltűnik az eredeti kép+más útvonalon van az anonim és felhasználó profilkép, kész
+a disszertációs alert még mindig bent van, KÉSZ
+a poszt és termékképek miért ugyanabban a táblában vannak, nincs kész: külön szedni 2 táblába, post_images, product_images
+az adminpanelnél a beállítások felét lehet módosítani, nincs kész
 KÉPAPI 
+beszélgetésnél képernyő újratöltését megszüntetni, FONTOS
+adminpanel helyes hozzáadás (egyes tartalmak null, értéket kapnak), FONTOS
+üres lapok feltöltése, FONTOS
 
-NAGYON FONTOS:
-- adminpanel helyes hozzáadás (egyes tartalmak null, értéket kapnak) - Máté
-- profilképhiba, eltűnik az eredeti kép+más útvonalon van az anonim és felhasználó profilkép, - Máté
-- beszélgetésnél képernyő újratöltését megszüntetni - Máté
-- profilstatisztika feltöltés adatokkal - Gyuri
-- képek teljesképernyős megtekintése - Gyuri
-- üres lapok feltöltése
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 KÉRDÉSES:
 - képek tábla szétszedése
 - id-k eltüntetése a linkeknél
-
-
-MATE:
-- a disszertációs alert még mindig bent van, KÉSZ
-- a poszt és termékképek miért ugyanabban a táblában vannak, nincs kész: külön szedni 2 táblába, post_images, product_images
-- az adminpanelnél a beállítások felét lehet módosítani, nincs kész
-
-BESZÉLGETÉS:
-- a beszélgetésnél nincs rendes értékelő megcsinálva, nincs kész: értékelés: popup html dialog
-- elcsúszott beszélgetés gombok, nincs kész: flexboxal
-
-
-
-TRELLOBA FELTÖLTENI
+- adatbázis újraszervezése/átnézése
+- TRELLOBA FELTÖLTENI
