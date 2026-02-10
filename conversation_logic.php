@@ -272,6 +272,8 @@ if (
     if ($stmt->execute()) {
         $conversation['conv_status'] = 'archived'; // Frissítjük a lokális változót a megjelenítéshez
         $success_message = "A beszélgetést lezártad. További üzenetek küldése nem lehetséges.";
+        header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+        exit();
     }
     $stmt->close();
 }
@@ -371,6 +373,8 @@ if (
             $error_message = "Hiba történt az eladás lezárásakor: " . $e->getMessage();
         }
     }
+    header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+    exit();
 }
 /* =========================
    6.1 MEGÁLLAPODÁS VISSZAVONÁSA (MÉGSE)
@@ -397,6 +401,9 @@ if (
         if ($stmt->execute()) {
             $conversation[$my_field] = 0; // lokálisan is frissítjük
             $success_message = "Visszavontad a megállapodást.";
+            $stmt->close();
+            header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+             exit();
         } else {
             $error_message = "Nem sikerült visszavonni a megállapodást.";
         }

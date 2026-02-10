@@ -51,6 +51,8 @@ KÉPAPI
 beszélgetésnél képernyő újratöltését megszüntetni, FONTOS
 adminpanel helyes hozzáadás (egyes tartalmak null, értéket kapnak), FONTOS
 üres lapok feltöltése, FONTOS
+beszélgetésnél képernyő újratöltését megszüntetni, KÉSZ
+a disszertációs alert még mindig bent van, KÉSZ
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,13 +66,11 @@ KÉRDÉSES:
 
 ---------------------------------- UTOLSÓ LÉPÉSEK ---------------------------------------------------------------------------------------
 MATE:
-- a disszertációs alert még mindig bent van, KÉSZ
 - a poszt és termékképek miért ugyanabban a táblában vannak, nincs kész: külön szedni 2 táblába, post_images, product_images MÁTÉ DOLGA
 - az adminpanelnél a beállítások felét lehet módosítani, MÁTÉ DOLGA
 BESZÉLGETÉS:
 - a beszélgetésnél nincs rendes értékelő megcsinálva, nincs kész: értékelés: popup html dialog KÉSZ
 - elcsúszott beszélgetés gombok, nincs kész: flexboxal KÉSZ
-- beszélgetésnél képernyő újratöltését megszüntetni MÁTÉ DOLGA
 PROFIL:
 - profilstatisztika KÉSZ
 - username slugot betöltése GYURI DOLGA
