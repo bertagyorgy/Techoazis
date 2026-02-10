@@ -136,13 +136,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
                         </div>
                         <div style="text-align: right; margin-top: 5px;">
-                            <a href="<?= BASE_URL ?>/views/forgot_password.php">Elfelejtett jelszó?</a>
+                            <a style="color: white" href="<?= BASE_URL ?>/views/forgot_password.php">Elfelejtett jelszó?</a>
                         </div>
                     </div>
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
 
-                <p class="login-footer">Nincs fiókod? <a href="<?= BASE_URL ?>/views/registration.php">Regisztráció</a></p>
+                <p class="login-separator">───── Nincs fiókod? ─────</p>
+                <a href="<?= BASE_URL ?>/views/registration.php"><button class="registration-button">Regisztráció</button></a>
             </section>
         </div>
     </div>

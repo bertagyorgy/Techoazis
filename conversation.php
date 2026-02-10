@@ -61,7 +61,7 @@ require_once ROOT_PATH . '/conversation_logic.php';
                                     echo $status_map[$conversation['product_status']] ?? $conversation['product_status'];
                                     ?>
                                 </span>
-                                • <?php echo $is_seller ? 'Vevő' : 'Eladó'; ?>
+                                <?php echo $is_seller ? 'Vevő' : 'Eladó'; ?>
                             </p>
                         </div>
                     </div>
@@ -117,20 +117,37 @@ require_once ROOT_PATH . '/conversation_logic.php';
 
                             <?php if (!$is_seller): ?>
                                 <?php if (!$existing_review): ?>
-                                    <form method="POST" style="max-width: 400px; margin: 0 auto;">
-                                        <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Értékeld az eladót:</p>
-                                        <select name="rating" required style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc;">
-                                            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
-                                            <option value="4">⭐⭐⭐⭐ (4/5)</option>
-                                            <option value="3">⭐⭐⭐ (3/5)</option>
-                                            <option value="2">⭐⭐ (2/5)</option>
-                                            <option value="1">⭐ (1/5)</option>
-                                        </select>
-                                        <textarea name="review_comment" placeholder="Írj pár szót az adásvételről..." style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; min-height: 60px;"></textarea>
-                                        <button type="submit" name="submit_review" class="deal-button" style="width: 100%; background: var(--accent);">
+                                    <form method="POST" class="review-form">
+                                        <p class="review-label">Értékeld az eladót:</p>
+
+                                        <div class="rating-stars" aria-label="Értékelés (1-5 csillag)">
+                                            <!-- RTL trükk: 5->1 sorrendben, így balról jobbra szépen “tölt” -->
+                                            <input type="radio" id="star5" name="rating" value="5" required>
+                                            <label for="star5" title="5/5"><i class="fas fa-star"></i></label>
+
+                                            <input type="radio" id="star4" name="rating" value="4">
+                                            <label for="star4" title="4/5"><i class="fas fa-star"></i></label>
+
+                                            <input type="radio" id="star3" name="rating" value="3">
+                                            <label for="star3" title="3/5"><i class="fas fa-star"></i></label>
+
+                                            <input type="radio" id="star2" name="rating" value="2">
+                                            <label for="star2" title="2/5"><i class="fas fa-star"></i></label>
+
+                                            <input type="radio" id="star1" name="rating" value="1">
+                                            <label for="star1" title="1/5"><i class="fas fa-star"></i></label>
+                                        </div>
+
+                                        <textarea
+                                            name="review_comment"
+                                            class="review-textarea"
+                                            placeholder="Írj pár szót az adásvételről..."></textarea>
+
+                                        <button type="submit" name="submit_review" class="review-submit">
                                             Értékelés beküldése
                                         </button>
                                     </form>
+
                                 <?php else: ?>
                                     <p style="color: var(--primary); font-style: italic;">
                                         <i class="fas fa-star"></i> Már értékelted ezt az üzletet: <strong><?php echo $existing_review['rating']; ?>/5</strong>
@@ -153,52 +170,74 @@ require_once ROOT_PATH . '/conversation_logic.php';
                 
                 <div class="product-sidebar">
                     <div class="product-header">
-                        <h3>Termék információk</h3>
-                        <div class="product-status-badge <?php echo $conversation['product_status']; ?>">
-                            <?php echo $status_map[$conversation['product_status']] ?? $conversation['product_status']; ?>
+                        <div class="info">
+                            <h3>Termék információk</h3>
+                            <div class="product-status-badge <?php echo $conversation['product_status']; ?>">
+                                <?php echo $status_map[$conversation['product_status']] ?? $conversation['product_status']; ?>
+                            </div>
                         </div>
                         
-                        <form method="POST" action="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>" 
-                              style="display: inline-block; margin-left: 10px;">
-                            
-                            <button type="submit" name="close_conversation" class="deal-button" 
-                                    style="background-color: var(--error, #dc3545); margin-bottom: 5px;"
-                                    onclick="return confirm('Biztosan le akarod zárni a beszélgetést?');"
-                                    <?php echo $conversation['conv_status'] !== 'open' ? 'disabled' : ''; ?>>
-                                <i class="fas fa-lock"></i>
-                                <?php echo $conversation['conv_status'] === 'archived' ? 'Lezárva' : 'Lezárás'; ?>
-                            </button>
+                        
+                        <form method="POST" action="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
 
-                            <?php if ($conversation['conv_status'] === 'open' && $conversation['product_status'] === 'active'): ?>
-                                
-                                <?php 
-                                    // Megnézzük, hogy ÉN (a bejelentkezett user) megnyomtam-e már
-                                    $i_have_agreed = ($is_seller && $conversation['is_seller_agreed']) || (!$is_seller && $conversation['is_buyer_agreed']);
-                                    
-                                    // Megnézzük, hogy a MÁSIK fél megnyomta-e már
-                                    $other_has_agreed = ($is_seller && $conversation['is_buyer_agreed']) || (!$is_seller && $conversation['is_seller_agreed']);
-                                ?>
+                            <div class="deal-actions-inline">
+                                <!-- LEZÁRÁS (piros) -->
+                                <button type="submit" name="close_conversation" class="deal-button"
+                                        style="background-color: var(--error, #dc3545);"
+                                        onclick="return confirm('Biztosan le akarod zárni a beszélgetést?');"
+                                        <?php echo $conversation['conv_status'] !== 'open' ? 'disabled' : ''; ?>>
+                                    <i class="fas fa-lock"></i>
+                                    <?php echo $conversation['conv_status'] === 'archived' ? 'Lezárva' : 'Lezárás'; ?>
+                                </button>
 
-                                <?php if ($i_have_agreed): ?>
-                                    <button type="button" class="deal-button" disabled style="background-color: #f0ad4e; cursor: not-allowed; opacity: 0.8;">
-                                        <i class="fas fa-clock"></i> 
-                                        <?php echo $other_has_agreed ? 'Feldolgozás...' : 'Várakozás a partnerre...'; ?>
+                                <?php if ($conversation['conv_status'] === 'open' && $conversation['product_status'] === 'active'): ?>
+
+                                    <?php
+                                        // Én megnyomtam?
+                                        $i_have_agreed = ($is_seller && $conversation['is_seller_agreed']) || (!$is_seller && $conversation['is_buyer_agreed']);
+
+                                        // Másik megnyomta?
+                                        $other_has_agreed = ($is_seller && $conversation['is_buyer_agreed']) || (!$is_seller && $conversation['is_seller_agreed']);
+                                    ?>
+
+                                    <?php if (!$i_have_agreed): ?>
+                                        <!-- MEGÁLLAPODTUNK -->
+                                        <button type="submit" name="mark_as_sold" class="deal-button"
+                                                onclick="return confirm('Megerősíted, hogy megállapodtatok az üzletben? Ha a másik fél is rányom, a termék eladottá válik.');">
+                                            <i class="fas fa-handshake"></i> Elfogadva
+                                            <?php if ($other_has_agreed): ?>
+                                                <span style="font-size: 0.8em; display: block;">1/2</span>
+                                            <?php endif; ?>
+                                        </button>
+
+                                    <?php else: ?>
+
+                                        <?php if (!$other_has_agreed): ?>
+                                            <!-- MÉGSE (visszavonás) – csak addig, amíg a másik nem okézta -->
+                                            <button type="submit" name="revoke_agreement" class="deal-button cancel"
+                                                    onclick="return confirm('Biztosan visszavonod a megállapodást?');">
+                                                <i class="fas fa-undo"></i> Mégse
+                                            </button>
+                                        <?php else: ?>
+                                            <!-- mindkét fél okézott -> feldolgozás / már mindjárt sold -->
+                                            <button type="button" class="deal-button waiting" disabled>
+                                                <i class="fas fa-clock"></i> Feldolgozás...
+                                            </button>
+                                        <?php endif; ?>
+
+                                    <?php endif; ?>
+
+                                <?php elseif ($conversation['conv_status'] === 'deal_made'): ?>
+                                    <button type="button" class="deal-button sold" disabled>
+                                        <i class="fas fa-check-circle"></i> Megkötve
                                     </button>
                                 <?php else: ?>
-                                    <button type="submit" name="mark_as_sold" class="deal-button" onclick="return confirm('Megerősíted, hogy megállapodtatok az üzletben? Ha a másik fél is rányom, a termék eladottá válik.');">
-                                        <i class="fas fa-handshake"></i> Megállapodtunk
-                                        <?php if ($other_has_agreed): ?>
-                                            <span style="font-size: 0.8em; display: block;">(A partner már jóváhagyta!)</span>
-                                        <?php endif; ?>
+                                    <!-- ha nem active/open, akkor a második gombot akár el is hagyhatod -->
+                                    <button type="button" class="deal-button" disabled>
+                                        <i class="fas fa-ban"></i> Eladott
                                     </button>
                                 <?php endif; ?>
-
-                            <?php elseif ($conversation['conv_status'] === 'deal_made'): ?>
-                                <button type="button" class="deal-button sold" disabled>
-                                    <i class="fas fa-check-circle"></i> Üzlet megkötve
-                                </button>
-                            <?php endif; ?>
-
+                            </div>
                         </form>
                     </div>
                     

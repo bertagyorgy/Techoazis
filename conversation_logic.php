@@ -367,6 +367,37 @@ if (
         }
     }
 }
+/* =========================
+   6.1 MEGÁLLAPODÁS VISSZAVONÁSA (MÉGSE)
+   Csak addig engedjük, amíg a másik fél NEM fogadta el.
+========================= */
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['revoke_agreement']) &&
+    $conversation['product_status'] === 'active' &&
+    $conversation['conv_status'] === 'open'
+) {
+    $is_current_seller = ($conversation['seller_user_id'] == $user_id);
+
+    $my_field    = $is_current_seller ? 'is_seller_agreed' : 'is_buyer_agreed';
+    $other_field = $is_current_seller ? 'is_buyer_agreed' : 'is_seller_agreed';
+
+    // Ha a partner már elfogadta, nem vonható vissza (a kérésed szerint)
+    if ((int)$conversation[$other_field] === 1) {
+        $error_message = "A partner már jóváhagyta, ezért a megállapodás visszavonása már nem lehetséges.";
+    } else {
+        $stmt = $conn->prepare("UPDATE conversations SET $my_field = 0 WHERE conversation_id = ?");
+        $stmt->bind_param("i", $conversation_id);
+
+        if ($stmt->execute()) {
+            $conversation[$my_field] = 0; // lokálisan is frissítjük
+            $success_message = "Visszavontad a megállapodást.";
+        } else {
+            $error_message = "Nem sikerült visszavonni a megállapodást.";
+        }
+        $stmt->close();
+    }
+}
 
 /* =========================
    6.5 ÜZENET KÜLDÉS (PHP FALLBACK HTML FORMHOZ)

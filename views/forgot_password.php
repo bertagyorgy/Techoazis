@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     <button type="submit" name="submit" class="login-button">Link küldése</button>
                 </form>
 
-                <p class="login-footer"><a href="<?= BASE_URL ?>/views/login.php">Vissza a bejelentkezéshez</a></p>
+                <a style="color: white;" href="<?= BASE_URL ?>/views/login.php">Vissza a bejelentkezéshez</a>
             </section>
         </div>
     </div>

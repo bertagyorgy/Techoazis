@@ -127,7 +127,7 @@ if ($page !== '' && $page !== 'index') {
                     </a>
                 </div>
                 <div class="grid-col-3">
-                    <a href="#" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/profile.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-store"></i>
                             <h4>Eladás</h4>
@@ -191,7 +191,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-user"></i>
-                            <h4>100+</h4>
+                            <h3>100+</h3>
                             <p>Felhasználó</p>
                         </div>
                     </div>
@@ -200,7 +200,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-pen-nib"></i>
-                            <h4>50+</h4>
+                            <h3>50+</h3>
                             <p>Poszt és cikk</p>
                         </div>
                     </div>
@@ -209,7 +209,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-layer-group"></i>
-                            <h4>20+</h4>
+                            <h3>20+</h3>
                             <p>Témakör</p>
                         </div>
                     </div>
@@ -218,7 +218,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-tag"></i>
-                            <h4>10+</h4>
+                            <h3>10+</h3>
                             <p>Feltöltött termék</p>
                         </div>
                     </div>
@@ -233,23 +233,23 @@ if ($page !== '' && $page !== 'index') {
             <section class="faq-card">
                 <div class="faq">
                     <details class="faq-item">
-                    <summary>Hogyan működik a biztonságos adás-vétel?</summary>
-                    <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. Lezárás után értékelheted az eladót.</p>
+                        <summary>Hogyan működik a biztonságos adás-vétel?</summary>
+                        <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. Lezárás után értékelheted az eladót.</p>
                     </details>
 
                     <details class="faq-item">
-                    <summary>Miért nem tudok üzenetet küldeni?</summary>
-                    <p>Ellenőrizd, hogy be vagy-e jelentkezve és a beszélgetés nincs-e lezárva.</p>
+                        <summary>Miért nem tudok üzenetet küldeni?</summary>
+                        <p>Ellenőrizd, hogy be vagy-e jelentkezve és a beszélgetés nincs-e lezárva.</p>
                     </details>
 
                     <details class="faq-item">
-                    <summary>Hol látom az értékeléseket?</summary>
-                    <p>Az értékelések az eladó profilján jelennek meg az utolsó értékelések szekcióban.</p>
+                        <summary>Hol látom az értékeléseket?</summary>
+                        <p>Az értékelések az eladó profilján jelennek meg az utolsó értékelések szekcióban.</p>
                     </details>
 
                     <details class="faq-item">
-                    <summary>Mennyi idő alatt válaszoltok?</summary>
-                    <p>Általában 24-48 órán belül.</p>
+                        <summary>Mennyi idő alatt válaszoltok?</summary>
+                        <p>Általában 24-48 órán belül.</p>
                     </details>
                 </div>
             </section>
@@ -283,7 +283,7 @@ if ($page !== '' && $page !== 'index') {
                         <div class="whyus-icon">
                             <i class="fa-solid fa-money-bill-transfer"></i>
                             <h4>Ingyenes</h4>
-                            <p>Felhasználóink díjmentesen hirdethetik termékeiket az oldalon.</p>
+                            <p>Felhasználóink díjmentesen adhatják el termékeiket az oldalon.</p>
                         </div>
                     </div>
                 </div>
