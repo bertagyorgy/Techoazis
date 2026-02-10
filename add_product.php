@@ -240,6 +240,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
 let selectedFiles = [];
 
+// --- EZ AZ ÚJ RÉSZ: Figyeljük a form beküldését ---
+document.querySelector('form').addEventListener('submit', function(e) {
+    const input = document.getElementById('postImages');
+    const dt = new DataTransfer();
+    
+    // A beküldés előtt belepakoljuk a tömb tartalmát az inputba
+    selectedFiles.forEach(file => dt.items.add(file));
+    input.files = dt.files;
+    
+    // Most már engedhetjük a formot a PHP-nak, benne lesznek a képek!
+});
+// ------------------------------------------------
+
 function updateBadges() {
     const cards = document.querySelectorAll('#imagePreview .preview-item');
     cards.forEach((card, index) => {
@@ -261,7 +274,6 @@ function updateBadges() {
 
 function updateUploadVisibility() {
     const inputField = document.getElementById('postImages');
-    // Itt nem eltüntetjük, hanem letiltjuk, ha megvan a 3 kép
     if (selectedFiles.length >= 3) {
         inputField.parentElement.style.opacity = '0.5';
         inputField.disabled = true;
@@ -274,17 +286,7 @@ function updateUploadVisibility() {
 
 function removeImage(index) {
     selectedFiles.splice(index, 1);
-    syncInputAndRender();
-}
-
-function syncInputAndRender() {
-    const input = document.getElementById('postImages');
-    const dt = new DataTransfer();
-    
-    selectedFiles.forEach(file => dt.items.add(file));
-    input.files = dt.files;
-
-    renderPreviews();
+    renderPreviews(); // Itt elég csak újrarenderelni
 }
 
 function renderPreviews() {
@@ -324,9 +326,10 @@ document.getElementById('postImages').addEventListener('change', function(e) {
         }
     });
 
-    syncInputAndRender();
-    // Fontos: kiürítjük az inputot, hogy a DataTransfer vegye át az uralmat
-    //e.target.value = ''; 
+    renderPreviews();
+    
+    // Ez most már maradhat! Kiürítjük, hogy ne legyen duplázódás a köv. tallózásnál.
+    e.target.value = ''; 
 });
 </script>
 </html>
