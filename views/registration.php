@@ -104,12 +104,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     $mail->isSMTP();
                     $mail->Host = getenv('SMTP_HOST'); 
                     $mail->SMTPAuth = true;
-                    $mail->Username = getenv('SMTP_EMAIL'); // A TE email címed
-                    $mail->Password = getenv('SMTP_EMAIL_PASSWORD'); // A TE Gmail App Password-öd
+                    $mail->Username = getenv('SMTP_VER_EMAIL'); // A TE email címed
+                    $mail->Password = getenv('SMTP_VER_EMAIL_PASSWORD'); // A TE Gmail App Password-öd
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = getenv('SMTP_PORT');
 
-                    $mail->setFrom(getenv('SMTP_EMAIL'), 'Techoazis Registration');
+                    $mail->setFrom(getenv('SMTP_VER_EMAIL'), 'Techoazis Registration');
                     $mail->addAddress($email, $username);
                     $mail->isHTML(true); 
                     
