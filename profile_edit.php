@@ -5,6 +5,7 @@ require_once __DIR__ . '/config.php';
 
 // 2. Adatbázis betöltése ROOT_PATH használatával
 require_once ROOT_PATH . '/app/db.php';
+require_once ROOT_PATH . '/app/helpers.php';
 
 // 3. Biztonsági ellenőrzés javítása BASE_URL-lel
 if (!isset($_SESSION['username'])) {
@@ -47,34 +48,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Felhasználónév módosítás
     if (isset($_POST['update_username'])) {
-        $new_username = trim($_POST['new_username']);
-        if (!empty($new_username) && strlen($new_username) >= 3) {
-            // Ellenőrizzük, hogy létezik-e már a felhasználónév
+        $new_username = trim($_POST['new_username'] ?? '');
+        if (!empty($new_username) && mb_strlen($new_username) >= 3) {
+
+            // 1) username foglaltság (maradhat)
             $check_stmt = $conn->prepare("SELECT user_id FROM users WHERE username = ? AND user_id != ?");
             $check_stmt->bind_param("si", $new_username, $current_user_id);
             $check_stmt->execute();
+
             if ($check_stmt->get_result()->num_rows === 0) {
-                $stmt = $conn->prepare("UPDATE users SET username = ? WHERE user_id = ?");
-                $stmt->bind_param("si", $new_username, $current_user_id);
-                if ($stmt->execute()) {
-                    $_SESSION['username'] = $new_username;
-                    $message = "Felhasználónév sikeresen módosítva!";
-                    $message_type = 'success';
+
+                // 2) slug készítés + védelem
+                $base_slug = make_slug($new_username);
+                if ($base_slug === '') {
+                    $base_slug = 'user_' . (int)$current_user_id; // fallback, nem 0
+                }
+
+                // 3) egyedi slug a saját user_id-val
+                $new_slug = unique_slug($conn, $base_slug, (int)$current_user_id);
+
+                // 4) FONTOS: slug foglaltság ellenőrzés (hogy ne ütközzön máséval)
+                $slug_stmt = $conn->prepare("SELECT user_id FROM users WHERE username_slug = ? AND user_id != ?");
+                $slug_stmt->bind_param("si", $new_slug, $current_user_id);
+                $slug_stmt->execute();
+
+                if ($slug_stmt->get_result()->num_rows === 0) {
+
+                    // 5) UPDATE mindkettőre
+                    $stmt = $conn->prepare("UPDATE users SET username = ?, username_slug = ? WHERE user_id = ?");
+                    $stmt->bind_param("ssi", $new_username, $new_slug, $current_user_id);
+
+                    if ($stmt->execute()) {
+                        $_SESSION['username'] = $new_username;
+                        $message = "Felhasználónév sikeresen módosítva!";
+                        $message_type = 'success';
+                    } else {
+                        $message = "Hiba történt a módosítás során.";
+                        $message_type = 'error';
+                    }
+                    $stmt->close();
+
                 } else {
-                    $message = "Hiba történt a módosítás során.";
+                    $message = "Ez a felhasználónév (slug) már foglalt.";
                     $message_type = 'error';
                 }
-                $stmt->close();
+
+                $slug_stmt->close();
+
             } else {
                 $message = "Ez a felhasználónév már foglalt.";
                 $message_type = 'error';
             }
+
             $check_stmt->close();
+
         } else {
             $message = "A felhasználónév legalább 3 karakter hosszú kell legyen.";
             $message_type = 'error';
         }
     }
+
     
     // Email cím módosítás
     if (isset($_POST['update_email'])) {

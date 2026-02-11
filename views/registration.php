@@ -12,6 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // db.php: views/ -> app/db.php
 require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/db.php';
+require_once ROOT_PATH . '/app/helpers.php';
 require_once ROOT_PATH . '/envreader.php';
 
 // PHPMailer komponensek importálása
@@ -55,10 +56,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 
     // Ha nincs hiba: beszúrás és email küldés
     if (empty($errors)) {
+        // USERNAME SLUG (converter)
+        $base_slug = make_slug($username);
+
+        // védelem: ha valamiért üres slug lenne (pl. csak szimbólumok), kap fallbacket
+        if ($base_slug === '') {
+            $base_slug = 'user';
+        }
+
+        // regisztrációnál még nincs user_id, ezért -1-et adunk
+        $username_slug = unique_slug($conn, $base_slug, -1);
+
         $activation_code = bin2hex(random_bytes(16)); // Aktivációs kód generálása
         
-        $sql = "INSERT INTO users (username, email, user_password, is_active, registration_date, user_role, ip, activation_code)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (username, username_slug, email, user_password, is_active, registration_date, user_role, ip, activation_code)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         if ($stmt = $conn->prepare($sql)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -68,8 +80,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
             $ip = $_SERVER['REMOTE_ADDR'] ?? '';
 
             $stmt->bind_param(
-                "ssssssss",
+                "sssssssss",
                 $username,
+                $username_slug,
                 $email,
                 $hashed_password,
                 $is_active,

@@ -141,9 +141,9 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             <?php echo htmlspecialchars($product['category']); ?>
                         </div>
                         
-                        <h1 class="product-title"><?php echo htmlspecialchars($product['product_name']); ?></h1>
+                        <h1 class="product-titles"><?php echo htmlspecialchars($product['product_name']); ?></h1>
                         
-                        <div class="product-price <?php echo $product['price'] ? '' : 'none'; ?>">
+                        <div class="product-prices <?php echo $product['price'] ? '' : 'none'; ?>">
                             <?php 
                             if ($product['price']) {
                                 echo number_format($product['price'], 0, ',', ' ') . ' Ft';
