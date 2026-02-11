@@ -155,5 +155,67 @@
     color: var(--accent-600);
 }
 
+/* ===== Kép nagyító modal (dialog) ===== */
+/* alapból ne legyen ott semmi (ne blokkoljon) */
+.img-modal{
+  display: none;          /* ✅ fontos */
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  max-width: none;
+  max-height: none;
+}
+
+/* csak nyitott állapotban legyen fullscreen + center */
+.img-modal[open]{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.img-modal::backdrop{
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+}
+
+
+/* a képet tartó “doboz” */
+.img-modal-image{
+  display: block;
+  max-width: min(92vw, 1100px);
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;         /* arány megtartás */
+  border-radius: 14px;
+  box-shadow: 0 20px 70px rgba(0,0,0,0.45);
+  background: #111;            /* ha png átlátszó */
+}
+
+/* jobb felső X */
+.img-modal-close{
+  position: fixed;             /* mindig a viewporthoz */
+  top: 18px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 44px;
+  text-align: center;
+  color: #fff;
+  background: rgba(0,0,0,0.45);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+}
+
+.img-modal-close:hover{
+  background: rgba(0,0,0,0.6);
+}
+
 
 

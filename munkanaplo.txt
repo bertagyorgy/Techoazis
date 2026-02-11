@@ -71,8 +71,6 @@ MATE:
 - weboldal tesztelése
 - TRELLOBA FELTÖLTENI
 
-Gyuri:
-PROFIL:
-- username slugot betöltése GYURI DOLGA
-- képek teljesképernyős megtekintése - GYURI DOLGA
+Gyuri: KÉNYELMESEN HÁTRADŐLHET (MÁTÉT NYAGGATJA INKÁBB)
+
 

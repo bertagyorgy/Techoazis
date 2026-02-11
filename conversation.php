@@ -28,16 +28,6 @@ require_once ROOT_PATH . '/app/profile_stats.php';
     
     <section class="section-padding">
         <div class="conversation-container">
-            <div class="conversation-header">
-                <div class="conversation-title">
-                    <h1>Beszélgetés</h1>
-                    <div class="conversation-info">
-                        <i class="fas fa-comments"></i>
-                        <?php echo htmlspecialchars($conversation['product_name']); ?> • 
-                        <?php echo htmlspecialchars($other_user['username']); ?>
-                    </div>
-                </div>
-            </div>
             
             <?php if (isset($_GET['success']) && $_GET['success'] === 'reviewed'): ?>
                 <div style="background: var(--success); color: white; padding: 1rem; border-radius: var(--border-radius-md); margin-bottom: 2rem; text-align: center;">
@@ -248,6 +238,9 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                     </div>
                     
                     <div class="product-details">
+                        <div class="product-name">
+                            <?php echo htmlspecialchars($conversation['product_name']); ?>
+                        </div>
                         <div class="product-price">
                             <?php echo $product['price'] ? number_format($product['price'], 0, ',', ' ') . ' Ft' : 'Alkuképes'; ?>
                         </div>

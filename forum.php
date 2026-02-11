@@ -211,7 +211,7 @@ include ROOT_PATH . '/views/navbar.php';
                 if (isset($post_images[$post['post_id']]) && !empty($post_images[$post['post_id']])): ?>
                     <div class="post-images">
                         <?php foreach ($post_images[$post['post_id']] as $image_path): ?>
-                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($image_path) ?>" class="post-image">
+                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($image_path) ?>" class="post-image js-zoomable">
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
@@ -262,6 +262,11 @@ include ROOT_PATH . '/views/navbar.php';
     </aside>
 
 </section>
+
+<dialog id="imgModal" class="img-modal">
+  <button class="img-modal-close" aria-label="Bezárás">x</button>
+  <img id="imgModalImage" class="img-modal-image" alt="Nagy kép">
+</dialog>
 
 </body>
 </html>

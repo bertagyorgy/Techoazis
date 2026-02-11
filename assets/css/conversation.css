@@ -1,6 +1,9 @@
 /* ===============================
     CONVERSATION STYLES
 =============================== */
+body{
+    padding-top: 70px;
+}
 .conversation-container {
     max-width: 1200px;
     margin: 2rem auto;
@@ -278,7 +281,10 @@
 .product-details {
     padding: 0 1.5rem 1.5rem 1.5rem;
 }
-
+.product-name{
+    font-size: 1.25rem;
+    font-weight: bold;
+}
 .product-price {
     font-size: 1.5rem;
     font-weight: 700;
