@@ -37,22 +37,20 @@ profilstatisztika feltöltés adatokkal, FONTOS
 
 
 Pap Máté | Elkezdés dátuma | Tervezett befejezés dátuma | Befejzés dátuma | Állapot | ezeket módosítja:
-Megállapodás | 2026.01.26 | 2026.01.27 | 2026.02.02 | kész | converstation.php, converstation_logic.php
-értékeld az eladót új oldalon, ejtve
+Megállapodás | 2026.01.26 | 2026.01.27 | 2026.02.02 | Befejezve | converstation.php, converstation_logic.php
+értékeld az eladót új oldalon | ejtve | ejtve | ejtve | ejtve | ejtve 
 termék hozzáadása | 2026.01.26 | 2026.01.26 | 2026.01.26 | Befejezve | add_product.php
-weboldal tesztelése, elkezdve
-útvonalak véglegesítése | 2026.01.30 | 2026.02.02 |  2026.02.02 | Befejezve
-weboldal security | 2026.01.30 | 2026.01.30
-rofilképhiba, eltűnik az eredeti kép+más útvonalon van az anonim és felhasználó profilkép, kész
-a disszertációs alert még mindig bent van, KÉSZ
-a poszt és termékképek miért ugyanabban a táblában vannak, nincs kész: külön szedni 2 táblába, post_images, product_images
-az adminpanelnél a beállítások felét lehet módosítani, nincs kész
-KÉPAPI 
-beszélgetésnél képernyő újratöltését megszüntetni, FONTOS
-adminpanel helyes hozzáadás (egyes tartalmak null, értéket kapnak), FONTOS
-üres lapok feltöltése, FONTOS
-beszélgetésnél képernyő újratöltését megszüntetni, KÉSZ
-a disszertációs alert még mindig bent van, KÉSZ
+útvonalak véglegesítése | 2026.01.30 | 2026.02.02 |  2026.02.02 | Befejezve | ismeretlen
+rofilképhiba, eltűnik az eredeti kép+más útvonalon van az anonim és felhasználó profilkép, 2026.01.30 | 2026.02.05 | 2026.02.05 | Befejezve | ismeretlen
+a disszertációs alert még mindig bent van | 2026.01.30 | 2026.02.10 | 2026.02.10 | Befejezve |  
+beszélgetésnél képernyő újratöltését megszüntetni | 2026.01.30 | 2026.02.10 | 2026.02.10 | Befejezve | ismeretlen
+a poszt és termékképek külön választása 2 táblába |  2026.01.30 | 2026.02.15 | 2026.02.10 | Befejezve | ismeretlen 
+az adminpanelnél a beállítások felét lehet módosítani | 2026.01.30 | 2026.01.30 | ismeretlen | Elkezdve | ismeretlen
+adminpanel helyes hozzáadás (egyes tartalmak null, értéket kapnak) | 2026.01.30 | 2026.02.10 | ismeretlen | Elkezdve | ismeretlen
+üres lapok feltöltése | 2026.01.30 | 2026.02.15 | 2026.02.15 | Elkezdve | ismeretlen
+KÉPAPI integráció | 2026.01.30 | 2026.01.30 | ismeretlen | Nincs elkezdve | ismeretlen
+weboldal tesztelése | elkezdve | 2026.01.26 | ismeretlen | ismeretlen | ismeretlen
+weboldal security | 2026.01.30 | 2026.01.30 | ismeretlen | Elkezdve | ismeretlen
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -65,17 +63,17 @@ KÉRDÉSES:
 
 
 ---------------------------------- UTOLSÓ LÉPÉSEK ---------------------------------------------------------------------------------------
+
 MATE:
-- a poszt és termékképek miért ugyanabban a táblában vannak, nincs kész: külön szedni 2 táblába, post_images, product_images MÁTÉ DOLGA
-- az adminpanelnél a beállítások felét lehet módosítani, MÁTÉ DOLGA
-BESZÉLGETÉS:
-- a beszélgetésnél nincs rendes értékelő megcsinálva, nincs kész: értékelés: popup html dialog KÉSZ
-- elcsúszott beszélgetés gombok, nincs kész: flexboxal KÉSZ
+- Admin panel befejezése, egyes null hibák kijavítása
+- üres lapok feltöltése
+- KÉPAPI integráció
+- weboldal security
+- weboldal tesztelése
+- TRELLOBA FELTÖLTENI
+
+Gyuri:
 PROFIL:
-- profilstatisztika KÉSZ
 - username slugot betöltése GYURI DOLGA
 - képek teljesképernyős megtekintése - GYURI DOLGA
 
-
-
-TRELLOBA FELTÖLTENI
