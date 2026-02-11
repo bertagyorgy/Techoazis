@@ -30,56 +30,55 @@ $message = '';
 $message_type = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // 1. Profilkép törlése gomb
     if (isset($_POST['delete_image'])) {
-        if (!empty($user['profile_image']) && $user['profile_image'] !==  BASE_URL . '/images/anonymous.png') {
-            if (file_exists($user['profile_image'])) {
-                unlink($user['profile_image']);
+        // Csak akkor töröljünk, ha van kép és nem az alapértelmezett
+        if (!empty($user['profile_image']) && strpos($user['profile_image'], 'anonymous.png') === false) {
+            
+            // FONTOS: Az URL-t át kell alakítani helyi elérési úttá a törléshez!
+            $local_path = str_replace(BASE_URL, ROOT_PATH, $user['profile_image']);
+            
+            if (file_exists($local_path)) {
+                unlink($local_path);
             }
-            $default_image = BASE_URL . '/images/anonymous.png';
-            $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");
-            $stmt->bind_param("si", $default_image, $user['user_id']);
-            if ($stmt->execute()) {
-                $message = "Profilkép visszaállítva alapértelmezettre.";
-                $message_type = 'success';
-            }
-            $stmt->close();
         }
+
+        // Adatbázis visszaállítása
+        $default_image = BASE_URL . '/images/anonymous.png';
+        $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");
+        $stmt->bind_param("si", $default_image, $user['user_id']);
+        if ($stmt->execute()) {
+            $message = "Profilkép visszaállítva alapértelmezettre.";
+            $message_type = 'success';
+            $user['profile_image'] = $default_image; // Session frissítése azonnal
+        }
+        $stmt->close();
     }
     
-    // Felhasználónév módosítás
+    // 2. Felhasználónév módosítás ( változatlan )
     if (isset($_POST['update_username'])) {
         $new_username = trim($_POST['new_username'] ?? '');
         if (!empty($new_username) && mb_strlen($new_username) >= 3) {
-
-            // 1) username foglaltság (maradhat)
             $check_stmt = $conn->prepare("SELECT user_id FROM users WHERE username = ? AND user_id != ?");
             $check_stmt->bind_param("si", $new_username, $current_user_id);
             $check_stmt->execute();
 
             if ($check_stmt->get_result()->num_rows === 0) {
-
-                // 2) slug készítés + védelem
                 $base_slug = make_slug($new_username);
-                if ($base_slug === '') {
-                    $base_slug = 'user_' . (int)$current_user_id; // fallback, nem 0
-                }
-
-                // 3) egyedi slug a saját user_id-val
+                if ($base_slug === '') $base_slug = 'user_' . (int)$current_user_id;
                 $new_slug = unique_slug($conn, $base_slug, (int)$current_user_id);
 
-                // 4) FONTOS: slug foglaltság ellenőrzés (hogy ne ütközzön máséval)
                 $slug_stmt = $conn->prepare("SELECT user_id FROM users WHERE username_slug = ? AND user_id != ?");
                 $slug_stmt->bind_param("si", $new_slug, $current_user_id);
                 $slug_stmt->execute();
 
                 if ($slug_stmt->get_result()->num_rows === 0) {
-
-                    // 5) UPDATE mindkettőre
                     $stmt = $conn->prepare("UPDATE users SET username = ?, username_slug = ? WHERE user_id = ?");
                     $stmt->bind_param("ssi", $new_username, $new_slug, $current_user_id);
 
                     if ($stmt->execute()) {
                         $_SESSION['username'] = $new_username;
+                        $user['username'] = $new_username; // Frissítjük a helyi változót is
                         $message = "Felhasználónév sikeresen módosítva!";
                         $message_type = 'success';
                     } else {
@@ -87,33 +86,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $message_type = 'error';
                     }
                     $stmt->close();
-
                 } else {
                     $message = "Ez a felhasználónév (slug) már foglalt.";
                     $message_type = 'error';
                 }
-
                 $slug_stmt->close();
-
             } else {
                 $message = "Ez a felhasználónév már foglalt.";
                 $message_type = 'error';
             }
-
             $check_stmt->close();
-
         } else {
             $message = "A felhasználónév legalább 3 karakter hosszú kell legyen.";
             $message_type = 'error';
         }
     }
 
-    
-    // Email cím módosítás
+    // 3. Email cím módosítás ( változatlan )
     if (isset($_POST['update_email'])) {
         $new_email = trim($_POST['new_email']);
         if (filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
-            // Ellenőrizzük, hogy létezik-e már az email
             $check_stmt = $conn->prepare("SELECT user_id FROM users WHERE email = ? AND user_id != ?");
             $check_stmt->bind_param("si", $new_email, $current_user_id);
             $check_stmt->execute();
@@ -121,6 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $conn->prepare("UPDATE users SET email = ? WHERE user_id = ?");
                 $stmt->bind_param("si", $new_email, $current_user_id);
                 if ($stmt->execute()) {
+                    $user['email'] = $new_email; // Frissítés
                     $message = "Email cím sikeresen módosítva!";
                     $message_type = 'success';
                 } else {
@@ -139,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    // Jelszó módosítás
+    // 4. Jelszó módosítás ( változatlan )
     if (isset($_POST['update_password'])) {
         $current_password = $_POST['current_password'];
         $new_password = $_POST['new_password'];
@@ -147,7 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (strlen($new_password) >= 6) {
             if ($new_password === $confirm_password) {
-                // Ellenőrizzük a jelenlegi jelszót
                 $stmt = $conn->prepare("SELECT user_password FROM users WHERE user_id = ?");
                 $stmt->bind_param("i", $current_user_id);
                 $stmt->execute();
@@ -180,56 +172,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    // Profilkép feltöltés
+    // 5. Profilkép feltöltés (JAVÍTOTT RÉSZ)
     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
         $file = $_FILES['profile_image'];
         $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
         $max_size = 5 * 1024 * 1024; // 5 MB
-        $upload_dir = BASE_URL . "/uploads/profile_images/";
         
-        if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
+        // JAVÍTÁS: Itt ROOT_PATH-ot használunk a fájlrendszer eléréshez
+        $upload_dir_path = ROOT_PATH . "/uploads/profile_images/";
+        // Ez pedig az URL lesz az adatbázisba
+        $upload_dir_url = BASE_URL . "/uploads/profile_images/";
+        
+        if (!file_exists($upload_dir_path)) {
+            mkdir($upload_dir_path, 0777, true);
         }
         
         if (in_array($file['type'], $allowed_types)) {
             if ($file['size'] <= $max_size) {
-                // Régi kép törlése (ha nem az alapértelmezett)
-                if (!empty($user['profile_image']) && $user['profile_image'] !== BASE_URL .'/images/anonymous.png') {
-                    if (file_exists($user['profile_image'])) {
-                        unlink($user['profile_image']);
+                
+                // Régi kép törlése (URL -> Fájl útvonal konverzióval)
+                if (!empty($user['profile_image']) && strpos($user['profile_image'], 'anonymous.png') === false) {
+                    $old_file_path = str_replace(BASE_URL, ROOT_PATH, $user['profile_image']);
+                    if (file_exists($old_file_path)) {
+                        unlink($old_file_path);
                     }
                 }
                 
                 // Új fájlnév
                 $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
                 $new_filename = "profile_" . $current_user_id . "_" . time() . "." . $ext;
-                $target_path = $upload_dir . $new_filename;
                 
-                // Kép átméretezése
+                // JAVÍTÁS: A mentési célútvonal a fizikai elérési út legyen!
+                $target_save_path = $upload_dir_path . $new_filename;
+                
+                // Kép feldolgozás
                 list($width, $height) = getimagesize($file['tmp_name']);
                 $new_width = 300;
                 $new_height = 300;
                 
                 $image = null;
                 switch ($file['type']) {
-                    case 'image/jpeg':
-                        $image = imagecreatefromjpeg($file['tmp_name']);
-                        break;
-                    case 'image/png':
-                        $image = imagecreatefrompng($file['tmp_name']);
-                        break;
-                    case 'image/webp':
-                        $image = imagecreatefromwebp($file['tmp_name']);
-                        break;
-                    case 'image/gif':
-                        $image = imagecreatefromgif($file['tmp_name']);
-                        break;
+                    case 'image/jpeg': $image = imagecreatefromjpeg($file['tmp_name']); break;
+                    case 'image/png': $image = imagecreatefrompng($file['tmp_name']); break;
+                    case 'image/webp': $image = imagecreatefromwebp($file['tmp_name']); break;
+                    case 'image/gif': $image = imagecreatefromgif($file['tmp_name']); break;
                 }
                 
                 if ($image) {
                     $resized = imagecreatetruecolor($new_width, $new_height);
                     
-                    // Átlátszóság megőrzése PNG-hez
                     if ($file['type'] === 'image/png' || $file['type'] === 'image/gif') {
                         imagealphablending($resized, false);
                         imagesavealpha($resized, true);
@@ -239,39 +230,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     imagecopyresampled($resized, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
                     
-                    // Mentés
+                    // Mentés (most már a fizikai útvonalra írunk)
+                    $save_success = false;
                     switch ($file['type']) {
-                        case 'image/jpeg':
-                            imagejpeg($resized, $target_path, 90);
-                            break;
-                        case 'image/png':
-                            imagepng($resized, $target_path, 9);
-                            break;
-                        case 'image/webp':
-                            imagewebp($resized, $target_path, 90);
-                            break;
-                        case 'image/gif':
-                            imagegif($resized, $target_path);
-                            break;
+                        case 'image/jpeg': $save_success = imagejpeg($resized, $target_save_path, 90); break;
+                        case 'image/png': $save_success = imagepng($resized, $target_save_path, 9); break;
+                        case 'image/webp': $save_success = imagewebp($resized, $target_save_path, 90); break;
+                        case 'image/gif': $save_success = imagegif($resized, $target_save_path); break;
                     }
                     
                     imagedestroy($image);
                     imagedestroy($resized);
                     
-                    // Adatbázis frissítése
-                    $relative_path = BASE_URL . "/uploads/profile_images/" . $new_filename;
-                    $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");
-                    $stmt->bind_param("si", $relative_path, $current_user_id);
-                    if ($stmt->execute()) {
-                        $message = "Profilkép sikeresen frissítve!";
-                        $message_type = 'success';
-                        // Frissítjük a session-t
-                        $user['profile_image'] = $relative_path;
+                    if ($save_success) {
+                        // Adatbázis frissítése (itt marad az URL!)
+                        $db_url_path = $upload_dir_url . $new_filename;
+                        
+                        $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");
+                        $stmt->bind_param("si", $db_url_path, $current_user_id);
+                        
+                        if ($stmt->execute()) {
+                            $message = "Profilkép sikeresen frissítve!";
+                            $message_type = 'success';
+                            $user['profile_image'] = $db_url_path; // View frissítése
+                        } else {
+                            $message = "Hiba az adatbázis frissítése során.";
+                            $message_type = 'error';
+                        }
+                        $stmt->close();
                     } else {
-                        $message = "Hiba az adatbázis frissítése során.";
+                        $message = "Nem sikerült a képet elmenteni a szerverre.";
                         $message_type = 'error';
                     }
-                    $stmt->close();
                 } else {
                     $message = "Hiba a kép feldolgozása során.";
                     $message_type = 'error';
