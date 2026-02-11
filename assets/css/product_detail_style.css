@@ -144,7 +144,7 @@
     font-size: 1.8rem;
 }
 .gallery-meta-panel {
-    background: var(--surface);
+    /*background: var(--surface);*/
     border-radius: var(--border-radius-lg);
     padding: 1.5rem;
     /*border: 1px solid var(--neutral-500);*/
@@ -297,7 +297,7 @@
 }
 
 .btn-back {
-    background: var(--surface);
+    background: var(--neutral-300);
     color: var(--text-light);
     border: 2px solid var(--border-color);
     padding: 12px 32px;
@@ -305,7 +305,7 @@
 }
 
 .btn-back:hover {
-    background: var(--surface);
+    background: var(--neutral-100);
     border-color: var(--primary-300);
     transform: translateY(-2px);
 }

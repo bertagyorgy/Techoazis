@@ -189,6 +189,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
 }); // --- DOMContentLoaded VÉGE ---
 
+// képek kivetítése (overlay / dialog)
+(() => {
+  const dialog = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalImage');
+  const closeBtn = dialog?.querySelector('.img-modal-close');
+
+  if (!dialog || !modalImg || !closeBtn) return;
+
+  // 1x1 átlátszó pixel: sose legyen “törött kép” állapot
+  const TRANSPARENT_PIXEL =
+    'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+
+  function openImage(src, alt = '') {
+    modalImg.style.visibility = 'visible';
+    modalImg.src = src;
+    modalImg.alt = alt || 'Nagy kép';
+    if (!dialog.open) dialog.showModal();
+  }
+
+  function closeImage() {
+    if (!dialog.open) return;
+
+    // azonnal eltüntetjük, hogy ne villanjon se broken icon, se alt
+    modalImg.style.visibility = 'hidden';
+    dialog.close();
+  }
+
+  // amikor ténylegesen bezárult: biztonságos reset
+  dialog.addEventListener('close', () => {
+    modalImg.src = TRANSPARENT_PIXEL;
+    modalImg.alt = '';
+
+    // következő tickben vissza, hogy a következő open-nél rendben legyen
+    setTimeout(() => {
+      modalImg.style.visibility = 'visible';
+    }, 0);
+  });
+
+  // Kattintás képre -> nyit
+  document.addEventListener('click', (e) => {
+    const img = e.target.closest('img.js-zoomable');
+    if (!img) return;
+
+    e.preventDefault();
+    openImage(img.src, img.alt);
+  });
+
+  // X gomb
+  closeBtn.addEventListener('click', closeImage);
+
+  // háttérre katt -> bezár
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) closeImage();
+  });
+
+  // ESC (biztosra megyünk)
+  dialog.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    closeImage();
+  });
+})();
+
+
+
 // Helper funkciók (ezek lehetnek kívül)
 
 // ===========================

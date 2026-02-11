@@ -181,7 +181,7 @@ $post_count = $posts->num_rows;
                 if ($images->num_rows > 0): ?>
                     <div class="post-images">
                         <?php while ($img = $images->fetch_assoc()): ?>
-                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($img['image_path']) ?>" class="post-image">
+                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($img['image_path']) ?>" class="post-image js-zoomable">
                         <?php endwhile; ?>
                     </div>
                 <?php endif; ?>
@@ -212,5 +212,10 @@ $post_count = $posts->num_rows;
     </main>
 
 </section>
+
+<dialog id="imgModal" class="img-modal">
+  <button class="img-modal-close" aria-label="Bezárás">x</button>
+  <img id="imgModalImage" class="img-modal-image" alt="Nagy kép">
+</dialog>
 </body>
 </html>
