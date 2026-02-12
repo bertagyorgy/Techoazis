@@ -58,7 +58,6 @@ weboldal security | 2026.01.30 | 2026.01.30 | ismeretlen | Elkezdve | ismeretlen
 
 
 KÉRDÉSES:
-- képek tábla szétszedése
 - id-k eltüntetése a linkeknél
 
 
