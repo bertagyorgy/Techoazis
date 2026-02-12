@@ -365,7 +365,9 @@ $profile_image = !empty($user['profile_image'])
 
         <?php if (count($reviews) > 0): ?>
         <section class="reviews-section">
-            <h3 class="section-title">Legutóbbi értékelések</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 class="section-title">Legutóbbi értékelések</h3>
+            </div>
             <?php foreach ($reviews as $review): ?>
             <div class="review-item">
                 <div class="review-rating">

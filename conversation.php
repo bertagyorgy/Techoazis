@@ -101,7 +101,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                     <?php elseif ($conversation['conv_status'] === 'deal_made'): ?>
 
 
-                        <div class="message-input-container" style="display: block; text-align: center; padding: 1.5rem; background: #f8f9fa; border-top: 1px solid #ddd;">
+                        <div class="message-input-container" style="display: block; text-align: center; padding: 1.5rem; background: var(--border-color); border-top: 2px solid #ddd;">
                             <p style="font-weight: bold; color: var(--success, #28a745); margin-bottom: 1rem;">
                                 <i class="fas fa-handshake"></i> Az üzlet sikeresen lezárult!
                             </p>
@@ -151,7 +151,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
 
                     <?php else: ?>
                         
-                        <div class="message-input-container" style="text-align: center; padding: 1.5rem; background: #f8f9fa; border-top: 1px solid #ddd; color: #666;">
+                        <div class="message-input-container" style="text-align: center; padding: 1.5rem; background: var(--border-color); border-top: 2px solid #ddd; color: #666;">
                             <p style="font-weight: bold;"><i class="fas fa-lock"></i> A beszélgetés lezárult.</p>
                             <p style="margin-top: 0.5rem; font-size: 0.9em;">További üzenetek nem küldhetőek.</p>
                         </div>

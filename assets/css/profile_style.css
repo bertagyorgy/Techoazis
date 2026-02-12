@@ -84,7 +84,7 @@ body {
 .rating-display {
     margin: 1rem 0;
     padding: 0.75rem;
-    background: var(--neutral-100);
+    background: var(--dark-surface-alt);
     border-radius: var(--border-radius-md);
 }
 
@@ -105,7 +105,6 @@ body {
     border: none;
     font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition-fast);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -118,26 +117,27 @@ body {
 /* JAVÍTOTT: Ne legyen hover alatt fehér a szöveg */
 .profile-btn-primary {
     background: var(--primary-500);
-    color: white !important;
+    color: var(--primary-100);
 }
 
 .profile-btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
-    color: white !important;
+    color: var(--primary-100);
 }
 
+
 .profile-btn-secondary {
-    background: var(--neutral-100);
-    color: var(--neutral-700) !important;
+    background: var(--dark-surface-alt);
     border: 1px solid var(--border-color);
+    color: var(--text-color);
 }
 
 .profile-btn-secondary:hover {
     border: 1px solid var(--accent-600);
     background: var(--neutral-200);
     transform: translateY(-2px);
-    color: var(--neutral-900) !important;
+    color: var(--text-color);
 }
 
 .profile-btn-danger {
@@ -235,7 +235,7 @@ body {
     padding: 1rem;
     border-radius: var(--border-radius-md);
     margin-bottom: 0.75rem;
-    background: var(--neutral-100);
+    background: var(--dark-surface-alt);
     transition: all var(--transition-fast);
     cursor: pointer;
     border: 1px solid transparent;
@@ -402,11 +402,14 @@ body {
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
 }
+.reviews-section .section-title::after{
+    float: left;
+}
 
 .review-item {
     padding: 1rem;
     border-bottom: 1px solid var(--border-color);
-    background: var(--neutral-100);
+    background: var(--dark-surface-alt);
     border-radius: var(--border-radius-md);
     margin-bottom: 1rem;
 }

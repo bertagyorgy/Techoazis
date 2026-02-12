@@ -51,14 +51,14 @@ body{
     flex-direction: column;
     background: var(--surface);
     border-radius: var(--border-radius-lg);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--neutral-300);
     overflow: hidden;
 }
 
 .chat-header {
     padding: 1.5rem;
-    background: var(--primary-100);
-    border-bottom: 1px solid var(--border-color);
+    background: var(--border-color);
+    border-bottom: 2px solid #ddd;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -79,7 +79,7 @@ body{
 
 .user-info h3 {
     margin: 0;
-    color: var(--primary-700);
+    color: var(--text-light);
 }
 
 .user-info p {
@@ -155,11 +155,12 @@ body{
 
 .message-text {
     margin-bottom: 0.5rem;
+    color: var(--primary-900);
 }
 
 .message-time {
     font-size: 0.75rem;
-    color: var(--text-light);
+    color: var(--primary-900);
     text-align: right;
 }
 
@@ -220,20 +221,21 @@ body{
 .product-sidebar {
     background: var(--surface);
     border-radius: var(--border-radius-lg);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--neutral-300);
     overflow: hidden;
 }
 
 .product-header {
     padding: 1.5rem;
-    background: var(--primary-100);
+    background: var(--border-color);
     border-bottom: 1px solid var(--border-color);
 }
 
 .product-header h3 {
     margin: 0 0 1rem 0;
-    color: var(--primary-700);
+    color: var(--text-light);
     font-size: 1.25rem;
+    font-weight: bold;
 }
 .info{
     display: flex;

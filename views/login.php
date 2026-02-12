@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
 
-                <p class="login-separator">───── Nincs fiókod? ─────</p>
+                <p class="login-separator">Nincs fiókod?</p>
                 <a href="<?= BASE_URL ?>/views/registration.php"><button class="registration-button">Regisztráció</button></a>
             </section>
         </div>

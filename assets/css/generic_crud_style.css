@@ -3,13 +3,13 @@
     max-width: 850px; 
     margin: 2rem auto; 
     padding: 2.5rem; 
-    background: #fff; 
+    background: var(--surface); 
     border-radius: 16px; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
     border: 1px solid var(--admin-border);
 }
 .form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 0.6rem; font-weight: 600; color: var(--admin-secondary); font-size: 0.95rem; }
+.form-group label { display: block; margin-bottom: 0.6rem; font-weight: 600; color: var(--admin-text); font-size: 0.95rem; }
 .form-control { 
     width: 100%; 
     padding: 0.85rem; 

@@ -61,6 +61,7 @@
     --dark-bg-alt: #e8f2ff;
     --dark-bg: #0f172a;
     --dark-surface: #1e293b;
+    --dark-surface-alt: var(--neutral-100);
     --dark-text: #f1f5f9;
 }
 
@@ -70,6 +71,7 @@
     --background: var(--dark-bg);
     --dark-bg-alt: var(--dark-surface);
     --surface: var(--dark-surface);
+    --dark-surface-alt: #3e444e;
     --text-color: var(--dark-text);
     --text-light: #cbd5e1;
     --text-light-o: var(--neutral-700);

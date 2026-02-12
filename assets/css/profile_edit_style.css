@@ -43,7 +43,7 @@ body{
     margin-bottom: 1.25rem;
     flex-wrap: wrap;
     padding: 0.5rem;
-    background: var(--neutral-100);
+    background: var(--dark-surface-alt);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
 }
@@ -126,7 +126,7 @@ body{
     border-radius: var(--border-radius-md);
     font-size: 1rem;
     transition: border-color var(--transition-fast);
-    background: var(--neutral-100);
+    background: var(--dark-surface-alt);
     color: var(--text-color);
 }
 

@@ -234,7 +234,7 @@ switch ($action):
 ?>
     <div class="edit-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
-            <h2 style="margin:0; color: var(--admin-secondary); text-transform: capitalize;">
+            <h2 style="margin:0; color: var(--admin-text); text-transform: capitalize;">
                 <i class="fas <?= $is_edit ? 'fa-edit' : 'fa-plus-circle' ?>" style="color: var(--admin-accent); margin-right: 10px;"></i> 
                 <?= htmlspecialchars($config['singular_name']) ?> <?= $is_edit ? 'szerkesztése' : 'hozzáadása' ?>
             </h2>

@@ -87,12 +87,15 @@ require_once __DIR__ . '/config.php';
           <label for="message">Üzenet</label>
           <textarea id="message" name="message" rows="6" class="form-control" required minlength="10"></textarea>
         </div>
-
+        <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
         <div style="margin-top: 2rem;">
           <button type="submit" class="btn-message-seller">
             <i class="fas fa-paper-plane"></i> Üzenet küldése
           </button>
         </div>
+        <?php else: ?>
+          <p style="color: var(--text-light)">Jelentkezz be, hogy üzenetet küldhess</p>
+        <?php endif; ?>
       </form>
     </section>
   </div>

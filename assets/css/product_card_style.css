@@ -27,7 +27,7 @@
     position: relative;
     overflow: hidden;
     height: 200px;
-    background: var(--border-color);
+    background: var(--background);
     object-fit: scale-down;
 }
 
