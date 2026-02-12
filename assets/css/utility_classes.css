@@ -46,7 +46,7 @@
 @media (max-width: 768px) {
     .hero-section {
         background-attachment: scroll;
-        background: url('../../images/desert_evening.jpeg') left/cover;
+        background: url('../../images/desert_evening.webp') left/cover;
     }
 }
 /* Glass effect */

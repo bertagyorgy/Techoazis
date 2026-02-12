@@ -33,7 +33,7 @@ if (!defined('BASE_URL')) {
             margin: 0;
             height: 100vh;
             /* A háttérképnél is fontos a BASE_URL! */
-            background: url('<?= BASE_URL ?>/images/desert_night2.jpeg');
+            background: url('<?= BASE_URL ?>/images/desert_night2.webp');
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;
