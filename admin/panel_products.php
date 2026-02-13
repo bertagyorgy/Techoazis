@@ -1,5 +1,7 @@
 <?php
-// 1. Config betöltése kötelező, hogy legyen ROOT_PATH és BASE_URL
+// /opt/lampp/htdocs/Techoazis/admin/panel_products.php
+
+// 1. Config betöltése kötelező
 require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
@@ -7,7 +9,6 @@ require_once ROOT_PATH . '/app/auth_check.php';
 $config = [
     'table' => 'products',
     'pk' => 'product_id',
-    // JAVÍTÁS: A page_file az admin.php-ra mutasson, paraméterként átadva a panelt
     'page_file' => BASE_URL . '/admin/admin?page=panel_products',
     'page_title' => 'Termékek',
     'singular_name' => 'termék',
@@ -15,46 +16,57 @@ $config = [
     // Oszlopok a listázó nézetben
     'list_columns' => [
         'product_id' => 'ID',
-        'seller_user_id' => 'Feltöltő',
+        'main_image_url' => 'Kép', 
         'product_name' => 'Név',
+        'username' => 'Eladó', // A JOIN-ból jön
         'category' => 'Kategória',
         'price' => 'Ár',
-        'product_status' => 'Készlet',
-        'main_image_url' => 'Kép', 
+        'product_status' => 'Státusz',
+        'created_at' => 'Létrehozva'
     ],
     
-    // Egyéni JOIN-olt lekérdezés
-    'list_query' => "SELECT p.*, u.username 
+    // Lekérdezés az új mezőkkel és JOIN-nal
+    'list_query' => "SELECT p.*, u.username,
+                     (SELECT image_path FROM product_images WHERE product_id = p.product_id LIMIT 1) as main_image
                      FROM products p 
-                     JOIN users u ON p.seller_user_id = u.user_id 
-                     ORDER BY p.product_id",
+                     LEFT JOIN users u ON p.seller_user_id = u.user_id 
+                     ORDER BY p.product_id DESC LIMIT 50;",
                      
     'list_formatters' => [
-        'seller_user_id' => function($value, $row) {
-            return htmlspecialchars($row['username']); 
-        },
-        'price' => function($value, $row) {
-            return number_format((float)$value, 0, '', ' ') . ' HUF';
+        'price' => function($value) {
+            return number_format((float)$value, 0, '', ' ') . ' Ft';
         },
         'main_image_url' => function($value, $row) {
-             if (empty($value)) return 'Nincs kép';
-             // JAVÍTÁS: Kép elérési útja BASE_URL-el
-             $image_path = BASE_URL . '/uploads/products/' . htmlspecialchars($value);
-             return '<img src="' . $image_path . '" alt="Termékkép" style="max-width: 50px; height: auto; border-radius: 4px;">';
+            // A shop.php logikáját követve: ha nincs a product_images-ben kép, akkor az alapértelmezettet mutatjuk
+            $image_to_show = !empty($row['main_image']) ? $row['main_image'] : 'uploads/products/default_product.png';
+            
+            // Webes elérési út összeállítása
+            $img_url = BASE_URL . '/' . $image_to_show;
+            
+            return '<img src="' . $img_url . '" alt="Termék" style="max-width: 45px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">';
         },
         'product_status' => function($value) {
-            if ($value === 'active') return '🟢 Aktív';
-            if ($value === 'sold') return '🔴 Elfogyott';
-            return htmlspecialchars($value);
+            $badges = [
+                'active' => '<span style="color: green;">🟢 Aktív</span>',
+                'sold'   => '<span style="color: red;">🔴 Eladva</span>',
+                'hidden' => '<span style="color: gray;">⚪ Rejtett</span>'
+            ];
+            return $badges[$value] ?? htmlspecialchars($value);
+        },
+        'created_at' => function($value) {
+            return date('Y.m.d.', strtotime($value));
         }
     ],
     
-    'form_fields' => ['seller_user_id', 'product_name', 'category', 'product_description', 'price', 'product_status', 'main_image_url'],
+    // Az összes táblabeli mező szerkeszthetővé tétele
+    'form_fields' => [
+        'seller_user_id', 'product_name', 'category', 'product_description', 
+        'price', 'product_status', 'pickup_location', 'main_image_url'
+    ],
 
     'fields' => [
-        'product_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
         'seller_user_id' => [
-            'label' => 'Feltöltő felhasználó',
+            'label' => 'Eladó (Felhasználó)',
             'type' => 'select', 
             'required' => true,
             'param_type' => 'i',
@@ -65,17 +77,41 @@ $config = [
             ]
         ],
         'product_name' => ['label' => 'Termék neve', 'type' => 'text', 'required' => true, 'param_type' => 's'],
-        'category' => ['label' => 'Kategória', 'type' => 'text', 'param_type' => 's'],
-        'product_description' => ['label' => 'Leírás', 'type' => 'textarea', 'param_type' => 's'], 
-        'price' => ['label' => 'Ár', 'type' => 'number', 'step' => '1', 'required' => true, 'param_type' => 'i'], 
-        'product_status' => [ 'label' => 'Státusz', 'type' => 'select', 'required' => true, 'param_type' => 's', 'options' => [ 'active' => 'Aktív', 'sold' => 'Eladva' ] ],        
+        'category' => ['label' => 'Kategória', 'type' => 'text', 'required' => true, 'param_type' => 's'],
+        'product_description' => ['label' => 'Leírás', 'type' => 'textarea', 'required' => true, 'param_type' => 's'], 
+        'price' => [
+            'label' => 'Ár (HUF)', 
+            'type' => 'number', 
+            'step' => '1', 
+            'required' => true, 
+            'param_type' => 'd' // decimal miatt 'd' vagy 's' szerencsésebb, mint az 'i'
+        ], 
+        'product_status' => [ 
+            'label' => 'Státusz', 
+            'type' => 'select', 
+            'required' => true, 
+            'param_type' => 's', 
+            'options' => [ 
+                'active' => 'Aktív', 
+                'sold' => 'Eladva (Elfogyott)', 
+                'hidden' => 'Rejtett / Piszkozat' 
+            ] 
+        ],
+        'pickup_location' => [
+            'label' => 'Átvétel helyszíne', 
+            'type' => 'text', 
+            'placeholder' => 'Pl. Budapest, XI. kerület',
+            'param_type' => 's'
+        ],
         'main_image_url' => [
-            'label' => 'Termék fő képe',
-            'type' => 'file', 
+            'label' => 'Termék kép útvonala (vagy feltöltés)',
+            'type' => 'text', // Ha a generic_crud csak text-et kezel le jópár helyen, a fájlfeltöltéshez külön logika kellhet
             'param_type' => 's',
+            'default' => 'uploads/products/default_product.png'
         ] 
     ]
 ];
 
-// JAVÍTÁS: ROOT_PATH használata a CRUD behívásához
+// 2. A CRUD sablon behívása
 require_once ROOT_PATH . '/app/generic_crud.php';
+?>

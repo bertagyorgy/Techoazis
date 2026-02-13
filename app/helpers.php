@@ -1,25 +1,27 @@
 <?php
 function make_slug(string $username): string {
+    // Kisbetűsítés és szélekről whitespace eltávolítás
     $s = mb_strtolower(trim($username), 'UTF-8');
 
-    // magyar ékezetek
+    // Magyar ékezetek és egyéb speciális karakterek átalakítása
     $map = [
         'á'=>'a','é'=>'e','í'=>'i','ó'=>'o','ö'=>'o','ő'=>'o','ú'=>'u','ü'=>'u','ű'=>'u',
-        'Á'=>'a','É'=>'e','Í'=>'i','Ó'=>'o','Ö'=>'o','Ő'=>'o','Ú'=>'u','Ü'=>'u','Ű'=>'u'
+        'Á'=>'a','É'=>'e','Í'=>'i','Ó'=>'o','Ö'=>'o','Ő'=>'o','Ú'=>'u','Ü'=>'u','Ű'=>'u',
+        // Opcionálisan bővíthető más karakterekkel is
     ];
     $s = strtr($s, $map);
 
-    // szóközök -> underscore
-    $s = preg_replace('/\s+/', '_', $s);
+    // Szóközök és speciális karakterek cseréje kötőjelre
+    // Minden, ami nem betű vagy szám, kötőjel lesz
+    $s = preg_replace('/[^a-z0-9]+/', '-', $s);
 
-    // csak [a-z0-9_]
-    $s = preg_replace('/[^a-z0-9_]/', '', $s);
+    // Több egymást követő kötőjel összevonása egyre
+    $s = preg_replace('/-+/', '-', $s);
 
-    // több underscore összevonása
-    $s = preg_replace('/_+/', '_', $s);
-
-    return trim($s, '_');
+    // Kötőjelek levágása a szöveg elejéről és végéről
+    return trim($s, '-');
 }
+
 function unique_slug(mysqli $conn, string $base, int $user_id): string {
     $slug = $base;
     $i = 2;
@@ -32,9 +34,10 @@ function unique_slug(mysqli $conn, string $base, int $user_id): string {
         $stmt->close();
 
         if (!$exists) return $slug;
-        $slug = $base . "_" . $i;
+        
+        // Itt is kötőjellel fűzzük hozzá a sorszámot
+        $slug = $base . "-" . $i;
         $i++;
     }
 }
-
 ?>
