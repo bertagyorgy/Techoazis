@@ -66,6 +66,15 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
+    if (messageInput) { 
+        messageInput.addEventListener('keydown', function(e) {
+             if (e.key === 'Enter' && !e.shiftKey) { 
+                e.preventDefault(); 
+                messageForm.requestSubmit(); 
+            } 
+        }); 
+    }
+
     // Üzenetküldés
     if (messageForm) {
         messageForm.addEventListener('submit', function(e) {
