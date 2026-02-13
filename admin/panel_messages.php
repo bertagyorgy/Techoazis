@@ -1,66 +1,66 @@
 <?php
 // /opt/lampp/htdocs/Techoazis/admin/panel_messages.php
 
-// 1. Config betöltése kötelező a ROOT_PATH és BASE_URL eléréséhez
 require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- ÜZENETEK KONFIGURÁCIÓJA ---
 $config = [
-    // --- ALAPBEÁLLÍTÁSOK ---
     'table' => 'messages',
     'pk' => 'message_id',
-    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
     'page_file' => BASE_URL . '/admin/admin?page=panel_messages',
     'page_title' => 'Beszélgetés Üzenetek',
     'singular_name' => 'üzenet',
 
-    // --- LISTÁZÁS KONFIGURÁCIÓ (JOIN-nal a küldőhöz és a beszélgetéshez) ---
+    // --- LISTÁZÁS KONFIGURÁCIÓ ---
     'list_columns' => [
         'message_id' => 'ID',
-        'conversation_summary' => 'Beszélgetés', 
+        'conversation_summary' => 'Beszélgetés (Termék)', 
         'sender_username' => 'Küldő',          
         'user_message' => 'Üzenet',
-        'sent_at' => 'Elküldve',
-        'is_read' => 'Olvasott?'
+        'is_read' => 'Állapot',
+        'sent_at' => 'Dátum'
     ],
     
     'list_query' => "SELECT m.*, 
                             u.username AS sender_username, 
-                            CONCAT(p.product_name, ' (Vevő: ', b.username, ')') AS conversation_summary 
+                            p.product_name AS product_name
                      FROM messages m
-                     JOIN users u ON m.sender_user_id = u.user_id
-                     JOIN conversations c ON m.conversation_id = c.conversation_id
-                     JOIN products p ON c.product_id = p.product_id
-                     JOIN users b ON c.buyer_user_id = b.user_id 
+                     LEFT JOIN users u ON m.sender_user_id = u.user_id
+                     LEFT JOIN conversations c ON m.conversation_id = c.conversation_id
+                     LEFT JOIN products p ON c.product_id = p.product_id
                      ORDER BY m.sent_at DESC",
 
-    // Formázók
     'list_formatters' => [
-        'user_message' => function ($value, $row) {
-            // JAVÍTÁS: mb_substr használata az ékezetes karakterek védelmében
-            return mb_strlen($value) > 50 ? htmlspecialchars(mb_substr($value, 0, 50)) . '...' : htmlspecialchars($value);
+        'conversation_summary' => function ($value, $row) {
+            return "#" . $row['conversation_id'] . " - " . htmlspecialchars($row['product_name'] ?? 'Törölt termék');
         },
-        'is_read' => function ($value, $row) {
-            return $value ? '✅ Igen' : '❌ Nem';
+        'user_message' => function ($value) {
+            $clean = htmlspecialchars($value);
+            return mb_strlen($clean) > 60 ? mb_substr($clean, 0, 60) . '...' : $clean;
+        },
+        'is_read' => function ($value) {
+            return $value ? '<span style="color: #2ecc71;">👁️ Olvasott</span>' : '<span style="color: #e67e22;">📩 Új</span>';
+        },
+        'sent_at' => function ($value) {
+            return date('Y.m.d. H:i', strtotime($value));
         }
     ],
     
-    // --- ŰRLAP KONFIGURÁCIÓ ---
     'form_fields' => ['conversation_id', 'sender_user_id', 'user_message', 'is_read'],
 
     'fields' => [
         'message_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
         
         'conversation_id' => [
-            'label' => 'Beszélgetés ID', 
+            'label' => 'Beszélgetés (ID)', 
             'type' => 'select', 
             'required' => true, 
             'param_type' => 'i',
             'foreign_key' => [
                 'table' => 'conversations', 
                 'value_col' => 'conversation_id', 
-                'display_col' => 'conversation_id' 
+                'display_col' => 'conversation_id' // Mivel nincs neve a beszélgetésnek, marad az ID
             ]
         ],
         
@@ -73,24 +73,21 @@ $config = [
         ],
         
         'user_message' => [
-            'label' => 'Üzenet', 
+            'label' => 'Üzenet szövege', 
             'type' => 'textarea', 
             'required' => true, 
             'param_type' => 's'
         ],
 
-        'sent_at' => ['label' => 'Elküldve', 'type' => 'datetime', 'list_only' => true],
-        
         'is_read' => [
-            'label' => 'Olvasott?', 
+            'label' => 'Olvasottnak jelölve', 
             'type' => 'checkbox', 
             'param_type' => 'i',
             'true_value' => 1,
-            'false_value' => 0
+            'false_value' => 0,
+            'default' => 0
         ]
     ]
 ];
 
-// JAVÍTÁS: Sablon betöltése ROOT_PATH használatával
 require_once ROOT_PATH . '/app/generic_crud.php';
-?>

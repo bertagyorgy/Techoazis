@@ -36,11 +36,15 @@ $config = [
         }
     ],
 
+    // JAVÍTÁS: Ez a rész hiányzott, ezért dobott hibát a generic_crud!
+    'form_fields' => ['post_id', 'image_path', 'sort_order'],
+
     'fields' => [
         'image_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
         'post_id' => [
             'label' => 'Kapcsolt poszt',
             'type' => 'select',
+            'required' => true, // Érdemes kötelezővé tenni
             'param_type' => 'i',
             'foreign_key' => [
                 'table' => 'posts',
@@ -48,8 +52,18 @@ $config = [
                 'display_col' => 'title'
             ]
         ],
-        'image_path' => ['label' => 'Képfájl elérési út', 'type' => 'text', 'required' => true, 'param_type' => 's'],
-        'sort_order' => ['label' => 'Rendezési sorrend', 'type' => 'number', 'param_type' => 'i']
+        'image_path' => [
+            'label' => 'Képfájl elérési út', 
+            'type' => 'text', 
+            'required' => true, 
+            'param_type' => 's'
+        ],
+        'sort_order' => [
+            'label' => 'Rendezési sorrend', 
+            'type' => 'number', 
+            'default' => 1,
+            'param_type' => 'i'
+        ]
     ]
 ];
 

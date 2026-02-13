@@ -5,11 +5,13 @@
 require_once __DIR__ . '/../config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
+// Opcionális: Ha később szeretnél automatikus fájlnevet generálni a csoportoknak is
+// require_once ROOT_PATH . '/app/helpers.php';
+
 $config = [
     // --- ALAPBEÁLLÍTÁSOK ---
     'table' => 'groups',
     'pk' => 'group_id',
-    // JAVÍTÁS: A page_file a központi admin routerre mutasson szép URL-el
     'page_file' => BASE_URL . '/admin/admin?page=panel_groups',
     'page_title' => 'Felhasználói Csoportok',
     'singular_name' => 'csoport',
@@ -18,38 +20,62 @@ $config = [
     // --- LISTÁZÁS KONFIGURÁCIÓ ---
     'list_columns' => [
         'group_id' => 'ID',
+        'group_image' => 'Kép',
         'group_name' => 'Csoport Neve',
-        'group_description' => 'Leírás (rövidítve)',
-        'created_at' => 'Létrehozva',
-        'group_image' => 'Kép'
+        'group_description' => 'Leírás',
+        'created_at' => 'Létrehozva'
     ],
     
-    // Formázók a listához
+    'list_query' => "SELECT * FROM groups ORDER BY group_name ASC",
+
     'list_formatters' => [
-        'group_description' => function ($value, $row) {
+        'group_description' => function ($value) {
+            if (empty($value)) return '<i>Nincs leírás</i>';
             return htmlspecialchars(mb_substr($value, 0, 50)) . (mb_strlen($value) > 50 ? '...' : '');
         },
-        'group_image' => function ($value, $row) {
-            // JAVÍTÁS: BASE_URL használata a kép betöltéséhez, hogy bárhonnan megjelenjen
-            $img_path = BASE_URL . "/uploads/groups/" . htmlspecialchars($value);
-            return "<img src='{$img_path}' alt='Csoport kép' style='width: 50px; height: 50px; object-fit: cover; border-radius: 4px;'>";
+        'group_image' => function ($value) {
+            // A DB default értéke 'default_group.png'. Ha üres lenne, akkor is azt használjuk.
+            $img_name = !empty($value) ? $value : 'default_group.png';
+            $img_path = BASE_URL . "/uploads/groups/" . htmlspecialchars($img_name);
+            return "<img src='{$img_path}' alt='Csoport kép' style='width: 45px; height: 45px; object-fit: cover; border-radius: 50%; border: 1px solid #eee;'>";
         },
-        'created_at' => function ($value, $row) {
-             return date('Y.m.d H:i', strtotime($value));
+        'created_at' => function ($value) {
+             return date('Y.m.d.', strtotime($value));
         }
     ],
 
     // --- ŰRLAP KONFIGURÁCIÓ ---
     'form_fields' => ['group_name', 'group_description', 'group_image'],
 
-    // Részletes meződefiníciók
     'fields' => [
-        'group_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
-        'group_name' => ['label' => 'Csoport neve', 'type' => 'text', 'required' => true, 'param_type' => 's'],
-        'group_description' => ['label' => 'Leírás', 'type' => 'textarea', 'param_type' => 's'],
-        // Ha a generic_crud támogatja a fájlfeltöltést, átállítható 'type' => 'file'-ra is
-        'group_image' => ['label' => 'Kép fájlnév', 'type' => 'text', 'default' => 'default_group.png', 'param_type' => 's'],
-        'created_at' => ['label' => 'Létrehozva', 'type' => 'datetime-local', 'list_only' => true],
+        'group_id' => [
+            'label' => 'ID', 
+            'type' => 'number', 
+            'param_type' => 'i', 
+            'list_only' => true
+        ],
+        'group_name' => [
+            'label' => 'Csoport neve', 
+            'type' => 'text', 
+            'required' => true, 
+            'param_type' => 's'
+        ],
+        'group_description' => [
+            'label' => 'Csoport leírása', 
+            'type' => 'textarea', 
+            'param_type' => 's'
+        ],
+        'group_image' => [
+            'label' => 'Csoport kép fájlneve', 
+            'type' => 'text', 
+            'default' => 'default_group.png', 
+            'param_type' => 's'
+        ],
+        'created_at' => [
+            'label' => 'Létrehozva', 
+            'type' => 'datetime-local', 
+            'list_only' => true
+        ],
     ]
 ];
 

@@ -15,7 +15,8 @@ $config = [
         'image_id' => 'ID',
         'product_id' => 'Termék',
         'is_primary' => 'Főkép',
-        'image_preview' => 'Kép'
+        'image_preview' => 'Kép',
+        'sort_order' => 'Sorrend'
     ],
 
     'list_query' => "SELECT 
@@ -23,17 +24,18 @@ $config = [
                         i.product_id,
                         i.image_path,
                         i.is_primary,
+                        i.sort_order,
                         p.product_name
                     FROM product_images i
                     LEFT JOIN products p ON i.product_id = p.product_id
-                    ORDER BY i.image_id DESC",
+                    ORDER BY i.product_id DESC, i.sort_order ASC",
 
     'list_formatters' => [
         'product_id' => function($value, $row) { 
             return htmlspecialchars($row['product_name'] ?? 'Ismeretlen termék'); 
         },
         'is_primary' => function($value) {
-            return $value ? '<b style="color: #2ecc71;">Igen</b>' : 'Nem';
+            return $value ? '<b style="color: #2ecc71;">⭐ Igen</b>' : 'Nem';
         },
         'image_preview' => function ($value, $row) { 
             $img_url = BASE_URL . '/' . htmlspecialchars($row['image_path']);
@@ -41,11 +43,15 @@ $config = [
         }
     ],
 
+    // JAVÍTÁS: Ez a kulcs hiányzott, ezért kaptad a hibaüzenetet!
+    'form_fields' => ['product_id', 'image_path', 'is_primary', 'sort_order'],
+
     'fields' => [
         'image_id' => ['label' => 'ID', 'type' => 'number', 'param_type' => 'i', 'list_only' => true],
         'product_id' => [
             'label' => 'Kapcsolt termék',
             'type' => 'select',
+            'required' => true,
             'param_type' => 'i',
             'foreign_key' => [
                 'table' => 'products',
@@ -53,9 +59,27 @@ $config = [
                 'display_col' => 'product_name'
             ]
         ],
-        'image_path' => ['label' => 'Képfájl elérési út', 'type' => 'text', 'required' => true, 'param_type' => 's'],
-        'is_primary' => ['label' => 'Borítókép (0 vagy 1)', 'type' => 'number', 'param_type' => 'i'],
-        'sort_order' => ['label' => 'Rendezés', 'type' => 'number', 'param_type' => 'i']
+        'image_path' => [
+            'label' => 'Képfájl elérési út', 
+            'type' => 'text', 
+            'required' => true, 
+            'param_type' => 's',
+            'placeholder' => 'uploads/products/kepnev.jpg'
+        ],
+        'is_primary' => [
+            'label' => 'Ez a termék főképe', 
+            'type' => 'checkbox', 
+            'true_value' => 1, 
+            'false_value' => 0, 
+            'default' => 0,
+            'param_type' => 'i'
+        ],
+        'sort_order' => [
+            'label' => 'Rendezési sorrend', 
+            'type' => 'number', 
+            'default' => 1,
+            'param_type' => 'i'
+        ]
     ]
 ];
 
