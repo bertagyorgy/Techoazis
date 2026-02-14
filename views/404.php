@@ -2,7 +2,7 @@
 // Ha véletlenül közvetlenül hívnák meg, ne szálljon el
 if (!defined('BASE_URL')) {
     // Visszaugrunk a configért, ha kell (de index.php-n keresztül ez nem fut le)
-    require_once __DIR__ . '/../config.php';
+    require_once __DIR__ . '/../core/config.php';
 }
 ?>
 <!DOCTYPE html>

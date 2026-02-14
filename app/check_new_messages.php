@@ -1,7 +1,7 @@
 <?php
 // 1. Config behívása a ROOT_PATH és konstansok miatt
 // Mivel ez az app mappában van, egy szintet fel kell lépni (..)
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

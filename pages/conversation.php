@@ -1,7 +1,7 @@
 <?php
 // conversation.php - A tiszta megjelenítő fájl
-require_once __DIR__ . '/config.php';
-require_once ROOT_PATH . '/conversation_logic.php';
+require_once __DIR__ . '/../core/config.php';
+require_once ROOT_PATH . '/app/edit_product.php';
 require_once ROOT_PATH . '/app/profile_stats.php';
 ?>
 
@@ -39,7 +39,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                 <div class="chat-section">
                     <div class="chat-header">
                         <div class="user-avatar">
-                            <img src="<?php echo htmlspecialchars($other_user['profile_image'] ?? 'images/anonymous.png'); ?>" 
+                            <img src="<?php echo htmlspecialchars( BASE_URL . '/' .$other_user['profile_image'] ?? BASE_URL . '/' .'images/anonymous.png'); ?>" 
                                  alt="<?php echo htmlspecialchars($other_user['username']); ?>">
                         </div>
                         <div class="user-info">
@@ -67,7 +67,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                             <?php foreach ($messages as $message): ?>
                                 <div class="message <?php echo $message['sender_user_id'] == $user_id ? 'sent' : 'received'; ?>" data-message-id="<?php echo $message['message_id']; ?>">
                                     <div class="message-avatar">
-                                        <img src="<?php echo htmlspecialchars($message['profile_image']); ?>" alt="Avatar">
+                                        <img src="<?php echo htmlspecialchars(BASE_URL . '/' . $message['profile_image']); ?>" alt="Avatar">
                                     </div>
                                     <div class="message-content">
                                         <div class="message-text"><?php echo nl2br(htmlspecialchars($message['user_message'])); ?></div>
@@ -90,7 +90,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                     <?php if ($conversation['conv_status'] === 'open'): ?>
                         
                         <div class="message-input-container">
-                            <form class="message-input-form" id="message-form" method="POST" action="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
+                            <form class="message-input-form" id="message-form" method="POST" action="<?= BASE_URL ?>/pages/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
                                 <textarea class="message-input" id="message-input" name="user_message" placeholder="Írd ide az üzeneted..." required></textarea>
                                 <button type="submit" class="send-button" id="send-button">
                                     <i class="fas fa-paper-plane"></i>
@@ -169,7 +169,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                         </div>
                         
                         
-                        <form method="POST" action="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
+                        <form method="POST" action="<?= BASE_URL ?>/pages/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
 
                             <div class="deal-actions-inline">
                                 <!-- LEZÁRÁS (piros) -->
@@ -233,7 +233,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                     </div>
                     
                     <div class="product-images">
-                        <img src="<?php echo htmlspecialchars($product['main_image'] ?? BASE_URL . '/uploads/products/default_product.png'); ?>"    
+                        <img src="<?php echo htmlspecialchars(BASE_URL . '/' . $product['main_image'] ?? BASE_URL . '/uploads/products/default_product.png'); ?>"    
                              alt="<?php echo htmlspecialchars($product['product_name']); ?>" class="main-product-image">
                     </div>
                     
@@ -260,9 +260,10 @@ require_once ROOT_PATH . '/app/profile_stats.php';
     
     <script>
         const chatConfig = {
+            baseUrl: <?php echo json_encode(BASE_URL); ?>,
             conversationId: <?php echo json_encode($conversation_id); ?>,
             userId: <?php echo json_encode($user_id); ?>,
-            profileImage: <?php echo json_encode($current_user_data['profile_image']); ?>,
+            profileImage: <?php echo json_encode(BASE_URL . '/' . $current_user_data['profile_image']); ?>,
             username: <?php echo json_encode($current_user_data['username']); ?>,
             lastMessageId: <?php echo !empty($messages) ? end($messages)['message_id'] : 0; ?>
         };

@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 ob_start();
 
 // A config behívása a szülőmappából
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 
 // Adatbázis behívása
 require_once ROOT_PATH . '/app/db.php';

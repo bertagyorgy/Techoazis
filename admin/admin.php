@@ -4,7 +4,7 @@
 ob_start();
 
 // 1. Visszalépés a gyökérbe (Techoazis/) a configért
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 
 // 2. Visszalépés a gyökérbe, majd be az app-ba a db-ért
 require_once ROOT_PATH . '/app/db.php';

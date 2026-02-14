@@ -1,10 +1,15 @@
+name: techoazis
+
 services:
   web:
-    build: .
+    container_name: techoazis-web
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     ports:
       - "8080:80"
     volumes:
-      - .:/var/www/html
+      - ..:/var/www/html
     environment:
       - DB_HOST=db
       - DB_USER=user
@@ -14,6 +19,7 @@ services:
       - techoazis-net
 
   db:
+    container_name: techoazis-db
     image: mariadb:10.11
     restart: always
     environment:
@@ -22,12 +28,13 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: user_password
     volumes:
-      - ./techoazis_db.sql:/docker-entrypoint-initdb.d/01_structure.sql
-      - ./techoazis_db_datas.sql:/docker-entrypoint-initdb.d/02_data.sql
+      - ../database/techoazis_db.sql:/docker-entrypoint-initdb.d/01_structure.sql
+      - ../database/techoazis_db_datas.sql:/docker-entrypoint-initdb.d/02_data.sql
     networks:
       - techoazis-net
 
   phpmyadmin:
+    container_name: techoazis-phpmyadmin
     image: phpmyadmin
     restart: always
     ports:

@@ -2,7 +2,7 @@
 // /opt/lampp/htdocs/Techoazis/admin/panel_login.php
 
 // 1. Config betöltése kötelező a ROOT_PATH és BASE_URL eléréséhez
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/auth_check.php';
 
 // --- BEJELENTKEZÉSEK KONFIGURÁCIÓJA ---

@@ -46,7 +46,7 @@ switch ($product_status) {
 <div class="product-card">
     <div class="product-card-inner">
         <!-- Termék kép -->
-        <a href="product_detail.php?id=<?= $product_id ?>" class="product-image-link">
+        <a href="<?= BASE_URL ?>/pages/product_detail.php?id=<?= $product_id ?>" class="product-image-link">
             <div class="product-image-container">
                 <img src="<?= $image_url ?>" 
                      alt="<?= $product_name ?>"
@@ -103,21 +103,21 @@ switch ($product_status) {
         <div class="product-actions">
             <?php if ($product_status === 'active'): ?>
                 <!-- Aktív termék: részletek gomb -->
-                <a href="product_detail.php?id=<?= $product_id ?>" class="btn-details">
+                <a href="<?= BASE_URL ?>/pages/product_detail.php?id=<?= $product_id ?>" class="btn-details">
                     <i class="fas fa-info-circle"></i>
                     Részletek
                 </a>
                 
                 <!-- Gyors üzenet az eladónak (ha be van jelentkezve és nem saját termék) -->
                 <?php if (isset($_SESSION['user_id']) && $product['seller_user_id'] != $_SESSION['user_id']): ?>
-                    <a href="<?= BASE_URL ?>/conversation?product_id=<?= $product_id ?>" class="btn-message">
+                    <a href="<?= BASE_URL ?>/pages/conversation?product_id=<?= $product_id ?>" class="btn-message">
                         <i class="fas fa-comment-dots"></i>
                         Üzenet
                     </a>
                 <?php endif; ?>
             <?php elseif ($product_status === 'sold'): ?>
                 <!-- Eladott termék: csak részletek -->
-                <a href="product_detail.php?id=<?= $product_id ?>" class="btn-details disabled">
+                <a href="<?= BASE_URL ?>/pages/product_detail.php?id=<?= $product_id ?>" class="btn-details disabled">
                     <i class="fas fa-eye"></i>
                     Megtekintés
                 </a>

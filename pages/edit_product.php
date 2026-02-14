@@ -1,7 +1,7 @@
 <?php
 // edit_product.php
 session_start();
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -20,7 +20,7 @@ $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 
 if (!$product) {
-    header("Location: " . BASE_URL . "/shop.php");
+    header("Location: " . BASE_URL . "/pages/shop.php");
     exit();
 }
 
@@ -261,7 +261,7 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
         <div class="edit-container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2><i class="fas fa-edit"></i> Termék szerkesztése</h2>
-                <a href="<?= BASE_URL ?>/product_detail.php?id=<?php echo $product_id; ?>" class="btn-back">
+                <a href="<?= BASE_URL ?>/pages/product_detail.php?id=<?php echo $product_id; ?>" class="btn-back">
                     <i class="fas fa-eye"></i> Megtekintés
                 </a>
             </div>

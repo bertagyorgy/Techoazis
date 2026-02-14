@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 
 require_once ROOT_PATH . '/app/db.php';
 
@@ -172,7 +172,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                             <h1 class="section-title">Nincs találat</h1>
                             <p>Próbálj más szűrőket, vagy adj fel egy új hirdetést!</p>
                             <?php if (isset($_SESSION['user_id'])): ?>
-                                <a href="<?= BASE_URL ?>/add_product.php" class="filter-btn apply">
+                                <a href="<?= BASE_URL ?>/pages/add_product.php" class="filter-btn apply">
                                     Új termék feladása
                                 </a>
                             <?php endif; ?>
@@ -193,7 +193,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                                     'created_at' => $product['created_at']
                                 ];
                                 ?>
-                                <?php include ROOT_PATH . '/product_card.php'; ?>
+                                <?php include ROOT_PATH . '/views/product_card.php'; ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
@@ -216,10 +216,10 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                     <h3 class="footer-title">Navigáció</h3>
                     <ul class="footer-links">
                         <li><a href="<?= BASE_URL ?>/index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
-                        <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
-                        <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
-                        <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link"><i class="fa-solid fa-pen"></i>Cikkek</a></li>
-                        <li><a href="<?= BASE_URL ?>/about_us.php" class="footer-link"><i class="fa-solid fa-address-card"></i>Rólunk</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/articles.php" class="footer-link"><i class="fa-solid fa-pen"></i>Cikkek</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/about_us.php" class="footer-link"><i class="fa-solid fa-address-card"></i>Rólunk</a></li>
                         <?php
                         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
                             <li><a href="<?= BASE_URL ?>/admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
@@ -257,7 +257,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         
         // Szűrők törlése
         document.getElementById('reset-filters').addEventListener('click', function() {
-            window.location.href = '<?= BASE_URL ?>/shop.php';
+            window.location.href = '<?= BASE_URL ?>/pages/shop.php';
         });
         
         // Aktív szűrők jelölése

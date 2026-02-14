@@ -1,11 +1,11 @@
 <?php
 session_start();
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
 $article_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($article_id <= 0) {
-    header("Location: " . BASE_URL . "/articles.php");
+    header("Location: " . BASE_URL . "/pages/articles.php");
     exit();
 }
 
@@ -41,7 +41,7 @@ $article = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$article) {
-    header("Location: " . BASE_URL . "/articles.php");
+    header("Location: " . BASE_URL . "/pages/articles.php");
     exit();
 }
 
@@ -93,7 +93,7 @@ function render_text($text) {
         <div class="article-body">
             <div class="article-top">
                 <div class="crumbs">
-                    <a href="<?= BASE_URL ?>/articles.php"><i class="fa-solid fa-arrow-left"></i> Tudástár</a>
+                    <a href="<?= BASE_URL ?>/pages/articles.php"><i class="fa-solid fa-arrow-left"></i> Tudástár</a>
                 </div>
                 <div class="badge">
                     #<?= htmlspecialchars($article['category_name']) ?>
@@ -138,7 +138,7 @@ function render_text($text) {
             </div>
 
             <div class="footer-actions">
-                <a class="back-btn" href="<?= BASE_URL ?>/articles.php">
+                <a class="back-btn" href="<?= BASE_URL ?>/pages/articles.php">
                     <i class="fa-solid fa-layer-group"></i> Vissza a cikkekhez
                 </a>
             </div>

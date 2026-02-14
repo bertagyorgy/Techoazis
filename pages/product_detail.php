@@ -1,7 +1,7 @@
 <?php
 // product_detail.php
 session_start();
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 
 require_once ROOT_PATH . '/app/db.php';
 $product_id = $_GET['id'] ?? 0;
@@ -20,7 +20,7 @@ $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 
 if (!$product) {
-    header('Location: ' . BASE_URL . '/shop.php');
+    header('Location: ' . BASE_URL . '/pages/shop.php');
     exit();
 }
 
@@ -92,7 +92,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
         <div class="product-detail-container">
             
             <div style="margin-bottom: 2rem; color: var(--text-light);">
-                <a href="<?= BASE_URL ?>/shop.php" style="color: var(--accent-600); text-decoration: none;">Termékek</a>
+                <a href="<?= BASE_URL ?>/pages/shop.php" style="color: var(--accent-600); text-decoration: none;">Termékek</a>
                 <span> / </span>
                 <span><?php echo htmlspecialchars($product['category']); ?></span>
                 <span> / </span>
@@ -226,7 +226,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                         </div>
                         
                         <div class="product-actions-detail">
-                            <a href="<?= BASE_URL ?>/shop.php" class="btn-back">
+                            <a href="<?= BASE_URL ?>/pages/shop.php" class="btn-back">
                                 <i class="fas fa-arrow-left"></i>
                                 Vissza a termékekhez
                             </a>
@@ -234,13 +234,13 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             <?php if ($product['product_status'] === 'active'): ?>
                                 <?php if (isset($_SESSION['user_id'])): ?>
                                     <?php if ($product['seller_id'] != $_SESSION['user_id']): ?>
-                                        <a href="<?= BASE_URL ?>/conversation.php?product_id=<?php echo $product_id; ?>" 
+                                        <a href="<?= BASE_URL ?>/pages/conversation.php?product_id=<?php echo $product_id; ?>" 
                                         class="btn-message-seller">
                                             <i class="fas fa-comment-dots"></i>
                                             Üzenet küldése az eladónak
                                         </a>
                                     <?php else: ?>
-                                        <a href="<?= BASE_URL ?>/edit_product.php?id=<?php echo $product_id; ?>" 
+                                        <a href="<?= BASE_URL ?>/pages/edit_product.php?id=<?php echo $product_id; ?>" 
                                         class="btn-message-seller" style="background: var(--primary-500);">
                                             <i class="fas fa-edit"></i>
                                             Termék szerkesztése
@@ -274,7 +274,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                         $product['main_image'] = $product['main_image'] ?? 'uploads/products/default_product.png';
                         
                         // Most már a product_card.php az aktuális "hasonló" terméket fogja használni
-                        include ROOT_PATH . '/product_card.php'; 
+                        include ROOT_PATH . '/views/product_card.php'; 
                         ?>
                     <?php endforeach; ?>
                 </div>

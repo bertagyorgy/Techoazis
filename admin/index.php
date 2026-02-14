@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 // Az auth_check azonnal kidob, ha nem vagy admin, így nem látják a fájllistát sem
 require_once ROOT_PATH . '/app/auth_check.php'; 
 

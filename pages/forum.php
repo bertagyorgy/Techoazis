@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
 // ======= TOP TÉMÁK (legtöbb poszt) - q-val szűrhető név alapján =======
@@ -144,7 +144,7 @@ include ROOT_PATH . '/views/navbar.php';
             <!-- ÖSSZES -->
             <li>
                 <a
-                    href="<?= BASE_URL ?>/forum.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
+                    href="<?= BASE_URL ?>/pages/forum.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
                     class="<?= $group_id === 0 ? 'active' : '' ?>"
                 >
                     Összes
@@ -156,7 +156,7 @@ include ROOT_PATH . '/views/navbar.php';
             <!-- TOP CSOPORTOK (ikon nélkül) -->
             <?php while($row = $groups_result->fetch_assoc()): ?>
                 <?php
-                    $href =  BASE_URL . "/forum_group.php?group=" . (int)$row['group_id'];
+                    $href =  BASE_URL . "/pages/forum_group.php?group=" . (int)$row['group_id'];
                     if ($q !== '') $href .= "&q=" . urlencode($q);
                 ?>
                 <li>
@@ -168,7 +168,7 @@ include ROOT_PATH . '/views/navbar.php';
             <?php endwhile; ?>
 
         </ul>
-        <a href="<?= BASE_URL ?>/create_group.php" class="new_group"><i class="fa-solid fa-circle-plus"></i>Új csoport</a>
+        <a href="<?= BASE_URL ?>/pages/create_group.php" class="new_group"><i class="fa-solid fa-circle-plus"></i>Új csoport</a>
     </aside>
 
     <!-- ======================
@@ -186,7 +186,7 @@ include ROOT_PATH . '/views/navbar.php';
             <div class="post-card">
 
                 <div class="article-meta">
-                    <a class="article-badge" href="<?= BASE_URL ?>/forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
+                    <a class="article-badge" href="<?= BASE_URL ?>/pages/forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
                         #<?= htmlspecialchars($post['group_name']) ?>
                     </a>
 
@@ -250,7 +250,7 @@ include ROOT_PATH . '/views/navbar.php';
 
         <?php while($lp = $latest_posts->fetch_assoc()): ?>
             <div class="latest-post-item">
-                <a href="<?= BASE_URL ?>/forum_group.php?group=<?= (int)$lp['group_id'] ?>&q=<?= urlencode($lp['title']) ?>">
+                <a href="<?= BASE_URL ?>/pages/forum_group.php?group=<?= (int)$lp['group_id'] ?>&q=<?= urlencode($lp['title']) ?>">
                     <strong><?= htmlspecialchars($lp['title']) ?></strong>
                 </a>
                 <p class="latest-post-meta">

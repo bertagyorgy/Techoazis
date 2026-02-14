@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
 if (!isset($_GET['group'])) {
-    echo "<script>window.location.href='" . BASE_URL . "/forum.php';</script>";
+    echo "<script>window.location.href='" . BASE_URL . "/pages/forum.php';</script>";
     exit();
 }
 
@@ -110,10 +110,10 @@ $post_count = $posts->num_rows;
     <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
     <div class="btn-section">
         <button class="display-btn"><i class="fa-solid fa-plus"></i> Új poszt</button>
-        <a href="<?= BASE_URL ?>/forum.php" class="display-btn back">Vissza a fórumhoz</a> 
+        <a href="<?= BASE_URL ?>/pages/forum.php" class="display-btn back">Vissza a fórumhoz</a> 
     </div>
     <div class="create-post-bar">
-        <form action="<?= BASE_URL ?>/create_post.php" method="POST" enctype="multipart/form-data">
+        <form action="<?= BASE_URL ?>/actions/create_post.php" method="POST" enctype="multipart/form-data">
             
             <input type="hidden" name="group_id" value="<?= $group_id ?>">
 
@@ -134,7 +134,7 @@ $post_count = $posts->num_rows;
     </div>
     <?php else: ?>
     <div class="btn-section">
-        <a href="<?= BASE_URL ?>/forum.php" class="display-btn back">Vissza a fórumhoz</a>
+        <a href="<?= BASE_URL ?>/pages/forum.php" class="display-btn back">Vissza a fórumhoz</a>
     </div>
     <?php endif; ?>
 
@@ -152,7 +152,7 @@ $post_count = $posts->num_rows;
             <div class="post-card">
 
                 <div class="article-meta">
-                    <a class="article-badge" href="<?= BASE_URL ?>/forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
+                    <a class="article-badge" href="<?= BASE_URL ?>/pages/forum_group.php?group=<?= (int)$post['group_id'] ?>" style="text-decoration:none;">
                         #<?= htmlspecialchars($group['group_name']) ?>
                     </a>
 

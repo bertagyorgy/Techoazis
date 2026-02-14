@@ -1,6 +1,6 @@
 <?php
 // 1. Config behívása a konstansok miatt
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 // 2. ROOT_PATH használata a biztos eléréshez
 require_once ROOT_PATH . '/envreader.php';
 loadEnv();
@@ -32,7 +32,7 @@ if (!empty($errors)) {
 }
 
 // 3. Vendor behívása ROOT_PATH-al
-require_once ROOT_PATH . '/vendor/autoload.php';
+require_once ROOT_PATH . '/core/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

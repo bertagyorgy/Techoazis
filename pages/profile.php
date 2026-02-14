@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // 1. Config betöltése (ez definiálja a ROOT_PATH-ot és a BASE_URL-t)
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 
 // 2. Adatbázis betöltése ROOT_PATH használatával
 require_once ROOT_PATH . '/app/db.php';
@@ -225,7 +225,7 @@ $profile_image = !empty($user['profile_image'])
         </div>
         <?php if ($is_owner): ?>
         <div class="profile-actions">
-            <a href="<?= BASE_URL ?>/profile_edit.php" class="profile-btn profile-btn-secondary">
+            <a href="<?= BASE_URL ?>/pages/profile_edit.php" class="profile-btn profile-btn-secondary">
                 <i class="fas fa-user-edit"></i> Profil szerkesztése
             </a>
             <button class="profile-btn profile-btn-secondary theme-toggle">
@@ -282,7 +282,7 @@ $profile_image = !empty($user['profile_image'])
 
             <?php if (count($conversations) > 0): ?>
                 <?php foreach ($conversations as $conv): ?>
-                <a href="<?= BASE_URL ?>/conversation.php?conv_id=<?php echo $conv['conversation_id']; ?>&product_id=<?php echo $conv['product_id']; ?>" class="conversation-link">
+                <a href="<?= BASE_URL ?>/pages/conversation.php?conv_id=<?php echo $conv['conversation_id']; ?>&product_id=<?php echo $conv['product_id']; ?>" class="conversation-link">
                     <div class="conversation-item <?php echo $conv['unread_count'] > 0 ? 'unread' : ''; ?>">
                         <div class="conversation-product">
                             <?php echo htmlspecialchars($conv['product_name']); ?>
@@ -320,7 +320,7 @@ $profile_image = !empty($user['profile_image'])
             <?php if (count($user_products) > 0): ?>
             <div class="products-grid">
                 <?php foreach ($user_products as $product): ?>
-                <a href="<?= BASE_URL ?>/product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-card-link">
+                <a href="<?= BASE_URL ?>/pages/product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-card-link">
                     <div class="product-card">
                         <img src="<?= htmlspecialchars($product['image_path']) ?>"
                             alt="<?= htmlspecialchars($product['product_name']) ?>"
@@ -357,7 +357,7 @@ $profile_image = !empty($user['profile_image'])
             <?php endif; ?>
 
             <?php if ($is_owner): ?>
-            <a href="<?= BASE_URL ?>/add_product.php" class="profile-btn profile-btn-primary" style="margin-top: 1rem;">
+            <a href="<?= BASE_URL ?>/pages/add_product.php" class="profile-btn profile-btn-primary" style="margin-top: 1rem;">
                 <i class="fas fa-plus"></i> Új termék feladása
             </a>
             <?php endif; ?>

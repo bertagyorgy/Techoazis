@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
         echo json_encode(['success' => false, 'error' => 'Auth required']);
         exit();
     }
-    header('Location: login.php');
+    header("Location: " . BASE_URL . "/views/login.php");
     exit();
 }
 

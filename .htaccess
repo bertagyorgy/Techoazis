@@ -1,19 +1,25 @@
 RewriteEngine On
 
-# Dinamikus RewriteBase: Ha van Techoazis mappa az elérési útban, azt használja, ha nincs, akkor a gyökeret.
+# Dinamikus RewriteBase beállítása
 RewriteCond %{REQUEST_URI} ^/Techoazis/
 RewriteRule ^ - [E=BASE:/Techoazis/]
 RewriteCond %{REQUEST_URI} !^/Techoazis/
 RewriteRule ^ - [E=BASE:/]
 
-# Most már az %{ENV:BASE} változót használjuk a RewriteBase helyett
-# Megjegyzés: A RewriteBase-t nem lehet változóval megadni, 
-# így a szabályoknál fogjuk alkalmazni a változót.
+# --- BIZTONSÁG (Ez nem módosítja az útvonalakat) ---
+Options -Indexes
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+# Tiltja a belső mappák listázását/elérését, de nem irányít át semmit
+RewriteRule ^(core|database|docker)/ - [F,L]
+# --------------------------------------------------
 
 # Static mappák: soha ne rewrite
-RewriteRule ^(app|assets|images|assets)/ - [L]
+RewriteRule ^(app|assets|images|uploads)/ - [L]
 
-# .php eltüntetés GET-nél (Kezeli a XAMPP és Docker útvonalat is)
+# .php eltüntetés GET-nél
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{THE_REQUEST} \s/+(?:Techoazis/)?(.+?)\.php[\s?] [NC]
 RewriteRule ^(.+?)\.php$ %{ENV:BASE}$1 [R=301,L,NE]

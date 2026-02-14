@@ -2,7 +2,7 @@
 // 1. Config behívása a konstansok (ROOT_PATH, BASE_URL) miatt
 // Ha az index.php routeren keresztül jössz, ez már be van töltve, 
 // de a biztonság kedvéért (ha közvetlen linkről jönnek) érdemes így hagyni:
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 
 // 2. Adatbázis behívása ROOT_PATH használatával
 require_once ROOT_PATH . '/app/db.php';

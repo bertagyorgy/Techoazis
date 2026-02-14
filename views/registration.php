@@ -10,7 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // 2. FÁJL BETÖLTÉSEK JAVÍTÁSA: ../ a views mappából
 // db.php: views/ -> app/db.php
-require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 require_once ROOT_PATH . '/app/helpers.php';
 require_once ROOT_PATH . '/envreader.php';
@@ -20,7 +20,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // vendor/autoload.php: views/ -> vendor/autoload.php
-require_once ROOT_PATH . '/vendor/autoload.php';
+require_once ROOT_PATH . '/core/vendor/autoload.php';
 
 $_SESSION['registration_message'] = "";
 $error_message = '';

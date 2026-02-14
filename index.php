@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/core/config.php';
 
 // Tisztítás: levágjuk a perjeleket az elejéről és végéről
 $page = isset($_GET['p']) ? trim($_GET['p'], '/') : '';
@@ -88,7 +88,7 @@ if ($page !== '' && $page !== 'index') {
             <div class="hero-text">
                 <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
                 <p>Fedezze fel oldalunk nyújtotta szolgáltatásokat.</p>
-                <a href="<?= BASE_URL ?>/shop.php">
+                <a href="<?= BASE_URL ?>/pages/shop.php">
                     <button type="button" class="btn btn-primary shopnow">Vásárolj most ➔</button>
                 </a>
             </div>
@@ -100,7 +100,7 @@ if ($page !== '' && $page !== 'index') {
             <h2 class="section-title">Mit találsz nálunk?</h2>
             <div class="grid-row">
                 <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/articles.php" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/pages/articles.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-book fa-3x icon-info"></i>
                             <h4>Tudástár</h4>
@@ -109,7 +109,7 @@ if ($page !== '' && $page !== 'index') {
                     </a>
                 </div>
                 <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/forum.php" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/pages/forum.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-users fa-3x icon-primary"></i>
                             <h4>Közösség</h4>
@@ -118,7 +118,7 @@ if ($page !== '' && $page !== 'index') {
                     </a>
                 </div>
                 <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/shop.php" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/pages/shop.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-cart-shopping fa-3x icon-success"></i>
                             <h4>Vásárlás</h4>
@@ -127,7 +127,7 @@ if ($page !== '' && $page !== 'index') {
                     </a>
                 </div>
                 <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/profile.php" class="feature-card-link">
+                    <a href="<?= BASE_URL ?>/pages/profile.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-store"></i>
                             <h4>Eladás</h4>
@@ -315,10 +315,10 @@ if ($page !== '' && $page !== 'index') {
                     <h3 class="footer-title">Navigáció</h3>
                     <ul class="footer-links">
                         <li><a href="<?= BASE_URL ?>/index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
-                        <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
-                        <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
-                        <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link"><i class="fa-solid fa-pen"></i> Cikkek</a></li>
-                        <li><a href="<?= BASE_URL ?>/contact.php" class="footer-link"><i class="fa-solid fa-address-card"></i> Kapcsolat</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/articles.php" class="footer-link"><i class="fa-solid fa-pen"></i> Cikkek</a></li>
+                        <li><a href="<?= BASE_URL ?>/pages/contact.php" class="footer-link"><i class="fa-solid fa-address-card"></i> Kapcsolat</a></li>
                         <?php
                         if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
                             <li><a href="<?= BASE_URL ?>/admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>

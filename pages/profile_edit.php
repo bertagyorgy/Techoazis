@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 // 1. Config betöltése (ez hozza létre a ROOT_PATH-ot és a BASE_URL-t)
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 
 // 2. Adatbázis betöltése ROOT_PATH használatával
 require_once ROOT_PATH . '/app/db.php';
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Adatbázis visszaállítása
-        $default_image = BASE_URL . '/images/anonymous.png';
+        $default_image = BASE_URL . '/uploads/profile_images/anonymous.png';
         $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");
         $stmt->bind_param("si", $default_image, $user['user_id']);
         if ($stmt->execute()) {
@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // JAVÍTÁS: Itt ROOT_PATH-ot használunk a fájlrendszer eléréshez
         $upload_dir_path = ROOT_PATH . "/uploads/profile_images/";
         // Ez pedig az URL lesz az adatbázisba
-        $upload_dir_url = BASE_URL . "/uploads/profile_images/";
+        $upload_dir_url = "uploads/profile_images/";
         
         if (!file_exists($upload_dir_path)) {
             mkdir($upload_dir_path, 0777, true);
@@ -277,7 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profile_image']) : BASE_URL . '/images/anonymous.png';
+$profile_image = !empty($user['profile_image']) ? htmlspecialchars(BASE_URL . '/' . $user['profile_image']) : BASE_URL . '/uploads/profile_images/anonymous.png';
 ?>
 
 <!DOCTYPE html>
@@ -314,7 +314,7 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
     <div class="profile-edit-card">
     <div class="profile-edit-header">
         <h1>Profil szerkesztése</h1>
-        <a href="<?= BASE_URL ?>/profile.php" class="back-btn">
+        <a href="<?= BASE_URL ?>/pages/profile.php" class="back-btn">
             <i class="fas fa-arrow-left"></i> Vissza a profilhoz
         </a>
     </div>
@@ -399,7 +399,7 @@ $profile_image = !empty($user['profile_image']) ? htmlspecialchars($user['profil
         
         <div class="edit-form" style="text-align: center;">
             <img src="<?php echo $profile_image; ?>" alt="Profilkép előnézet" class="image-preview" 
-                 onerror="this.src='<?= BASE_URL ?>/images/anonymous.png'">
+                 onerror="this.src='<?= BASE_URL ?>/uploads/profile_images/anonymous.png'">
             
             <form method="POST" enctype="multipart/form-data">
                 <div class="file-upload">

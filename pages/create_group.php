@@ -1,7 +1,7 @@
 <?php
 // create_group.php
 session_start();
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmt->execute()) {
                 $new_id = $conn->insert_id;
-                header("Location: " . BASE_URL . "/forum_group.php?group=$new_id");
+                header("Location: " . BASE_URL . "/pages/forum_group.php?group=$new_id");
                 exit();
             } else {
                 $error_msg = "Hiba történt a mentés során: " . $conn->error;
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="edit-container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2><i class="fas fa-plus-circle"></i> Új csoport létrehozása</h2>
-                <a href="<?= BASE_URL ?>/forum.php" class="btn-back" style="text-decoration: none; color: var(--text-muted);">
+                <a href="<?= BASE_URL ?>/pages/forum.php" class="btn-back" style="text-decoration: none; color: var(--text-muted);">
                     <i class="fas fa-arrow-left"></i> Vissza a fórumhoz
                 </a>
             </div>
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-danger"><?php echo $error_msg; ?></div>
             <?php endif; ?>
 
-            <form action="<?= BASE_URL ?>/create_group.php" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/pages/create_group.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="group_name">Csoport neve</label>
                     <input type="text" id="group_name" name="group_name" class="form-control" 

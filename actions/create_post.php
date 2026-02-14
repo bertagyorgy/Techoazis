@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // 1. Config és DB betöltése a konzisztencia miatt
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 require_once ROOT_PATH . '/app/profile_stats.php';
 
@@ -19,7 +19,7 @@ $content = trim($_POST['content'] ?? '');
 
 if ($title === "" || $content === "") { 
     $_SESSION['error'] = "Minden mezőt tölts ki!"; 
-    header("Location: " . BASE_URL . "/forum_group.php?group={$group_id}"); 
+    header("Location: " . BASE_URL . "/pages/forum_group.php?group={$group_id}"); 
     exit; 
 }
 
@@ -75,6 +75,6 @@ if ($stmt->execute()) {
 $conn->close();
 
 // Siker/Hiba után visszairányítás PHP-ból (nem JS-el, hogy elkerüljük a dupla küldést)
-header("Location: " . BASE_URL . "/forum_group.php?group={$group_id}");
+header("Location: " . BASE_URL . "/pages/forum_group.php?group={$group_id}");
 exit();
 ?>

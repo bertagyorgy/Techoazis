@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // JAVÍTÁS: Ellenőrizzük, hogy léteznek-e az értékek
     if (typeof chatConfig === 'undefined') return;
 
+    const baseUrl = chatConfig.baseUrl; // Most már elérhető
     const conversationId = chatConfig.conversationId;
     const currentUserId = chatConfig.userId;
     const currentUserProfileImage = chatConfig.profileImage;
@@ -51,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return `
             <div class="message ${isSentByMe ? 'sent' : 'received'}" data-message-id="${message.message_id}">
                 <div class="message-avatar">
-                    <img src="${message.profile_image}" alt="${message.username}">
+                    <img src="${baseUrl}/${message.profile_image}" alt="${message.username}">
                 </div>
                 <div class="message-content">
                     <div class="message-text">
