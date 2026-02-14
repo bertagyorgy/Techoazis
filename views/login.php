@@ -25,7 +25,7 @@ if (isset($_SESSION['registration_message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />  
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
-    <title>Techoazis | Login</title>
+    <title>Techoázis | Bejelentkezés</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
@@ -91,6 +91,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             header("Location: " . BASE_URL  . "/". $url . ".php");
                             exit();
                         }
+                        
+
+                        if (isset($_POST['remember'])) {
+
+                            $token = bin2hex(random_bytes(32));
+                            $expire = date('Y-m-d H:i:s', strtotime('+30 days'));
+
+                            $stmt2 = $conn->prepare("UPDATE users SET remember_token=?, remember_expire=? WHERE user_id=?");
+                            $stmt2->bind_param("ssi", $token, $expire, $row['user_id']);
+                            $stmt2->execute();
+
+                            setcookie(
+                                "remember_token",
+                                $token,
+                                time() + (86400 * 30),
+                                "/",
+                                "",
+                                false,  // XAMPP-nál ne legyen true mert nincs HTTPS
+                                true
+                            );
+                        }
+
 
                         header("Location: " . BASE_URL  . "/" . "index.php");
                         exit();
@@ -135,13 +157,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             <input type="password" name="password" id="password" class="login-input" placeholder="Jelszó" required>
                             <i class="fa-solid fa-eye-slash toggle-password"></i>
                         </div>
-                        <div style="text-align: right; margin-top: 5px;">
-                            <a style="color: white" href="<?= BASE_URL ?>/views/forgot_password.php">Elfelejtett jelszó?</a>
+                        <div class="login-options">
+                            <div class="remember-box">
+                                <input type="checkbox" name="remember" id="remember">
+                                <label for="remember">Emlékezz rám</label>
+                            </div>
+
+                            <a style="color: white; font-size: 14px;" href="<?= BASE_URL ?>/views/forgot_password.php">Elfelejtett jelszó?</a>
                         </div>
                     </div>
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
-
+                
                 <p class="login-separator">Nincs fiókod?</p>
                 <a href="<?= BASE_URL ?>/views/registration.php"><button class="registration-button">Regisztráció</button></a>
             </section>
