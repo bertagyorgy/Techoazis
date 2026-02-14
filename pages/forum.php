@@ -80,16 +80,22 @@ if ($q !== '') {
 }
 
 
-// ======= ÖSSZES KÉP LEKÉRÉSE EGYBŐL (N+1 QUERY ELKERÜLÉSÉRE) =======
+// ======= ÖSSZES KÉP LEKÉRÉSE EGYBŐL =======
 $images_query = "SELECT post_id, image_path FROM post_images WHERE post_id IN (
     SELECT post_id FROM posts
 ) ORDER BY post_id";
+
 $images_result = $conn->query($images_query);
+
+// HIBAKERESÉS: Ha a lekérdezés sikertelen, írja ki miért
+if (!$images_result) {
+    die("Hiba a képek lekérdezésekor: " . $conn->error . "<br>Lekérdezés: " . $images_query);
+}
+
 $post_images = [];
 while ($img = $images_result->fetch_assoc()) {
     $post_images[$img['post_id']][] = $img['image_path'];
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="hu">

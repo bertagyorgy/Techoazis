@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once __DIR__ . '/../core/config.php';
 
 require_once ROOT_PATH . '/app/db.php';
-require_once ROOT_PATH . '/envreader.php';
+require_once ROOT_PATH . '/core/envreader.php';
 require_once ROOT_PATH . '/core/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;

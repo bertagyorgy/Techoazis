@@ -2,7 +2,7 @@
 // 1. Config behívása a konstansok miatt
 require_once __DIR__ . '/../core/config.php';
 // 2. ROOT_PATH használata a biztos eléréshez
-require_once ROOT_PATH . '/envreader.php';
+require_once ROOT_PATH . '/core/envreader.php';
 loadEnv();
 
 // Ellenőrizzük a metódust
