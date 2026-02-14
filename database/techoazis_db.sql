@@ -16,7 +16,9 @@ CREATE TABLE users (
   bought_items int(11) DEFAULT 0,
   avg_rating decimal(3,2) DEFAULT 0.00,
   reset_token_hash varchar(64) DEFAULT NULL,
-  reset_token_expires_at datetime DEFAULT NULL
+  reset_token_expires_at datetime DEFAULT NULL,
+  remember_token VARCHAR(64) NULL,
+  remember_expire DATETIME NULL
 );
 
 CREATE TABLE login (

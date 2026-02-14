@@ -148,6 +148,42 @@
     cursor: pointer;
     padding: 5px;
 }
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.remember-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.remember-box input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.remember-box label {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.forgot-link {
+    font-size: 14px;
+    text-decoration: none;
+    color: #3498db;
+}
+@media (max-width: 480px) {
+    .login-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}
 
 @media (min-width: 1200px) {
     .login-box {

@@ -157,7 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg"> 
-    <title>Techoazis | Registration</title>
+    <title>Techoázis | Regisztráció</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css"> 
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
