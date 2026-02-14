@@ -92,3 +92,77 @@
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.9rem;
 }
+
+/* Grid-es navigáció */
+.footer-grid-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 1rem;
+}
+
+/* Contact rész */
+.footer-contact .footer-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+}
+
+/* Reszponzív */
+@media (max-width: 992px) {
+    .grid-col-3 {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .footer-grid-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== FOOTER LAYOUT V2 ===== */
+
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+    margin-bottom: 3rem;
+}
+
+.footer-right {
+    display: flex;
+    gap: 4rem;
+}
+
+.footer-section {
+    min-width: 180px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Reszponzív */
+@media (max-width: 992px) {
+
+    .footer-top {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .footer-right {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
+}
+

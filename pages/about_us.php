@@ -13,7 +13,6 @@ require_once ROOT_PATH . '/app/db.php';
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/button_system.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/comments.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/create_post.css">
@@ -27,7 +26,6 @@ require_once ROOT_PATH . '/app/db.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/custom_card.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/feature_cards.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/hero_section.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/loading_animation.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/utility_classes.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/about_us_style.css">
@@ -238,17 +236,24 @@ require_once ROOT_PATH . '/app/db.php';
                 </div>
 
                 <div class="future-card">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    <h3>Külső API-k</h3>
+                    <p>Pl. időjárás, integrációk, hasznos modulok a felhasználóknak.</p>
+                    <span class="soon-badge">Hamarosan</span>
+                </div>
+
+                <div class="future-card">
                     <i class="fa-solid fa-mobile-screen"></i>
                     <h3>Mobilapp</h3>
                     <p>Kényelmesebb hozzáférés, gyorsabb interakciók, értesítések.</p>
-                    <span class="soon-badge">Hamarosan</span>
+                    <span class="soon-badge">Később</span>
                 </div>
 
                 <div class="future-card">
                     <i class="fa-solid fa-crown"></i>
                     <h3>Prémium funkciók</h3>
                     <p>Extra testreszabás, bővített lehetőségek aktív felhasználóknak.</p>
-                    <span class="soon-badge">Hamarosan</span>
+                    <span class="soon-badge">Később</span>
                 </div>
 
                 <div class="future-card">
@@ -257,26 +262,33 @@ require_once ROOT_PATH . '/app/db.php';
                     <p>Fejlesztői eszközök és interaktív megoldások a platformon belül.</p>
                     <span class="soon-badge">Később</span>
                 </div>
-
-                <div class="future-card">
-                    <i class="fa-solid fa-cloud-sun"></i>
-                    <h3>Külső API-k</h3>
-                    <p>Pl. időjárás, integrációk, hasznos modulok a felhasználóknak.</p>
-                    <span class="soon-badge">Később</span>
-                </div>
             </div>
         </div>
     </section>
 
     <footer class="footer">
         <div class="custom-container">
-            <div class="grid-row">
-                <div class="grid-col-4">
-                    <div class="footer-brand">
-                        <h3 class="footer-subtitle">Techoázis</h3>
-                        <p class="footer-description">
-                            A hely, ahol a technológia, a közösség és az innováció találkozik.
-                        </p>
+            <!-- FELSŐ RÉSZ -->
+            <div class="footer-top">
+                <!-- BRAND -->
+                <div class="footer-brand">
+                    <h3 class="footer-subtitle">Techoázis</h3>
+                    <p class="footer-description">
+                        A hely, ahol a technológia, a közösség és az innováció találkozik.
+                    </p>
+                </div>
+                <!-- JOBB OLDALI BLOKK -->
+                <div class="footer-right">
+                    <!-- NAV -->
+                    <div class="footer-section">
+                        <h3 class="footer-title">Navigáció</h3>
+                        <ul class="footer-links">
+                            <li><a href="<?= BASE_URL ?>/index.php" class="footer-link">Főoldal</a></li>
+                            <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link">Vásárlás</a></li>
+                            <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link">Közösség</a></li>
+                            <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link">Tudástár</a></li>
+                            <li><a href="<?= BASE_URL ?>/about_us.php" class="footer-link">Rólunk</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="grid-col-4 footer-nav">
@@ -303,11 +315,21 @@ require_once ROOT_PATH . '/app/db.php';
                     </div>
                 </div>
             </div>
-            <hr class="footer-divider">
-            <div class="footer-copy">
-                &copy; <?php echo date('Y'); ?> Techoázis. Minden jog fenntartva.
+            <!-- ALSÓ RÉSZ -->
+            <div class="footer-bottom">
+                <div class="social-icons-wrapper">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+
+                <div class="footer-copy">
+                    &copy; <?php echo date('Y'); ?> Techoázis. Minden jog fenntartva.
+                </div>
             </div>
         </div>
     </footer>
+
 </body>
 </html>
