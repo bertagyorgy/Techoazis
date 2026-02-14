@@ -76,7 +76,7 @@ switch ($product_status) {
             
             <!-- Termék név -->
             <h3 class="product-title">
-                <a href="<?= BASE_URL ?>/product_detail?id=<?= $product_id ?>">
+                <a href="<?= BASE_URL ?>/pages/product_detail?id=<?= $product_id ?>">
                     <?= $product_name ?>
                 </a>
             </h3>
@@ -110,7 +110,7 @@ switch ($product_status) {
                 
                 <!-- Gyors üzenet az eladónak (ha be van jelentkezve és nem saját termék) -->
                 <?php if (isset($_SESSION['user_id']) && $product['seller_user_id'] != $_SESSION['user_id']): ?>
-                    <a href="<?= BASE_URL ?>/pages/conversation?product_id=<?= $product_id ?>" class="btn-message">
+                    <a href="<?= BASE_URL ?>/pages/conversation.php?product_id=<?= $product_id ?>" class="btn-message">
                         <i class="fas fa-comment-dots"></i>
                         Üzenet
                     </a>

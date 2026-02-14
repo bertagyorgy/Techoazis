@@ -41,18 +41,32 @@ document.addEventListener('DOMContentLoaded', function() {
         let statusIcon = '';
         if (isSentByMe) {
             if (isRead) {
-                // Két pipa, ha látta (Színes)
                 statusIcon = '<i class="fas fa-check-double message-status-icon read" title="Látta" style="margin-left: 0.5rem; color: var(--accent-600);"></i>';
             } else {
-                // Egy pipa, ha csak elküldtük (Szürke)
                 statusIcon = '<i class="fas fa-check message-status-icon sent" title="Elküldve" style="margin-left: 0.5rem; color: #aaa;"></i>';
             }
+        }
+
+        // --- JAVÍTOTT KÉP LOGIKA ---
+        // Megvizsgáljuk, hogy az URL már tartalmazza-e a http-t vagy a baseUrl-t
+        let avatarUrl = message.profile_image;
+        
+        // Ha nincs kép, legyen egy alapértelmezett (opcionális biztonsági lépés)
+        if (!avatarUrl) {
+            avatarUrl = `${baseUrl}/images/anonymous.png`; 
+        } 
+        // Ha nem kezdődik http-vel, akkor elé rakjuk a baseUrl-t
+        else if (!avatarUrl.startsWith('http')) {
+            // Vigyázunk, hogy ne legyen duplaper (//) az összefűzésnél, ha a baseUrl végén vagy a kép elején lenne
+            const cleanBase = baseUrl.replace(/\/$/, '');
+            const cleanPath = avatarUrl.replace(/^\//, '');
+            avatarUrl = `${cleanBase}/${cleanPath}`;
         }
 
         return `
             <div class="message ${isSentByMe ? 'sent' : 'received'}" data-message-id="${message.message_id}">
                 <div class="message-avatar">
-                    <img src="${baseUrl}/${message.profile_image}" alt="${message.username}">
+                    <img src="${avatarUrl}" alt="${message.username}">
                 </div>
                 <div class="message-content">
                     <div class="message-text">

@@ -1,6 +1,6 @@
 <?php
 // create_group.php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $error_msg = "";
-$uploadDirAbs = __DIR__ . '/uploads/groups/';
+$uploadDirAbs = ROOT_PATH . '/uploads/groups/';
 
 if (!is_dir($uploadDirAbs)) {
     @mkdir($uploadDirAbs, 0755, true);

@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
@@ -284,10 +284,10 @@ require_once ROOT_PATH . '/app/db.php';
                         <h3 class="footer-title">Navigáció</h3>
                         <ul class="footer-links">
                             <li><a href="<?= BASE_URL ?>/index.php" class="footer-link">Főoldal</a></li>
-                            <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link">Vásárlás</a></li>
-                            <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link">Közösség</a></li>
-                            <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link">Tudástár</a></li>
-                            <li><a href="<?= BASE_URL ?>/about_us.php" class="footer-link">Rólunk</a></li>
+                            <li><a href="<?= BASE_URL ?>/pages/shop.php" class="footer-link">Vásárlás</a></li>
+                            <li><a href="<?= BASE_URL ?>/pages/forum.php" class="footer-link">Közösség</a></li>
+                            <li><a href="<?= BASE_URL ?>/pages/articles.php" class="footer-link">Tudástár</a></li>
+                            <li><a href="<?= BASE_URL ?>/pages/about_us.php" class="footer-link">Rólunk</a></li>
                         </ul>
                     </div>
                 </div>

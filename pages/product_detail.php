@@ -1,6 +1,6 @@
 <?php
 // product_detail.php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 
 require_once ROOT_PATH . '/app/db.php';
@@ -217,7 +217,7 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             ?>
                             <?php if ($slug !== ''): ?>
                             <div style="text-align: center; margin-top: 1rem;">
-                                <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($slug) ?>" class="btn-back">
+                                <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($slug) ?>" class="btn-back">
                                     <i class="fas fa-user-circle"></i>
                                     Profil megtekintése
                                 </a>

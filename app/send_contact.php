@@ -8,7 +8,7 @@ loadEnv();
 // Ellenőrizzük a metódust
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     // JAVÍTÁS: Szép URL (.php nélkül)
-    header("Location: " . BASE_URL . "/contact");
+    header("Location: " . BASE_URL . "/pages/contact.php");
     exit();
 }
 
@@ -27,7 +27,7 @@ if ($message === '' || mb_strlen($message) < 10) $errors[] = "Az üzenet túl r�
 
 if (!empty($errors)) {
     // JAVÍTÁS: Szép URL (.php nélkül)
-    header("Location: " . BASE_URL . "/contact?status=error&msg=" . urlencode(implode(" ", $errors)));
+    header("Location: " . BASE_URL . "/pages/contact?status=error&msg=" . urlencode(implode(" ", $errors)));
     exit();
 }
 
@@ -76,12 +76,14 @@ try {
     $mail->send();
 
     // JAVÍTÁS: Szép URL (.php nélkül)
-    header("Location: " . BASE_URL . "/contact?status=success");
+    header("Location: " . BASE_URL . "/pages/contact?status=success");
     exit();
 
 } catch (Exception $e) {
     $err = $mail->ErrorInfo ?: $e->getMessage();
     // JAVÍTÁS: Szép URL (.php nélkül)
-    header("Location: " . BASE_URL . "/contact?status=error&msg=" . urlencode("Küldési hiba: " . $err));
+    header("Location: " . BASE_URL . "/pages/contact?status=error&msg=" . urlencode("Küldési hiba: " . $err));
     exit();
 }
+/****/
+/*.php kéne a contact után?*/

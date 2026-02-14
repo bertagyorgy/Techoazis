@@ -1,7 +1,8 @@
 <?php
-session_start();
-require_once __DIR__ . '/app/db.php';
-require_once __DIR__ . '/app/profile_stats.php';
+if (session_status() === PHP_SESSION_NONE) session_start();
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/profile_stats.php';
+/*???*/
 
 /* =========================
    1. AUTH
@@ -272,7 +273,7 @@ if (
     if ($stmt->execute()) {
         $conversation['conv_status'] = 'archived'; // Frissítjük a lokális változót a megjelenítéshez
         $success_message = "A beszélgetést lezártad. További üzenetek küldése nem lehetséges.";
-        header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+        header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
         exit();
     }
     $stmt->close();
@@ -373,7 +374,7 @@ if (
             $error_message = "Hiba történt az eladás lezárásakor: " . $e->getMessage();
         }
     }
-    header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+    header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
     exit();
 }
 /* =========================
@@ -402,7 +403,7 @@ if (
             $conversation[$my_field] = 0; // lokálisan is frissítjük
             $success_message = "Visszavontad a megállapodást.";
             $stmt->close();
-            header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+            header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
              exit();
         } else {
             $error_message = "Nem sikerült visszavonni a megállapodást.";
@@ -420,7 +421,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_message']) && !i
         $stmt = $conn->prepare("INSERT INTO messages (conversation_id, sender_user_id, user_message) VALUES (?, ?, ?)");
         $stmt->bind_param("iis", $conversation_id, $user_id, $message_text);
         if ($stmt->execute()) {
-            header("Location: conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+            header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
             exit();
         }
         $stmt->close();
@@ -487,7 +488,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_review'])) {
                     // Opcionális: Eladó átlagának frissítése (avg_rating a users táblában)
                     $conn->query("UPDATE users SET avg_rating = (SELECT AVG(rating) FROM reviews WHERE seller_user_id = {$product['seller_user_id']}) WHERE user_id = {$product['seller_user_id']}");
                     
-                    header("Location: conversation.php?conv_id=$conversation_id&success=reviewed");
+                    header("Location: /pages/conversation.php?conv_id=$conversation_id&success=reviewed");
                     exit();
                 }
                 $stmt->close();

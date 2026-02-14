@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
@@ -197,7 +197,7 @@ include ROOT_PATH . '/views/navbar.php';
                     </a>
 
 
-                    <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($post['user_slug']) ?>">
+                    <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($post['user_slug']) ?>">
                         <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
                     </a>
 

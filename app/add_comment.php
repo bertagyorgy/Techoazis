@@ -1,71 +1,85 @@
 <?php
-// Kimenet pufferelés indítása (hogy ne kerüljön véletlen szóköz a JSON elé)
+// 1. Kimenet pufferelés indítása (megelőzi a véletlen szóközök okozta JSON hibát)
 ob_start();
-session_start();
 
-// JSON fejléc beállítása
-header("Content-Type: application/json; charset=utf-8");
-
+// 2. Hibakezelés és útvonalak beállítása
 $response = [];
 
 try {
-    // 1. Bejelentkezés ellenőrzése
-    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    // Meghatározzuk a config.php elérési útját az aktuális mappához képest
+    // app/add_comment.php -> fel egyet -> core/config.php
+    $configPath = dirname(__DIR__) . '/core/config.php';
+
+    if (!file_exists($configPath)) {
+        throw new Exception("Rendszerhiba: A konfigurációs fájl nem található.");
+    }
+
+    // Config betöltése
+    require_once $configPath;
+
+    // Ha a config.php-ban nincs session_start(), elindítjuk itt
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // JSON fejléc (Csak a require után, hogy ne legyen gond, ha a configban van hiba)
+    header("Content-Type: application/json; charset=utf-8");
+
+    // Szükséges további fájlok betöltése (a config.php-ban definiált ROOT_PATH használatával)
+    if (!defined('ROOT_PATH')) {
+        define('ROOT_PATH', dirname(__DIR__)); // Biztonsági mentés, ha a configból hiányozna
+    }
+
+    require_once ROOT_PATH . '/app/db.php';
+    require_once ROOT_PATH . '/app/profile_stats.php';
+
+    // 3. Bejelentkezés ellenőrzése
+    if (!isset($_SESSION['user_id'])) {
         throw new Exception("Be kell jelentkezned a kommenteléshez!");
     }
 
-    // 2. Adatbázis fájl betöltése (Biztonságos útvonal: __DIR__)
-    // Ez azt jelenti: "keresd a db.php-t ugyanabban a mappában, ahol én vagyok"
-    if (!file_exists(__DIR__ . '/db.php')) {
-        throw new Exception("Rendszerhiba: Az adatbázis fájl nem található.");
-    }
-    require_once __DIR__ . '/db.php';
-    require_once __DIR__ . '/profile_stats.php';
-
-    // 3. Bemenő adatok feldolgozása
-    // A $_SESSION['user_id']-t feltételezzük, hogy létezik, ha loggedin true
-    $user_id = $_SESSION['user_id'] ?? 0;
+    // 4. Bemenő adatok feldolgozása
+    $user_id = $_SESSION['user_id'];
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-    $content = trim($_POST['content'] ?? "");
+    $content = isset($_POST['content']) ? trim($_POST['content']) : "";
 
     // Validálás
-    if ($post_id <= 0 || $content === "") {
-        throw new Exception("Hiányzó adat vagy üres komment!");
+    if ($post_id <= 0 || empty($content)) {
+        throw new Exception("Hiányzó adatok vagy üres hozzászólás!");
     }
 
-    if ($user_id <= 0) {
-        throw new Exception("Érvénytelen felhasználói azonosító. Jelentkezz be újra!");
-    }
-
-    // 4. Adatbázis művelet
+    // 5. Adatbázis művelet (INSERT)
     $stmt = $conn->prepare("INSERT INTO comments (post_id, user_id, content, created_at) VALUES (?, ?, ?, NOW())");
     
     if (!$stmt) {
-        throw new Exception("SQL Hiba: " . $conn->error);
+        throw new Exception("SQL előkészítési hiba: " . $conn->error);
     }
 
     $stmt->bind_param("iis", $post_id, $user_id, $content);
 
     if ($stmt->execute()) {
+        // Statisztika frissítése (ha van ilyen funkció a profile_stats.php-ban)
+        if (function_exists('refreshUserStats')) {
+            refreshUserStats($conn, $user_id);
+        }
+
         $response['success'] = true;
-        $response['message'] = "Komment sikeresen elküldve.";
-        refreshUserStats($conn, $user_id);
+        $response['message'] = "Komment sikeresen hozzáadva.";
     } else {
-        throw new Exception("Nem sikerült menteni a kommentet: " . $stmt->error);
+        throw new Exception("Hiba a mentés során: " . $stmt->error);
     }
 
     $stmt->close();
-    // A db kapcsolatot nem feltétlen kell lezárni, a PHP megteszi a script végén, 
-    // de ha akarod: $conn->close();
 
 } catch (Exception $e) {
-    // Bármi hiba történt, itt elkapjuk
+    // Bármilyen hiba esetén JSON formátumban válaszolunk
+    header("Content-Type: application/json; charset=utf-8");
     $response['success'] = false;
     $response['message'] = $e->getMessage();
 }
 
-// 5. Kimenet küldése
-// Puffer törlése (hogy csak a tiszta JSON menjen ki)
+// 6. Kimenet tisztítása és küldése
+// Csak a tiszta JSON kód kerülhet a kimenetre!
 ob_clean();
 echo json_encode($response);
 exit();

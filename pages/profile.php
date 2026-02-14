@@ -94,7 +94,11 @@ $stmt->execute();
 $products_result = $stmt->get_result();
 $user_products = [];
 while ($row = $products_result->fetch_assoc()) {
-    $row['image_path'] = $row['image_path'] ?? BASE_URL . '/uploads/products/default_product.png';
+    if (!empty($row['image_path'])) {
+        $row['image_path'] = BASE_URL . '/' . $row['image_path'];
+    } else {
+        $row['image_path'] = BASE_URL . '/uploads/products/default_product.png';
+    }    
     $user_products[] = $row;
 }
 $stmt->close();

@@ -1,7 +1,7 @@
 <?php
 // conversation.php - A tiszta megjelenítő fájl
 require_once __DIR__ . '/../core/config.php';
-require_once ROOT_PATH . '/app/edit_product.php';
+require_once ROOT_PATH . '/app/conversation_logic.php';
 require_once ROOT_PATH . '/app/profile_stats.php';
 ?>
 

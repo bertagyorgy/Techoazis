@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
@@ -179,7 +179,7 @@ $stmt->close();
                     <div class="article-body">
                         <div class="article-meta">
                             <span class="article-badge">#<?= htmlspecialchars($a['category_name']) ?></span>
-                            <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($a['author_slug']) ?>">
+                            <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($a['author_slug']) ?>">
                                 <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($a['username']) ?></span>
                             </a>
                             <span><i class="fa-regular fa-clock"></i>

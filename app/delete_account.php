@@ -88,6 +88,6 @@ try {
     $conn->rollback();
     error_log("Account deletion failed: " . $e->getMessage());
     // JAVÍTÁS: Átirányítás a profilra hiba esetén szép URL-el
-    header('Location: ' . BASE_URL . '/profile?error=' . urlencode('Hiba történt a fiók törlése során.'));
+    header('Location: ' . BASE_URL . '/pages/profile?error=' . urlencode('Hiba történt a fiók törlése során.'));
 }
 ?>

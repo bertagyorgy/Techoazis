@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
@@ -115,7 +115,7 @@ function render_text($text) {
             <div class="author" style="margin-bottom: 1.25rem;">
                 <img src="<?= htmlspecialchars($article['author_image'] ?: BASE_URL . '/images/anonymous.png') ?>" alt="Szerző">
                 <div>
-                    <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($article['author_slug']) ?>">
+                    <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($article['author_slug']) ?>">
                         <div style="color: var(--text-color); font-weight: 800;">
                             <?= htmlspecialchars($article['author_username']) ?>
                         </div>
