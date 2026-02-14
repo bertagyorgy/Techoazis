@@ -302,42 +302,55 @@ if ($page !== '' && $page !== 'index') {
 
     <footer class="footer">
         <div class="custom-container">
-            <div class="grid-row">
-                <div class="grid-col-4">
-                    <div class="footer-brand">
-                        <h3 class="footer-subtitle">Techoázis</h3>
-                        <p class="footer-description">
-                            A hely, ahol a technológia, a közösség és az innováció találkozik.
-                        </p>
+            <!-- FELSŐ RÉSZ -->
+            <div class="footer-top">
+                <!-- BRAND -->
+                <div class="footer-brand">
+                    <h3 class="footer-subtitle">Techoázis</h3>
+                    <p class="footer-description">
+                        A hely, ahol a technológia, a közösség és az innováció találkozik.
+                    </p>
+                </div>
+                <!-- JOBB OLDALI BLOKK -->
+                <div class="footer-right">
+                    <!-- NAV -->
+                    <div class="footer-section">
+                        <h3 class="footer-title">Navigáció</h3>
+                        <ul class="footer-links">
+                            <li><a href="<?= BASE_URL ?>/index.php" class="footer-link">Főoldal</a></li>
+                            <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link">Vásárlás</a></li>
+                            <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link">Közösség</a></li>
+                            <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link">Tudástár</a></li>
+                            <li><a href="<?= BASE_URL ?>/about_us.php" class="footer-link">Rólunk</a></li>
+                        </ul>
                     </div>
-                </div>
-                <div class="grid-col-4 footer-nav">
-                    <h3 class="footer-title">Navigáció</h3>
-                    <ul class="footer-links">
-                        <li><a href="<?= BASE_URL ?>/index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
-                        <li><a href="<?= BASE_URL ?>/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
-                        <li><a href="<?= BASE_URL ?>/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
-                        <li><a href="<?= BASE_URL ?>/articles.php" class="footer-link"><i class="fa-solid fa-pen"></i> Cikkek</a></li>
-                        <li><a href="<?= BASE_URL ?>/contact.php" class="footer-link"><i class="fa-solid fa-address-card"></i> Kapcsolat</a></li>
-                        <?php
-                        if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
-                            <li><a href="<?= BASE_URL ?>/admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-                <div class="grid-col-4 footer-social">
-                    <h3 class="footer-title">Kövess minket</h3>
-                    <div class="social-icons-wrapper">
-                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <!-- CONTACT -->
+                    <div class="footer-section">
+                        <h3 class="footer-title">Elérhetőség</h3>
+                        <ul class="footer-links">
+                            <li class="footer-link">+36 70 234 5678</li>
+                            <li>
+                                <a href="mailto:support@techoazis.hu" class="footer-link">
+                                    support@techoazis.hu
+                                </a>
+                            </li>
+                            <li class="footer-link">Budapest, Magyarország</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <hr class="footer-divider">
-            <div class="footer-copy">
-                &copy; <?php echo date('Y'); ?> Techoázis. Minden jog fenntartva.
+            <!-- ALSÓ RÉSZ -->
+            <div class="footer-bottom">
+                <div class="social-icons-wrapper">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+
+                <div class="footer-copy">
+                    &copy; <?php echo date('Y'); ?> Techoázis. Minden jog fenntartva.
+                </div>
             </div>
         </div>
     </footer>

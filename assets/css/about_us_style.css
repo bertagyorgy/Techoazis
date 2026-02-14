@@ -38,7 +38,7 @@
 
 /* Callout doboz (nem card-grid, inkább kiemelés) */
 .callout{
-    background: white;
+    background: var(--dark-surface-alt);
     border-radius: var(--border-radius-lg);
     padding: 22px;
     box-shadow: var(--shadow-sm);
@@ -61,7 +61,7 @@
     gap: 14px;
 }
 .mini-card{
-    background: white;
+    background: var(--dark-surface-alt);
     border-radius: var(--border-radius-lg);
     padding: 16px 18px;
     box-shadow: var(--shadow-sm);
@@ -94,7 +94,7 @@
     .team-grid{ grid-template-columns: 1fr; }
 }
 .team-card{
-    background: white;
+    background: var(--dark-surface-alt);
     border-radius: var(--border-radius-lg);
     padding: 24px;
     box-shadow: var(--shadow-sm);
@@ -129,7 +129,7 @@
     .future-grid{ grid-template-columns: 1fr; }
 }
 .future-card{
-    background: white;
+    background: var(--dark-surface-alt);
     border-radius: var(--border-radius-lg);
     padding: 22px;
     box-shadow: var(--shadow-sm);

@@ -26,7 +26,7 @@
 .top-bar h1{
     margin: 0;
     font-size: 2rem;
-    color: var(--admin-secondary);
+    color: var(--admin-text);
     display:flex;
     align-items:center;
     gap:10px;
@@ -50,7 +50,7 @@
     justify-content: space-between;
     gap: 12px;
     padding: 14px 16px;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.02), rgba(15, 23, 42, 0));
+    background: var(--dark-surface-alt);
     border-bottom: 1px solid var(--admin-border);
 }
 .section-title{
@@ -66,6 +66,7 @@
 
 .section-body{
     padding: 16px;
+    background: var(--surface);
 }
 
 /* gyorsgombok */
@@ -76,10 +77,10 @@
 }
 .btn-quick{
     padding: 10px 14px;
-    background: var(--tx-card);
+    background: var(--dark-surface-alt);
     border: 1px solid var(--admin-border);
     border-radius: 12px;
-    color: var(--admin-text);
+    color: var(--admin-text-light);
     text-decoration: none;
     font-size: 1rem;
     font-weight: 700;
@@ -106,7 +107,7 @@
 
 /* a te stat-cardod kompatibilis marad, csak adunk neki “techo” kártya stílust */
 .stat-card{
-    background: var(--tx-card);
+    background: var(--dark-surface-alt);
     border: 1px solid var(--admin-border);
     border-radius: 14px;
     padding: 14px;
@@ -137,7 +138,7 @@
 .stat-info strong{
     display:block;
     font-size: 1.35rem;
-    color: var(--admin-secondary);
+    color: var(--admin-text-light);
     line-height: 1.1;
 }
 
@@ -153,17 +154,17 @@
 .stat-card h3{
     margin: 0 0 10px 0;
     font-size: .95rem;
-    color: var(--admin-secondary);
+    color: var(--admin-text-light);
     font-weight: 900;
 }
 
 .latest-box{
-    background: var(--tx-soft);
+    background: var(--surface);
     border: 1px dashed rgba(15,23,42,.15);
     padding: 10px 12px;
     border-radius: 12px;
     font-weight: 700;
-    color: var(--admin-secondary);
+    color: var(--admin-text-light);
     font-size: .95rem;
 }
 .latest-date{
