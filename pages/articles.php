@@ -100,6 +100,7 @@ $stmt->close();
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/comments.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/forum.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/post_card.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/responsive_adjustments.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
@@ -222,6 +223,7 @@ $stmt->close();
     </aside>
 
 </section>
+<?php include ROOT_PATH . '/views/footer.php';?>
 
 </body>
 </html>

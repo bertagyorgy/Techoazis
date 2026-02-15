@@ -111,6 +111,7 @@ while ($img = $images_result->fetch_assoc()) {
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/comments.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/forum.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/post_card.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/responsive_adjustments.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
@@ -273,6 +274,6 @@ include ROOT_PATH . '/views/navbar.php';
   <button class="img-modal-close" aria-label="Bezárás">x</button>
   <img id="imgModalImage" class="img-modal-image" alt="Nagy kép">
 </dialog>
-
+<?php include ROOT_PATH . '/views/footer.php';?>
 </body>
 </html>
