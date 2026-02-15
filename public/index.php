@@ -2,8 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/core/config.php';
-
+require_once __DIR__ . '/../core/config.php';
 // Tisztítás: levágjuk a perjeleket az elejéről és végéről
 $page = isset($_GET['p']) ? trim($_GET['p'], '/') : '';
 

@@ -1,8 +1,8 @@
 <?php
 // conversation.php - A tiszta megjelenítő fájl
-require_once __DIR__ . '/../core/config.php';
-require_once ROOT_PATH . '/app/conversation_logic.php';
-require_once ROOT_PATH . '/app/profile_stats.php';
+require_once __DIR__ . '/../../core/config.php';
+require_once APP_PATH . '/conversation_logic.php';
+require_once APP_PATH . '/profile_stats.php';
 ?>
 
 <!DOCTYPE html>
@@ -24,8 +24,8 @@ require_once ROOT_PATH . '/app/profile_stats.php';
     <script src="<?= BASE_URL ?>/assets/js/index.js" defer></script>
 </head>
 <body>
-    <?php include ROOT_PATH . '/views/navbar.php'; ?>
-    
+    <?php include VIEWS_PATH . '/navbar.php'; ?>
+
     <section class="section-padding">
         <div class="conversation-container">
             
@@ -90,7 +90,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                     <?php if ($conversation['conv_status'] === 'open'): ?>
                         
                         <div class="message-input-container">
-                            <form class="message-input-form" id="message-form" method="POST" action="<?= BASE_URL ?>/pages/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
+                            <form class="message-input-form" id="message-form" method="POST" action="<?= BASE_URL ?>/pages/conversation?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
                                 <textarea class="message-input" id="message-input" name="user_message" placeholder="Írd ide az üzeneted..." required></textarea>
                                 <button type="submit" class="send-button" id="send-button">
                                     <i class="fas fa-paper-plane"></i>
@@ -169,7 +169,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                         </div>
                         
                         
-                        <form method="POST" action="<?= BASE_URL ?>/pages/conversation.php?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
+                        <form method="POST" action="<?= BASE_URL ?>/pages/conversation?conv_id=<?php echo $conversation_id; ?>&product_id=<?php echo $product_id; ?>">
 
                             <div class="deal-actions-inline">
                                 <!-- LEZÁRÁS (piros) -->

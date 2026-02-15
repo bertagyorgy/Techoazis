@@ -20,6 +20,15 @@ if ($isXampp) {
 // a ROOT_PATH-nak egy szinttel feljebb kell mutatnia!
 define('ROOT_PATH', dirname(__DIR__));
 
+// --- ÚJ KONSTANSOK A KÉNYELEMÉRT ---
+define('CORE_PATH',    ROOT_PATH . '/core');
+define('APP_PATH',     ROOT_PATH . '/app');
+define('PAGES_PATH',   ROOT_PATH . '/pages');
+define('VIEWS_PATH',   ROOT_PATH . '/views');
+define('UPLOADS_PATH', ROOT_PATH . '/uploads');
+// ----------------------------------
+
+
 // Debug (szükség esetén):
 // echo "ROOT_PATH: " . ROOT_PATH;
 

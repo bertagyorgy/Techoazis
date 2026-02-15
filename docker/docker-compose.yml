@@ -28,6 +28,9 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: user_password
     volumes:
+      # Perzisztens tárhely az adatoknak
+      - techoazis-db-data:/var/lib/mysql 
+      # Kezdeti adatbázis séma és adatok
       - ../database/techoazis_db.sql:/docker-entrypoint-initdb.d/01_structure.sql
       - ../database/techoazis_db_datas.sql:/docker-entrypoint-initdb.d/02_data.sql
     networks:
@@ -49,3 +52,6 @@ services:
 networks:
   techoazis-net:
     driver: bridge
+
+volumes:
+  techoazis-db-data:

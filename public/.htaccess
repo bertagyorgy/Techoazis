@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# Automatikus Base felismerés XAMPP-hoz és Dockerhez
+RewriteCond %{REQUEST_URI} ^/(Techoazis/public|Techoazis)/
+RewriteRule ^ - [E=BASE:%{REQUEST_URI}]
+
+# .php kiterjesztés kezelése
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^.]+)$ $1.php [L]
+
+# .php eltüntetése a URL-ből
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*)\.php[\s\?] [NC]
+RewriteRule ^(.*)\.php$ $1 [R=301,L]
+
+# Router - Minden más az index.php-ra
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]

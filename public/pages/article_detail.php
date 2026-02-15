@@ -1,11 +1,11 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-require_once __DIR__ . '/../core/config.php';
-require_once ROOT_PATH . '/app/db.php';
+require_once __DIR__ . '/../../core/config.php';
+require_once APP_PATH . '/db.php';
 
 $article_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($article_id <= 0) {
-    header("Location: " . BASE_URL . "/pages/articles.php");
+    header("Location: " . BASE_URL . "/pages/articles");
     exit();
 }
 
@@ -41,7 +41,7 @@ $article = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$article) {
-    header("Location: " . BASE_URL . "/pages/articles.php");
+    header("Location: " . BASE_URL . "/pages/articles");
     exit();
 }
 
@@ -82,7 +82,7 @@ function render_text($text) {
 </head>
 
 <body>
-<?php include ROOT_PATH . '/views/navbar.php'; ?>
+<?php include VIEWS_PATH . '/navbar.php'; ?>
 
 <div class="article-wrap">
     <div class="article-card">
@@ -93,7 +93,7 @@ function render_text($text) {
         <div class="article-body">
             <div class="article-top">
                 <div class="crumbs">
-                    <a href="<?= BASE_URL ?>/pages/articles.php"><i class="fa-solid fa-arrow-left"></i> Tudástár</a>
+                    <a href="<?= BASE_URL ?>/pages/articles"><i class="fa-solid fa-arrow-left"></i> Tudástár</a>
                 </div>
                 <div class="badge">
                     #<?= htmlspecialchars($article['category_name']) ?>
@@ -138,7 +138,7 @@ function render_text($text) {
             </div>
 
             <div class="footer-actions">
-                <a class="back-btn" href="<?= BASE_URL ?>/pages/articles.php">
+                <a class="back-btn" href="<?= BASE_URL ?>/pages/articles">
                     <i class="fa-solid fa-layer-group"></i> Vissza a cikkekhez
                 </a>
             </div>

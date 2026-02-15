@@ -1,8 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 
-require_once __DIR__ . '/../core/config.php';
-require_once ROOT_PATH . '/app/db.php';
+require_once __DIR__ . '/../../core/config.php';
+require_once APP_PATH . '/db.php';
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -41,7 +41,7 @@ require_once ROOT_PATH . '/app/db.php';
 </head>
 <body>
 
-<?php include ROOT_PATH . '/views/navbar.php'; ?>
+<?php include VIEWS_PATH . '/navbar.php'; ?>
     <!-- HERO -->
     <div class="hero-section">
         <div class="custom-container hero-container">

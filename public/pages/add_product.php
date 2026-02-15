@@ -1,13 +1,13 @@
 <?php
 // add_product.php
 if (session_status() === PHP_SESSION_NONE) session_start();
-require_once __DIR__ . '/../core/config.php';
-require_once ROOT_PATH . '/app/db.php';
+require_once __DIR__ . '/../../core/config.php';
+require_once APP_PATH . '/db.php';
 
 
 // Csak bejelentkezett felhasználók tölthetnek fel terméket
 if (!isset($_SESSION['user_id'])) {
-    header("Location: " . BASE_URL . "/views/login.php");
+    header("Location: " . BASE_URL . "/views/login");
     exit();
 }
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product_id = $conn->insert_id; 
             
             if (!empty($_FILES['images']['name'][0])) {
-                $upload_dir = ROOT_PATH . '/uploads/products/';
+                $upload_dir = UPLOADS_PATH . '/products/';
                 if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
 
                 $img_sql = "INSERT INTO product_images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
@@ -132,13 +132,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-<?php include ROOT_PATH . '/views/navbar.php'; ?>
+<?php include VIEWS_PATH . '/navbar.php'; ?>
 
     <div class="container section-padding">
         <div class="edit-container">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2><i class="fas fa-plus-circle"></i> Új termék hirdetése</h2>
-                <a href="<?= BASE_URL ?>/pages/shop.php" class="btn-back" style="text-decoration: none; color: var(--text-muted);">
+                <a href="<?= BASE_URL ?>/pages/shop" class="btn-back" style="text-decoration: none; color: var(--text-muted);">
                     <i class="fas fa-arrow-left"></i> Vissza a shopba
                 </a>
             </div>

@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-require_once __DIR__ . '/../core/config.php';
-require_once ROOT_PATH . '/app/db.php';
+require_once __DIR__ . '/../../core/config.php';
+require_once APP_PATH . '/db.php';
 
 
 /* =========================
@@ -116,7 +116,7 @@ $stmt->close();
 </head>
 <body>
 
-<?php include ROOT_PATH . '/views/navbar.php'; ?>
+<?php include VIEWS_PATH . '/navbar.php'; ?>
 
 <section class="forum-wrapper">
 
@@ -138,7 +138,7 @@ $stmt->close();
         <h3>Cikkek</h3>
         <ul class="group-list">
             <li>
-                <a href="<?= BASE_URL ?>/pages/articles.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
+                <a href="<?= BASE_URL ?>/pages/articles<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
                    class="<?= $category_id === 0 ? 'active' : '' ?>">
                     Összes
                     <i class="fa-solid fa-layer-group"></i>
@@ -148,7 +148,7 @@ $stmt->close();
 
             <?php foreach ($categories as $cat): ?>
                 <?php
-                    $href = BASE_URL . '/pages/articles.php?category=' . (int)$cat['category_id'];
+                    $href = BASE_URL . '/pages/articles?category=' . (int)$cat['category_id'];
                     if ($q !== '') $href .= "&q=" . urlencode($q);
                 ?>
                 <li>
@@ -195,7 +195,7 @@ $stmt->close();
                         <?php endif; ?>
 
                         <div class="article-actions">
-                            <a class="read-btn" href="<?= BASE_URL ?>/pages/article_detail.php?id=<?= (int)$a['article_id'] ?>">
+                            <a class="read-btn" href="<?= BASE_URL ?>/pages/article_detail?id=<?= (int)$a['article_id'] ?>">
                                 <i class="fa-solid fa-book-open"></i> Elolvasom
                             </a>
                         </div>
@@ -211,7 +211,7 @@ $stmt->close();
 
         <?php foreach ($latest_articles as $la): ?>
             <div class="latest-post-item">
-                <a href="<?= BASE_URL ?>/pages/article_detail.php?id=<?= (int)$la['article_id'] ?>">
+                <a href="<?= BASE_URL ?>/pages/article_detail?id=<?= (int)$la['article_id'] ?>">
                     <strong><?= htmlspecialchars($la['title']) ?></strong>
                 </a>
                 <p class="latest-post-meta">

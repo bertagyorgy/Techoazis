@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-require_once __DIR__ . '/../core/config.php';
+require_once __DIR__ . '/../../core/config.php';
 
 ?>
 <!DOCTYPE html>
@@ -38,7 +38,7 @@ require_once __DIR__ . '/../core/config.php';
 
 </head>
 <body>
-<?php include ROOT_PATH . '/views/navbar.php'; ?>
+<?php include VIEWS_PATH . '/navbar.php'; ?>
 
 <main class="contact-page">
   <div class="contact-container">
@@ -64,7 +64,7 @@ require_once __DIR__ . '/../core/config.php';
         </div>
       <?php endif; ?>
 
-      <form action="<?= BASE_URL ?>/app/send_contact.php" method="POST">
+      <form action="<?= BASE_URL ?>/pages/send_contact" method="POST">
         <div class="form-group">
           <label for="name">Név</label>
           <input id="name" name="name" type="text" class="form-control" required minlength="2" />
@@ -115,14 +115,14 @@ require_once __DIR__ . '/../core/config.php';
             <div class="grid-col-4 footer-nav">
                 <h3 class="footer-title">Navigáció</h3>
                 <ul class="footer-links">
-                    <li><a href="<?= BASE_URL ?>/index.php" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
-                    <li><a href="<?= BASE_URL ?>/pages/shop.php" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
-                    <li><a href="<?= BASE_URL ?>/pages/forum.php" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
-                    <li><a href="<?= BASE_URL ?>/pages/articles.php" class="footer-link"><i class="fa-solid fa-pen"></i>Cikkek</a></li>
-                    <li><a href="<?= BASE_URL ?>/pages/about_us.php" class="footer-link"><i class="fa-solid fa-address-card"></i>Rólunk</a></li>
+                    <li><a href="<?= BASE_URL ?>/index" class="footer-link"><i class="fas fa-home"></i> Főoldal</a></li>
+                    <li><a href="<?= BASE_URL ?>/pages/shop" class="footer-link"><i class="fas fa-shopping-cart"></i> Webshop</a></li>
+                    <li><a href="<?= BASE_URL ?>/pages/forum" class="footer-link"><i class="fas fa-comments"></i> Csevegés</a></li>
+                    <li><a href="<?= BASE_URL ?>/pages/articles" class="footer-link"><i class="fa-solid fa-pen"></i>Cikkek</a></li>
+                    <li><a href="<?= BASE_URL ?>/pages/about_us" class="footer-link"><i class="fa-solid fa-address-card"></i>Rólunk</a></li>
                     <?php
                     if (isset($_SESSION['user_id']) && isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'A'): ?>
-                        <li><a href="<?= BASE_URL ?>/admin/admin.php" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
+                        <li><a href="<?= BASE_URL ?>/admin/admin" class="footer-link"><i class="fas fa-cog"></i> Admin</a></li>
                     <?php endif; ?>
                 </ul>
             </div>

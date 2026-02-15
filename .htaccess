@@ -1,35 +1,4 @@
 RewriteEngine On
-
-# Dinamikus RewriteBase beállítása
-RewriteCond %{REQUEST_URI} ^/Techoazis/
-RewriteRule ^ - [E=BASE:/Techoazis/]
-RewriteCond %{REQUEST_URI} !^/Techoazis/
-RewriteRule ^ - [E=BASE:/]
-
-# --- BIZTONSÁG (Ez nem módosítja az útvonalakat) ---
-Options -Indexes
-<Files .env>
-    Order allow,deny
-    Deny from all
-</Files>
-# Tiltja a belső mappák listázását/elérését, de nem irányít át semmit
-RewriteRule ^(core|database|docker)/ - [F,L]
-# --------------------------------------------------
-
-# Static mappák: soha ne rewrite
-RewriteRule ^(app|assets|images|uploads)/ - [L]
-
-# .php eltüntetés GET-nél
-RewriteCond %{REQUEST_METHOD} GET
-RewriteCond %{THE_REQUEST} \s/+(?:Techoazis/)?(.+?)\.php[\s?] [NC]
-RewriteRule ^(.+?)\.php$ %{ENV:BASE}$1 [R=301,L,NE]
-
-# Ha van ilyen fájl .php-val, kiszolgáljuk
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^(.+?)/?$ $1.php [L,QSA]
-
-# Minden más megy index.php front-controllerbe
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]
+# Ha a kérés nem a public mappába megy, irányítsuk át oda belsőleg
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
