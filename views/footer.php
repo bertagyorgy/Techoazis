@@ -40,10 +40,10 @@
         <!-- ALSÓ RÉSZ -->
         <div class="footer-bottom">
             <div class="social-icons-wrapper">
-                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-x-twitter"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-icon" aria-label="facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon" aria-label="instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon" aria-label="x"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="social-icon" aria-label="linkedin"><i class="fab fa-linkedin-in"></i></a>
             </div>
 
             <div class="footer-copy">

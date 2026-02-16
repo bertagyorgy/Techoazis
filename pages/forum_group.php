@@ -182,7 +182,7 @@ $post_count = $posts->num_rows;
                 if ($images->num_rows > 0): ?>
                     <div class="post-images">
                         <?php while ($img = $images->fetch_assoc()): ?>
-                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($img['image_path']) ?>" class="post-image js-zoomable">
+                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($img['image_path']) ?>" alt="Poszt kép" class="post-image js-zoomable">
                         <?php endwhile; ?>
                     </div>
                 <?php endif; ?>
