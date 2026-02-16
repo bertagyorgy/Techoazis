@@ -23,6 +23,7 @@ if (isset($_SESSION['registration_message'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Jelentkezz be a Techoázis fiókodba, hogy elérd hirdetéseidet, üzeneteidet és a közösségi funkciókat. A tech piactér egy helyen.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />  
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <title>Techoázis | Bejelentkezés</title>

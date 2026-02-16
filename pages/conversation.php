@@ -10,6 +10,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Privát üzenetek a Techoázison: egyeztess az eladókkal és vevőkkel gyorsan és biztonságosan közvetlen kapcsolatban.">
     <title>Techoázis | Beszélgetés</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">

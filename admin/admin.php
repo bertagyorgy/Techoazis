@@ -19,8 +19,8 @@ require_once ROOT_PATH . '/app/auth_check.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Techoázis adminisztrációs felület: felhasználók, hirdetések és közösségi tartalmak kezelése és moderálása egy helyen.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <title>Techoázis | Adminpanel</title>
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">

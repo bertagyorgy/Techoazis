@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Adj fel hardver hirdetést percek alatt a Techoázison! Tölts fel képeket, állíts be árat és találd meg a vevődet gyorsan.">
     <title>Techoázis | Új termék feltöltése</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">

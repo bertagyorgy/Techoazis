@@ -60,8 +60,8 @@ function render_text($text) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Olvasd el a legfrissebb tech cikket a Techoázison: részletes magyarázatok és gyakorlati tanácsok hardver/szoftver témában.">
     <title>Techoázis | <?= htmlspecialchars($article['title']) ?> cikk</title>
-
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">

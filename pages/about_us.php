@@ -9,6 +9,7 @@ require_once ROOT_PATH . '/app/db.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ismerd meg a Techoázis történetét és célját: egy biztonságos magyar tech piactér és közösség hardverrajongóknak, vásárlóknak és eladóknak.">
     <title>Techoázis | Rólunk</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />

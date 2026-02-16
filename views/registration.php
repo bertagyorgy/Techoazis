@@ -155,6 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Regisztrálj a Techoázisra és csatlakozz a magyar tech piactérhez! Hirdess hardvereket, beszélgess és építs megbízható profilt.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg"> 
     <title>Techoázis | Regisztráció</title>
@@ -181,6 +182,7 @@ include ROOT_PATH . '/views/navbar.php';
     <div class="background">
         <div class="login-container">
             <section class="login-box">
+                <img src="<?= BASE_URL ?>/images/techoazis_palmtree.png" alt="Techoazis Logo" style="height: 90px; width: 115px; display: block; margin: 0 auto;">
                 <h2>Regisztráció</h2>
                 <?php if (!empty($error_message)) : ?>
                     <div class="login-alert"><?php echo $error_message; ?></div>
@@ -213,8 +215,8 @@ include ROOT_PATH . '/views/navbar.php';
                     </div>
                     <button type="submit" name="submit" class="login-button">Regisztráció</button>
                 </form>
-                <p class="login-separator">Van már fiókod?</p>
-                <a href="<?= BASE_URL ?>/views/login.php"><button class="registration-button">Bejelentkezés</button></a>
+                <p class="login-separator">Van már fiókod?<a style="color: black;" href="<?= BASE_URL ?>/views/login.php"> Bejelentkezés</a></p>
+                
             </section>
         </div>
     </div>

@@ -68,6 +68,7 @@ $post_count = $posts->num_rows;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tech közösségi csoportok a Techoázison: kérdezz, segíts és beszélgess hardverekről hasonló érdeklődésű felhasználókkal.">
     <title>Techoázis | <?= htmlspecialchars($group['group_name']) ?></title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">

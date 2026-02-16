@@ -102,6 +102,7 @@ while ($img = $images_result->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Beszélgetés és tapasztalatcsere a Techoázis közösségben. Oszd meg véleményed vagy kérj segítséget más felhasználóktól.">
     <title>Techoázis | Közösség</title>
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
