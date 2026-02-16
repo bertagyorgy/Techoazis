@@ -136,6 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <div class="background">
         <div class="login-container">
             <section class="login-box">
+                <img src="<?= BASE_URL ?>/images/techoazis_palmtree.png" alt="Techoazis Logo" style="height: 90px; width: 115px; display: block; margin: 0 auto;">
                 <h2>Bejelentkezés</h2>
                 
                 <?php if (!empty($info_message)) : ?>
@@ -169,8 +170,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
                 
-                <p class="login-separator">Nincs fiókod?</p>
-                <a href="<?= BASE_URL ?>/views/registration.php"><button class="registration-button">Regisztráció</button></a>
+                <p class="login-separator">Nincs fiókod?<a style="color: black" href="<?= BASE_URL ?>/views/registration.php"> Regisztráció</a></p>
+
+                <!--<a href="<= BASE_URL ?>/views/registration.php"><button class="registration-button">Regisztráció</button></a>-->
             </section>
         </div>
     </div>
