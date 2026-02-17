@@ -167,9 +167,23 @@ if ($is_owner) {
     }
 }
 
-$profile_image = !empty($user['profile_image']) 
-    ? BASE_URL . '/' . htmlspecialchars($user['profile_image']) 
-    : BASE_URL . '/profile_images/anonymous.png';$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
+// Ellenőrizzük, hogy a mentett adat http-vel vagy https-el kezdődik-e (külső link)
+$is_external = preg_match('/^https?:\/\//', $user['profile_image']);
+
+if (!empty($user['profile_image'])) {
+    if ($is_external) {
+        // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+        $profile_image = htmlspecialchars($user['profile_image']);
+    } else {
+        // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+        $profile_image = BASE_URL . '/' . htmlspecialchars($user['profile_image']);
+    }
+} else {
+    // Alapértelmezett kép, ha nincs megadva semmi
+    $profile_image = BASE_URL . 'uploads/profile_images/anonymous.png';
+}
+
+$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
 ?>
 <!DOCTYPE html>
 <html lang="hu">

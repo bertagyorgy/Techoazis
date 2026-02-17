@@ -34,6 +34,7 @@
     --text-color: var(--neutral-900);
     --text-light: var(--neutral-700);
     --text-light-o: #cbd5e1;
+    --link-preview-bg: var(--primary-100);
     --item-name-text: var(--primary-700);
     --background: var(--neutral-100);
     --surface: white;
@@ -69,6 +70,7 @@
 .dark {
     --background-image: url('../../images/desert_night2.webp') left/cover;
     --background: var(--dark-bg);
+    --link-preview-bg: var(--dark-surface);
     --dark-bg-alt: var(--dark-surface);
     --surface: var(--dark-surface);
     --dark-surface-alt: #3e444e;

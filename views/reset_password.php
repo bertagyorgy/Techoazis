@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                     <button type="submit" name="submit" class="login-button">Jelszó mentése</button>
                 </form>
                 <?php else: ?>
-                    <p class="login-footer" style="margin-top:20px;"><a href="<?= BASE_URL ?>/views/forgot_password.php">Új visszaállító link kérése</a></p>
+                    <p class="login-footer" style="margin-top:20px;"><a style="color: white" href="<?= BASE_URL ?>/views/forgot_password.php">Új visszaállító link kérése</a></p>
                 <?php endif; ?>
             </section>
         </div>

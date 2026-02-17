@@ -266,20 +266,17 @@ function generateCommentsHTML(comments) {
     }
 
     return comments.map(c => {
-        // Ellenőrizzük, hogy léteznek-e az adatok, ha nem, helyettesítjük
         const safeUsername = c.username || "Ismeretlen";
-        const safeContent = c.content || "<i>Hiba: Nincs tartalom</i>";
-        const safeDate = c.created_at || "";
-        const safeImage = c.profile_image || "./images/default_avatar.png";
+        // Ha van az adatbázisban DiceBear URL, azt fogja használni, 
+        // ha üres, akkor jön a régi alapértelmezett kép.
+        const safeImage = c.profile_image || "./images/default_avatar.png"; 
 
         return `
         <div class="comment-item">
             <img class="comment-avatar" src="${safeImage}" alt="avatar">
             <div class="comment-body">
-                <span class="comment-meta">
-                    <strong>${safeUsername}</strong> <span>${safeDate}</span>
-                </span>
-                <p>${safeContent}</p>
+                <strong>${safeUsername}</strong>
+                <p>${c.content}</p>
             </div>
         </div>
         `;
@@ -305,3 +302,114 @@ if (displayBtn) {
         }
     });
 }
+
+// link normalizáló
+function normalizeUrl(url) {
+    if (url.startsWith("www.")) {
+        return "https://" + url;
+    }
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        return "https://" + url;
+    }
+    return url;
+}
+
+// link preview API funkció
+async function createLinkPreview(url) {
+    try {
+        const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&meta=true`);
+        const data = await res.json();
+
+        if (!data.data || !data.data.title) return null;
+
+        const preview = document.createElement("a");
+        preview.href = url;
+        preview.target = "_blank";
+        preview.className = "link-preview";
+
+        preview.innerHTML = `
+            <div class="lp-image">
+                <img src="${data.data.image?.url || ''}">
+            </div>
+            <div class="lp-content">
+                <div class="lp-title">${data.data.title}</div>
+                <div class="lp-desc">${data.data.description || ''}</div>
+                <div class="lp-domain">${data.data.publisher || new URL(url).hostname}</div>
+            </div>
+        `;
+
+        return preview;
+    } catch {
+        return null;
+    }
+}
+
+// linkek preview kártyára cseréje
+async function processPostLinks(container) {
+    // 1. Kigyűjtjük a szöveges csomópontokat, hogy ne nyúljunk a meglévő HTML elemekbe
+    // Ezt a fájl elejére vagy a processPostLinks elé tedd
+    const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+\.[a-z]{2,})/gi;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    let n;
+    while (n = walker.nextNode()) textNodes.push(n);
+
+    for (const node of textNodes) {
+        const text = node.nodeValue;
+        const matches = [...text.matchAll(urlRegex)];
+        if (!matches.length) continue;
+
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+
+        for (const match of matches) {
+            const url = match[0];
+            const start = match.index;
+
+            // Szöveg a link előtt
+            fragment.append(text.substring(lastIndex, start));
+
+            const realUrl = normalizeUrl(url);
+
+            // Saját domain kihagyása (opcionális)
+            if (realUrl.includes(location.hostname)) {
+                const a = document.createElement("a");
+                a.href = realUrl;
+                a.textContent = url;
+                fragment.append(a);
+            } else {
+                try {
+                    // Megpróbáljuk a preview-t
+                    const preview = await createLinkPreview(realUrl);
+                    if (preview) {
+                        fragment.append(preview);
+                    } else {
+                        throw new Error("Nincs preview adat");
+                    }
+                } catch (err) {
+                    // Ha az API hibázik, sima link lesz belőle
+                    const a = document.createElement("a");
+                    a.href = realUrl;
+                    a.textContent = url;
+                    a.target = "_blank";
+                    a.rel = "noopener noreferrer";
+                    fragment.append(a);
+                }
+            }
+            lastIndex = start + url.length;
+        }
+
+        // Maradék szöveg hozzáadása
+        fragment.append(text.substring(lastIndex));
+        
+        // Biztonságos csere: ellenőrizzük, hogy a node még a DOM-ban van-e
+        if (node.parentNode) {
+            node.parentNode.replaceChild(fragment, node);
+        }
+    }
+}
+document.querySelectorAll(".post-content").forEach(el => {
+    processPostLinks(el);
+});
+
+

@@ -33,6 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirm_password = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
 
+    // avatár generáló API
+    $dicebear_url = "https://api.dicebear.com/9.x/shapes/svg?seed=" . urlencode($username);
+
     // Validációk (A kód többi része itt marad)
     if ($username === '') { $errors[] = "Kérlek, add meg a felhasználónevet."; } elseif (strlen($username) < 3) { $errors[] = "A felhasználónév legyen legalább 3 karakter."; }
     if ($email === '') { $errors[] = "Kérlek, add meg az e-mail címed."; } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) { $errors[] = "Érvénytelen e-mail cím formátum."; }
@@ -69,8 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 
         $activation_code = bin2hex(random_bytes(16)); // Aktivációs kód generálása
         
-        $sql = "INSERT INTO users (username, username_slug, email, user_password, is_active, registration_date, user_role, ip, activation_code)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (username, username_slug, email, user_password, is_active, registration_date, user_role, ip, profile_image, activation_code)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         if ($stmt = $conn->prepare($sql)) {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -80,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
             $ip = $_SERVER['REMOTE_ADDR'] ?? '';
 
             $stmt->bind_param(
-                "sssssssss",
+                "ssssssssss",
                 $username,
                 $username_slug,
                 $email,
@@ -89,6 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                 $registration_date,
                 $user_role,
                 $ip,
+                $dicebear_url,
                 $activation_code
             );
 
