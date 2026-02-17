@@ -35,15 +35,22 @@ $result = $stmt->get_result();
 $comments = [];
 
 while ($row = $result->fetch_assoc()) {
-    // 3. JAVÍTÁS: Kép útvonalak abszolútítása BASE_URL-el
+    // 1. Ellenőrizzük, hogy üres-e a profilkép
     if (!$row['profile_image'] || empty($row['profile_image'])) {
-        // Alapértelmezett kép fix útvonala
+        // Alapértelmezett kép, ha nincs semmi megadva
         $row['profile_image'] = BASE_URL . "/images/anonymous.png";
     } else {
-        // Ha van saját kép, az elé is tesszük a BASE_URL-t
-        // (Feltéve, hogy az adatbázisban pl. 'images/profiles/user1.jpg' van)
-        $row['profile_image'] = BASE_URL . "/" . $row['profile_image'];
+        // 2. Megnézzük, hogy külső URL-e (pl. DiceBear)
+        // Ha http-vel vagy https-el kezdődik, nem fűzzük hozzá a BASE_URL-t
+        if (preg_match('/^https?:\/\//', $row['profile_image'])) {
+            // Külső link esetén marad az eredeti (htmlspecialchars-el védve)
+            $row['profile_image'] = htmlspecialchars($row['profile_image']);
+        } else {
+            // 3. Ha helyi fájl, akkor hozzátesszük a BASE_URL-t
+            $row['profile_image'] = BASE_URL . "/" . $row['profile_image'];
+        }
     }
+    
     $comments[] = $row;
 }
 
