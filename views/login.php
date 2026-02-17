@@ -4,17 +4,124 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 ob_start();
 
-// A config behívása a szülőmappából
+// 1. Config behívása a konstansok miatt
 require_once __DIR__ . '/../core/config.php';
+// 2. ROOT_PATH használata a biztos eléréshez
+require_once ROOT_PATH . '/core/envreader.php';
+loadEnv();
 
 // Adatbázis behívása
 require_once ROOT_PATH . '/app/db.php';
-
 
 $info_message = '';
 if (isset($_SESSION['registration_message'])) {
     $info_message = $_SESSION['registration_message'];
     unset($_SESSION['registration_message']);
+}
+
+$error_message = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    
+    // --- RECAPTCHA ELLENŐRZÉS ---
+    $secretKey = getenv('RECAPTCHA_SECRET_KEY') ?: $_ENV['RECAPTCHA_SECRET_KEY']; 
+    $captchaResponse = $_POST['g-recaptcha-response'];
+    $remoteIp = $_SERVER['REMOTE_ADDR'];
+
+    if (empty($captchaResponse)) {
+        $error_message = "Kérlek, igazold, hogy nem vagy robot!";
+    } else {
+        $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captchaResponse&remoteip=$remoteIp";
+        $verify = file_get_contents($url);
+        $responseData = json_decode($verify);
+
+        if (!$responseData->success) {
+            $error_message = "A reCAPTCHA ellenőrzés sikertelen. Próbáld újra!";
+        } else {
+            // HA SIKERES A CAPTCHA, JÖHET A LOGIN LOGIKA
+            $username = trim($_POST['username']);
+            $password = trim($_POST['password']);
+
+            if (empty($username) || empty($password)) {
+                $error_message = "Kérlek, tölts ki minden mezőt.";
+            } else {
+                $sql = "SELECT user_id, username, email, user_password, is_active, user_role FROM users WHERE username = ?";
+                if ($stmt = $conn->prepare($sql)) {
+                    $stmt->bind_param("s", $username);
+
+                    if ($stmt->execute()) {
+                        $result = $stmt->get_result();
+                        if ($result->num_rows == 1) {
+                            $row = $result->fetch_assoc();
+
+                            if ($row['is_active'] !== 'A') {
+                                if ($row['is_active'] === 'P') {
+                                    $error_message = "A fiókod még NINCS MEGERŐSÍTVE.";
+                                } elseif ($row['is_active'] === 'T') {
+                                    $error_message = "A fiókod törölve lett.";
+                                } else {
+                                    $error_message = "A fiókod nem aktív."; 
+                                }
+                            } elseif (password_verify($password, $row['user_password'])) {
+                                $user_id = $row['user_id'];
+                                $login_date = date('Y-m-d H:i:s');
+
+                                $_SESSION['user_id'] = $row['user_id'];
+                                $_SESSION['username'] = $row['username'];
+                                $_SESSION['user_role'] = $row['user_role'];
+                                $_SESSION['loggedin'] = true;
+
+                                $insert_sql = "INSERT INTO login (user_id, login_date) VALUES (?, ?)";
+                                if ($insert_stmt = $conn->prepare($insert_sql)) {
+                                    $insert_stmt->bind_param("is", $user_id, $login_date);
+                                    $insert_stmt->execute();
+                                    $insert_stmt->close();
+                                }
+                                
+                                if (isset($_SESSION['redirect_after_login'])) {
+                                    $url = $_SESSION['redirect_after_login'];
+                                    unset($_SESSION['redirect_after_login']);
+                                    header("Location: " . BASE_URL  . "/". $url . ".php");
+                                    exit();
+                                }
+
+                                if (isset($_POST['remember'])) {
+                                    $token = bin2hex(random_bytes(32));
+                                    $expire = date('Y-m-d H:i:s', strtotime('+30 days'));
+
+                                    $stmt2 = $conn->prepare("UPDATE users SET remember_token=?, remember_expire=? WHERE user_id=?");
+                                    $stmt2->bind_param("ssi", $token, $expire, $row['user_id']);
+                                    $stmt2->execute();
+
+                                    setcookie(
+                                        "remember_token",
+                                        $token,
+                                        time() + (86400 * 30),
+                                        "/",
+                                        "",
+                                        false, 
+                                        true
+                                    );
+                                }
+
+                                header("Location: " . BASE_URL  . "/" . "index.php");
+                                exit();
+                                
+                            } else {
+                                $error_message = "Hibás jelszó.";
+                            }
+                        } else {
+                            $error_message = "Nincs ilyen felhasználónév.";
+                        }
+                    } else {
+                        $error_message = "Hiba történt a bejelentkezés során.";
+                    }
+                    $stmt->close();
+                }
+            }
+        }
+    }
+    $conn->close();
 }
 ?>
 
@@ -23,10 +130,11 @@ if (isset($_SESSION['registration_message'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Jelentkezz be a Techoázis fiókodba, hogy elérd hirdetéseidet, üzeneteidet és a közösségi funkciókat. A tech piactér egy helyen.">
+    <meta name="description" content="Jelentkezz be a Techoázis fiókodba, hogy elérd hirdetéseidet, üzeneteidet és a közösségi funkciókat.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />  
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <title>Techoázis | Bejelentkezés</title>
+    
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
@@ -38,100 +146,13 @@ if (isset($_SESSION['registration_message'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="<?= BASE_URL ?>/assets/js/index.js" defer></script>
 </head>
 <body>
 <?php
 include ROOT_PATH . '/views/navbar.php';
-
-$error_message = '';
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-
-    if (empty($username) || empty($password)) {
-        $error_message = "Kérlek, tölts ki minden mezőt.";
-    } else {
-        $sql = "SELECT user_id, username, email, user_password, is_active, user_role FROM users WHERE username = ?";
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $username);
-
-            if ($stmt->execute()) {
-                $result = $stmt->get_result();
-                if ($result->num_rows == 1) {
-                    $row = $result->fetch_assoc();
-
-                    if ($row['is_active'] !== 'A') {
-                        if ($row['is_active'] === 'P') {
-                            $error_message = "A fiókod még NINCS MEGERŐSÍTVE.";
-                        } elseif ($row['is_active'] === 'T') {
-                            $error_message = "A fiókod törölve lett.";
-                        } else {
-                            $error_message = "A fiókod nem aktív."; 
-                        }
-                    } elseif (password_verify($password, $row['user_password'])) {
-                        $user_id = $row['user_id'];
-                        $login_date = date('Y-m-d H:i:s');
-
-                        $_SESSION['user_id'] = $row['user_id'];
-                        $_SESSION['username'] = $row['username'];
-                        $_SESSION['user_role'] = $row['user_role'];
-                        $_SESSION['loggedin'] = true;
-
-                        $insert_sql = "INSERT INTO login (user_id, login_date) VALUES (?, ?)";
-                        if ($insert_stmt = $conn->prepare($insert_sql)) {
-                            $insert_stmt->bind_param("is", $user_id, $login_date);
-                            $insert_stmt->execute();
-                            $insert_stmt->close();
-                        }
-                        
-                        // JAVÍTÁS: Pont hozzáadva a kiterjesztés elé és fix BASE_URL  összefűzés
-                        if (isset($_SESSION['redirect_after_login'])) {
-                            $url = $_SESSION['redirect_after_login'];
-                            unset($_SESSION['redirect_after_login']);
-                            header("Location: " . BASE_URL  . "/". $url . ".php");
-                            exit();
-                        }
-                        
-
-                        if (isset($_POST['remember'])) {
-
-                            $token = bin2hex(random_bytes(32));
-                            $expire = date('Y-m-d H:i:s', strtotime('+30 days'));
-
-                            $stmt2 = $conn->prepare("UPDATE users SET remember_token=?, remember_expire=? WHERE user_id=?");
-                            $stmt2->bind_param("ssi", $token, $expire, $row['user_id']);
-                            $stmt2->execute();
-
-                            setcookie(
-                                "remember_token",
-                                $token,
-                                time() + (86400 * 30),
-                                "/",
-                                "",
-                                false,  // XAMPP-nál ne legyen true mert nincs HTTPS
-                                true
-                            );
-                        }
-
-
-                        header("Location: " . BASE_URL  . "/" . "index.php");
-                        exit();
-                        
-                    } else {
-                        $error_message = "Hibás jelszó.";
-                    }
-                } else {
-                    $error_message = "Nincs ilyen felhasználónév.";
-                }
-            } else {
-                $error_message = "Hiba történt a bejelentkezés során.";
-            }
-            $stmt->close();
-        }
-    }
-    $conn->close();
-}
 ?>
 
     <div class="background">
@@ -168,12 +189,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                             <a style="color: white; font-size: 14px;" href="<?= BASE_URL ?>/views/forgot_password.php">Elfelejtett jelszó?</a>
                         </div>
                     </div>
+
+                    <div style="margin-bottom: 20px; display: flex; justify-content: center;">
+                        <div class="g-recaptcha" data-sitekey="<?= getenv('RECAPTCHA_SITE_KEY') ?: $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
+                    </div>
+
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
                 
                 <p class="login-separator">Nincs fiókod?<a style="color: black" href="<?= BASE_URL ?>/views/registration.php"> Regisztráció</a></p>
-
-                <!--<a href="<= BASE_URL ?>/views/registration.php"><button class="registration-button">Regisztráció</button></a>-->
             </section>
         </div>
     </div>
