@@ -270,12 +270,15 @@ function generateCommentsHTML(comments) {
         // Ha van az adatbázisban DiceBear URL, azt fogja használni, 
         // ha üres, akkor jön a régi alapértelmezett kép.
         const safeImage = c.profile_image || "./images/default_avatar.png"; 
+        const safeDate = c.created_at || "";
 
         return `
         <div class="comment-item">
             <img class="comment-avatar" src="${safeImage}" alt="avatar">
             <div class="comment-body">
-                <strong>${safeUsername}</strong>
+                <span class="comment-meta">
+                    <strong>${safeUsername}</strong> <span>${safeDate}</span>
+                </span>
                 <p>${c.content}</p>
             </div>
         </div>
