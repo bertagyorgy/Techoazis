@@ -197,7 +197,7 @@ include ROOT_PATH . '/views/navbar.php';
                     <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
                 </form>
                 
-                <p class="login-separator">Nincs fiókod?<a style="color: black" href="<?= BASE_URL ?>/views/registration.php"> Regisztráció</a></p>
+                <p class="login-separator">Nincs fiókod?<a style="color: var(--accent-600); padding: 5px; margin-inline: 5px;" href="<?= BASE_URL ?>/views/registration.php">Regisztráció</a></p>
             </section>
         </div>
     </div>
