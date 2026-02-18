@@ -157,7 +157,7 @@ $post_count = $posts->num_rows;
                         #<?= htmlspecialchars($group['group_name']) ?>
                     </a>
 
-                    <a href="<?= BASE_URL ?>/profile?u=<?= urlencode($post['user_slug']) ?>">
+                    <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($post['user_slug']) ?>">
                         <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
                     </a>
 
