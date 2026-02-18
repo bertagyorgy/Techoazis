@@ -23,6 +23,30 @@ if (!$product) {
     header('Location: ' . BASE_URL . '/pages/shop.php');
     exit();
 }
+// Eladó statisztikák
+$sql = "SELECT 
+            u.avg_rating,
+            COUNT(p.product_id) AS total_products
+        FROM users u
+        LEFT JOIN products p 
+            ON p.seller_user_id = u.user_id
+            AND p.product_status = 'active'
+        WHERE u.user_id = ?
+        GROUP BY u.user_id";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $product['seller_id']);
+$stmt->execute();
+$result_stats = $stmt->get_result();
+$seller_stats = $result_stats->fetch_assoc();
+
+// Értékek feldolgozása
+$total_products = (int)$seller_stats['total_products'];
+
+$avg_rating = $seller_stats['avg_rating'] !== null
+    ? number_format((float)$seller_stats['avg_rating'], 1)
+    : '0.0';
+
 
 // Termék képek lekérése - sorrend a feltöltés szerint (vagy is_primary szerint)
 $sql = "SELECT image_path FROM product_images WHERE product_id = ? ORDER BY is_primary DESC, sort_order ASC, image_id ASC";
@@ -204,11 +228,11 @@ $similar_products = $similar_result->fetch_all(MYSQLI_ASSOC);
                             
                             <div class="seller-stats">
                                 <div class="stat-item">
-                                    <div class="stat-value">12</div>
+                                    <div class="stat-value"><?php echo $total_products; ?></div>
                                     <div class="stat-label">Termék</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-value">4.8</div>
+                                    <div class="stat-value"><?php echo $avg_rating; ?></div>
                                     <div class="stat-label">Értékelés</div>
                                 </div>
                             </div>

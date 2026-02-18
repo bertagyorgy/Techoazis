@@ -40,7 +40,23 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                 <div class="chat-section">
                     <div class="chat-header">
                         <div class="user-avatar">
-                            <img src="<?php echo htmlspecialchars( BASE_URL . '/' .$other_user['profile_image'] ?? BASE_URL . '/' .'images/anonymous.png'); ?>" 
+                            <?php
+                            $is_external = preg_match('/^https?:\/\//', $other_user['profile_image']);
+
+                            if (!empty($other_user['profile_image'])) {
+                                if ($is_external) {
+                                    // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+                                    $other_profile_image = htmlspecialchars($other_user['profile_image']);
+                                } else {
+                                    // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+                                    $other_profile_image = BASE_URL . '/' . htmlspecialchars($other_user['profile_image']);
+                                }
+                            } else {
+                                // Alapértelmezett kép, ha nincs megadva semmi
+                                $other_profile_image = BASE_URL . 'uploads/profile_images/anonymous.png';
+                            }
+                            ?>
+                            <img src="<?php echo $other_profile_image; ?>" 
                                  alt="<?php echo htmlspecialchars($other_user['username']); ?>">
                         </div>
                         <div class="user-info">
@@ -66,9 +82,25 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                             </div>
                         <?php else: ?>
                             <?php foreach ($messages as $message): ?>
+                                <?php
+                                $is_external = preg_match('/^https?:\/\//', $message['profile_image']);
+
+                                if (!empty($message['profile_image'])) {
+                                    if ($is_external) {
+                                        // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+                                        $message_profile_image = htmlspecialchars($message['profile_image']);
+                                    } else {
+                                        // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+                                        $message_profile_image = BASE_URL . '/' . htmlspecialchars($message['profile_image']);
+                                    }
+                                } else {
+                                    // Alapértelmezett kép, ha nincs megadva semmi
+                                    $message_profile_image = BASE_URL . 'uploads/profile_images/anonymous.png';
+                                }
+                                ?>
                                 <div class="message <?php echo $message['sender_user_id'] == $user_id ? 'sent' : 'received'; ?>" data-message-id="<?php echo $message['message_id']; ?>">
                                     <div class="message-avatar">
-                                        <img src="<?php echo htmlspecialchars(BASE_URL . '/' . $message['profile_image']); ?>" alt="Avatar">
+                                        <img src="<?php echo $message_profile_image; ?>" alt="Avatar">
                                     </div>
                                     <div class="message-content">
                                         <div class="message-text"><?php echo nl2br(htmlspecialchars($message['user_message'])); ?></div>
@@ -234,7 +266,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
                     </div>
                     
                     <div class="product-images">
-                        <img src="<?php echo htmlspecialchars(BASE_URL . '/' . $product['main_image'] ?? BASE_URL . '/uploads/products/default_product.png'); ?>"    
+                        <img src="<?php echo htmlspecialchars(BASE_URL . '/' . ($product['main_image'] ?? 'uploads/products/default_product.png')); ?>"    
                              alt="<?php echo htmlspecialchars($product['product_name']); ?>" class="main-product-image">
                     </div>
                     
