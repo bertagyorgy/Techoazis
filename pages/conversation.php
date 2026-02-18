@@ -296,7 +296,7 @@ require_once ROOT_PATH . '/app/profile_stats.php';
             baseUrl: <?php echo json_encode(BASE_URL); ?>,
             conversationId: <?php echo json_encode($conversation_id); ?>,
             userId: <?php echo json_encode($user_id); ?>,
-            profileImage: <?php echo json_encode(BASE_URL . '/' . $current_user_data['profile_image']); ?>,
+            profileImage: <?php echo json_encode($current_user_data['profile_image']); ?>,
             username: <?php echo json_encode($current_user_data['username']); ?>,
             lastMessageId: <?php echo !empty($messages) ? end($messages)['message_id'] : 0; ?>
         };
