@@ -56,10 +56,6 @@ if ($page !== '' && $page !== 'index') {
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/button_system.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/comments.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/create_post.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/forum.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/group_view.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/post_card.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/responsive_adjustments.css">

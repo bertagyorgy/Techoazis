@@ -35,6 +35,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?p=$1 [QSA,L]
 
 <IfModule mod_expires.c>
+Header set Cache-Control "public, max-age=604800"
 ExpiresActive On
 ExpiresByType image/webp "access plus 1 year"
 ExpiresByType image/png "access plus 1 year"

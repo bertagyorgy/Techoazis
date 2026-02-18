@@ -11,7 +11,7 @@ include_once ROOT_PATH . '/app/db.php';
 <nav class="main-navbar">
     <div class="custom-container nav-container">
         <a class="nav-brand" href="<?= BASE_URL ?>/"> 
-            <img src="<?= BASE_URL  ?>/images/techoazis_logo_chopped.png" alt="kep">
+            <img src="<?= BASE_URL  ?>/images/techoazis_logo_chopped.webp" alt="kep">
         </a>
         
         <button class="nav-toggler" id="navToggle" aria-label="Menü">
