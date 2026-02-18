@@ -21,22 +21,36 @@ if (isset($_SESSION['registration_message'])) {
 
 $error_message = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+// A beküldést a username meglétével ellenőrizzük, mert a submit gombnak nincs neve
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['username'])) {
     
-    // --- RECAPTCHA ELLENŐRZÉS ---
+    // --- RECAPTCHA V3 ELLENŐRZÉS ---
     $secretKey = getenv('RECAPTCHA_SECRET_KEY') ?: $_ENV['RECAPTCHA_SECRET_KEY']; 
-    $captchaResponse = $_POST['g-recaptcha-response'];
-    $remoteIp = $_SERVER['REMOTE_ADDR'];
+    $captchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
     if (empty($captchaResponse)) {
-        $error_message = "Kérlek, igazold, hogy nem vagy robot!";
+        $error_message = "Biztonsági ellenőrzés sikertelen (hiányzó token).";
     } else {
-        $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captchaResponse&remoteip=$remoteIp";
-        $verify = file_get_contents($url);
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        $data = [
+            'secret'   => $secretKey,
+            'response' => $captchaResponse,
+            'remoteip' => $_SERVER['REMOTE_ADDR']
+        ];
+
+        $options = [
+            'http' => [
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            ]
+        ];
+        $context  = stream_context_create($options);
+        $verify = file_get_contents($url, false, $context);
         $responseData = json_decode($verify);
 
-        if (!$responseData->success) {
-            $error_message = "A reCAPTCHA ellenőrzés sikertelen. Próbáld újra!";
+        if (!$responseData->success || $responseData->score < 0.5) {
+            $error_message = "A rendszer gyanús tevékenységet észlelt. Próbáld újra!";
         } else {
             // HA SIKERES A CAPTCHA, JÖHET A LOGIN LOGIKA
             $username = trim($_POST['username']);
@@ -93,15 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
                                     $stmt2->bind_param("ssi", $token, $expire, $row['user_id']);
                                     $stmt2->execute();
 
-                                    setcookie(
-                                        "remember_token",
-                                        $token,
-                                        time() + (86400 * 30),
-                                        "/",
-                                        "",
-                                        false, 
-                                        true
-                                    );
+                                    setcookie("remember_token", $token, time() + (86400 * 30), "/", "", false, true);
                                 }
 
                                 header("Location: " . BASE_URL  . "/" . "index.php");
@@ -123,14 +129,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     }
     $conn->close();
 }
+$siteKey = getenv('RECAPTCHA_SITE_KEY') ?: $_ENV['RECAPTCHA_SITE_KEY'];
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Jelentkezz be a Techoázis fiókodba, hogy elérd hirdetéseidet, üzeneteidet és a közösségi funkciókat.">
+    <meta name="description" content="Jelentkezz be a Techoázis fiókodba.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />  
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
     <title>Techoázis | Bejelentkezés</title>
@@ -147,13 +154,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=<?= $siteKey ?>"></script>
     <script src="<?= BASE_URL ?>/assets/js/index.js" defer></script>
 </head>
 <body>
-<?php
-include ROOT_PATH . '/views/navbar.php';
-?>
+<?php include ROOT_PATH . '/views/navbar.php'; ?>
 
     <div class="background">
         <div class="login-container">
@@ -169,7 +174,7 @@ include ROOT_PATH . '/views/navbar.php';
                     <div class="login-alert"><?php echo $error_message; ?></div>
                 <?php endif; ?>
                 
-                <form method="POST" action="">
+                <form id="loginForm" method="POST" action="">
                     <div class="login-form-group">
                         <label for="username" class="login-label">Felhasználónév</label>
                         <input type="text" name="username" id="username" class="login-input" placeholder="Felhasználónév" required>
@@ -185,21 +190,36 @@ include ROOT_PATH . '/views/navbar.php';
                                 <input type="checkbox" name="remember" id="remember">
                                 <label for="remember">Emlékezz rám</label>
                             </div>
-
                             <a style="color: white; font-size: 14px;" href="<?= BASE_URL ?>/views/forgot_password.php">Elfelejtett jelszó?</a>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 20px; display: flex; justify-content: center;">
-                        <div class="g-recaptcha" data-sitekey="<?= getenv('RECAPTCHA_SITE_KEY') ?: $_ENV['RECAPTCHA_SITE_KEY'] ?>"></div>
-                    </div>
-
-                    <button type="submit" name="submit" class="login-button">Bejelentkezés</button>
+                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+                    <button type="submit" class="login-button">Bejelentkezés</button>
                 </form>
                 
                 <p class="login-separator">Nincs fiókod?<a style="color: black" href="<?= BASE_URL ?>/views/registration.php"> Regisztráció</a></p>
+                <p style="font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 15px; text-align: center;">
+                    Ezt az oldalt a reCAPTCHA védi. <br>
+                    <a href="https://policies.google.com/privacy" style="color: #fff">Adatvédelem</a> és <a href="https://policies.google.com/terms" style="color: #fff">Feltételek</a>.
+                </p>
             </section>
         </div>
     </div>
+
+    <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        
+        grecaptcha.ready(function() {
+            grecaptcha.execute('<?= $siteKey ?>', {action: 'login'}).then(function(token) {
+                document.getElementById('g-recaptcha-response').value = token;
+                // Ezzel biztosan beküldi a formot ütközés nélkül
+                HTMLFormElement.prototype.submit.call(form);
+            });
+        });
+    });
+    </script>
 </body>
 </html>
