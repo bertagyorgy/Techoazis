@@ -332,7 +332,7 @@ async function createLinkPreview(url) {
 
         preview.innerHTML = `
             <div class="lp-image">
-                <img src="${data.data.image?.url || ''}">
+                <img src="${data.data.image?.url || ''}" alt="link előnézet kép">
             </div>
             <div class="lp-content">
                 <div class="lp-title">${data.data.title}</div>
