@@ -302,8 +302,21 @@
     border: 1px solid var(--neutral-500);
     padding: 12px 32px;
     border-radius: 8px;
+    display: inline-flex;
+}
+.btn-message-seller,
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
+.btn-message-seller i,
+.btn-back i {
+    flex-shrink: 0;
+    line-height: 1;
+}
 
 .btn-action.disabled,
 .btn-action:disabled {
