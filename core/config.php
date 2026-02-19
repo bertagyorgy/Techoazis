@@ -1,27 +1,49 @@
 <?php
+// 1. Hibakeresés bekapcsolása (ha kész, kikommentelheted)
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// 2. Munkamenet indítása (A COOKIE ellenőrzéshez és a SESSION-höz elengedhetetlen!)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
 
-// Ellenőrizzük a környezetet
-// Mivel a fájl a /core-ban van, a dirname(__DIR__) adja meg a projekt valódi gyökerét
+// 3. Útvonalak beállítása (A régi logikát követve, ha a fájl a /core-ban van)
 $current_root = dirname(__DIR__);
 $isXampp = (strpos($current_root, 'htdocs') !== false);
 
 if ($isXampp) {
-    // XAMPP esetén marad a Techoazis mappa elérése
     define('BASE_URL', $protocol . "://" . $host . '/Techoazis');
 } else {
-    // Docker esetén marad a tiszta host
     define('BASE_URL', $protocol . "://" . $host);
 }
 
-// KRITIKUS JAVÍTÁS: 
-// Most, hogy a config.php a /core mappában van, 
-// a ROOT_PATH-nak egy szinttel feljebb kell mutatnia!
+// KRITIKUS: Visszaállítva a projekt gyökerére
 define('ROOT_PATH', dirname(__DIR__));
 
-// Debug (szükség esetén):
-// echo "ROOT_PATH: " . ROOT_PATH;
+// 4. Adatbázis behúzása (CSAK az útvonalak definiálása UTÁN)
+// Feltételezve, hogy a db.php a projekt gyökerében lévő /app mappában van
+require_once ROOT_PATH . '/app/db.php';
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+// 5. COOKIE token ellenőrzés (Most már van $conn az adatbázis fájlból)
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
+    $token = $_COOKIE['remember_token'];
+
+    // Ellenőrizzük, hogy a $conn létezik-e (a db.php hozza létre)
+    if (isset($conn)) {
+        $stmt = $conn->prepare("SELECT user_id, username, user_role FROM users WHERE remember_token=? AND remember_expire > NOW()");
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($user = $result->fetch_assoc()) {
+            $_SESSION['user_id'] = $user['user_id']; 
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['user_role'] = $user['user_role'];
+            $_SESSION['loggedin'] = true;
+        }
+    }
+}
