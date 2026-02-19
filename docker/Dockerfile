@@ -13,3 +13,4 @@ RUN apt-get update && apt-get install -y \
 # Apache beállítása
 RUN a2enmod rewrite
 WORKDIR /var/www/html
+RUN echo "upload_max_filesize = 32M\npost_max_size = 32M\nmemory_limit = 256M" > /usr/local/etc/php/conf.d/uploads.ini

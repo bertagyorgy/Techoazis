@@ -1,9 +1,15 @@
 <?php
 // add_product.php
+ob_start();
 if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
+// --- TINIFY ÉS KÖRNYEZETI VÁLTOZÓK BEÁLLÍTÁSA ---
+require_once ROOT_PATH . '/core/envreader.php';
+loadEnv();
+// Az image_optimizer.php behívása a központi helyről
+require_once ROOT_PATH . '/actions/image_optimizer.php';
 
 // Csak bejelentkezett felhasználók tölthetnek fel terméket
 if (!isset($_SESSION['user_id'])) {
@@ -28,48 +34,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($product_name) || empty($category) || $price <= 0) {
         $error_msg = "A név, kategória és egy érvényes ár megadása kötelező!";
     } else {
-        // 1. Termék mentése
-        $insert_sql = "INSERT INTO products (product_name, category, price, pickup_location, product_status, product_description, seller_user_id, created_at, updated_at) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
-        $stmt = $conn->prepare($insert_sql);
-        $stmt->bind_param('ssisssi', $product_name, $category, $price, $pickup_location, $product_status, $description, $user_id);
+        // --- KÉPEK ELŐZETES ELLENŐRZÉSE ÉS GYŰJTÉSE ---
+        $max_file_size = 5 * 1024 * 1024; // 5 MB
+        $valid_images = [];
 
-        if ($stmt->execute()) {
-            $product_id = $conn->insert_id; 
-            
-            if (!empty($_FILES['images']['name'][0])) {
-                $upload_dir = ROOT_PATH . '/uploads/products/';
-                if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+        if (!empty($_FILES['images']['name'][0])) {
+            foreach ($_FILES['images']['name'] as $key => $name) {
+                if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                    if ($_FILES['images']['size'][$key] > $max_file_size) {
+                        $error_msg = "Az egyik feltöltött kép túl nagy! A maximális méret képenként 5MB.";
+                        break;
+                    }
+                    $valid_images[] = [
+                        'tmp_name' => $_FILES['images']['tmp_name'][$key],
+                        'name' => $name
+                    ];
+                }
+            }
+        }
 
-                $img_sql = "INSERT INTO product_images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
-                $img_stmt = $conn->prepare($img_sql);
+        if (empty($error_msg)) {
+            // 1. Termék mentése
+            $insert_sql = "INSERT INTO products (product_name, category, price, pickup_location, product_status, product_description, seller_user_id, created_at, updated_at) 
+                           VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+            $stmt = $conn->prepare($insert_sql);
+            $stmt->bind_param('ssisssi', $product_name, $category, $price, $pickup_location, $product_status, $description, $user_id);
 
-                $upload_index = 0; // Manuális számláló a sorrendhez
-                foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-                    if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                        $file_ext = pathinfo($_FILES['images']['name'][$key], PATHINFO_EXTENSION);
-                        $file_name = time() . '_' . $upload_index . '_' . uniqid() . '.' . $file_ext;
+            if ($stmt->execute()) {
+                $product_id = $conn->insert_id; 
+                
+                if (!empty($valid_images)) {
+                    $upload_dir = ROOT_PATH . '/uploads/products/';
+                    if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+
+                    $img_sql = "INSERT INTO product_images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
+                    $img_stmt = $conn->prepare($img_sql);
+
+                    foreach ($valid_images as $index => $img_data) {
+                        $file_ext = strtolower(pathinfo($img_data['name'], PATHINFO_EXTENSION));
+                        $file_name = time() . '_' . $index . '_' . uniqid() . '.' . $file_ext;
                         $target_file = $upload_dir . $file_name;
                         $db_path = 'uploads/products/' . $file_name;
 
-                        if (move_uploaded_file($tmp_name, $target_file)) {
+                        if (move_uploaded_file($img_data['tmp_name'], $target_file)) {
+                            // --- KÉP OPTIMALIZÁLÁSA (Tinify hívása) ---
+                            optimizeImageWithTinify($target_file);
+
                             // Az abszolút első sikeresen feltöltött kép a borítókép
-                            $is_primary = ($upload_index === 0) ? 1 : 0;
-                            $sort_order = $upload_index + 1;
+                            $is_primary = ($index === 0) ? 1 : 0;
+                            $sort_order = $index + 1;
 
                             $img_stmt->bind_param('isii', $product_id, $db_path, $is_primary, $sort_order);
                             $img_stmt->execute();
-                            $upload_index++; // Csak sikeres mentés után növeljük
                         }
                     }
+                    $img_stmt->close();
                 }
-                $img_stmt->close();
-            }
 
-            header("Location: " . BASE_URL . "/pages/product_detail.php?id=$product_id&msg=success");
-            exit(); 
-        } else {
-            $error_msg = "Hiba: " . $conn->error;
+                header("Location: " . BASE_URL . "/pages/product_detail.php?id=$product_id&msg=success");
+                exit(); 
+            } else {
+                $error_msg = "Hiba: " . $conn->error;
+            }
         }
     }
 }
@@ -112,7 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .remove-image:hover { background: #b91c1c; transform: scale(1.1); }
         .btn-submit-style { background: var(--primary-500, #2563eb); color: white; padding: 12px 32px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
         .btn-submit-style:hover { filter: brightness(1.1); transform: translateY(-2px); }
-        /* Badge alapstílusok */
         .badge-status {
             flex-direction: column;
             position: absolute;
@@ -125,11 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
             font-weight: bold;
             color: white;
-            pointer-events: none; /* Ne zavarja a kattintást */
+            pointer-events: none;
         }
-        .badge-primary { background: #2563eb; } /* Kék a borítóképnek */
-        .badge-new { background: #10b981; }     /* Zöld az újnak */
-        .hidden-upload { display: none !important; }
+        .badge-primary { background: #2563eb; }
+        .badge-new { background: #10b981; }
     </style>
 </head>
 <body>
@@ -148,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-danger"><?php echo $error_msg; ?></div>
             <?php endif; ?>
 
-            <form action="<?= BASE_URL ?>/pages/add_product.php" method="POST" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/pages/add_product.php" method="POST" enctype="multipart/form-data" id="productForm">
                 <div class="form-group">
                     <label for="product_name">Termék neve</label>
                     <input type="text" id="product_name" name="product_name" class="form-control" 
@@ -161,45 +185,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select id="category" name="category" class="form-control" required>
                             <option value="" disabled selected>Válassz kategóriát...</option>
                             <option value="Adattárolók">Adattárolók</option>
-                            <option value="Alkatrészek">Alkatrészek</option>
-                            <option value="Audio technika">Audio technika</option>
-                            <option value="Autós elektronika">Autós elektronika</option>
-                            <option value="Drónok">Drónok</option>
-                            <option value="Elektromos rollerek">Elektromos rollerek</option>
-                            <option value="Fejhallgatók">Fejhallgatók</option>
-                            <option value="Fejhallgatók">Fülhallgatók</option>
-                            <option value="Fényképezőgépek">Fényképezőgépek</option>
-                            <option value="Gaming">Gaming</option>
-                            <option value="GPS & Navigáció">GPS & Navigáció</option>
-                            <option value="Hálózati eszközök">Hálózati eszközök</option>
-                            <option value="Hangfalak">Hangfalak</option>
-                            <option value="Hangtechnika">Hangtechnika</option>
-                            <option value="Hardver">Hardver</option>
-                            <option value="Háztartási kisgépek">Háztartási kisgépek</option>
-                            <option value="Hordozható hangszórók">Hordozható hangszórók</option>
-                            <option value="Ipari elektronika">Ipari elektronika</option>
-                            <option value="Játékkonzolok">Játékkonzolok</option>
-                            <option value="Kábelek és adapterek">Kábelek és adapterek</option>
-                            <option value="Kamerák">Kamerák</option>
-                            <option value="Kiegészítők">Kiegészítők</option>
-                            <option value="Kivetítők">Kivetítők</option>
-                            <option value="Laptopok">Laptopok</option>
-                            <option value="Megfigyelő rendszerek">Megfigyelő rendszerek</option>
-                            <option value="Mikrofonok">Mikrofonok</option>
-                            <option value="Mobiltelefonok">Mobiltelefonok</option>
-                            <option value="Monitorok">Monitorok</option>
-                            <option value="Nyomtatók és scannerek">Nyomtatók és scannerek</option>
-                            <option value="Okosóra">Okosóra</option>
-                            <option value="Okosotthon eszközök">Okosotthon eszközök</option>
-                            <option value="PC konfigurációk">PC konfigurációk</option>
-                            <option value="Periféria">Periféria</option>
-                            <option value="Szoftverek">Szoftverek</option>
-                            <option value="Szünetmentes tápegységek">Szünetmentes tápegységek</option>
-                            <option value="Tabletek">Tabletek</option>
-                            <option value="Tápellátás">Tápellátás</option>
-                            <option value="Televíziók">Televíziók</option>
-                            <option value="Videókártyák">Videókártyák</option>
-                            <option value="Zenelejátszók">Zenelejátszók</option>
                             <option value="Egyéb">Egyéb</option>
                         </select>
                     </div>
@@ -223,12 +208,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="form-group">
-                    <label for="postImages">Termék képek (max 3 kép, az első lesz a borítókép)</label>
-                    <input type="file" id="postImages" name="images[]" class="form-control" accept="image/*" multiple>
+                    <label for="postImages">Termék képek (max 3 kép, egyenként max 5MB)</label>
+                    <input type="file" id="postImages" class="form-control" accept="image/*" multiple>
+                    <input type="file" name="images[]" id="hiddenImages" style="display:none" multiple>
                 </div>
                 <div id="imagePreview"></div>
 
-                <div style="margin-top: 2rem; border-top: 1px solid #eee; pt-2rem; padding-top: 1.5rem;">
+                <div style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
                     <button type="submit" class="btn-submit-style">
                         <i class="fas fa-upload"></i>
                         Termék feltöltése
@@ -239,98 +225,91 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 <script>
-let selectedFiles = [];
+    let selectedFiles = [];
+    const MAX_FILES = 3;
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
 
-// --- EZ AZ ÚJ RÉSZ: Figyeljük a form beküldését ---
-document.querySelector('form').addEventListener('submit', function(e) {
-    const input = document.getElementById('postImages');
-    const dt = new DataTransfer();
-    
-    // A beküldés előtt belepakoljuk a tömb tartalmát az inputba
-    selectedFiles.forEach(file => dt.items.add(file));
-    input.files = dt.files;
-    
-    // Most már engedhetjük a formot a PHP-nak, benne lesznek a képek!
-});
-// ------------------------------------------------
-
-function updateBadges() {
-    const cards = document.querySelectorAll('#imagePreview .preview-item');
-    cards.forEach((card, index) => {
-        let badge = card.querySelector('.badge-status');
-        if (!badge) {
-            badge = document.createElement('span');
-            badge.className = 'badge-status';
-            card.appendChild(badge);
-        }
-        if (index === 0) {
-            badge.textContent = 'Borítókép';
-            badge.className = 'badge-status badge-primary';
-        } else {
-            badge.textContent = 'Új feltöltés';
-            badge.className = 'badge-status badge-new';
-        }
-    });
-}
-
-function updateUploadVisibility() {
-    const inputField = document.getElementById('postImages');
-    if (selectedFiles.length >= 3) {
-        inputField.parentElement.style.opacity = '0.5';
-        inputField.disabled = true;
-    } else {
-        inputField.parentElement.style.opacity = '1';
-        inputField.disabled = false;
-    }
-    updateBadges();
-}
-
-function removeImage(index) {
-    selectedFiles.splice(index, 1);
-    renderPreviews(); // Itt elég csak újrarenderelni
-}
-
-function renderPreviews() {
+    const fileInput = document.getElementById('postImages');
+    const hiddenInput = document.getElementById('hiddenImages');
     const previewContainer = document.getElementById('imagePreview');
-    previewContainer.innerHTML = '';
-    
-    selectedFiles.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const div = document.createElement('div');
-            div.className = 'preview-item';
-            div.innerHTML = `
-                <img src="${e.target.result}" class="preview-thumb">
-                <button type="button" class="remove-image" onclick="removeImage(${index})">
-                    <i class="fas fa-times"></i>
-                </button>
-                <span class="badge-status"></span>
-            `;
-            previewContainer.appendChild(div);
-            updateUploadVisibility();
-        }
-        reader.readAsDataURL(file);
-    });
+    const form = document.getElementById('productForm');
 
-    if (selectedFiles.length === 0) updateUploadVisibility();
-}
+    fileInput.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        
+        files.forEach(file => {
+            if (selectedFiles.length >= MAX_FILES) return;
+            
+            // Méret ellenőrzés
+            if (file.size > MAX_SIZE) {
+                alert(`A(z) ${file.name} fájl túl nagy! Maximum 5MB engedélyezett.`);
+                return;
+            }
 
-document.getElementById('postImages').addEventListener('change', function(e) {
-    const newFiles = Array.from(this.files);
-    
-    newFiles.forEach(file => {
-        if (selectedFiles.length < 3) {
+            // Duplikáció szűrés
             const isDuplicate = selectedFiles.some(f => f.name === file.name && f.size === file.size);
             if (!isDuplicate) {
                 selectedFiles.push(file);
             }
-        }
+        });
+
+        renderPreviews();
+        fileInput.value = ''; // Reset
     });
 
-    renderPreviews();
-    
-    // Ez most már maradhat! Kiürítjük, hogy ne legyen duplázódás a köv. tallózásnál.
-    e.target.value = ''; 
-});
+    function updateBadges() {
+        const cards = document.querySelectorAll('#imagePreview .preview-item');
+        cards.forEach((card, index) => {
+            let badge = card.querySelector('.badge-status');
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'badge-status';
+                card.appendChild(badge);
+            }
+            if (index === 0) {
+                badge.textContent = 'Borítókép';
+                badge.className = 'badge-status badge-primary';
+            } else {
+                badge.textContent = 'Galéria';
+                badge.className = 'badge-status badge-new';
+            }
+        });
+    }
+
+    function removeImage(index) {
+        selectedFiles.splice(index, 1);
+        renderPreviews();
+    }
+
+    function renderPreviews() {
+        previewContainer.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `
+                    <img src="${e.target.result}" class="preview-thumb">
+                    <button type="button" class="remove-image" onclick="removeImage(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                previewContainer.appendChild(div);
+                updateBadges();
+            }
+            reader.readAsDataURL(file);
+        });
+        
+        // Input letiltása ha elértük a limitet
+        fileInput.disabled = selectedFiles.length >= MAX_FILES;
+        fileInput.parentElement.style.opacity = selectedFiles.length >= MAX_FILES ? '0.5' : '1';
+    }
+
+    form.addEventListener('submit', function(e) {
+        // A kiválasztott fájlok átadása a rejtett inputnak
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => dataTransfer.items.add(file));
+        hiddenInput.files = dataTransfer.files;
+    });
 </script>
 </html>

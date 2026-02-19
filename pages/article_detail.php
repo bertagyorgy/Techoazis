@@ -113,7 +113,7 @@ function render_text($text) {
             </div>
 
             <div class="author" style="margin-bottom: 1.25rem;">
-                <img src="<?= htmlspecialchars($article['author_image'] ?: BASE_URL . '/images/anonymous.png') ?>" alt="Szerző">
+                <img src="<?= htmlspecialchars(BASE_URL . "/". $article['author_image'] ?: BASE_URL . '/images/anonymous.png') ?>" alt="Szerző">
                 <div>
                     <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($article['author_slug']) ?>">
                         <div style="color: var(--text-color); font-weight: 800;">

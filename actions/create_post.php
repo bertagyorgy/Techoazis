@@ -3,10 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 1. Config és DB betöltése a konzisztencia miatt
+// 1. Config és DB betöltése
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 require_once ROOT_PATH . '/app/profile_stats.php';
+
+// 2. Környezeti változók és az Optimalizáló betöltése
+require_once ROOT_PATH . '/core/envreader.php';
+loadEnv();
+require_once ROOT_PATH . '/actions/image_optimizer.php';
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     die("Hozzáférés megtagadva.");
@@ -23,13 +28,11 @@ if ($title === "" || $content === "") {
     exit; 
 }
 
-// === TRANZAKCIÓ INDÍTÁSA VAGY BIZTONSÁGI SORREND ===
-// Előbb ellenőrizzük a fájlokat, mielőtt bármit írnánk a DB-be
+// === ELŐKÉSZÜLETEK ===
 $allowed_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'jfif'];
 $max_size = 5 * 1024 * 1024;
-$upload_dir = ROOT_PATH . "/uploads/posts/"; // Abszolút útvonal!
+$upload_dir = ROOT_PATH . "/uploads/posts/";
 
-// Ha nem létezik a mappa, próbáljuk létrehozni
 if (!is_dir($upload_dir)) {
     mkdir($upload_dir, 0777, true);
 }
@@ -42,7 +45,7 @@ if ($stmt->execute()) {
     $post_id = $stmt->insert_id;
     $stmt->close();
 
-    // === KÉPFELTÖLTÉS ===
+    // === KÉPFELTÖLTÉS ÉS OPTIMALIZÁLÁS ===
     if (!empty($_FILES['images']['name'][0])) {
         for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
             $tmp = $_FILES['images']['tmp_name'][$i];
@@ -53,10 +56,13 @@ if ($stmt->execute()) {
             if (in_array($ext, $allowed_ext) && $size <= $max_size) {
                 $new_name = $post_id . "_" . time() . "_" . rand(1000,9999) . "." . $ext;
                 $destination = $upload_dir . $new_name;
-                // Az adatbázisba relatív utat mentünk (pl. uploads/posts/kep.jpg)
                 $db_path = "uploads/posts/" . $new_name;
 
                 if (move_uploaded_file($tmp, $destination)) {
+                    
+                    // --- TINIFY OPTIMALIZÁLÁS HÍVÁSA ---
+                    optimizeImageWithTinify($destination);
+
                     $stmt_img = $conn->prepare("INSERT INTO post_images (post_id, image_path) VALUES (?, ?)");
                     $stmt_img->bind_param("is", $post_id, $db_path);
                     $stmt_img->execute();
@@ -74,7 +80,6 @@ if ($stmt->execute()) {
 
 $conn->close();
 
-// Siker/Hiba után visszairányítás PHP-ból (nem JS-el, hogy elkerüljük a dupla küldést)
 header("Location: " . BASE_URL . "/pages/forum_group.php?group={$group_id}");
 exit();
 ?>
