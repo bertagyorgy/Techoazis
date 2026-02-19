@@ -113,7 +113,23 @@ function render_text($text) {
             </div>
 
             <div class="author" style="margin-bottom: 1.25rem;">
-                <img src="<?= htmlspecialchars(BASE_URL . "/". $article['author_image'] ?: BASE_URL . '/images/anonymous.png') ?>" alt="Szerző">
+                <?php
+                $is_external = preg_match('/^https?:\/\//', $article['author_image']);
+
+                if (!empty($article['author_image'])) {
+                    if ($is_external) {
+                        // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+                        $author_profile_image = htmlspecialchars($article['author_image']);
+                    } else {
+                        // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+                        $author_profile_image = BASE_URL . '/' . htmlspecialchars($article['author_image']);
+                    }
+                } else {
+                    // Alapértelmezett kép, ha nincs megadva semmi
+                    $author_profile_image = BASE_URL . '/uploads/profile_images/anonymous.png';
+                }
+                ?>
+                <img src="<?php echo $author_profile_image; ?>" alt="Szerző">
                 <div>
                     <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($article['author_slug']) ?>">
                         <div style="color: var(--text-color); font-weight: 800;">
