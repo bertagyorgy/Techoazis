@@ -1,8 +1,19 @@
 <?php
 // create_group.php
-if (session_status() === PHP_SESSION_NONE) session_start();
+ob_start(); // Kimeneti pufferelés indítása a "headers already sent" hibák elkerülésére
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
+
+// Környezeti változók betöltése a Tinify kulcshoz
+require_once ROOT_PATH . '/core/envreader.php';
+loadEnv();
+
+// --- AZ ÚJ OPTIMALIZÁLÓ MODUL BEHÍVÁSA ---
+require_once ROOT_PATH . '/actions/image_optimizer.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: " . BASE_URL . "/views/login.php");
@@ -12,6 +23,7 @@ if (!isset($_SESSION['user_id'])) {
 $error_msg = "";
 $uploadDirAbs = ROOT_PATH . '/uploads/groups/';
 
+// Mappa ellenőrzése és létrehozása
 if (!is_dir($uploadDirAbs)) {
     @mkdir($uploadDirAbs, 0755, true);
 }
@@ -24,29 +36,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($group_name)) {
         $error_msg = "A csoport nevének megadása kötelező!";
     } else {
-        // --- Képfeltöltés ---
+        // --- Képfeltöltés kezelése ---
         if (isset($_FILES['group_image']) && $_FILES['group_image']['error'] === UPLOAD_ERR_OK) {
-            $tmpPath = $_FILES['group_image']['tmp_name'];
-            $fileName = $_FILES['group_image']['name']; // Eredeti név megtartása
             
-            // Fájlnév tisztítása (hogy ne legyenek benne szóközök/ékezetek, ami megtörheti az URL-t)
-            $safeFileName = preg_replace('/[^A-Za-z0-9\.\-_]/', '_', $fileName);
-            $destAbs = $uploadDirAbs . $safeFileName;
-
-            if (move_uploaded_file($tmpPath, $destAbs)) {
-                $group_image = $safeFileName; // Csak a fájlnevet mentjük!
+            // --- MÉRET LIMITÁLÁS (5MB) ---
+            $maxFileSize = 5 * 1024 * 1024; // 5 Megabájt bájtban számolva
+            
+            if ($_FILES['group_image']['size'] > $maxFileSize) {
+                $error_msg = "A kép túl nagy! A maximális megengedett méret 5MB.";
             } else {
-                $error_msg = "Nem sikerült elmenteni a képet a szerveren.";
+                $tmpPath = $_FILES['group_image']['tmp_name'];
+                $fileName = $_FILES['group_image']['name'];
+                
+                // Fájlnév tisztítása és egyedivé tétele
+                $safeFileName = time() . '_' . preg_replace('/[^A-Za-z0-9\.\-_]/', '_', $fileName);
+                $destAbs = $uploadDirAbs . $safeFileName;
+
+                if (move_uploaded_file($tmpPath, $destAbs)) {
+                    // --- KÉP OPTIMALIZÁLÁSA ---
+                    // Csak akkor hívjuk meg a Tinify-t, ha a fájl sikeresen átkerült a végleges helyére
+                    optimizeImageWithTinify($destAbs);
+                    
+                    $group_image = $safeFileName;
+                } else {
+                    $error_msg = "Nem sikerült elmenteni a képet a szerveren.";
+                }
             }
         }
 
         // --- Adatbázis mentés ---
+        // Csak akkor hajtjuk végre, ha a validálás során (név, méret, feltöltés) nem keletkezett hiba
         if (empty($error_msg)) {
             $stmt = $conn->prepare("INSERT INTO groups (group_name, group_description, group_image, created_at) VALUES (?, ?, ?, NOW())");
             $stmt->bind_param("sss", $group_name, $group_description, $group_image);
 
             if ($stmt->execute()) {
                 $new_id = $conn->insert_id;
+                // Siker esetén átirányítás az új csoport oldalára
                 header("Location: " . BASE_URL . "/pages/forum_group.php?group=$new_id");
                 exit();
             } else {
@@ -130,6 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="group_image">Csoport borítóképe (opcionális)</label>
+                    <small style="color: var(--text-muted); display: block; margin-bottom: 5px;">Maximum méret: 5MB</small>
                     <input type="file" id="group_image" name="group_image" class="form-control" accept="image/*">
                 </div>
 
