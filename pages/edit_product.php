@@ -1,8 +1,15 @@
 <?php
 // edit_product.php
+ob_start();
 if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
+
+// --- TINIFY ÉS KÖRNYEZETI VÁLTOZÓK BEÁLLÍTÁSA ---
+require_once ROOT_PATH . '/core/envreader.php';
+loadEnv();
+// Az image_optimizer.php behívása a központi helyről
+require_once ROOT_PATH . '/actions/image_optimizer.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: " . BASE_URL . "/views/login.php");
@@ -38,84 +45,104 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($product_name) || empty($category)) {
         $error_msg = "A név és a kategória megadása kötelező!";
     } else {
-        $update_sql = "UPDATE products SET 
-                        product_name = ?, 
-                        category = ?, 
-                        price = ?, 
-                        pickup_location = ?, 
-                        product_status = ?, 
-                        product_description = ?, 
-                        updated_at = NOW() 
-                       WHERE product_id = ? AND seller_user_id = ?";
-        
-        $update_stmt = $conn->prepare($update_sql);
-        $update_stmt->bind_param('ssisssii', 
-            $product_name, $category, $price, $pickup_location, 
-            $product_status, $description, $product_id, $user_id
-        );
-
-        if ($update_stmt->execute()) {
-            if (!empty($_POST['removed_images'])) {
-                foreach ($_POST['removed_images'] as $img_id) {
-                    $img_id = (int)$img_id;
-                    $path_sql = "SELECT image_path FROM product_images WHERE image_id = ? AND product_id = ?";
-                    $p_stmt = $conn->prepare($path_sql);
-                    $p_stmt->bind_param('ii', $img_id, $product_id);
-                    $p_stmt->execute();
-                    $p_res = $p_stmt->get_result();
-                    
-                    if ($row = $p_res->fetch_assoc()) {
-                        $full_path = ROOT_PATH . '/' . $row['image_path'];
-                        if (file_exists($full_path)) {
-                            unlink($full_path);
-                        }
-                    }
-                    $del_sql = "DELETE FROM product_images WHERE image_id = ? AND product_id = ?";
-                    $d_stmt = $conn->prepare($del_sql);
-                    $d_stmt->bind_param('ii', $img_id, $product_id);
-                    $d_stmt->execute();
+        // --- ÚJ KÉPEK ELŐZETES ELLENŐRZÉSE (MÉRET LIMIT 5MB) ---
+        $max_file_size = 5 * 1024 * 1024; // 5 MB
+        if (!empty($_FILES['images']['name'][0])) {
+            foreach ($_FILES['images']['size'] as $size) {
+                if ($size > $max_file_size) {
+                    $error_msg = "Az egyik feltöltött kép túl nagy! A maximális méret képenként 5MB.";
+                    break;
                 }
             }
+        }
 
-            if (!empty($_FILES['images']['name'][0])) {
-                $upload_dir = ROOT_PATH . '/uploads/products/';
-                if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+        if (empty($error_msg)) {
+            $update_sql = "UPDATE products SET 
+                            product_name = ?, 
+                            category = ?, 
+                            price = ?, 
+                            pickup_location = ?, 
+                            product_status = ?, 
+                            product_description = ?, 
+                            updated_at = NOW() 
+                           WHERE product_id = ? AND seller_user_id = ?";
+            
+            $update_stmt = $conn->prepare($update_sql);
+            $update_stmt->bind_param('ssisssii', 
+                $product_name, $category, $price, $pickup_location, 
+                $product_status, $description, $product_id, $user_id
+            );
 
-                $count_sql = "SELECT COUNT(*) as total FROM product_images WHERE product_id = ?";
-                $c_stmt = $conn->prepare($count_sql);
-                $c_stmt->bind_param('i', $product_id);
-                $c_stmt->execute();
-                $current_count = $c_stmt->get_result()->fetch_assoc()['total'];
-
-                $img_sql = "INSERT INTO product_images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
-                $img_stmt = $conn->prepare($img_sql);
-
-                foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-                    if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                        $file_ext = pathinfo($_FILES['images']['name'][$key], PATHINFO_EXTENSION);
-                        $file_name = time() . '_' . $key . '_' . uniqid() . '.' . $file_ext;
-                        $target_file = $upload_dir . $file_name;
-                        $db_path = 'uploads/products/' . $file_name;
-
-                        if (move_uploaded_file($tmp_name, $target_file)) {
-                            $is_primary = ($current_count == 0 && $key === 0) ? 1 : 0;
-                            $sort_order = $current_count + $key + 1;
-                            $img_stmt->bind_param('isii', $product_id, $db_path, $is_primary, $sort_order);
-                            $img_stmt->execute();
+            if ($update_stmt->execute()) {
+                // Meglévő képek törlése, ha kérték
+                if (!empty($_POST['removed_images'])) {
+                    foreach ($_POST['removed_images'] as $img_id) {
+                        $img_id = (int)$img_id;
+                        $path_sql = "SELECT image_path FROM product_images WHERE image_id = ? AND product_id = ?";
+                        $p_stmt = $conn->prepare($path_sql);
+                        $p_stmt->bind_param('ii', $img_id, $product_id);
+                        $p_stmt->execute();
+                        $p_res = $p_stmt->get_result();
+                        
+                        if ($row = $p_res->fetch_assoc()) {
+                            $full_path = ROOT_PATH . '/' . $row['image_path'];
+                            if (file_exists($full_path)) {
+                                unlink($full_path);
+                            }
                         }
+                        $del_sql = "DELETE FROM product_images WHERE image_id = ? AND product_id = ?";
+                        $d_stmt = $conn->prepare($del_sql);
+                        $d_stmt->bind_param('ii', $img_id, $product_id);
+                        $d_stmt->execute();
                     }
                 }
-                $img_stmt->close();
+
+                // Új képek feltöltése és optimalizálása
+                if (!empty($_FILES['images']['name'][0])) {
+                    $upload_dir = ROOT_PATH . '/uploads/products/';
+                    if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+
+                    $count_sql = "SELECT COUNT(*) as total FROM product_images WHERE product_id = ?";
+                    $c_stmt = $conn->prepare($count_sql);
+                    $c_stmt->bind_param('i', $product_id);
+                    $c_stmt->execute();
+                    $current_count = $c_stmt->get_result()->fetch_assoc()['total'];
+
+                    $img_sql = "INSERT INTO product_images (product_id, image_path, is_primary, sort_order) VALUES (?, ?, ?, ?)";
+                    $img_stmt = $conn->prepare($img_sql);
+
+                    foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
+                        if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
+                            $file_ext = strtolower(pathinfo($_FILES['images']['name'][$key], PATHINFO_EXTENSION));
+                            $file_name = time() . '_' . $key . '_' . uniqid() . '.' . $file_ext;
+                            $target_file = $upload_dir . $file_name;
+                            $db_path = 'uploads/products/' . $file_name;
+
+                            if (move_uploaded_file($tmp_name, $target_file)) {
+                                // --- KÉP OPTIMALIZÁLÁSA (Tinify hívása) ---
+                                optimizeImageWithTinify($target_file);
+
+                                $is_primary = ($current_count == 0 && $key === 0) ? 1 : 0;
+                                $sort_order = $current_count + $key + 1;
+                                $img_stmt->bind_param('isii', $product_id, $db_path, $is_primary, $sort_order);
+                                $img_stmt->execute();
+                            }
+                        }
+                    }
+                    $img_stmt->close();
+                }
+                $success_msg = "Termék és képek sikeresen frissítve!";
+                
+                // Frissített adatok visszaírása a változóba a megjelenítéshez
+                $product['product_name'] = $product_name;
+                $product['category'] = $category;
+                $product['price'] = $price;
+                $product['pickup_location'] = $pickup_location;
+                $product['product_status'] = $product_status;
+                $product['product_description'] = $description;
+            } else {
+                $error_msg = "Hiba történt a mentés során: " . $conn->error;
             }
-            $success_msg = "Termék és képek sikeresen frissítve!";
-            $product['product_name'] = $product_name;
-            $product['category'] = $category;
-            $product['price'] = $price;
-            $product['pickup_location'] = $pickup_location;
-            $product['product_status'] = $product_status;
-            $product['product_description'] = $description;
-        } else {
-            $error_msg = "Hiba történt a mentés során: " . $conn->error;
         }
     }
 }
@@ -270,8 +297,12 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
             <?php if ($success_msg): ?>
                 <div class="alert alert-success"><?php echo $success_msg; ?></div>
             <?php endif; ?>
+            
+            <?php if ($error_msg): ?>
+                <div class="alert alert-danger"><?php echo $error_msg; ?></div>
+            <?php endif; ?>
 
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data" id="editProductForm">
                 <div class="form-group">
                     <label for="product_name">Termék neve</label>
                     <input type="text" id="product_name" name="product_name" class="form-control" 
@@ -354,7 +385,7 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
                 </div>
 
                 <div class="form-group">
-                    <label>Termék képei (Max. 3)</label>
+                    <label>Termék képei (Max. 3, egyenként max 5MB)</label>
                     
                     <div class="image-management-grid">
                         <div id="existingImages" style="display: contents;">
@@ -384,7 +415,8 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
                             <i class="fas fa-plus"></i>
                             <span>Új kép</span>
                         </label>
-                        <input type="file" id="postImages" name="images[]" accept="image/*" multiple style="display: none;">
+                        <input type="file" id="postImages" accept="image/*" multiple style="display: none;">
+                        <input type="file" name="images[]" id="hiddenFinalImages" style="display: none;" multiple>
                     </div>
                     
                     <div id="removedImagesInputs"></div>
@@ -400,20 +432,15 @@ $current_image_count = $c_stmt->get_result()->fetch_assoc()['total'];
     </div>
 
 <script>
-// Globális tömb az új fájlok tárolására
 let selectedFiles = [];
+const MAX_TOTAL_IMAGES = 3;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
-/**
- * Frissíti a jelvényeket (Borítókép / Új feltöltés) a sorrend alapján
- */
 function updateBadges() {
-    // Összeszedjük az összes kártyát: előbb a már meglévőket, aztán az újakat
     const allCards = document.querySelectorAll('#existingImages .image-card, #imagePreview .image-card');
     
     allCards.forEach((card, index) => {
         let badge = card.querySelector('.badge-status');
-        
-        // Ha valamiért nincs badge elem, létrehozzuk
         if (!badge) {
             badge = document.createElement('span');
             badge.className = 'badge-status';
@@ -421,17 +448,14 @@ function updateBadges() {
         }
 
         if (index === 0) {
-            // Mindig a legelső elem a borítókép
             badge.textContent = 'Borítókép';
             badge.className = 'badge-status badge-primary';
         } else {
-            // A többi elemnél megnézzük, hogy új-e vagy régi
             const isNew = card.closest('#imagePreview') !== null;
             if (isNew) {
                 badge.textContent = 'Új feltöltés';
                 badge.className = 'badge-status badge-new';
             } else {
-                // Régi kép, ami nem az első: ne legyen felirat
                 badge.textContent = '';
                 badge.className = 'badge-status'; 
             }
@@ -439,33 +463,25 @@ function updateBadges() {
     });
 }
 
-/**
- * Kezeli a feltöltő gomb láthatóságát és frissíti a jelvényeket
- */
 function updateUploadButtonVisibility() {
     const uploadCard = document.getElementById('uploadCard');
     const existingCount = document.querySelectorAll('#existingImages .image-card').length;
     const previewCount = selectedFiles.length;
     
-    // Frissítjük a sorrend alapú jelöléseket
     updateBadges();
     
-    if ((existingCount + previewCount) >= 3) {
+    if ((existingCount + previewCount) >= MAX_TOTAL_IMAGES) {
         uploadCard.classList.add('hidden-upload');
     } else {
         uploadCard.classList.remove('hidden-upload');
     }
 }
 
-/**
- * Meglévő (szerveroldali) kép eltávolítása
- */
 function removeExistingImage(imageId) {
     if (confirm('Biztosan törlöd ezt a képet?')) {
         const container = document.getElementById('img-container-' + imageId);
         if (container) container.remove();
         
-        // Elküldjük a PHP-nak a törlendő ID-t
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = 'removed_images[]';
@@ -476,30 +492,11 @@ function removeExistingImage(imageId) {
     }
 }
 
-/**
- * Frissen kiválasztott kép eltávolítása a listából
- */
 function removeNewImage(index) {
     selectedFiles.splice(index, 1);
-    syncInputAndRender();
-}
-
-/**
- * Szinkronizálja a rejtett inputot a tömbbel és újraépíti a nézetet
- */
-function syncInputAndRender() {
-    const input = document.getElementById('postImages');
-    const dt = new DataTransfer();
-    
-    selectedFiles.forEach(file => dt.items.add(file));
-    input.files = dt.files; 
-
     renderPreviews();
 }
 
-/**
- * Az újonnan kiválasztott képek előnézetének generálása
- */
 function renderPreviews() {
     const previewContainer = document.getElementById('imagePreview');
     previewContainer.innerHTML = '';
@@ -520,7 +517,6 @@ function renderPreviews() {
             removeBtn.innerHTML = '<i class="fas fa-times"></i>';
             removeBtn.onclick = () => removeNewImage(index);
             
-            // Üres badge, amit az updateBadges fog feltölteni
             const badge = document.createElement('span');
             badge.className = 'badge-status';
             
@@ -529,49 +525,45 @@ function renderPreviews() {
             card.appendChild(badge);
             previewContainer.appendChild(card);
             
-            // Minden renderelés végén (vagy az utolsó fájlnál) frissítünk
-            if (index === selectedFiles.length - 1) {
-                updateUploadButtonVisibility();
-            }
+            updateUploadButtonVisibility();
         }
         reader.readAsDataURL(file);
     });
     
-    // Ha kiürült a lista, akkor is frissíteni kell
     if (selectedFiles.length === 0) {
         updateUploadButtonVisibility();
     }
 }
 
-/**
- * Input változás eseménykezelő
- */
 document.getElementById('postImages').addEventListener('change', function(e) {
     const existingCount = document.querySelectorAll('#existingImages .image-card').length;
     const newFiles = Array.from(this.files);
     
-    let rejectedCount = 0;
-    
     newFiles.forEach(file => {
         const currentTotal = existingCount + selectedFiles.length;
-        if (currentTotal < 3) {
+        if (currentTotal < MAX_TOTAL_IMAGES) {
+            if (file.size > MAX_FILE_SIZE) {
+                alert(`A(z) ${file.name} fájl túl nagy! Maximum 5MB engedélyezett.`);
+                return;
+            }
             const isDuplicate = selectedFiles.some(f => f.name === file.name && f.size === file.size);
             if (!isDuplicate) {
                 selectedFiles.push(file);
             }
-        } else {
-            rejectedCount++;
         }
     });
 
-    syncInputAndRender();
-    
-    if (rejectedCount > 0) {
-        alert("Maximum 3 képet tárolhatsz. Néhány kép nem került hozzáadásra.");
-    }
+    renderPreviews();
+    this.value = ''; 
 });
 
-// Oldalbetöltéskor is ellenőrizzük a badge-eket
+document.getElementById('editProductForm').addEventListener('submit', function(e) {
+    const hiddenInput = document.getElementById('hiddenFinalImages');
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach(file => dataTransfer.items.add(file));
+    hiddenInput.files = dataTransfer.files;
+});
+
 document.addEventListener('DOMContentLoaded', updateBadges);
 </script>
 </body>
