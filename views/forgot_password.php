@@ -1,8 +1,12 @@
 <?php
 // views/forgot_password.php
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+    @session_start(); // @ jel a hibaüzenetek elnyomására (cPanel hiba kivédése)
 }
+ob_start();
+
+// Időzóna beállítása biztos, ami biztos
+date_default_timezone_set('Europe/Budapest');
 
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
@@ -57,7 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['email'])) {
                 $message = "Kérlek, add meg az e-mail címed.";
                 $message_type = "error";
             } else {
-                $sql = "SELECT user_id FROM users WHERE email = ?";
+                // JAVÍTÁS: LOWER() használata az egyezéshez
+                $sql = "SELECT user_id FROM users WHERE LOWER(email) = LOWER(?)";
                 if ($stmt = $conn->prepare($sql)) {
                     $stmt->bind_param("s", $email);
                     $stmt->execute();
@@ -66,11 +71,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['email'])) {
                     if ($stmt->num_rows > 0) {
                         $token = bin2hex(random_bytes(32));
                         $token_hash = hash('sha256', $token);
-                        $expiry = date("Y-m-d H:i:s", time() + 3600);
-
-                        $update_sql = "UPDATE users SET reset_token_hash = ?, reset_token_expires_at = ? WHERE email = ?";
+                        
+                        // JAVÍTÁS: Nem a PHP számolja az időt, hanem a MySQL a DATE_ADD(NOW(), INTERVAL 1 HOUR) segítségével!
+                        $update_sql = "UPDATE users SET reset_token_hash = ?, reset_token_expires_at = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE LOWER(email) = LOWER(?)";
                         if ($update_stmt = $conn->prepare($update_sql)) {
-                            $update_stmt->bind_param("sss", $token_hash, $expiry, $email);
+                            // Ide már csak a token_hash és az email kell, mert a dátum be van égetve az SQL-be
+                            $update_stmt->bind_param("ss", $token_hash, $email);
+                            
                             if ($update_stmt->execute()) {
                                 
                                 $mail = new PHPMailer(true);
@@ -123,14 +130,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['email'])) {
 }
 $siteKey = getenv('RECAPTCHA_SITE_KEY') ?: $_ENV['RECAPTCHA_SITE_KEY'];
 ?>
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" /> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />  
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
-    <title>Techoázis | Elfelejtett jelszó</title>
+    <title>Techoázis | Jelszó visszaállítása</title>
     
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
@@ -149,31 +157,32 @@ $siteKey = getenv('RECAPTCHA_SITE_KEY') ?: $_ENV['RECAPTCHA_SITE_KEY'];
 </head>
 <body>
 <?php include ROOT_PATH . '/views/navbar.php'; ?>
+
     <div class="background">
         <div class="login-container">
             <section class="login-box">
                 <img src="<?= BASE_URL ?>/images/techoazis_palmtree.png" alt="Techoazis Logo" style="height: 90px; width: 115px; display: block; margin: 0 auto;">
-                <h2>Elfelejtett jelszó</h2>
-                
+                <h2>Jelszó visszaállítása</h2>
+                <p style="text-align: center; color: white; margin-bottom: 20px;">Kérlek, add meg az e-mail címed, amivel regisztráltál, és elküldjük a visszaállító linket.</p>
+
                 <?php if (!empty($message)) : ?>
-                    <div class="login-alert <?php echo ($message_type === 'success') ? 'login-success' : ''; ?>">
-                        <?php echo $message; ?>
+                    <div class="login-alert <?= $message_type === 'success' ? 'login-success' : '' ?>">
+                        <?php echo htmlspecialchars($message); ?>
                     </div>
                 <?php endif; ?>
-
+                
                 <form id="forgotForm" method="POST" action="">
-                    <div class="login-form-group">
-                        <label for="email" class="login-label">Email cím</label>
-                        <input type="email" name="email" id="email" class="login-input" placeholder="Email cím" required>
-                    </div>
-                    
                     <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+
+                    <div class="login-form-group">
+                        <label for="email" class="login-label">E-mail cím</label>
+                        <input type="email" name="email" id="email" class="login-input" placeholder="E-mail cím" required>
+                    </div>
+
                     <button type="submit" class="login-button">Link küldése</button>
                 </form>
-
-                <div style="text-align: center; margin-top: 15px;">
-                    <a style="color: white; text-decoration: underline;" href="<?= BASE_URL ?>/views/login.php">Vissza a bejelentkezéshez</a>
-                </div>
+                
+                <p class="login-separator"><a style="color: white; text-decoration: underline;" href="<?= BASE_URL ?>/views/login.php">Vissza a bejelentkezéshez</a></p>
 
                 <p style="font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 15px; text-align: center;">
                     Ezt az oldalt a reCAPTCHA védi. <br>
@@ -184,18 +193,19 @@ $siteKey = getenv('RECAPTCHA_SITE_KEY') ?: $_ENV['RECAPTCHA_SITE_KEY'];
     </div>
 
     <script>
-    document.getElementById('forgotForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var form = this;
-        
-        grecaptcha.ready(function() {
-            grecaptcha.execute('<?= $siteKey ?>', {action: 'forgot_password'}).then(function(token) {
-                document.getElementById('g-recaptcha-response').value = token;
-                // A login.php-ban bevált beküldési mód
-                HTMLFormElement.prototype.submit.call(form);
+    if (document.getElementById('forgotForm')) {
+        document.getElementById('forgotForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var form = this;
+            
+            grecaptcha.ready(function() {
+                grecaptcha.execute('<?= $siteKey ?>', {action: 'forgot_password'}).then(function(token) {
+                    document.getElementById('g-recaptcha-response').value = token;
+                    HTMLFormElement.prototype.submit.call(form);
+                });
             });
         });
-    });
+    }
     </script>
 </body>
 </html>
