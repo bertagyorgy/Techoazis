@@ -8,11 +8,9 @@ include_once ROOT_PATH . '/app/db.php';
 
 ?>
 
-<nav class="main-navbar">
+<nav class="main-navbar" role="navigation">
     <div class="custom-container nav-container">
-        <a class="nav-brand" href="<?= BASE_URL ?>/"> 
-            <img src="<?= BASE_URL  ?>/images/techoazis_logo_chopped.webp" alt="kep">
-        </a>
+        <a class="nav-brand" href="<?= BASE_URL ?>/" aria-label="Techoazis logo"></a>
         
         <button class="nav-toggler" id="navToggle" aria-label="Menü">
             <span class="bar"></span>

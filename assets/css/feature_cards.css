@@ -41,6 +41,9 @@
     color: var(--primary-500);
     transition: all var(--transition-normal);
 }
+.feature-card p {
+    color: var(--text-light);
+}
 
 .feature-card:hover i {
     color: var(--accent-600);

@@ -40,6 +40,7 @@
     --surface: white;
     --border-color: var(--neutral-100);
     --background-image: url('../../images/desert_evening.webp') left/cover no-repeat;
+    --logo-brand: url('../../images/techoazis_logo_chopped.webp');
     /* 📐 ÁRNYÉKOK */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -69,6 +70,7 @@
 /* 🌓 SÖTÉT TÉMA - manuális váltás */
 .dark {
     --background-image: url('../../images/desert_night2.webp') left/cover;
+    --logo-brand: url('../../images/techoazis_logo_chopped_white.webp');
     --background: var(--dark-bg);
     --link-preview-bg: var(--dark-surface);
     --dark-bg-alt: var(--dark-surface);

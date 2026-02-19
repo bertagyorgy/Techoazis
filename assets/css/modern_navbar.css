@@ -25,20 +25,23 @@
 }
 
 .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.nav-brand img {
+    display: block;
+    width: 200px;
     height: 40px;
-    width: auto;
-    transition: transform 0.3s ease;
+
+    background-image: var(--logo-brand);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    transition: transform .25s ease;
+    flex-shrink: 0;
 }
 
-.nav-brand:hover img {
+.nav-brand:hover {
     transform: scale(1.05);
 }
+
 
 .nav-menu {
     display: flex;
