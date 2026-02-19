@@ -79,7 +79,7 @@ if ($page !== '' && $page !== 'index') {
 <body>
     <?php include ROOT_PATH . '/views/navbar.php';?>
 
-    <div class="hero-section">
+    <div class="hero-section" role="banner">
         <div class="custom-container hero-container">
             <div class="hero-text">
                 <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
@@ -91,7 +91,7 @@ if ($page !== '' && $page !== 'index') {
         </div>
     </div>
         
-    <section class="custom-container section-padding">
+    <section class="custom-container section-padding" role="main">
         <div class="text-center">
             <h2 class="section-title">Mit találsz nálunk?</h2>
             <div class="grid-row">
@@ -99,7 +99,7 @@ if ($page !== '' && $page !== 'index') {
                     <a href="<?= BASE_URL ?>/pages/articles.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-book fa-3x icon-info"></i>
-                            <h4>Tudástár</h4>
+                            <h3>Tudástár</h3>
                             <p>Olvass cikkeket, útmutatókat és fejleszd a tudásod.</p>
                         </div>
                     </a>
@@ -108,7 +108,7 @@ if ($page !== '' && $page !== 'index') {
                     <a href="<?= BASE_URL ?>/pages/forum.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-users fa-3x icon-primary"></i>
-                            <h4>Közösség</h4>
+                            <h3>Közösség</h3>
                             <p>Csevegj, kérdezz, oszd meg tapasztalataid más techrajongókkal.</p>
                         </div>
                     </a>
@@ -117,7 +117,7 @@ if ($page !== '' && $page !== 'index') {
                     <a href="<?= BASE_URL ?>/pages/shop.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-cart-shopping fa-3x icon-success"></i>
-                            <h4>Vásárlás</h4>
+                            <h3>Vásárlás</h3>
                             <p>Fedezd fel felhasználóink által hirdetett legújabb technológiai termékeket.</p>
                         </div>
                     </a>
@@ -126,7 +126,7 @@ if ($page !== '' && $page !== 'index') {
                     <a href="<?= BASE_URL ?>/pages/profile.php" class="feature-card-link">
                         <div class="feature-card">
                             <i class="fa-solid fa-store"></i>
-                            <h4>Eladás</h4>
+                            <h3>Eladás</h3>
                             <p>Kereskedj, add el a nem használt kütyüidet és keress pénzt.</p>
                         </div>
                     </a>
@@ -143,7 +143,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="custom-card">
                         <img src="<?= BASE_URL ?>/images/ipad_air.jpg" class="card-img-top" alt="Cikk 1">
                         <div class="card-body">
-                            <h5 class="card-title">Legújabb TechCikk</h5>
+                            <h3 class="card-title">Legújabb TechCikk</h3>
                             <p class="card-text">Miként változtatja meg az AI a mindennapi vásárlást?</p>
                             <div class="card-footer">
                                 <a href="#" class="btn btn-secondary shopnow-small">Olvass tovább</a>
@@ -155,7 +155,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="custom-card">
                         <img src="<?= BASE_URL ?>/images/macbook_air_m2.jpg" class="card-img-top" alt="Termék 2">
                         <div class="card-body">
-                            <h5 class="card-title">Új termék a shopban</h5>
+                            <h3 class="card-title">Új termék a shopban</h3>
                             <p class="card-text">Fedezd fel a legújabb tech kiegészítőket kedvező áron!</p>
                             <div class="card-footer">
                                 <a href="#" class="btn btn-primary shopnow-small">Vásárolj most</a>
@@ -167,7 +167,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="custom-card">
                         <img src="<?= BASE_URL ?>/uploads/posts/4_1763756851_4212.jpg" class="card-img-top" alt="Poszt 3">
                         <div class="card-body">
-                            <h5 class="card-title">Legújabb poszt</h5>
+                            <h3 class="card-title">Legújabb poszt</h3>
                             <p class="card-text">Milyen hasznuk van a keretrendszereknek?</p>
                             <div class="card-footer">
                                 <a href="#" class="btn btn-secondary shopnow-small">Tovább</a>
@@ -260,7 +260,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-bolt"></i>
-                            <h4>Gyors</h4>
+                            <h3>Gyors</h3>
                             <p>Villámgyors oldalbetöltés és optimalizált élmény minden eszközön.</p>
                         </div>
                     </div>
@@ -269,7 +269,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-users"></i>
-                            <h4>Közösségi</h4>
+                            <h3>Közösségi</h3>
                             <p>Beszélgess, ossz meg projekteket, és tanulj másoktól.</p>
                         </div>
                     </div>
@@ -278,7 +278,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-money-bill-transfer"></i>
-                            <h4>Ingyenes</h4>
+                            <h3>Ingyenes</h3>
                             <p>Felhasználóink díjmentesen adhatják el termékeiket az oldalon.</p>
                         </div>
                     </div>
@@ -287,7 +287,7 @@ if ($page !== '' && $page !== 'index') {
                     <div class="feature-card">
                         <div class="whyus-icon">
                             <i class="fa-solid fa-lock"></i>
-                            <h4>Biztonságos</h4>
+                            <h3>Biztonságos</h3>
                             <p>Adatvédelem és biztonság a legmagasabb szinten.</p>
                         </div>
                     </div>

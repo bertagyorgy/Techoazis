@@ -50,6 +50,9 @@
     border-top: 1px solid var(--border-color);
     background: var(--border-color);
 }
+.card-footer a{
+    color: var(--text-light);
+}
 
 /* ===============================
   SCROLL REVEAL ANIMATION
