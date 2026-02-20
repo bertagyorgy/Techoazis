@@ -18,6 +18,10 @@ services:
       - DB_NAME=techoazis_db
     networks:
       - techoazis-net
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
   db:
     container_name: techoazis-db
@@ -33,6 +37,10 @@ services:
       - ../database/techoazis_db_datas.sql:/docker-entrypoint-initdb.d/02_data.sql
     networks:
       - techoazis-net
+    deploy:
+      resources:
+        limits:
+          memory: 768M
 
   phpmyadmin:
     container_name: techoazis-phpmyadmin
@@ -46,6 +54,10 @@ services:
       - PMA_PASSWORD=root_password
     networks:
       - techoazis-net
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
 networks:
   techoazis-net:
