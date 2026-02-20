@@ -1,4 +1,5 @@
 <?php
+// profile_edit.php
 // 1. Config betöltése relatív úton
 require_once __DIR__ . '/../core/config.php';
 
@@ -24,7 +25,6 @@ require_once ROOT_PATH . '/actions/profile_edit_logic.php';
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/profile_edit_style.css">
 
 
-    <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -65,10 +65,8 @@ require_once ROOT_PATH . '/actions/profile_edit_logic.php';
         </button>
     </div>
 
-    <!-- Alapadatok szerkesztése -->
     <section id="general-section" class="edit-section <?php echo $action === 'general' ? 'active' : ''; ?>">
         
-        <!-- Felhasználónév módosítása -->
         <form method="POST" class="edit-form">
             <input type="hidden" name="update_username" value="1">
             
@@ -94,7 +92,6 @@ require_once ROOT_PATH . '/actions/profile_edit_logic.php';
         
         <hr style="margin: 2rem 0; border-color: var(--border-color);">
 
-        <!-- Email cím módosítása -->
         <form method="POST" class="edit-form">
             <input type="hidden" name="update_email" value="1">
             
@@ -119,7 +116,6 @@ require_once ROOT_PATH . '/actions/profile_edit_logic.php';
         </form>
     </section>
 
-    <!-- Profilkép módosítása -->
     <section id="image-section" class="edit-section <?php echo $action === 'image' ? 'active' : ''; ?>">
         
         <div class="edit-form" style="text-align: center;">
@@ -146,7 +142,6 @@ require_once ROOT_PATH . '/actions/profile_edit_logic.php';
         </div>
     </section>
 
-    <!-- Jelszó módosítása -->
     <section id="password-section" class="edit-section <?php echo $action === 'password' ? 'active' : ''; ?>">
         
         <form method="POST" class="edit-form">
@@ -191,7 +186,6 @@ require_once ROOT_PATH . '/actions/profile_edit_logic.php';
         </form>
     </section>
 
-    <!-- Biztonsági beállítások -->
     <section id="security-section" class="edit-section <?php echo $action === 'security' ? 'active' : ''; ?>">
         
         <div class="edit-form">
@@ -267,7 +261,6 @@ function togglePassword(inputId) {
 // Fiók törlés megerősítése
 function confirmDeleteAccount() {
     if (confirm('⚠️ VIGYÁZAT!\n\nA fiók törlésével:\n• Minden adatod véglegesen törlődik\n• Termékeid eltűnnek\n• Beszélgetéseid törlődnek\n• Nem vonható vissza!\n\nBiztos, hogy folytatod?')) {
-        // Itt lehetne AJAX hívás vagy form beküldés    
         window.location.href = '<?= BASE_URL ?>/app/delete_account.php';
     }
 }
