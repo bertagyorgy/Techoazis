@@ -31,7 +31,8 @@ body {
 .shop-layout {
     display: flex;
     gap: 2rem;
-    align-items: flex-start;
+    /* Igazítás a tetejére, hogy a sidebar ne nyúljon feleslegesen */
+    align-items: flex-start; 
 }
 
 .shop-sidebar {
@@ -42,17 +43,20 @@ body {
     padding: 1.5rem;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
+    
+    /* Dinamikus megjelenés javítása */
     position: sticky;
     top: 100px;
-    max-height: calc(100vh - 120px);
-    /*overflow-y: auto;*/
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .shop-content {
     flex: 1;
 }
 
-/* Reszponzív */
+/* Reszponzív nézet laptop alatt */
 @media (max-width: 992px) {
     .shop-layout {
         flex-direction: column;
@@ -61,6 +65,7 @@ body {
         width: 100%;
         position: static;
         max-height: none;
+        margin-bottom: 2rem;
     }
 }
 
@@ -91,12 +96,20 @@ body {
     background: var(--background);
     color: var(--text-color);
     font-size: 1rem;
+    box-sizing: border-box; /* Biztosítja, hogy a padding ne növelje a szélességet */
 }
 
 .filter-select:focus, .filter-input:focus {
     outline: none;
     border-color: var(--accent-600);
     box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+/* Ár tartomány rács */
+.filter-group .grid-price-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
 }
 
 .filter-tags {
@@ -129,18 +142,24 @@ body {
 
 .filter-actions {
     display: flex;
+    flex-wrap: wrap; /* Flexibilitás a gomboknak */
     gap: 1rem;
     margin-top: 2rem;
 }
 
 .filter-btn {
     flex: 1;
+    min-width: 120px;
     padding: 0.75rem;
     border: none;
     border-radius: var(--border-radius-md);
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .filter-btn.apply {

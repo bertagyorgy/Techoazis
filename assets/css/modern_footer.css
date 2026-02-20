@@ -18,7 +18,9 @@
     height: 4px;
     background: linear-gradient(90deg, var(--accent-600), var(--primary-300));
 }
-
+.footer-subtitle{
+    color: white;
+}
 .footer-title {
     font-size: 1.25rem;
     font-weight: 700;
