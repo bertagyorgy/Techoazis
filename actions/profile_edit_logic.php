@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (move_uploaded_file($file['tmp_name'], $target_save_path)) {
                 
                 // --- KÉP OPTIMALIZÁLÁSA (Tinify) ---
-                optimizeImageWithTinify($target_save_path);
+                optimizeImageWithTinify($target_save_path, 'product');
                 
                 $db_url_path = "uploads/profile_images/" . $new_filename;
                 $stmt = $conn->prepare("UPDATE users SET profile_image = ? WHERE user_id = ?");

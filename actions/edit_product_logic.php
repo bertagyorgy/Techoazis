@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             if (move_uploaded_file($tmp_name, $target_file)) {
                                 // --- KÉP OPTIMALIZÁLÁSA (Tinify hívása) ---
-                                optimizeImageWithTinify($target_file);
+                                optimizeImageWithTinify($target_file, 'product');
 
                                 $is_primary = ($current_count == 0 && $key === 0) ? 1 : 0;
                                 $sort_order = $current_count + $key + 1;

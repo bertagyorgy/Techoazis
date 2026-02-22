@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         if (move_uploaded_file($img_data['tmp_name'], $target_file)) {
                             // --- KÉP OPTIMALIZÁLÁSA (Tinify hívása) ---
-                            optimizeImageWithTinify($target_file);
+                            optimizeImageWithTinify($target_file, 'product');
 
                             // Az abszolút első sikeresen feltöltött kép a borítókép
                             $is_primary = ($index === 0) ? 1 : 0;
