@@ -99,11 +99,11 @@ INSERT INTO `product_images` (`image_id`, `product_id`, `image_path`, `is_primar
 
 -- 3. Cikk kategóriák (Article Categories) - Eddig üres volt, de a cikkek hivatkoztak rá
 -- (A cikkeknél láttam 1, 2, 3, 4-es kategória id-t használni)
-INSERT INTO `article_categories` (`category_id`, `category_name`, `category_slug`, `icon_class`, `sort_order`) VALUES
-(1, 'Webfejlesztés', 'webfejlesztes', 'fa-code', 1),
-(2, 'Backend', 'backend', 'fa-server', 2),
-(3, 'Frontend', 'frontend', 'fa-paint-brush', 3),
-(4, 'Adatbázisok', 'adatbazisok', 'fa-database', 4);
+INSERT INTO `article_categories` (`category_id`, `category_name`, `category_slug`, `sort_order`) VALUES
+(1, 'Webfejlesztés', 'webfejlesztes', 1),
+(2, 'Backend', 'backend', 2),
+(3, 'Frontend', 'frontend', 3),
+(4, 'Adatbázisok', 'adatbazisok', 4);
 
 -- 4. Értékelések (Reviews)
 -- Fontos: A deal_id-nak léteznie kell a deals táblában!

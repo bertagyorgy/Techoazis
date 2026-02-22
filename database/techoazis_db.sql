@@ -160,7 +160,6 @@ CREATE TABLE article_categories (
   category_id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   category_name varchar(120) NOT NULL,
   category_slug varchar(140) NOT NULL,
-  icon_class varchar(80) DEFAULT NULL,
   sort_order int(11) NOT NULL DEFAULT 100,
   created_at datetime DEFAULT CURRENT_TIMESTAMP
 );
