@@ -8,6 +8,7 @@ ob_start();
 // 1. Config és Env betöltése (pontosan mint a login.php-ban)
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/core/envreader.php';
+require_once ROOT_PATH . '/app/auth_check_login.php';
 loadEnv();
 
 // Adatbázis behívása

@@ -16,7 +16,7 @@ $q_like = '%' . $q . '%';
 ========================= */
 $categories = [];
 $res = $conn->query("
-    SELECT category_id, category_name, icon_class
+    SELECT category_id, category_name
     FROM article_categories
     ORDER BY sort_order ASC, category_name ASC
 ");

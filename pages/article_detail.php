@@ -23,7 +23,6 @@ $stmt = $conn->prepare("
         a.updated_at,
         c.category_id,
         c.category_name,
-        c.icon_class,
         u.user_id AS author_id,
         u.username AS author_username,
         u.profile_image AS author_image,

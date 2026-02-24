@@ -13,6 +13,9 @@ loadEnv();
 // Adatbázis behívása
 require_once ROOT_PATH . '/app/db.php';
 
+require_once ROOT_PATH . '/app/auth_check_login.php';
+
+
 $info_message = '';
 if (isset($_SESSION['registration_message'])) {
     $info_message = $_SESSION['registration_message'];

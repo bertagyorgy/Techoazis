@@ -9,6 +9,7 @@ require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 require_once ROOT_PATH . '/app/helpers.php';
 require_once ROOT_PATH . '/core/envreader.php';
+require_once ROOT_PATH . '/app/auth_check_login.php';
 loadEnv(); // Környezeti változók betöltése
 
 // PHPMailer komponensek

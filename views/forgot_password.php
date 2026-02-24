@@ -11,6 +11,7 @@ date_default_timezone_set('Europe/Budapest');
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 require_once ROOT_PATH . '/core/envreader.php';
+require_once ROOT_PATH . '/app/auth_check_login.php';
 loadEnv(); // Környezeti változók betöltése rögtön az elején
 
 require_once ROOT_PATH . '/core/vendor/autoload.php';
