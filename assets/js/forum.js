@@ -121,7 +121,26 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(`Számláló hiba (post ${postId}):`, error);
         }
     });
+    // ===========================
+    // 4. KOMMENT TEXTAREA VÁLTOZTATÓ
+    // ===========================
+    const textarea = document.querySelector('.comment-input');
 
+    textarea.addEventListener('input', function () {
+        // Alaphelyzetbe állítás a törléskori visszaugráshoz
+        this.style.height = '44px'; 
+        
+        // Új magasság kiszámítása (de max 140px)
+        const newHeight = Math.min(this.scrollHeight, 140);
+        this.style.height = newHeight + 'px';
+
+        // Görgetősáv kezelése
+        if (this.scrollHeight > 140) {
+            this.style.overflowY = 'auto';
+        } else {
+            this.style.overflowY = 'hidden';
+        }
+    });
 
     // ===========================
     // SEGÉDFÜGGVÉNY
@@ -134,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===========================
-    // 4. KÉP PREVIEW
+    // 5. KÉP PREVIEW
     // ===========================
     const fileInput = document.getElementById("postImages");
     const preview = document.getElementById("imagePreview");

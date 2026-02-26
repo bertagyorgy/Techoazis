@@ -190,23 +190,21 @@ $post_count = $posts->num_rows;
                 
 
                 <button class="show-comments-btn" data-post="<?= $post['post_id'] ?>">
-                    Kommentek
+                    <i style="color: white" class="fa-solid fa-comment"></i>
                     <span class="comment-count" id="comment-count-<?= $post['post_id'] ?>">0</span>
                     <i class="fa-solid fa-caret-down comment-caret"></i>
                 </button>
 
-
-                <div class="comments-container" id="comments-<?= $post['post_id'] ?>"></div>
-
-                <?php if(isset($_SESSION['loggedin'])): ?>
+                <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
                 <form class="comment-form" data-post="<?= $post['post_id'] ?>">
-                    <textarea placeholder="Írj kommentet..." maxlength="1500" required></textarea>
-                    <button class="forum-submit-btn" type="submit">Küldés</button>
+                    <textarea class="comment-input" placeholder="Írj kommentet..." maxlength="1500" required></textarea>
+                    <button class="forum-submit-btn" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
                 </form>
                 <?php else: ?>
                     <p class="login-warning">Jelentkezz be, hogy kommentelhess!</p>
                 <?php endif; ?>
-
+                
+                <div class="comments-container" id="comments-<?= $post['post_id'] ?>"></div>
             </div>
         <?php endwhile; ?>
 
