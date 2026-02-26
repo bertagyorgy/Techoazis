@@ -27,7 +27,7 @@
 - Protects against header injection attacks
 - Error messages in over 50 languages!
 - DKIM and S/MIME signing support
-- Compatible with PHP 5.5 and later, including PHP 8.4
+- Compatible with PHP 5.5 and later, including PHP 8.5
 - Namespaced to prevent name clashes
 - Much more!
 
@@ -97,7 +97,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader (created by composer, not included with PHPMailer)
-require __DIR__ . '/core/vendor/autoload.php';
+require 'vendor/autoload.php';
 
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
