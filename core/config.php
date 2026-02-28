@@ -2,8 +2,11 @@
 // core/config.php
 
 // 1. Hibakeresés bekapcsolása (ha kész, kikommentelheted)
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+ob_start(); // ELINDÍTJUK A PUFFERELÉST (Minden hibaüzenetet elkapunk)
+
+// 1. Hibakeresés teljes tiltása
+error_reporting(0);
+ini_set('display_errors', 0);
 
 // --- ÚJ: GLOBÁLIS IDŐZÓNA BEÁLLÍTÁSA ---
 // Ezután a date() és time() függvények mindig a magyar időt fogják használni.

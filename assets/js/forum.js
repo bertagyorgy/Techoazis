@@ -22,13 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
             // MEGNYITÁS
             try {
                 const response = await fetch(APP_BASE_URL + "/app/get_comments.php?post_id=" + postId);
-
-                const contentType = response.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error("Nem JSON válasz érkezett");
+                const rawText = await response.text();
+                
+                // Megkeressük a JSON kezdetét (az első '{' karaktert)
+                const jsonStart = rawText.indexOf('{');
+                if (jsonStart === -1) {
+                    console.error("Nem érkezett JSON adat a szervertől. Válasz:", rawText);
+                    return;
                 }
 
-                const data = await response.json();
+                // Csak a JSON részt vágjuk ki és alakítjuk objektummá
+                const cleanJson = rawText.substring(jsonStart);
+                const data = JSON.parse(cleanJson);
 
                 if (data.success) {
                     container.innerHTML = generateCommentsHTML(data.comments);
