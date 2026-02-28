@@ -5,6 +5,9 @@ require_once __DIR__ . '/../core/config.php';
 
 // 2. Háttérlogika betöltése ROOT_PATH-szal
 require_once ROOT_PATH . '/actions/profile_edit_logic.php';
+
+// Alapértelmezett fül beállítása
+if (empty($action) || $action === 'general') { $action = 'username'; }
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -36,239 +39,184 @@ require_once ROOT_PATH . '/actions/profile_edit_logic.php';
 <?php include ROOT_PATH . '/views/navbar.php'; ?>
 
 <div class="profile-edit-container">
-    <div class="profile-edit-card">
     <div class="profile-edit-header">
         <h1>Profil szerkesztése</h1>
         <a href="<?= BASE_URL ?>/pages/profile.php" class="back-btn">
-            <i class="fas fa-arrow-left"></i> Vissza a profilhoz
+            <i class="fas fa-arrow-left"></i> Vissza
         </a>
     </div>
 
     <?php if ($message): ?>
-        <div class="message <?php echo $message_type; ?>">
+        <div class="message <?php echo $message_type; ?>" style="padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; background: var(--dark-surface-alt); border: 1px solid var(--border-color);">
             <?php echo htmlspecialchars($message); ?>
         </div>
     <?php endif; ?>
 
-    <div class="profile-edit-nav">
-        <button class="nav-tab <?php echo $action === 'general' ? 'active' : ''; ?>" data-section="general">
-            <i class="fas fa-user"></i> Alapadatok
-        </button>
-        <button class="nav-tab <?php echo $action === 'image' ? 'active' : ''; ?>" data-section="image">
-            <i class="fas fa-image"></i> Profilkép
-        </button>
-        <button class="nav-tab <?php echo $action === 'password' ? 'active' : ''; ?>" data-section="password">
-            <i class="fas fa-lock"></i> Jelszó
-        </button>
-        <button class="nav-tab <?php echo $action === 'security' ? 'active' : ''; ?>" data-section="security">
-            <i class="fas fa-shield-alt"></i> Biztonság
-        </button>
-    </div>
+    <div class="profile-edit-layout">
+        <nav class="profile-edit-nav-container">
+            <button class="nav-tab <?php echo $action === 'username' ? 'active' : ''; ?>" data-section="username">
+                <i class="fas fa-id-card"></i> Felhasználónév
+            </button>
+            <button class="nav-tab <?php echo $action === 'email' ? 'active' : ''; ?>" data-section="email">
+                <i class="fas fa-envelope"></i> Email cím
+            </button>
+            <button class="nav-tab <?php echo $action === 'image' ? 'active' : ''; ?>" data-section="image">
+                <i class="fas fa-image"></i> Profilkép
+            </button>
+            <button class="nav-tab <?php echo $action === 'password' ? 'active' : ''; ?>" data-section="password">
+                <i class="fas fa-lock"></i> Jelszó
+            </button>
+            <button class="nav-tab <?php echo $action === 'security' ? 'active' : ''; ?>" data-section="security">
+                <i class="fas fa-shield-alt"></i> Biztonság
+            </button>
+        </nav>
 
-    <section id="general-section" class="edit-section <?php echo $action === 'general' ? 'active' : ''; ?>">
-        
-        <form method="POST" class="edit-form">
-            <input type="hidden" name="update_username" value="1">
-            
-            <div class="form-group">
-                <label for="current_username">Jelenlegi felhasználónév:</label>
-                <input type="text" id="current_username" class="form-control" 
-                       value="<?php echo htmlspecialchars($user['username']); ?>" disabled>
-            </div>
-            
-            <div class="form-group">
-                <label for="new_username">Új felhasználónév:</label>
-                <input type="text" id="new_username" name="new_username" class="form-control" 
-                       value="<?php echo htmlspecialchars($user['username']); ?>" required minlength="3" maxlength="100">
-                <div class="form-hint">Legalább 3 karakter</div>
-            </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-save"></i> Felhasználónév mentése
-                </button>
-            </div>
-        </form>
-        
-        <hr style="margin: 2rem 0; border-color: var(--border-color);">
+        <main class="profile-edit-content">
+            <section id="username-section" class="edit-section <?php echo $action === 'username' ? 'active' : ''; ?>">
+                <div class="form-card">
+                    <div class="card-header"><i class="fas fa-user-edit"></i> Felhasználónév</div>
+                    <form method="POST" onsubmit="return validateUsername()">
+                        <input type="hidden" name="update_username" value="1">
+                        <div class="form-group">
+                            <label>Jelenlegi név: <span style="color:var(--primary-500)"><?= htmlspecialchars($user['username']) ?></span></label>
+                            <input type="text" id="new_username" name="new_username" class="form-control" 
+                                placeholder="Új név" required minlength="3" pattern=".*\S.*">
+                            <div class="form-hint" style="font-size: 0.8rem; color: var(--neutral-500); margin-top: 0.5rem;">
+                                A névnek legalább 3 karakterből kell állnia (szóközök nélkül).
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Név mentése</button>
+                    </form>
+                </div>
+            </section>
 
-        <form method="POST" class="edit-form">
-            <input type="hidden" name="update_email" value="1">
-            
-            <div class="form-group">
-                <label for="current_email">Jelenlegi email cím:</label>
-                <input type="email" id="current_email" class="form-control" 
-                       value="<?php echo htmlspecialchars($user['email']); ?>" disabled>
-            </div>
-            
-            <div class="form-group">
-                <label for="new_email">Új email cím:</label>
-                <input type="email" id="new_email" name="new_email" class="form-control" 
-                       value="<?php echo htmlspecialchars($user['email']); ?>" required>
-                <div class="form-hint">Érvényes email címet adj meg</div>
-            </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-save"></i> Email cím mentése
-                </button>
-            </div>
-        </form>
-    </section>
+            <section id="email-section" class="edit-section <?php echo $action === 'email' ? 'active' : ''; ?>">
+                <div class="form-card">
+                    <div class="card-header"><i class="fas fa-at"></i> Email cím</div>
+                    <form method="POST">
+                        <input type="hidden" name="update_email" value="1">
+                        <div class="form-group">
+                            <label>Jelenlegi email: <span style="color:var(--primary-500)"><?= htmlspecialchars($user['email']) ?></span></label>
+                            <input type="email" name="new_email" class="form-control" placeholder="Új email" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Email mentése</button>
+                    </form>
+                </div>
+            </section>
 
-    <section id="image-section" class="edit-section <?php echo $action === 'image' ? 'active' : ''; ?>">
-        
-        <div class="edit-form" style="text-align: center;">
-            <img src="<?php echo $profile_image; ?>" alt="Profilkép előnézet" class="image-preview" 
-                 onerror="this.src='<?= BASE_URL ?>/uploads/profile_images/anonymous.png'">
-            
-            <form method="POST" enctype="multipart/form-data">
-                <div class="file-upload">
-                    <label class="file-upload-label">
-                        <i class="fas fa-upload"></i> Kép kiválasztása
-                        <input type="file" name="profile_image" accept="image/*" required onchange="previewImage(this)">
-                    </label>
+            <section id="image-section" class="edit-section <?php echo $action === 'image' ? 'active' : ''; ?>">
+                <div class="form-card">
+                    <div class="card-header"><i class="fas fa-camera"></i> Profilkép</div>
+                    <div class="image-edit-wrapper">
+                        <img src="<?= $profile_image ?>" class="image-preview" onerror="this.src='<?= BASE_URL ?>/uploads/profile_images/anonymous.png'">
+                        <form method="POST" enctype="multipart/form-data" class="upload-form-group">
+                            <input type="hidden" name="update_image" value="1">
+                            <div class="file-upload">
+                                <label class="file-upload-label">
+                                    <i class="fas fa-upload"></i> Kép kiválasztása
+                                    <input type="file" name="profile_image" accept="image/*" required onchange="previewImage(this)">
+                                </label>
+                            </div>
+                            <button type="submit" class="btn-primary">Feltöltés indítása</button>
+                        </form>
+                    </div>
                 </div>
-                
-                <div class="form-hint">Max. 5MB, JPG, PNG, WEBP vagy GIF formátum</div>
-                
-                <div class="form-actions" style="justify-content: center;">
-                    <button type="submit" class="btn-primary">
-                        <i class="fas fa-upload"></i> Feltöltés
-                    </button>
-                </div>
-            </form>
-            
-        </div>
-    </section>
+            </section>
 
-    <section id="password-section" class="edit-section <?php echo $action === 'password' ? 'active' : ''; ?>">
-        
-        <form method="POST" class="edit-form">
-            <input type="hidden" name="update_password" value="1">
-            
-            <div class="form-group">
-                <label for="current_password">Jelenlegi jelszó:</label>
-                <div class="password-input-wrapper">
-                    <input type="password" id="current_password" name="current_password" class="form-control" required>
-                    <button type="button" class="password-toggle" onclick="togglePassword('current_password')">
-                        <i class="fas fa-eye"></i>
-                    </button>
+            <section id="password-section" class="edit-section <?php echo $action === 'password' ? 'active' : ''; ?>">
+                <div class="form-card">
+                    <div class="card-header"><i class="fas fa-key"></i> Jelszó módosítása</div>
+                    <form method="POST" onsubmit="return validatePasswords()">
+                        <input type="hidden" name="update_password" value="1">
+                        <div class="form-group">
+                            <label>Jelenlegi jelszó</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="current_password" name="current_password" class="form-control" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('current_password')"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Új jelszó</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="new_password" name="new_password" class="form-control" required minlength="6">
+                                <button type="button" class="password-toggle" onclick="togglePassword('new_password')"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Megerősítés</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirm_password')"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Jelszó frissítése</button>
+                    </form>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="new_password">Új jelszó:</label>
-                <div class="password-input-wrapper">
-                    <input type="password" id="new_password" name="new_password" class="form-control" required minlength="6">
-                    <button type="button" class="password-toggle" onclick="togglePassword('new_password')">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-                <div class="form-hint">Legalább 6 karakter</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="confirm_password">Új jelszó megerősítése:</label>
-                <div class="password-input-wrapper">
-                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="6">
-                    <button type="button" class="password-toggle" onclick="togglePassword('confirm_password')">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-key"></i> Jelszó megváltoztatása
-                </button>
-            </div>
-        </form>
-    </section>
+            </section>
 
-    <section id="security-section" class="edit-section <?php echo $action === 'security' ? 'active' : ''; ?>">
-        
-        <div class="edit-form">
-            <div class="form-group">
-                <h3 style="color: var(--danger); margin-bottom: 1rem;">
-                    <i class="fas fa-exclamation-triangle"></i> Veszélyes műveletek
-                </h3>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <h4>Funkciók:</h4>
-                    <p style="color: var(--text-light); margin-bottom: 1rem;">
-                        Ezen funkciók végrehajtása előtt gondosan gondold át döntésedet!
-                    </p>
+            <section id="security-section" class="edit-section <?php echo $action === 'security' ? 'active' : ''; ?>">
+                <div class="form-card" style="border-color: var(--danger);">
+                    <div class="card-header" style="color: var(--danger);"><i class="fas fa-exclamation-triangle"></i> Fiók törlése</div>
+                    <p style="margin-bottom: 1.5rem; color: var(--neutral-500);">A fiók törlése nem vonható vissza.</p>
+                    <button type="button" class="btn-primary" style="background: var(--danger);" onclick="confirmDeleteAccount()">Fiók végleges törlése</button>
                 </div>
-                
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <button type="button" class="delete-image-btn" onclick="confirmDeleteAccount()">
-                        <i class="fas fa-user-slash"></i> Fiók végleges törlése
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
+        </main>
     </div>
 </div>
 
 <script>
-// Tab váltás
 document.querySelectorAll('.nav-tab').forEach(tab => {
     tab.addEventListener('click', function() {
-        const sectionId = this.dataset.section + '-section';
-        
-        // Tabok aktív állapotának frissítése
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         this.classList.add('active');
-        
-        // Section-ök megjelenítése/elrejtése
-        document.querySelectorAll('.edit-section').forEach(section => {
-            section.classList.remove('active');
-        });
-        document.getElementById(sectionId).classList.add('active');
-        
-        // URL frissítése
+        document.querySelectorAll('.edit-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(this.dataset.section + '-section').classList.add('active');
         history.pushState(null, null, `?action=${this.dataset.section}`);
     });
 });
 
-// Profilkép előnézet
 function previewImage(input) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            document.querySelector('.image-preview').src = e.target.result;
-        }
+        reader.onload = e => document.querySelector('.image-preview').src = e.target.result;
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-// Jelszó mutatása/elrejtése
-function togglePassword(inputId) {
-    const input = document.getElementById(inputId);
-    const toggle = input.nextElementSibling.querySelector('i');
-    
-    if (input.type === 'password') {
-        input.type = 'text';
-        toggle.className = 'fas fa-eye-slash';
-    } else {
-        input.type = 'password';
-        toggle.className = 'fas fa-eye';
-    }
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    const icon = input.nextElementSibling.querySelector('i');
+    input.type = input.type === 'password' ? 'text' : 'password';
+    icon.className = input.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
 }
 
-// Fiók törlés megerősítése
-function confirmDeleteAccount() {
-    if (confirm('⚠️ VIGYÁZAT!\n\nA fiók törlésével:\n• Minden adatod véglegesen törlődik\n• Termékeid eltűnnek\n• Beszélgetéseid törlődnek\n• Nem vonható vissza!\n\nBiztos, hogy folytatod?')) {
-        window.location.href = '<?= BASE_URL ?>/app/delete_account.php';
+function validateUsername() {
+    const usernameInput = document.getElementById('new_username');
+    // Trimmelés: eltávolítjuk a szóközöket az elejéről és a végéről
+    const trimmedValue = usernameInput.value.trim();
+    
+    if (trimmedValue.length < 3) {
+        alert("A felhasználónévnek legalább 3 karakter hosszúnak kell lennie (szóközök nélkül)!");
+        return false;
     }
+    
+    // Frissítjük az input értékét a trimmelt változatra küldés előtt
+    usernameInput.value = trimmedValue;
+    return true;
+}
+
+function validatePasswords() {
+    if (document.getElementById('new_password').value !== document.getElementById('confirm_password').value) {
+        alert("A két új jelszó nem egyezik!");
+        return false;
+    }
+    return true;
+}
+
+function confirmDeleteAccount() {
+    if (confirm('BIZTOSAN TÖRÖLNI SZERETNÉD?')) { window.location.href = '<?= BASE_URL ?>/app/delete_account.php'; }
 }
 </script>
 </body>
 </html>
-<?php 
-if (isset($conn)) {
-    $conn->close(); 
-}
-?>
