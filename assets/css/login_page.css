@@ -7,20 +7,29 @@
     align-items: center;
     justify-content: center;
     background: var(--background-image);
-    padding: var(--navbar-height) 20px;
+    padding: var(--navbar-height) 20px; 
 }
 
+/* --- LOGIN BOX --- */
 .login-box {
-    background: rgba(var(--surface), 0.9);
+    background: rgba(15, 23, 42, 0.4);
     backdrop-filter: blur(15px);
     border-radius: 32px;
     padding: 2rem;
-    width: 92%;
-    max-width: 500px;
+    /* 767px ALATT: */
+    width: 90vw;
+
     margin: 0 auto;
     box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.4);
-    /*border: 2px solid rgba(255, 255, 255, 0.3);*/
     animation: slideUp 0.5s ease;
+}
+
+/* Tablet és Desktop (767px felett) */
+@media (min-width: 767px) {
+    .login-box {
+        width: 500px;      
+        max-width: 500px;
+    }
 }
 
 @keyframes slideUp {
@@ -186,24 +195,3 @@
     }
 }
 
-/* Alap – normál mobil */
-.login-box {
-    width: 92%;
-    max-width: 500px;
-}
-
-/* Nagyon kicsi telefonok */
-@media (max-width: 480px) {
-    .login-box {
-        width: 96%;
-        max-width: none;
-    }
-}
-
-/* Tablet és minden ami nagyobb — ez legyen a "szép nagy" verzió */
-@media (min-width: 767px) {
-    .login-box {
-        width: 500px;
-        max-width: 500px;
-    }
-}
