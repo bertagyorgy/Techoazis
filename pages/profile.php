@@ -33,7 +33,7 @@ require_once ROOT_PATH . '/app/profile_logic.php';
 
 <div class="profile-dashboard">
     <aside class="profile-sidebar">
-        <img src="<?php echo $profile_image; ?>" alt="Profilkép" class="profile-avatar">
+        <img src="<?= $profile_image ?>"  alt="Profilkép" class="profile-avatar" onerror="this.src='<?= BASE_URL ?>/uploads/profile_images/anonymous.png'">
         <h2 class="profile-username"><?php echo htmlspecialchars($user['username']); ?></h2>
         <span class="profile-role"><?php echo $user_role_display; ?></span>
 
