@@ -212,8 +212,24 @@ include ROOT_PATH . '/views/navbar.php';
 
                 <h2 class="post-title"><?= htmlspecialchars($post['title']) ?></h2>
 
-                <p class="post-content"><?= nl2br(htmlspecialchars($post['content'])) ?></p>
+                <?php
+                $content = $post['content'];
+                $limit = 100; // ennyi karakter után vágjuk el
 
+                // A strlen helyett mb_strlen-t használunk a pontos karakterhosszhoz
+                if (mb_strlen($content, 'UTF-8') > $limit) {
+                    // A substr helyett mb_substr-t használunk, így az ékezetes betűk nem törnek el
+                    $preview = mb_substr($content, 0, $limit, 'UTF-8');
+                    $more = mb_substr($content, $limit, null, 'UTF-8');
+                } else {
+                    $preview = $content;
+                    $more = "";
+                }
+                ?>
+                <div class="text-container" id="postText-<?= $post['post_id'] ?>">
+                    <?= nl2br(htmlspecialchars($preview)) ?><?php if (!empty($more)): ?><span class="more-content"><?= nl2br(htmlspecialchars($more)) ?></span><a href="#" class="read-more-link" onclick="toggleReadMore(event, <?= $post['post_id'] ?>)"> ...Több</a><?php endif; ?>
+                </div>
+                
                 <?php
                 // ===== KÉPEK MEGJELENÍTÉSE =====
                 if (isset($post_images[$post['post_id']]) && !empty($post_images[$post['post_id']])): ?>

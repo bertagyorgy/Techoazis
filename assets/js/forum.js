@@ -126,25 +126,28 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(`Számláló hiba (post ${postId}):`, error);
         }
     });
-    // ===========================
-    // 4. KOMMENT TEXTAREA VÁLTOZTATÓ
-    // ===========================
-    const textarea = document.querySelector('.comment-input');
 
-    textarea.addEventListener('input', function () {
-        // Alaphelyzetbe állítás a törléskori visszaugráshoz
-        this.style.height = '44px'; 
-        
-        // Új magasság kiszámítása (de max 140px)
-        const newHeight = Math.min(this.scrollHeight, 140);
-        this.style.height = newHeight + 'px';
+    // ===========================
+    // 4. KOMMENT TEXTAREA VÁLTOZTATÓ (MINDEN MEZŐRE)
+    // ===========================
+    const commentInputs = document.querySelectorAll('.comment-input');
 
-        // Görgetősáv kezelése
-        if (this.scrollHeight > 140) {
-            this.style.overflowY = 'auto';
-        } else {
-            this.style.overflowY = 'hidden';
-        }
+    commentInputs.forEach(textarea => {
+        textarea.addEventListener('input', function () {
+            // Alaphelyzetbe állítás a törléskori visszaugráshoz
+            this.style.height = '44px'; 
+            
+            // Új magasság kiszámítása (de max 140px)
+            const newHeight = Math.min(this.scrollHeight, 140);
+            this.style.height = newHeight + 'px';
+
+            // Görgetősáv kezelése
+            if (this.scrollHeight > 140) {
+                this.style.overflowY = 'auto';
+            } else {
+                this.style.overflowY = 'hidden';
+            }
+        });
     });
 
     // ===========================
@@ -440,3 +443,19 @@ document.querySelectorAll(".post-content").forEach(el => {
 });
 
 
+function toggleReadMore(event, postId) {
+    // Megakadályozzuk, hogy az oldal tetejére ugorjon a '#' miatt
+    event.preventDefault(); 
+    
+    // Megkeressük a konkrét poszt konténerét az ID alapján
+    const container = document.getElementById('postText-' + postId);
+    const link = event.target; // A link, amire kattintottak
+
+    container.classList.toggle('expanded');
+
+    if (container.classList.contains('expanded')) {
+        link.textContent = " ...Kevesebb";
+    } else {
+        link.textContent = " ...Több";
+    }
+}

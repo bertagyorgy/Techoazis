@@ -97,9 +97,26 @@
     display: inline-flex;
     align-items: center;
     gap: 10px; /* állítsd ízlésre */
+    margin-top: 10px;
 }
 .comment-count{
     font-size: 1rem;
+}
+
+.more-content {
+    display: none;
+}
+
+/* A block helyett inline-t használunk, hogy ne törjön új sorba */
+.text-container.expanded .more-content {
+    display: inline; 
+}
+
+/* Opcionális: a gombot is tartsuk egy vonalban */
+.read-more-link {
+    display: inline;
+    margin-left: 4px;
+    white-space: nowrap; /* Megakadályozza, hogy a gomb önmagában törjön ketté */
 }
 
 /* --- Unified meta row (articles style) for posts too --- */
