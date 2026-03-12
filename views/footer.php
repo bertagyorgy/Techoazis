@@ -26,7 +26,6 @@
                 <div class="footer-section">
                     <h3 class="footer-title">Elérhetőség</h3>
                     <ul class="footer-links">
-                        <li class="footer-link">+36 70 234 5678</li>
                         <li>
                             <a href="mailto:support@techoazis.hu" class="footer-link">
                                 support@techoazis.hu

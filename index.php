@@ -230,7 +230,9 @@ if ($page !== '' && $page !== 'index') {
                 <div class="faq">
                     <details class="faq-item">
                         <summary>Hogyan működik a biztonságos adás-vétel?</summary>
-                        <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. Lezárás után értékelheted az eladót.</p>
+                        <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. <br>
+                        Lezárás után értékelheted az eladót.
+                        </p>
                     </details>
 
                     <details class="faq-item">
@@ -240,12 +242,50 @@ if ($page !== '' && $page !== 'index') {
 
                     <details class="faq-item">
                         <summary>Hol látom az értékeléseket?</summary>
-                        <p>Az értékelések az eladó profilján jelennek meg az utolsó értékelések szekcióban.</p>
+                        <p>
+                            Az értékelések az eladó profilján jelennek meg az legutóbbi értékelések szekcióban.<br>
+                            Ezeket az értékeléseket korábbi üzletfeleid teszik közzé és a saját profiloldalon is látszanak.
+                        </p>
                     </details>
 
                     <details class="faq-item">
                         <summary>Mennyi idő alatt válaszoltok?</summary>
                         <p>Általában 24-48 órán belül.</p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Hogyan tudok terméket eladni a Techoázison?</summary>
+                        <p>
+                            Az eladás néhány egyszerű lépésből áll:
+                            <br><br>
+                            • Jelentkezz be a fiókodba.<br>
+                            • Kattints a „Új termék feladása” gombra.<br>
+                            • Add meg a termék nevét, leírását és az árát.<br>
+                            • Tölts fel legalább egy képet a termékről.<br>
+                            • Mentsd el a hirdetést.<br><br>
+                            Ezután a termék megjelenik a piactéren, és más felhasználók üzenetet küldhetnek az ajánlatról.
+                        </p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Mi történik, ha véletlenül töröltem a fiókomat?</summary>
+                        <p>
+                            Ha törölted a fiókodat, az adatok általában véglegesen eltávolításra kerülnek a rendszerből.
+                            Ilyenkor új fiókot kell létrehoznod egy másik e-mail címmel.
+                            Ha úgy gondolod, hogy a törlés véletlen volt, érdemes minél hamarabb felvenni a kapcsolatot az adminisztrátorral fiókod visszaállítása érdekében.
+                        </p>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Hogyan tudom szerkeszteni vagy törölni a feltöltött termékemet?</summary>
+                        <p>
+                            A feltöltött hirdetéseidet a vásárlásnál a saját termékednél alul a „Termék szerkesztése” menüpont alatt találod.
+                            Itt lehetőséged van:
+                            <br><br>
+                            • módosítani a termék leírását vagy árát<br>
+                            • új képet feltölteni<br>
+                            • vagy teljesen törölni/rejtetté tenni a hirdetést
+                        </p>
                     </details>
                 </div>
             </section>
