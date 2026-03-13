@@ -1,136 +1,200 @@
-.article-wrap{
-    max-width: 980px;
-    margin: calc(var(--navbar-height) + 2rem) auto 3rem auto;
+/* Fő konténer méretezése */
+.article-wrap {
+    width: 100%;
+    max-width: 860px;
+    margin: calc(var(--navbar-height) + 3rem) auto 4rem auto;
     padding: 0 1.25rem;
 }
 
-.article-card{
+/* Kártya alapstílus */
+.article-card {
     background: var(--surface);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     overflow: hidden;
+    text-align: left; /* Szigorú balra zárás */
 }
 
-.article-cover{
+/* Borítókép beállításai */
+.article-cover-wrapper {
     width: 100%;
-    height: 320px;
-    object-fit: scale-down;
+    aspect-ratio: 21 / 9;
+    background-color: var(--background);
+}
+
+.article-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
 }
 
-.article-body{
-    padding: 1.75rem;
+/* Tartalmi rész távolságai */
+.article-body {
+    padding: 2.5rem 3.5rem;
 }
 
-.article-top{
-    display:flex;
-    flex-wrap: wrap;
+/* Navigációs szekciók (felső és alsó) */
+.navigation-top {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.footer-actions {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Konzisztens Gomb Dizájn */
+.back-btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.crumbs a{
+    gap: 0.75rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--surface);
     color: var(--text-light);
     text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.crumbs a:hover{ text-decoration: underline; }
 
-.badge{
-    display:inline-flex;
-    align-items:center;
-    gap:.5rem;
-    padding: .35rem .7rem;
-    border-radius: 999px;
+.back-btn i {
+    font-size: 0.85rem;
+    transition: transform 0.2s ease;
+}
+
+.back-btn:hover {
+    background: var(--background);
+    border-color: var(--primary-400);
+    color: var(--primary-600);
+    box-shadow: var(--shadow-sm);
+}
+
+.back-btn:hover i {
+    transform: translateX(-4px); /* Ikon mozgása balra hover esetén */
+}
+
+/* Tipográfia és Cím */
+.article-title {
+    margin: 0 0 1.25rem 0;
+    color: var(--text-color);
+    line-height: 1.2;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-align: left;
+}
+
+/* Meta sor (Badge, Dátum, Idő) */
+.meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.25rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.meta-row span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.badge {
     background: var(--primary-100);
     color: var(--primary-700);
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px;
     font-weight: 700;
-    font-size: .9rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
 }
 
-.article-title{
-    margin: 0 0 .75rem 0;
-    color: var(--text-color);
-    line-height: 1.15;
-    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+/* Szerzői rész */
+.author {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
-.meta-row{
-    display:flex;
-    flex-wrap: wrap;
-    gap: .9rem;
-    color: var(--text-light);
-    font-size: .95rem;
-    margin-bottom: 1.25rem;
-}
-
-.author{
-    display:flex;
-    align-items:center;
-    gap:.75rem;
-}
-.author img{
-    width: 42px;
-    height: 42px;
+.author img {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border-color);
 }
 
-.summary{
-    background: var(--background);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    padding: 1rem 1.1rem;
-    color: var(--text-color);
-    line-height: 1.65;
-    margin-bottom: 1.5rem;
+.author-info {
+    display: flex;
+    flex-direction: column;
 }
 
-.content{
+.author-name {
+    color: var(--text-color);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1.05rem;
+}
+
+.author-name:hover { 
+    text-decoration: underline; 
+}
+
+.author-role {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+/* Summary (Röviden) blokk */
+.summary {
+    background: var(--background);
+    border-left: 4px solid var(--primary-500);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+.summary strong {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: var(--primary-600);
+    margin-bottom: 0.5rem;
+}
+
+/* Fő szöveges tartalom */
+.content {
     color: var(--text-color);
     line-height: 1.85;
-    font-size: 1.05rem;
-    word-wrap: break-word;
+    font-size: 1.1rem;
+    text-align: left;
 }
 
-.content code, .content pre{
-    background: rgba(0,0,0,.06);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-}
-
-.footer-actions{
-    display:flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 2rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-light);
-}
-
-.back-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:.6rem;
-    padding: .7rem 1rem;
-    border-radius: var(--border-radius-md);
-    background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
-    color: white;
-    font-weight: 800;
-    text-decoration: none;
-}
-.back-btn:hover{
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    color: white;
-}
-
-@media (max-width: 768px){
-    .article-cover{ height: 220px; }
-    .article-body{ padding: 1.25rem; }
+/* Mobil optimalizálás */
+@media (max-width: 768px) {
+    .article-body { 
+        padding: 1.5rem; 
+    }
+    .article-cover-wrapper { 
+        aspect-ratio: 16 / 9; 
+    }
+    .meta-row { 
+        gap: 0.8rem; 
+    }
 }

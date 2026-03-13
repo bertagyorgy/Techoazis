@@ -9,29 +9,18 @@ if ($article_id <= 0) {
     exit();
 }
 
-// Cikk lekérése (csak published)
+// Cikk lekérése az adatbázisból
 $stmt = $conn->prepare("
     SELECT
-        a.article_id,
-        a.title,
-        a.summary,
-        a.content,
-        a.cover_image,
-        a.reading_minutes,
-        a.article_status,
-        a.created_at,
-        a.updated_at,
-        c.category_id,
-        c.category_name,
-        u.user_id AS author_id,
-        u.username AS author_username,
-        u.profile_image AS author_image,
-        u.username_slug AS author_slug
+        a.article_id, a.title, a.summary, a.content, a.cover_image, a.reading_minutes,
+        a.article_status, a.created_at, a.updated_at,
+        c.category_id, c.category_name,
+        u.user_id AS author_id, u.username AS author_username,
+        u.profile_image AS author_image, u.username_slug AS author_slug
     FROM articles a
     JOIN article_categories c ON a.category_id = c.category_id
     JOIN users u ON a.author_user_id = u.user_id
-    WHERE a.article_id = ?
-      AND a.article_status = 'published'
+    WHERE a.article_id = ? AND a.article_status = 'published'
     LIMIT 1
 ");
 $stmt->bind_param("i", $article_id);
@@ -44,12 +33,9 @@ if (!$article) {
     exit();
 }
 
-// Dátum formázás
 $published_date = date('Y. m. d. H:i', strtotime($article['created_at']));
 $updated_date = $article['updated_at'] ? date('Y. m. d. H:i', strtotime($article['updated_at'])) : null;
 
-// Ha a content nálad HTML-t tartalmaz (pl. <b>), akkor a htmlspecialchars helyett whitelistes sanitizer kell.
-// Most biztonságos: sima szövegként rendereljük.
 function render_text($text) {
     return nl2br(htmlspecialchars($text ?? '', ENT_QUOTES, 'UTF-8'));
 }
@@ -60,8 +46,10 @@ function render_text($text) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Olvasd el a legfrissebb tech cikket a Techoázison: részletes magyarázatok és gyakorlati tanácsok hardver/szoftver témában.">
-    <title>Techoázis | <?= htmlspecialchars($article['title']) ?> cikk</title>
+    <title>Techoázis | <?= htmlspecialchars($article['title']) ?></title>
+    
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/palmtree_favicon.svg">
+    
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/index.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animations_microinteractions.css">
@@ -69,82 +57,69 @@ function render_text($text) {
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/responsive_adjustments.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/article_detail_style.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-
-    <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="<?= BASE_URL ?>/assets/js/index.js" defer></script>
     <script src="<?= BASE_URL ?>/assets/js/forum.js" defer></script>
-
 </head>
 
 <body>
 <?php include ROOT_PATH . '/views/navbar.php'; ?>
 
-<div class="article-wrap">
-    <div class="article-card">
+<main class="article-wrap">
+    <article class="article-card">
         <?php if (!empty($article['cover_image'])): ?>
-            <img class="article-cover" src="<?= BASE_URL ?>/<?= htmlspecialchars($article['cover_image']) ?>" alt="Cikk borítókép">
+            <div class="article-cover-wrapper">
+                <img class="article-cover" src="<?= BASE_URL ?>/<?= htmlspecialchars($article['cover_image']) ?>" alt="Borítókép">
+            </div>
         <?php endif; ?>
 
         <div class="article-body">
-            <div class="article-top">
-                <div class="crumbs">
-                    <a href="<?= BASE_URL ?>/pages/articles.php"><i class="fa-solid fa-arrow-left"></i> Tudástár</a>
-                </div>
-                <div class="badge">
-                    #<?= htmlspecialchars($article['category_name']) ?>
-                </div>
-            </div>
-
-            <h1 class="article-title"><?= htmlspecialchars($article['title']) ?></h1>
-
-            <div class="meta-row">
-                <span><i class="fa-regular fa-calendar"></i> <?= $published_date ?></span>
-                <?php if (!empty($article['reading_minutes'])): ?>
-                    <span><i class="fa-regular fa-clock"></i> <?= (int)$article['reading_minutes'] ?> perc</span>
-                <?php endif; ?>
-                <?php if ($updated_date): ?>
-                    <span><i class="fa-solid fa-rotate"></i> Frissítve: <?= $updated_date ?></span>
-                <?php endif; ?>
-            </div>
-
-            <div class="author" style="margin-bottom: 1.25rem;">
-                <?php
-                $is_external = preg_match('/^https?:\/\//', $article['author_image']);
-
-                if (!empty($article['author_image'])) {
-                    if ($is_external) {
-                        // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
-                        $author_profile_image = htmlspecialchars($article['author_image']);
-                    } else {
-                        // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
-                        $author_profile_image = BASE_URL . '/' . htmlspecialchars($article['author_image']);
-                    }
-                } else {
-                    // Alapértelmezett kép, ha nincs megadva semmi
-                    $author_profile_image = BASE_URL . '/uploads/profile_images/anonymous.png';
-                }
-                ?>
-                <img src="<?php echo $author_profile_image; ?>" alt="Szerző">
-                <div>
-                    <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($article['author_slug']) ?>">
-                        <div style="color: var(--text-color); font-weight: 800;">
-                            <?= htmlspecialchars($article['author_username']) ?>
-                        </div>
+            <header class="article-header">
+                <nav class="navigation-top">
+                    <a href="<?= BASE_URL ?>/pages/articles.php" class="back-btn">
+                        <i class="fa-solid fa-arrow-left-long"></i> Vissza a cikkekhez
                     </a>
-                    <div style="color: var(--text-light); font-size: .9rem;">
-                        Szerző
+                </nav>
+
+                <h1 class="article-title"><?= htmlspecialchars($article['title']) ?></h1>
+
+                <div class="meta-row">
+                    <span class="badge">#<?= htmlspecialchars($article['category_name']) ?></span>
+                    <span><i class="fa-regular fa-calendar"></i> <?= $published_date ?></span>
+                    <?php if (!empty($article['reading_minutes'])): ?>
+                        <span><i class="fa-regular fa-clock"></i> <?= (int)$article['reading_minutes'] ?> perc</span>
+                    <?php endif; ?>
+                    <?php if ($updated_date): ?>
+                        <span><i class="fa-solid fa-rotate"></i> Frissítve: <?= $updated_date ?></span>
+                    <?php endif; ?>
+                </div>
+
+                <div class="author">
+                    <?php
+                    $is_external = preg_match('/^https?:\/\//', $article['author_image']);
+                    $author_img = !empty($article['author_image']) 
+                        ? ($is_external ? $article['author_image'] : BASE_URL . '/' . $article['author_image']) 
+                        : BASE_URL . '/uploads/profile_images/anonymous.png';
+                    ?>
+                    <img src="<?= htmlspecialchars($author_img) ?>" alt="Szerző">
+                    <div class="author-info">
+                        <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($article['author_slug']) ?>" class="author-name">
+                            <?= htmlspecialchars($article['author_username']) ?>
+                        </a>
+                        <span class="author-role">Szerző</span>
                     </div>
                 </div>
-            </div>
+            </header>
 
             <?php if (!empty($article['summary'])): ?>
                 <div class="summary">
-                    <strong>Röviden:</strong><br>
-                    <?= render_text($article['summary']) ?>
+                    <strong>Röviden</strong>
+                    <p><?= render_text($article['summary']) ?></p>
                 </div>
             <?php endif; ?>
 
@@ -152,14 +127,13 @@ function render_text($text) {
                 <?= render_text($article['content']) ?>
             </div>
 
-            <div class="footer-actions">
-                <a class="back-btn" href="<?= BASE_URL ?>/pages/articles.php">
-                    <i class="fa-solid fa-layer-group"></i> Vissza a cikkekhez
+            <footer class="footer-actions">
+                <a href="<?= BASE_URL ?>/pages/articles.php" class="back-btn">
+                    <i class="fa-solid fa-arrow-left-long"></i> Vissza a cikkekhez
                 </a>
-            </div>
+            </footer>
         </div>
-    </div>
-</div>
-
+    </article>
+</main>
 </body>
 </html>
