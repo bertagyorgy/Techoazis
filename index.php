@@ -67,6 +67,7 @@ if ($page !== '' && $page !== 'index') {
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/utility_classes.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/contact_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/main-index.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,168 +80,106 @@ if ($page !== '' && $page !== 'index') {
 <body>
     <?php include ROOT_PATH . '/views/navbar.php';?>
 
-    <div class="hero-section" role="banner">
-        <div class="custom-container hero-container">
-            <div class="hero-text">
-                <h1>Csevegés, vásárlás, olvasás, meg persze a tech. Egy helyen.</h1>
-                <p>Fedezze fel oldalunk nyújtotta szolgáltatásokat.</p>
-                <a href="<?= BASE_URL ?>/pages/shop.php">
-                    <button type="button" class="btn btn-primary shopnow">Vásárolj most ➔</button>
-                </a>
-            </div>
-        </div>
-    </div>
-        
-    <section class="custom-container section-padding" role="main">
-        <div class="text-center">
-            <h2 class="section-title">Mit találsz nálunk?</h2>
-            <div class="grid-row">
-                <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/pages/articles.php" class="feature-card-link">
-                        <div class="feature-card">
-                            <i class="fa-solid fa-book fa-3x icon-info"></i>
-                            <h3>Tudástár</h3>
-                            <p>Olvass cikkeket, útmutatókat és fejleszd a tudásod.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/pages/forum.php" class="feature-card-link">
-                        <div class="feature-card">
-                            <i class="fa-solid fa-users fa-3x icon-primary"></i>
-                            <h3>Közösség</h3>
-                            <p>Csevegj, kérdezz, oszd meg tapasztalataid más techrajongókkal.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/pages/shop.php" class="feature-card-link">
-                        <div class="feature-card">
-                            <i class="fa-solid fa-cart-shopping fa-3x icon-success"></i>
-                            <h3>Vásárlás</h3>
-                            <p>Fedezd fel felhasználóink által hirdetett legújabb technológiai termékeket.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-col-3">
-                    <a href="<?= BASE_URL ?>/pages/profile.php" class="feature-card-link">
-                        <div class="feature-card">
-                            <i class="fa-solid fa-store"></i>
-                            <h3>Eladás</h3>
-                            <p>Kereskedj, add el a nem használt kütyüidet és keress pénzt.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-padding diff">
-        <div class="custom-container text-center">
-            <h2 class="section-title reveal">Friss tartalmak előnézete</h2>
-            <div class="grid-row">
-                <div class="grid-col-4 reveal">
-                    <div class="custom-card">
-                        <img src="<?= BASE_URL ?>/images/ipad_air.jpg" class="card-img-top" alt="Cikk 1">
-                        <div class="card-body">
-                            <h3 class="card-title">Legújabb TechCikk</h3>
-                            <p class="card-text">Miként változtatja meg az AI a mindennapi vásárlást?</p>
-                            <div class="card-footer">
-                                <a href="#" class="btn btn-secondary shopnow-small">Olvass tovább</a>
+    <main class="main-page-wrapper">
+        <section class="main-hero">
+            <div class="main-container">
+                <div class="main-hero-content">
+                    <span class="main-badge">Üdvözöl az Oázis 2.0</span>
+                    <h1 class="main-hero-title">A technológia, <br><span class="main-text-gradient">ahogy még nem láttad.</span></h1>
+                    
+                    <div class="main-search-container">
+                        <form action="search.php" method="GET" class="main-search-wrapper">
+                            <div class="main-search-type">
+                                <select name="type">
+                                    <option value="market">Piactér</option>
+                                    <option value="articles">Tudástár</option>
+                                    <option value="forum">Közösség</option>
+                                </select>
                             </div>
-                        </div>
+                            <input type="text" name="query" placeholder="RTX 4090, AI hírek, segítség...">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <span>Mehet</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
-                <div class="grid-col-4 reveal">
-                    <div class="custom-card">
-                        <img src="<?= BASE_URL ?>/images/macbook_air_m2.jpg" class="card-img-top" alt="Termék 2">
-                        <div class="card-body">
-                            <h3 class="card-title">Új termék a shopban</h3>
-                            <p class="card-text">Fedezd fel a legújabb tech kiegészítőket kedvező áron!</p>
-                            <div class="card-footer">
-                                <a href="#" class="btn btn-primary shopnow-small">Vásárolj most</a>
-                            </div>
-                        </div>
+            </div>
+        </section>
+
+        <div class="main-trust-bar">
+            <div class="main-container">
+                <div class="main-trust-grid">
+                    <div class="main-trust-item">
+                        <i class="fa-solid fa-user-group"></i> 
+                        <div><strong>100+</strong> <span>Aktív tag</span></div>
                     </div>
-                </div>
-                <div class="grid-col-4 reveal">
-                    <div class="custom-card">
-                        <img src="<?= BASE_URL ?>/uploads/posts/4_1763756851_4212.jpg" class="card-img-top" alt="Poszt 3">
-                        <div class="card-body">
-                            <h3 class="card-title">Legújabb poszt</h3>
-                            <p class="card-text">Milyen hasznuk van a keretrendszereknek?</p>
-                            <div class="card-footer">
-                                <a href="#" class="btn btn-secondary shopnow-small">Tovább</a>
-                            </div>
-                        </div>
+                    <div class="main-trust-item">
+                        <i class="fa-solid fa-shield-halved"></i> 
+                        <div><strong>Biztonság</strong> <span>Moderált piac</span></div>
+                    </div>
+                    <div class="main-trust-item">
+                        <i class="fa-solid fa-bolt"></i> 
+                        <div><strong>Gyorsaság</strong> <span>Azonnali válasz</span></div>
+                    </div>
+                    <div class="main-trust-item">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> 
+                        <div><strong>Ingyenes</strong> <span>0% jutalék</span></div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <section class="custom-container section-padding">
-        <div class="text-center">
-            <h2 class="section-title reveal">A Techoázis számokban</h2>
-            <div class="grid-row">
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-user"></i>
-                            <h3>100+</h3>
-                            <p>Felhasználó</p>
+        <section class="main-section">
+            <div class="main-container">
+                <div class="main-header-flex">
+                    <div class="main-title-group">
+                        <h2 class="main-section-title">Friss az Oázisban</h2>
+                        <p class="main-section-subtitle">A legújabb tech kincsek és hírek egy helyen</p>
+                    </div>
+                    <a href="shop" class="main-view-all-btn">Összes böngészése <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="main-modern-grid">
+                    <div class="main-grid-item main-featured">
+                        <div class="main-card-overlay">
+                            <span class="main-item-tag">Legújabb termék</span>
+                            <h3>Piactér ajánlatai</h3>
                         </div>
                     </div>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-pen-nib"></i>
-                            <h3>50+</h3>
-                            <p>Poszt és cikk</p>
+                    <div class="main-grid-item main-secondary-card">
+                        <div class="main-card-overlay">
+                            <span class="main-item-tag">Tudástár</span>
+                            <h3>Tech hírek</h3>
                         </div>
                     </div>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-layer-group"></i>
-                            <h3>20+</h3>
-                            <p>Témakör</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-tag"></i>
-                            <h3>10+</h3>
-                            <p>Feltöltött termék</p>
+                    <div class="main-grid-item main-secondary-card">
+                        <div class="main-card-overlay">
+                            <span class="main-item-tag">Közösség</span>
+                            <h3>Aktív fórum</h3>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="section-padding diff">
-        <div class="custom-container text-center">
-            <h2 class="section-title reveal">Gyakran Ismételt Kérdések</h2>
-            <section class="faq-card">
-                <div class="faq">
-                    <details class="faq-item">
+        <section class="main-section main-bg-alt">
+            <div class="main-container">
+                <h2 class="text-center" style="margin-bottom: 3rem;">Gyakran Ismételt Kérdések</h2>
+                <div class="main-faq-list">
+                    <details class="main-faq-item">
                         <summary>Hogyan működik a biztonságos adás-vétel?</summary>
                         <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. <br>
                         Lezárás után értékelheted az eladót.
                         </p>
                     </details>
 
-                    <details class="faq-item">
+                    <details class="main-faq-item">
                         <summary>Miért nem tudok üzenetet küldeni?</summary>
                         <p>Ellenőrizd, hogy be vagy-e jelentkezve és a beszélgetés nincs-e lezárva.</p>
                     </details>
 
-                    <details class="faq-item">
+                    <details class="main-faq-item">
                         <summary>Hol látom az értékeléseket?</summary>
                         <p>
                             Az értékelések az eladó profilján jelennek meg az legutóbbi értékelések szekcióban.<br>
@@ -248,12 +187,12 @@ if ($page !== '' && $page !== 'index') {
                         </p>
                     </details>
 
-                    <details class="faq-item">
+                    <details class="main-faq-item">
                         <summary>Mennyi idő alatt válaszoltok?</summary>
                         <p>Általában 24-48 órán belül.</p>
                     </details>
 
-                    <details class="faq-item">
+                    <details class="main-faq-item">
                         <summary>Hogyan tudok terméket eladni a Techoázison?</summary>
                         <p>
                             Az eladás néhány egyszerű lépésből áll:
@@ -267,7 +206,7 @@ if ($page !== '' && $page !== 'index') {
                         </p>
                     </details>
 
-                    <details class="faq-item">
+                    <details class="main-faq-item">
                         <summary>Mi történik, ha véletlenül töröltem a fiókomat?</summary>
                         <p>
                             Ha törölted a fiókodat, az adatok általában véglegesen eltávolításra kerülnek a rendszerből.
@@ -276,7 +215,7 @@ if ($page !== '' && $page !== 'index') {
                         </p>
                     </details>
 
-                    <details class="faq-item">
+                    <details class="main-faq-item">
                         <summary>Hogyan tudom szerkeszteni vagy törölni a feltöltött termékemet?</summary>
                         <p>
                             A feltöltött hirdetéseidet a vásárlásnál a saját termékednél alul a „Termék szerkesztése” menüpont alatt találod.
@@ -288,53 +227,9 @@ if ($page !== '' && $page !== 'index') {
                         </p>
                     </details>
                 </div>
-            </section>
-        </div>
-    </section>
-
-    <section class="custom-container section-padding">
-        <div class="text-center">
-            <h2 class="section-title reveal">Miért válassz minket?</h2>
-            <div class="grid-row">
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-bolt"></i>
-                            <h3>Gyors</h3>
-                            <p>Villámgyors oldalbetöltés és optimalizált élmény minden eszközön.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-users"></i>
-                            <h3>Közösségi</h3>
-                            <p>Beszélgess, ossz meg projekteket, és tanulj másoktól.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-money-bill-transfer"></i>
-                            <h3>Ingyenes</h3>
-                            <p>Felhasználóink díjmentesen adhatják el termékeiket az oldalon.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-col-3 reveal">
-                    <div class="feature-card">
-                        <div class="whyus-icon">
-                            <i class="fa-solid fa-lock"></i>
-                            <h3>Biztonságos</h3>
-                            <p>Adatvédelem és biztonság a legmagasabb szinten.</p>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <?php include ROOT_PATH . '/views/footer.php';?>
                     

@@ -1,0 +1,244 @@
+/* main-index.css */
+
+/* Alap konténer és wrapper */
+.main-page-wrapper {
+    min-height: calc(100vh - var(--navbar-height));
+    padding-top: var(--navbar-height);
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+}
+
+.main-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- HERO SECTION --- */
+.main-hero {
+    padding: 120px 0 80px;
+    text-align: center;
+    /* RÉTEGEK SORRENDJE:
+       1. Kék radiális fény (jobb fent)
+       2. Narancs radiális fény (bal lent)
+       3. TELJES SÖTÉTÍTÉS (0.6 azaz 60%-os fekete réteg)
+       4. A KÉP (legalul)
+    */
+    background: 
+        radial-gradient(circle at top right, rgba(45, 90, 160, 0.2), transparent),
+        radial-gradient(circle at bottom left, rgba(255, 107, 53, 0.15), transparent),
+        linear-gradient(rgba(10, 25, 47, 0.6), rgba(10, 25, 47, 0.9)), 
+        var(--background-image);
+    
+    background-color: var(--dark-bg);
+    background-attachment: fixed; /* Opcionális: parallaxis hatás, ha jól mutat */
+}
+.main-badge{
+    color: white;
+}
+.main-hero-title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    line-height: 1.2; /* Kicsit nagyobb sorköz, ne legyen összenyomva */
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.main-text-gradient {
+    background: linear-gradient(90deg, var(--accent-600), var(--accent-400));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- KERESŐ ÉS SELECT JAVÍTÁS --- */
+.main-search-wrapper {
+    background: rgba(255, 255, 255, 0.03); /* Sötétebb, üveghatású háttér */
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: var(--border-radius-xl);
+    display: flex;
+    align-items: center;
+    max-width: 650px;
+    margin: 0 auto;
+    backdrop-filter: blur(15px);
+    transition: var(--transition-normal);
+}
+
+.main-search-wrapper:focus-within {
+    border-color: var(--accent-600);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+/* Select kifinomultabb stílusa */
+.main-search-type select {
+    background: var(--primary-700); /* Sötétebb, tech kék háttér */
+    color: white;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 20px;
+    border-radius: var(--border-radius-xl);
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    appearance: none; /* Alapértelmezett nyíl eltávolítása */
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 12px) center;
+    padding-right: 35px;
+    transition: var(--transition-fast);
+}
+
+.main-search-type select:hover {
+    background-color: var(--primary-500);
+}
+
+.main-search-wrapper input {
+    background: transparent;
+    border: none;
+    color: white;
+    flex: 1;
+    padding: 10px 15px;
+    outline: none;
+}
+
+/* --- TRUST BAR JAVÍTÁS - Nem töri meg fehéren --- */
+.main-trust-bar {
+    background: rgba(15, 23, 42, 0.5); /* Sötét, áttetsző háttér */
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 3rem 0;
+}
+
+.main-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+}
+
+.main-trust-item {
+    display: flex;
+    flex-direction: column; /* Egymás alá kerül az ikon és a szöveg a jobb helykihasználásért */
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+
+.main-trust-item i { 
+    color: var(--accent-600); 
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.main-trust-item strong {
+    font-size: 1.2rem;
+    color: white;
+    display: block;
+}
+
+.main-trust-item span {
+    color: var(--neutral-500);
+    font-size: 0.95rem;
+}
+
+/* --- FRISS AZ OÁZISBAN - SZÖVEG SZÍN JAVÍTÁS --- */
+.main-section { padding: 100px 0; }
+.main-bg-alt { background: var(--dark-bg-alt); }
+
+.main-section-title {
+    color: var(--dark-text); /* Változót használunk */
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.main-section-subtitle {
+    color: var(--neutral-500);
+    font-size: 1.1rem;
+}
+
+.main-view-all {
+    color: var(--accent-600);
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition-fast);
+}
+
+.main-view-all:hover {
+    color: var(--accent-400);
+    transform: translateX(5px);
+}
+
+/* Grid stílusok */
+.main-modern-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: repeat(2, 300px);
+    gap: 30px;
+    margin-top: 3rem;
+}
+
+.main-grid-item {
+    background: var(--surface);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-grid-item:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-600);
+    box-shadow: var(--shadow-xl);
+}
+
+.main-featured { grid-row: span 2; }
+
+/* Kártya belső dizájn */
+.main-card-overlay {
+    position: absolute;
+    inset: 0;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(to top, rgba(10, 25, 47, 0.95), transparent 70%);
+}
+
+.main-item-tag {
+    color: var(--accent-400);
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+}
+
+.main-card-overlay h3 {
+    color: white;
+    font-size: 2rem;
+    margin: 0;
+}
+
+/* FAQ */
+.main-faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    border-radius: var(--border-radius-md);
+    padding: 20px;
+    transition: var(--transition-fast);
+    user-select: none;
+}
+
+.main-faq-item:hover {
+    border-color: var(--primary-300);
+}
+
+.main-faq-item summary {
+    font-weight: 700;
+    color: var(--text-color);
+    cursor: pointer;
+    list-style: none;
+}
