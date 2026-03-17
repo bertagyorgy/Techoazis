@@ -137,8 +137,23 @@ require_once ROOT_PATH . '/app/product_detail_logic.php';
                         <div class="seller-card">
                             <div class="seller-header">
                                 <div class="seller-avatar">
-                                    <img src="<?php echo htmlspecialchars(BASE_URL . "/" . ($product['seller_avatar'] ?? 'images/default_avatar.png')); ?>" 
-                                        alt="<?php echo htmlspecialchars($product['seller_username']); ?>">
+                                    <?php
+                                    $is_external = preg_match('/^https?:\/\//', $product['seller_avatar']);
+                                    if (!empty($product['seller_avatar'])) {
+                                        if ($is_external) {
+                                            // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+                                            $product_seller_image = htmlspecialchars($product['seller_avatar']);
+                                        } else {
+                                            // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+                                            $product_seller_image = BASE_URL . '/' . htmlspecialchars($product['seller_avatar']);
+                                        }
+                                    } else {
+                                        // Alapértelmezett kép, ha nincs megadva semmi
+                                        $product_seller_image = BASE_URL . 'uploads/profile_images/anonymous.png';
+                                    }
+                                    ?>
+                                    <img src="<?php echo htmlspecialchars($product_seller_image); ?>" 
+                                        alt="<?php echo htmlspecialchars($product_seller_image); ?>">
                                 </div>
                                 <div class="seller-info">
                                     <h4><?php echo htmlspecialchars($product['seller_username']); ?></h4>

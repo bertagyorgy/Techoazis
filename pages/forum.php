@@ -216,21 +216,17 @@ include ROOT_PATH . '/views/navbar.php';
                 $content = $post['content'];
                 $limit = 250;
 
+                // A strlen helyett mb_strlen-t használunk a pontos karakterhosszhoz
                 if (mb_strlen($content, 'UTF-8') > $limit) {
-                    // Ne vágjuk el a linkeket/szavakat a közepén! Keresünk egy szóközt a limit után.
-                    $space_pos = mb_strpos($content, ' ', $limit, 'UTF-8');
-                    
-                    // Ha találunk szóközt, ott vágunk. Ha nincs szóköz (pl. egy 500 karakteres egybefüggő szó), marad a limit.
-                    $cut_at = ($space_pos !== false) ? $space_pos : $limit;
-
-                    $preview = mb_substr($content, 0, $cut_at, 'UTF-8');
-                    $more = mb_substr($content, $cut_at, null, 'UTF-8');
+                    // A substr helyett mb_substr-t használunk, így az ékezetes betűk nem törnek el
+                    $preview = mb_substr($content, 0, $limit, 'UTF-8');
+                    $more = mb_substr($content, $limit, null, 'UTF-8');
                 } else {
                     $preview = $content;
                     $more = "";
                 }
                 ?>
-                <div class="text-container js-process-links" id="postText-<?= $post['post_id'] ?>">
+                <div class="text-container" id="postText-<?= $post['post_id'] ?>">
                     <?= nl2br(htmlspecialchars($preview)) ?><?php if (!empty($more)): ?><span class="more-content"><?= nl2br(htmlspecialchars($more)) ?></span><a href="#" class="read-more-link" onclick="toggleReadMore(event, <?= $post['post_id'] ?>)"> ...Több</a><?php endif; ?>
                 </div>
                 

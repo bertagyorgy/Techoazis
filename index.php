@@ -40,6 +40,48 @@ if ($page !== '' && $page !== 'index') {
     }
     exit; // FONTOS: Megállítjuk a futást, nem töltünk be semmi mást!
 }
+
+// --- ADATOK LEKÉRÉSE A FŐOLDALHOZ ($conn használatával) ---
+
+// --- SEGÉDFÜGGVÉNY A KÉP ELLENŐRZÉSÉHEZ ---
+function getValidImage($pathFromDb, $default = 'uploads/articles/default_cover.png') {
+    // Ha üres az adatbázisból jövő mező, egyből a defaultot adjuk
+    if (empty($pathFromDb)) {
+        return BASE_URL . '/' . $default;
+    }
+
+    // ROOT_PATH: a szerver oldali abszolút útvonal (ezt a config.php-ban definiáltad)
+    // Megnézzük, létezik-e a fájl a lemezen
+    if (file_exists(ROOT_PATH . '/' . $pathFromDb)) {
+        return BASE_URL . '/' . $pathFromDb;
+    }
+
+    // Ha nem létezik, jön a tartalék
+    return BASE_URL . '/' . $default;
+}
+
+// --- LEKÉRDEZÉSEK ---
+
+// 1. Legújabb termék főképe
+$res_prod = $conn->query("SELECT image_path FROM product_images WHERE is_primary = 1 ORDER BY image_id DESC LIMIT 1");
+$prod_row = ($res_prod && $res_prod->num_rows > 0) ? $res_prod->fetch_assoc()['image_path'] : null;
+$latest_product_img = getValidImage($prod_row);
+
+// 2. Legújabb cikk borítóképe
+$res_art = $conn->query("SELECT cover_image FROM articles WHERE article_status = 'published' ORDER BY created_at DESC LIMIT 1");
+$art_row = ($res_art && $res_art->num_rows > 0) ? $res_art->fetch_assoc()['cover_image'] : null;
+$latest_article_img = getValidImage($art_row);
+
+// 3. Legújabb fórumposzt első képe
+$res_post = $conn->query("
+    SELECT pi.image_path 
+    FROM post_images pi 
+    JOIN posts p ON pi.post_id = p.post_id 
+    ORDER BY p.created_at DESC, pi.sort_order ASC 
+    LIMIT 1
+");
+$post_row = ($res_post && $res_post->num_rows > 0) ? $res_post->fetch_assoc()['image_path'] : null;
+$latest_post_img = getValidImage($post_row);
 ?>
 
 
@@ -84,19 +126,18 @@ if ($page !== '' && $page !== 'index') {
         <section class="main-hero">
             <div class="main-container">
                 <div class="main-hero-content">
-                    <span class="main-badge">Üdvözöl az Oázis 2.0</span>
                     <h1 class="main-hero-title">A technológia, <br><span class="main-text-gradient">ahogy még nem láttad.</span></h1>
                     
                     <div class="main-search-container">
-                        <form action="search.php" method="GET" class="main-search-wrapper">
+                        <form id="global-search-form" class="main-search-wrapper">
                             <div class="main-search-type">
-                                <select name="type">
-                                    <option value="market">Piactér</option>
+                                <select id="search-page" class="search-select">
+                                    <option value="shop">Piactér</option>
                                     <option value="articles">Tudástár</option>
                                     <option value="forum">Közösség</option>
                                 </select>
                             </div>
-                            <input type="text" name="query" placeholder="RTX 4090, AI hírek, segítség...">
+                            <input type="text" id="search-input" name="query" placeholder="Keress bármire...">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 <span>Mehet</span>
@@ -112,7 +153,7 @@ if ($page !== '' && $page !== 'index') {
                 <div class="main-trust-grid">
                     <div class="main-trust-item">
                         <i class="fa-solid fa-user-group"></i> 
-                        <div><strong>100+</strong> <span>Aktív tag</span></div>
+                        <div><strong>Közösségi</strong> <span>Beszélgess, kérdezz</span></div>
                     </div>
                     <div class="main-trust-item">
                         <i class="fa-solid fa-shield-halved"></i> 
@@ -132,54 +173,79 @@ if ($page !== '' && $page !== 'index') {
 
         <section class="main-section">
             <div class="main-container">
-                <div class="main-header-flex">
+                <div class="main-header-flex reveal">
                     <div class="main-title-group">
                         <h2 class="main-section-title">Friss az Oázisban</h2>
                         <p class="main-section-subtitle">A legújabb tech kincsek és hírek egy helyen</p>
                     </div>
-                    <a href="shop" class="main-view-all-btn">Összes böngészése <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="<?= BASE_URL ?>/pages/shop.php" class="main-view-all-btn">Összes böngészése <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 
                 <div class="main-modern-grid">
-                    <div class="main-grid-item main-featured">
-                        <div class="main-card-overlay">
+                    <div class="main-grid-item main-featured" style="background-image: url('<?php echo $latest_product_img; ?>');">
+                        <a href="<?= BASE_URL ?>/pages/shop.php" class="main-card-overlay">
                             <span class="main-item-tag">Legújabb termék</span>
                             <h3>Piactér ajánlatai</h3>
-                        </div>
+                        </a>
                     </div>
-                    <div class="main-grid-item main-secondary-card">
-                        <div class="main-card-overlay">
+
+                    <div class="main-grid-item main-secondary-card" style="background-image: url('<?php echo $latest_article_img; ?>');">
+                        <a href="<?= BASE_URL ?>/pages/articles.php" class="main-card-overlay">
                             <span class="main-item-tag">Tudástár</span>
                             <h3>Tech hírek</h3>
-                        </div>
+                        </a>
                     </div>
-                    <div class="main-grid-item main-secondary-card">
-                        <div class="main-card-overlay">
+
+                    <div class="main-grid-item main-secondary-card" style="background-image: url('<?php echo $latest_post_img; ?>');">
+                        <a href="<?= BASE_URL ?>/pages/forum.php" class="main-card-overlay">
                             <span class="main-item-tag">Közösség</span>
                             <h3>Aktív fórum</h3>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
+        <div class="main-trust-bar">
+            <div class="main-container">
+                <div class="main-trust-grid">
+                    <div class="main-trust-item reveal">
+                        <i class="fa-solid fa-user-group"></i> 
+                        <div><strong>100+</strong> <span>Aktív tag</span></div>
+                    </div>
+                    <div class="main-trust-item reveal">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <div><strong>50+</strong> <span>Poszt és cikk</span></div>
+                    </div>
+                    <div class="main-trust-item reveal">
+                        <i class="fa-solid fa-layer-group"></i> 
+                        <div><strong>20+</strong> <span>Témakör</span></div>
+                    </div>
+                    <div class="main-trust-item reveal">
+                        <i class="fa-solid fa-tag"></i> 
+                        <div><strong>10+</strong> <span>Feltöltött termék</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="main-section main-bg-alt">
             <div class="main-container">
-                <h2 class="text-center" style="margin-bottom: 3rem;">Gyakran Ismételt Kérdések</h2>
+                <h2 class="text-center reveal" style="margin-bottom: 3rem;">Gyakran Ismételt Kérdések</h2>
                 <div class="main-faq-list">
-                    <details class="main-faq-item">
+                    <details class="main-faq-item reveal">
                         <summary>Hogyan működik a biztonságos adás-vétel?</summary>
                         <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. <br>
                         Lezárás után értékelheted az eladót.
                         </p>
                     </details>
 
-                    <details class="main-faq-item">
+                    <details class="main-faq-item reveal">
                         <summary>Miért nem tudok üzenetet küldeni?</summary>
                         <p>Ellenőrizd, hogy be vagy-e jelentkezve és a beszélgetés nincs-e lezárva.</p>
                     </details>
 
-                    <details class="main-faq-item">
+                    <details class="main-faq-item reveal">
                         <summary>Hol látom az értékeléseket?</summary>
                         <p>
                             Az értékelések az eladó profilján jelennek meg az legutóbbi értékelések szekcióban.<br>
@@ -187,12 +253,12 @@ if ($page !== '' && $page !== 'index') {
                         </p>
                     </details>
 
-                    <details class="main-faq-item">
+                    <details class="main-faq-item reveal">
                         <summary>Mennyi idő alatt válaszoltok?</summary>
                         <p>Általában 24-48 órán belül.</p>
                     </details>
 
-                    <details class="main-faq-item">
+                    <details class="main-faq-item reveal">
                         <summary>Hogyan tudok terméket eladni a Techoázison?</summary>
                         <p>
                             Az eladás néhány egyszerű lépésből áll:
@@ -206,7 +272,7 @@ if ($page !== '' && $page !== 'index') {
                         </p>
                     </details>
 
-                    <details class="main-faq-item">
+                    <details class="main-faq-item reveal">
                         <summary>Mi történik, ha véletlenül töröltem a fiókomat?</summary>
                         <p>
                             Ha törölted a fiókodat, az adatok általában véglegesen eltávolításra kerülnek a rendszerből.
@@ -215,7 +281,7 @@ if ($page !== '' && $page !== 'index') {
                         </p>
                     </details>
 
-                    <details class="main-faq-item">
+                    <details class="main-faq-item reveal">
                         <summary>Hogyan tudom szerkeszteni vagy törölni a feltöltött termékemet?</summary>
                         <p>
                             A feltöltött hirdetéseidet a vásárlásnál a saját termékednél alul a „Termék szerkesztése” menüpont alatt találod.
@@ -233,6 +299,31 @@ if ($page !== '' && $page !== 'index') {
 
     <?php include ROOT_PATH . '/views/footer.php';?>
                     
+    <script>
+        document.getElementById('global-search-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Megállítjuk az alapértelmezett küldést
+        
+        const page = document.getElementById('search-page').value;
+        const query = encodeURIComponent(document.getElementById('search-input').value);
+        const baseUrl = "<?php echo BASE_URL; ?>";
+        
+        let finalUrl = "";
 
+        // Az általad megadott URL minták alapján felépítjük a célpontot
+        if (page === 'shop') {
+            // pages/shop?search=g&category=&price_min=&price_max=
+            finalUrl = `${baseUrl}/pages/shop?search=${query}&category=&price_min=&price_max=`;
+        } else if (page === 'articles') {
+            // pages/articles?q=g
+            finalUrl = `${baseUrl}/pages/articles?q=${query}`;
+        } else if (page === 'forum') {
+            // pages/forum?q=g
+            finalUrl = `${baseUrl}/pages/forum?q=${query}`;
+        }
+
+        // Átirányítás a felépített URL-re
+        window.location.href = finalUrl;
+    });
+    </script>
 </body>
 </html>
