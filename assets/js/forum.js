@@ -333,110 +333,52 @@ if (displayBtn) {
     });
 }
 
-// link normalizáló
+// 1. Segédfüggvény az URL-ek normalizálásához (pl. www. kezdetnél http hozzáadása)
 function normalizeUrl(url) {
-    if (url.startsWith("www.")) {
-        return "https://" + url;
-    }
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        return "https://" + url;
+    if (!/^https?:\/\//i.test(url)) {
+        return 'https://' + url;
     }
     return url;
 }
 
-// link preview API funkció
-async function createLinkPreview(url) {
-    try {
-        const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(url)}&meta=true`);
-        const data = await res.json();
+function linkify(container) {
+    // 1. Megkeressük az összes olyan elemet a konténeren belül, amiben szöveg lehet
+    // Ide tartozik maga a konténer és a .more-content span is.
+    const targets = [container];
+    const moreContent = container.querySelector('.more-content');
+    if (moreContent) targets.push(moreContent);
 
-        if (!data.data || !data.data.title) return null;
-
-        const preview = document.createElement("a");
-        preview.href = url;
-        preview.target = "_blank";
-        preview.className = "link-preview";
-
-        preview.innerHTML = `
-            <div class="lp-image">
-                <img src="${data.data.image?.url || ''}" alt="link előnézet kép">
-            </div>
-            <div class="lp-content">
-                <div class="lp-title">${data.data.title}</div>
-                <div class="lp-desc">${data.data.description || ''}</div>
-                <div class="lp-domain">${data.data.publisher || new URL(url).hostname}</div>
-            </div>
-        `;
-
-        return preview;
-    } catch {
-        return null;
-    }
-}
-
-// linkek preview kártyára cseréje
-async function processPostLinks(container) {
-    // 1. Kigyűjtjük a szöveges csomópontokat, hogy ne nyúljunk a meglévő HTML elemekbe
-    // Ezt a fájl elejére vagy a processPostLinks elé tedd
     const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+\.[a-z]{2,})/gi;
-    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
-    const textNodes = [];
-    let n;
-    while (n = walker.nextNode()) textNodes.push(n);
 
-    for (const node of textNodes) {
-        const text = node.nodeValue;
-        const matches = [...text.matchAll(urlRegex)];
-        if (!matches.length) continue;
-
-        const fragment = document.createDocumentFragment();
-        let lastIndex = 0;
-
-        for (const match of matches) {
-            const url = match[0];
-            const start = match.index;
-
-            // Szöveg a link előtt
-            fragment.append(text.substring(lastIndex, start));
-
-            const realUrl = normalizeUrl(url);
-
-            // Saját domain kihagyása (opcionális)
-            if (realUrl.includes(location.hostname)) {
-                const a = document.createElement("a");
-                a.href = realUrl;
-                a.textContent = url;
-                fragment.append(a);
-            } else {
-                try {
-                    // Megpróbáljuk a preview-t
-                    const preview = await createLinkPreview(realUrl);
-                    if (preview) {
-                        fragment.append(preview);
-                    } else {
-                        throw new Error("Nincs preview adat");
+    targets.forEach(target => {
+        // Csak a közvetlen szöveges gyerekeket nézzük, hogy ne linkesítsünk duplán
+        const nodes = Array.from(target.childNodes);
+        
+        nodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.nodeValue;
+                
+                if (urlRegex.test(text)) {
+                    const span = document.createElement('span');
+                    const newHTML = text.replace(urlRegex, (url) => {
+                        let href = url.startsWith('http') ? url : 'https://' + url;
+                        // Itt adjuk hozzá a tördelést segítő stílust és az új ablakot
+                        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="post-link">${url}</a>`;
+                    });
+                    
+                    span.innerHTML = newHTML;
+                    // Kicseréljük a nyers szöveget a linkesített HTML-re
+                    node.parentNode.replaceChild(span, node);
+                    
+                    // Kicsomagoljuk a span-ból, hogy ne rontsa a designt (opcionális)
+                    while (span.firstChild) {
+                        span.parentNode.insertBefore(span.firstChild, span);
                     }
-                } catch (err) {
-                    // Ha az API hibázik, sima link lesz belőle
-                    const a = document.createElement("a");
-                    a.href = realUrl;
-                    a.textContent = url;
-                    a.target = "_blank";
-                    a.rel = "noopener noreferrer";
-                    fragment.append(a);
+                    span.remove();
                 }
             }
-            lastIndex = start + url.length;
-        }
-
-        // Maradék szöveg hozzáadása
-        fragment.append(text.substring(lastIndex));
-        
-        // Biztonságos csere: ellenőrizzük, hogy a node még a DOM-ban van-e
-        if (node.parentNode) {
-            node.parentNode.replaceChild(fragment, node);
-        }
-    }
+        });
+    });
 }
 // Az összes olyan konténert figyeljük, amiben poszt szöveg van
 document.querySelectorAll(".js-process-links").forEach(el => {
@@ -444,18 +386,24 @@ document.querySelectorAll(".js-process-links").forEach(el => {
 });
 
 function toggleReadMore(event, postId) {
-    // Megakadályozzuk, hogy az oldal tetejére ugorjon a '#' miatt
-    event.preventDefault(); 
-    
-    // Megkeressük a konkrét poszt konténerét az ID alapján
+    event.preventDefault();
     const container = document.getElementById('postText-' + postId);
-    const link = event.target; // A link, amire kattintottak
-
-    container.classList.toggle('expanded');
+    const moreContent = container.querySelector('.more-content');
+    const link = event.target;
 
     if (container.classList.contains('expanded')) {
-        link.textContent = " ...Kevesebb";
-    } else {
+        moreContent.style.display = "none";
         link.textContent = " ...Több";
+        container.classList.remove('expanded');
+    } else {
+        // Fontos: inline-t használunk, hogy ne törje meg a szövegfolyamot
+        moreContent.style.display = "inline"; 
+        link.textContent = " ...Kevesebb";
+        container.classList.add('expanded');
     }
 }
+
+// Inicializálás
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".text-container").forEach(linkify);
+});

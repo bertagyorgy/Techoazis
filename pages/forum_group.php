@@ -172,7 +172,7 @@ $post_count = $posts->num_rows;
 
                 <?php
                 $content = $post['content'];
-                $limit = 100; // ennyi karakter után vágjuk el
+                $limit = 250; // ennyi karakter után vágjuk el
 
                 // A strlen helyett mb_strlen-t használunk a pontos karakterhosszhoz
                 if (mb_strlen($content, 'UTF-8') > $limit) {
