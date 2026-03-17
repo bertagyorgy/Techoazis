@@ -438,10 +438,10 @@ async function processPostLinks(container) {
         }
     }
 }
-document.querySelectorAll(".post-content").forEach(el => {
+// Az összes olyan konténert figyeljük, amiben poszt szöveg van
+document.querySelectorAll(".js-process-links").forEach(el => {
     processPostLinks(el);
 });
-
 
 function toggleReadMore(event, postId) {
     // Megakadályozzuk, hogy az oldal tetejére ugorjon a '#' miatt

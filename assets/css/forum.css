@@ -59,8 +59,6 @@
 
 .group-list a {
     display: flex;
-    /*align-items: center;
-    gap: 10px;*/
     justify-content: space-between;
     padding: 0.75rem;
     border-radius: var(--border-radius-md);
@@ -79,7 +77,8 @@
     color: var(--primary-500);
     width: 20px;
 }
-.empty-state{
+
+.empty-state {
     background: var(--surface);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-lg);
@@ -88,7 +87,8 @@
     color: var(--text-light);
     text-align: center;
 }
-.show-comments-btn{
+
+.show-comments-btn {
     background: var(--dark-bg);
     color: var(--dark-text);
     padding: 10px;
@@ -96,53 +96,61 @@
     border-radius: 8px;
     display: inline-flex;
     align-items: center;
-    gap: 10px; /* állítsd ízlésre */
+    gap: 10px;
     margin-top: 10px;
 }
-.comment-count{
+
+.comment-count {
     font-size: 1rem;
+}
+
+/* --- TÖBB / KEVESEBB ÉS SZÖVEG TÖRDELÉS --- */
+.text-container {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .more-content {
     display: none;
 }
 
-/* A block helyett inline-t használunk, hogy ne törjön új sorba */
 .text-container.expanded .more-content {
     display: inline; 
 }
 
-/* Opcionális: a gombot is tartsuk egy vonalban */
 .read-more-link {
     display: inline;
     margin-left: 4px;
-    white-space: nowrap; /* Megakadályozza, hogy a gomb önmagában törjön ketté */
+    white-space: nowrap;
 }
 
-/* --- Unified meta row (articles style) for posts too --- */
-.article-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.75rem;
-  color: var(--text-light);
-  font-size: .9rem;
-  margin-bottom: .6rem;
+/* --- META ADATOK --- */
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    color: var(--text-light);
+    font-size: .9rem;
+    margin-bottom: .6rem;
 }
 
-.article-badge{
-  background: var(--primary-100);
-  color: var(--primary-700);
-  padding: .25rem .55rem;
-  border-radius: 999px;
-  font-weight: 600;
+.article-badge {
+    background: var(--primary-100);
+    color: var(--primary-700);
+    padding: .25rem .55rem;
+    border-radius: 999px;
+    font-weight: 600;
 }
 
-.article-meta i{
-  margin-right: .35rem;
-  color: var(--text-light);
+.article-meta i {
+    margin-right: .35rem;
+    color: var(--text-light);
 }
 
-.new_group{
+.new_group {
     display: flex;
     align-items: center;        
     justify-content: center;
@@ -156,146 +164,148 @@
     transition: all var(--transition-fast);
 }
 
-.new_group:hover{
+.new_group:hover {
     background: var(--primary-100);
     color: var(--accent-600);
 }
-.login-warning{
+
+.login-warning {
     margin-top: 1rem;
 }
-/* ===== Kép nagyító modal (dialog) ===== */
-/* alapból ne legyen ott semmi (ne blokkoljon) */
-.img-modal{
-  display: none;          /* ✅ fontos */
-  border: none;
-  padding: 0;
-  margin: 0;
-  background: transparent;
-  max-width: none;
-  max-height: none;
+
+/* ===== KÉP NAGYÍTÓ MODAL ===== */
+.img-modal {
+    display: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    max-width: none;
+    max-height: none;
 }
 
-/* csak nyitott állapotban legyen fullscreen + center */
-.img-modal[open]{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
+.img-modal[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
 }
 
-.img-modal::backdrop{
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(2px);
+.img-modal::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
 }
 
-
-/* a képet tartó “doboz” */
-.img-modal-image{
-  display: block;
-  max-width: min(92vw, 1100px);
-  max-height: 85vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;         /* arány megtartás */
-  border-radius: 14px;
-  box-shadow: 0 20px 70px rgba(0,0,0,0.45);
-  background: #111;            /* ha png átlátszó */
+.img-modal-image {
+    display: block;
+    max-width: min(92vw, 1100px);
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 14px;
+    box-shadow: 0 20px 70px rgba(0,0,0,0.45);
+    background: #111;
 }
 
-/* jobb felső X */
-.img-modal-close{
-  position: fixed;             /* mindig a viewporthoz */
-  top: 18px;
-  right: 18px;
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: 28px;
-  line-height: 44px;
-  text-align: center;
-  color: #fff;
-  background: rgba(0,0,0,0.45);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+.img-modal-close {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 28px;
+    line-height: 44px;
+    text-align: center;
+    color: #fff;
+    background: rgba(0,0,0,0.45);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.25);
 }
 
-.img-modal-close:hover{
-  background: rgba(0,0,0,0.6);
+.img-modal-close:hover {
+    background: rgba(0,0,0,0.6);
 }
 
-/* link preview design*/
-.link-preview{
-    display:flex;
-    gap:12px;
-    border:1px solid var(--neutral-500);
-    border-radius:12px;
-    overflow:hidden;
-    text-decoration:none;
-    background:var(--border-color);
+/* ===== LINK PREVIEW KÁRTYA ===== */
+.link-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--neutral-500);
+    border-radius: 12px;
+    background: var(--border-color);
     color: var(--text-color);
-    margin-top:8px;
-    transition:.15s;
+    margin: 10px 0;
+    text-decoration: none;
+    transition: transform 0.15s, border-color 0.15s;
+    
+    /* Túllógás elleni védelem: */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
-.link-preview:hover{
-    border-color:var(--accent-600);
-    transform:translateY(-2px);
+.link-preview:hover {
+    border-color: var(--accent-600);
+    transform: translateY(-2px);
 }
 
 /* BAL OLDALI KÉP DOBOZ */
-.lp-image{
-    width:140px;
-    min-width:140px;
-    aspect-ratio: 16 / 11;   /* ← kulcs! */
-    overflow:hidden;
-    flex-shrink:0;
+.lp-image {
+    width: 140px;
+    min-width: 140px;
+    aspect-ratio: 16 / 11;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 
-/* KÉP */
-.lp-image img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-    display:block;
+.lp-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
-
-
-.lp-content{
-    padding:10px;
-    color:#ddd;
+/* JOBB OLDALI SZÖVEG DOBOZ */
+.lp-content {
+    flex: 1 1 0%; 
+    min-width: 0; /* Kifejezetten a flex-gyerek túllógása ellen */
+    padding: 10px 10px 10px 0;
+    box-sizing: border-box;
 }
 
-.lp-title{
-    font-weight:600;
+/* BELSŐ SZÖVEGEK (Cím, leírás, domain) */
+.lp-title {
+    font-weight: 600;
     color: var(--text-color);
-    margin-bottom:4px;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-    overflow:hidden;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    word-break: break-word; /* hosszú szavak tördelése */
 }
 
-.lp-desc{
-    font-size:13px;
+.lp-desc {
+    font-size: 13px;
     color: var(--text-color);
-    opacity:.8;
-    margin-bottom:6px;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-    overflow:hidden;
+    opacity: .8;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    word-break: break-word; /* hosszú szavak tördelése */
 }
 
-
-.lp-domain{
-    font-size:12px;
-    color:#4da3ff;
+.lp-domain {
+    font-size: 12px;
+    color: #4da3ff;
+    word-break: break-word;
 }
-
-
-
-
