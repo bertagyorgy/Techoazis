@@ -248,3 +248,76 @@
     cursor: pointer;
     list-style: none;
 }
+
+/* --- RESPONSIVE JAVÍTÁSOK --- */
+
+@media (max-width: 1024px) {
+    .main-modern-grid {
+        grid-template-columns: 1fr; /* Tablet mérettől egymás alá kerülnek */
+        grid-template-rows: auto;
+        gap: 20px;
+    }
+
+    .main-featured {
+        grid-row: span 1; /* Megszüntetjük a dupla magasságot */
+        height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hero Section igazítás */
+    .main-hero {
+        padding: 120px 0 80px;
+        height: auto; /* Mobilon ne legyen fix magasság, hogy elférjen a szöveg */
+        background-attachment: scroll; /* Mobilon a fixed háttér gyakran laggol */
+    }
+
+    .main-hero-title {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Kereső reszponzivitás */
+    .main-search-wrapper {
+        flex-direction: column; /* Egymás alá kerül a select és az input */
+        gap: 10px;
+        padding: 15px;
+        border-radius: var(--border-radius-lg);
+    }
+
+    .main-search-type, 
+    .main-search-type select,
+    .main-search-wrapper input {
+        width: 100%; /* Kitöltik a teljes szélességet */
+        text-align: center;
+    }
+
+    .main-search-type select {
+        background-position: calc(100% - 15px) center;
+    }
+
+    /* Grid elem magasságok mobilon */
+    .main-grid-item {
+        min-height: 280px;
+    }
+
+    .main-card-overlay h3 {
+        font-size: 1.5rem;
+    }
+
+    /* Trust bar sűrítése */
+    .main-trust-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-section {
+        padding: 60px 0;
+    }
+
+    .main-section-title {
+        font-size: 1.8rem;
+    }
+}

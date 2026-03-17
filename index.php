@@ -63,7 +63,7 @@ function getValidImage($pathFromDb, $default = 'uploads/articles/default_cover.p
 // --- LEKÉRDEZÉSEK ---
 
 // 1. Legújabb termék főképe
-$res_prod = $conn->query("SELECT image_path FROM product_images WHERE is_primary = 1 ORDER BY image_id DESC LIMIT 1");
+$res_prod = $conn->query("SELECT pi.image_path FROM product_images pi JOIN products p ON pi.product_id = p.product_id WHERE pi.is_primary = 1 AND p.product_status = 'active' ORDER BY pi.product_id DESC LIMIT 1;");
 $prod_row = ($res_prod && $res_prod->num_rows > 0) ? $res_prod->fetch_assoc()['image_path'] : null;
 $latest_product_img = getValidImage($prod_row);
 
