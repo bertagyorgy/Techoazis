@@ -48,7 +48,7 @@ if (!$group) {
 
 // ===== POSZTOK LEKÉRÉSE =====
 $posts_query = "
-    SELECT p.*, u.username, u.username_slug AS user_slug
+    SELECT p.*, u.username, u.username_slug AS user_slug, u.profile_image
     FROM posts p
     JOIN users u ON p.user_id = u.user_id
     WHERE p.group_id = ?
@@ -157,14 +157,34 @@ $post_count = $posts->num_rows;
                         #<?= htmlspecialchars($group['group_name']) ?>
                     </a>
 
-                    <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($post['user_slug']) ?>">
-                        <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
-                    </a>
+                    <?php
+                    $is_external = preg_match('/^https?:\/\//', $post['profile_image']);
+                    if (!empty($post['profile_image'])) {
+                        if ($is_external) {
+                            // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+                            $profile_avatar = htmlspecialchars($post['profile_image']);
+                        } else {
+                            // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+                            $profile_avatar = BASE_URL . '/' . htmlspecialchars($post['profile_image']);
+                        }
+                    } else {
+                        // Alapértelmezett kép, ha nincs megadva semmi
+                        $profile_avatar = BASE_URL . 'uploads/profile_images/anonymous.png';
+                    }
+                    ?>
+                    <div class="post-meta">
+                        <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($post['user_slug']) ?>" class="profile-link">
+                            <span class="user-info">
+                                <img class="profile-avatar-image" src="<?= $profile_avatar ?>" alt="<?= htmlspecialchars($post['username']) ?>">
+                                <span class="username"><?= htmlspecialchars($post['username']) ?></span>
+                            </span>
+                        </a>
 
-                    <span>
-                        <i class="fa-regular fa-calendar"></i>
-                        <?= substr($post['created_at'], 0, 16) ?>
-                    </span>
+                        <span class="post-date">
+                            <i class="fa-regular fa-calendar"></i>
+                            <?= substr($post['created_at'], 0, 16) ?>
+                        </span>
+                    </div>
                 </div>
 
 

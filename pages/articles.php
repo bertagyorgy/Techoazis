@@ -52,6 +52,7 @@ $sql = "
         a.cover_image,
         u.username,
         u.username_slug AS author_slug,
+        u.profile_image,
         c.category_name
     FROM articles a
     JOIN users u ON a.author_user_id = u.user_id
@@ -177,17 +178,37 @@ $stmt->close();
                     <?php if (!empty($a['cover_image'])): ?>
                         <img class="article-cover" src="<?= htmlspecialchars(BASE_URL . "/". $a['cover_image']) ?>" alt="Cikk borítókép">
                     <?php endif; ?>
-
+                    
+                    <?php
+                    $is_external = preg_match('/^https?:\/\//', $a['profile_image']);
+                    if (!empty($a['profile_image'])) {
+                        if ($is_external) {
+                            // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+                            $a_profile_avatar = htmlspecialchars($a['profile_image']);
+                        } else {
+                            // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+                            $a_profile_avatar = BASE_URL . '/' . htmlspecialchars($a['profile_image']);
+                        }
+                    } else {
+                        // Alapértelmezett kép, ha nincs megadva semmi
+                        $a_profile_avatar = BASE_URL . 'uploads/profile_images/anonymous.png';
+                    }
+                    ?>
                     <div class="article-body">
                         <div class="article-meta">
                             <span class="article-badge">#<?= htmlspecialchars($a['category_name']) ?></span>
                             <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($a['author_slug']) ?>">
-                                <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($a['username']) ?></span>
+                                <span class="user-info">
+                                    <img class="profile-avatar-image" src="<?= $a_profile_avatar ?>" alt="<?= htmlspecialchars($a['username']) ?>">
+                                    <span class="username"><?= htmlspecialchars($a['username']) ?></span>
+                                </span>      
                             </a>
-                            <span><i class="fa-regular fa-clock"></i>
-                                <?= $a['reading_minutes'] ? (int)$a['reading_minutes'] . " perc" : "—" ?>
+
+                            <span class="post-date">
+                                <i class="fa-regular fa-clock"></i><?= $a['reading_minutes'] ? (int)$a['reading_minutes'] . " perc" : "—" ?>&nbsp;
+                                <i class="fa-regular fa-calendar"></i><?= substr($a['created_at'], 0, 16) ?></span>
                             </span>
-                            <span><i class="fa-regular fa-calendar"></i> <?= substr($a['created_at'], 0, 16) ?></span>
+                            
                         </div>
 
                         <h2 class="article-title"><?= htmlspecialchars($a['title']) ?></h2>

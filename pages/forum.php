@@ -59,19 +59,19 @@ $latest_posts = $conn->query($latest_query);
 // ======= KÖZÉPSŐ RÉSZ – POSZTOK MINDEN CSOPORTBÓL =======
 if ($q !== '') {
     $stmt = $conn->prepare("
-        SELECT p.*, u.username, u.username_slug AS user_slug, g.group_name AS group_name
+        SELECT p.*, u.username, u.username_slug AS user_slug, u.profile_image, g.group_name AS group_name
         FROM posts p
         JOIN users u ON p.user_id = u.user_id
         JOIN groups g ON p.group_id = g.group_id
         WHERE (p.title LIKE ? OR p.content LIKE ? OR g.group_name LIKE ? OR u.username LIKE ?)
         ORDER BY p.created_at DESC
     ");
-    $stmt->bind_param("ssss", $q_like, $q_like, $q_like, $q_like);
+    $stmt->bind_param("sssss", $q_like, $q_like, $q_like, $q_like, $q_like);
     $stmt->execute();
     $posts_result = $stmt->get_result();
 } else {
     $posts_result = $conn->query("
-        SELECT p.*, u.username, u.username_slug AS user_slug, g.group_name AS group_name
+        SELECT p.*, u.username, u.username_slug AS user_slug, u.profile_image, g.group_name AS group_name
         FROM posts p
         JOIN users u ON p.user_id = u.user_id
         JOIN groups g ON p.group_id = g.group_id
@@ -198,15 +198,34 @@ include ROOT_PATH . '/views/navbar.php';
                         #<?= htmlspecialchars($post['group_name']) ?>
                     </a>
 
+                    <?php
+                    $is_external = preg_match('/^https?:\/\//', $post['profile_image']);
+                    if (!empty($post['profile_image'])) {
+                        if ($is_external) {
+                            // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
+                            $profile_avatar = htmlspecialchars($post['profile_image']);
+                        } else {
+                            // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
+                            $profile_avatar = BASE_URL . '/' . htmlspecialchars($post['profile_image']);
+                        }
+                    } else {
+                        // Alapértelmezett kép, ha nincs megadva semmi
+                        $profile_avatar = BASE_URL . 'uploads/profile_images/anonymous.png';
+                    }
+                    ?>
+                    <div class="post-meta">
+                        <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($post['user_slug']) ?>" class="profile-link">
+                            <span class="user-info">
+                                <img class="profile-avatar-image" src="<?= $profile_avatar ?>" alt="<?= htmlspecialchars($post['username']) ?>">
+                                <span class="username"><?= htmlspecialchars($post['username']) ?></span>
+                            </span>
+                        </a>
 
-                    <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($post['user_slug']) ?>">
-                        <span><i class="fa-solid fa-user"></i> <?= htmlspecialchars($post['username']) ?></span>
-                    </a>
-
-                    <span>
-                        <i class="fa-regular fa-calendar"></i>
-                        <?= substr($post['created_at'], 0, 16) ?>
-                    </span>
+                        <span class="post-date">
+                            <i class="fa-regular fa-calendar"></i>
+                            <?= substr($post['created_at'], 0, 16) ?>
+                        </span>
+                    </div>
                 </div>
 
 
