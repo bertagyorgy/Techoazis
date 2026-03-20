@@ -3,6 +3,20 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
+
+$profile1_id = 3;
+$profile2_id = 7;
+
+// Első lekérdezés
+$result1 = $conn->query("SELECT profile_image, username FROM users WHERE user_id = $profile1_id");
+$user1 = $result1->fetch_assoc();
+
+// Második lekérdezés - pótold a vesszőt!
+$result2 = $conn->query("SELECT profile_image, username FROM users WHERE user_id = $profile2_id");
+$user2 = $result2->fetch_assoc();
+
+$profile_avatar1 = BASE_URL . '/' . htmlspecialchars($user1['profile_image']);
+$profile_avatar2 = BASE_URL . '/' . htmlspecialchars($user2['profile_image']);
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -187,28 +201,30 @@ require_once ROOT_PATH . '/app/db.php';
             <div class="section-head">
                 <h2>Csapattagok</h2>
                 <p class="lead">
-                    A Techoázist két partnerfejlesztő hozta létre, akik a platformot tulajdonosként is gondozzák.
+                    A Techoázist két fejlesztő hozta létre, akik a platformot tulajdonosként is gondozzák.
                 </p>
             </div>
 
             <div class="team-grid">
                 <div class="team-card">
                     <div class="team-avatar">
-                        <i class="fa-solid fa-user-gear"></i>
+                        <img src="<?= $profile_avatar1 ?>" alt="<?= htmlspecialchars($user1['username']) ?>">
                     </div>
                     <h3>Berta György</h3>
-                    <p class="role">Partnerfejlesztő - Társtulajdonos</p>
+                    <p class="role">Tulajdonos - frontend</p>
                     <p>
-                        A cél egy olyan közösségi felület kialakítása, ami vizuálisan is egységes, és folyamatosan bővíthető.
+                        A cél egy olyan közösségi felület kialakítása, ami vizuálisan is egységes, és folyamatosan bővíthető, ezért
+                        erre mindvégig törekedtem az oldal fejlesztése során, emellett a reszponzívitásra is kiemelt figyelmet
+                        fordítottam.
                     </p>
                 </div>
 
                 <div class="team-card">
                     <div class="team-avatar">
-                        <i class="fa-solid fa-user-gear"></i>
+                        <img src="<?= $profile_avatar2 ?>" alt="<?= htmlspecialchars($user2['username']) ?>">
                     </div>
                     <h3>Pap Máté</h3>
-                    <p class="role">Partnerfejlesztő - Társtulajdonos</p>
+                    <p class="role">Tulajdonos - backend</p>
                     <p>
                         A platform fejlesztésében a rendszerlogika, funkcionalitás kiemelt fókuszt érdemel.
                     </p>

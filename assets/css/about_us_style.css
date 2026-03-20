@@ -100,16 +100,17 @@
     box-shadow: var(--shadow-sm);
     border: 1px solid rgba(0,0,0,0.06);
 }
-.team-avatar{
-    width: 46px;
-    height: 46px;
+.team-avatar img{
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
-    color: white;
+    /*background: linear-gradient(45deg, var(--accent-600), var(--accent-400));
+    color: white;*/
     margin-bottom: 12px;
+    object-fit: cover;
 }
 .team-card .role{
     color: var(--text-muted);
