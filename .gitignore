@@ -1,2 +1,6 @@
 .vscode/
 .vscode
+# Elrejtjük a környezeti változókat
+.env
+# A sablont nem rejtjük el
+!.env.example
