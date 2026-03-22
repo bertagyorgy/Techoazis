@@ -59,7 +59,7 @@ $config = [
 
         // Státusz kezelése
         if (isset($data['is_active'])) {
-            $data['is_active'] = ($data['is_active'] === 'A') ? 'A' : 'IA';
+            $data['is_active'] = ($data['is_active'] === 'A') ? 'A' : 'I';
         }
 
         // Automatikus slug generálás, ha üres
@@ -92,7 +92,7 @@ $config = [
             'label' => 'Aktív státusz',
             'type' => 'checkbox',
             'true_value' => 'A',
-            'false_value' => 'IA',
+            'false_value' => 'I', // JAVÍTVA: 'IA'-ról 'I'-re
             'default' => 'A',
             'param_type' => 's'
         ],
