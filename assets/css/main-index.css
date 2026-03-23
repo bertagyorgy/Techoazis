@@ -16,8 +16,13 @@
 
 /* --- HERO SECTION --- */
 .main-hero {
-    padding: 210px 0 160px;
-    height: calc(100vh - var(--navbar-height) - 206px);
+    min-height: calc(100vh - var(--navbar-height) - 206px);
+    /* A clamp jelentése: minimum 80px, alapvetően 15vh, de maximum 206px */
+    padding: clamp(80px, 15vh, 206px) 0 clamp(60px, 10vh, 160px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     /* RÉTEGEK SORRENDJE:
        1. Kék radiális fény (jobb fent)
@@ -30,10 +35,20 @@
         radial-gradient(circle at bottom left, rgba(255, 107, 53, 0.15), transparent),
         linear-gradient(rgba(10, 25, 47, 0.4), rgba(10, 25, 47, 0.4)), 
         var(--background-image);
-    
     background-color: var(--dark-bg);
-    background-attachment: fixed; /* Opcionális: parallaxis hatás, ha jól mutat */
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
 }
+
+@media (max-height: 768px) {
+    .main-hero {
+        min-height: auto; 
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+}
+
 .main-hero-title {
     font-size: clamp(2.5rem, 8vw, 4.5rem);
     line-height: 1.2; /* Kicsit nagyobb sorköz, ne legyen összenyomva */
