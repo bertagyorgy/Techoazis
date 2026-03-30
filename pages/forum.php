@@ -66,7 +66,7 @@ if ($q !== '') {
         WHERE (p.title LIKE ? OR p.content LIKE ? OR g.group_name LIKE ? OR u.username LIKE ?)
         ORDER BY p.created_at DESC
     ");
-    $stmt->bind_param("sssss", $q_like, $q_like, $q_like, $q_like, $q_like);
+    $stmt->bind_param("ssss", $q_like, $q_like, $q_like, $q_like);
     $stmt->execute();
     $posts_result = $stmt->get_result();
 } else {
