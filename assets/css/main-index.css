@@ -16,9 +16,9 @@
 
 /* --- HERO SECTION --- */
 .main-hero {
-    min-height: calc(100vh - var(--navbar-height) - 206px);
+    min-height: calc(100vh - var(--navbar-height) - 204px);
     /* A clamp jelentése: minimum 80px, alapvetően 15vh, de maximum 206px */
-    padding: clamp(80px, 15vh, 206px) 0 clamp(60px, 10vh, 160px);
+    padding: clamp(80px, 15vh, 204px) 0 clamp(60px, 10vh, 160px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -120,8 +120,16 @@
 .main-trust-bar {
     background: rgba(15, 23, 42, 0.5); /* Sötét, áttetsző háttér */
     background: var(--dark-bg);
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
+    /*border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);*/
+    padding: 3rem 0;
+}
+
+.main-trust-bar-gradient {
+    background: linear-gradient(
+    to bottom, 
+    #0a192f 0%, 
+    #112240 100%);
     padding: 3rem 0;
 }
 
@@ -167,7 +175,7 @@
 }
 
 .main-section-subtitle {
-    color: var(--neutral-700);
+    color: var(--text-color);
     font-size: 1.1rem;
 }
 
@@ -263,6 +271,11 @@
     cursor: pointer;
     list-style: none;
 }
+
+details[open] i{
+    transform: rotate(180deg);
+}
+
 
 /* --- RESPONSIVE JAVÍTÁSOK --- */
 

@@ -155,10 +155,23 @@ require_once ROOT_PATH . '/app/profile_logic.php';
                 <h3 class="section-title"><?php echo $is_owner ? 'Termékeim' : 'Termékei'; ?></h3>
 
             </div>
-
+            
+            <?php 
+            //SZŰRÉS: Ha nem a tulajdonos nézi, csak az aktívakat hagyjuk meg a tömbben
+            if (!$is_owner) {
+                $user_products = array_filter($user_products, function($product) {
+                    return $product['product_status'] === 'active';
+                });
+            }
+            ?>
             <?php if (count($user_products) > 0): ?>
             <div class="products-grid">
-                <?php foreach ($user_products as $product): ?>
+                <?php foreach ($user_products as $product):          
+                    // Ha nem a tulajdonos nézi, és a státusz nem 'active', ugorjuk át ezt a terméket
+                    if (!$is_owner && $product['product_status'] !== 'active') {
+                        continue;
+                    }
+                ?>
                 <a href="<?= BASE_URL ?>/pages/product_detail.php?id=<?php echo $product['product_id']; ?>" class="product-card-link">
                     <div class="product-card">
                         <img src="<?= htmlspecialchars($product['image_path']) ?>"

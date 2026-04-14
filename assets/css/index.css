@@ -73,7 +73,7 @@
     --logo-brand: url('../../images/techoazis_logo_chopped_white.webp');
     --background: var(--dark-bg);
     --link-preview-bg: var(--dark-surface);
-    --dark-bg-alt: var(--dark-surface);
+    --dark-bg-alt: var(--dark-bg);
     --surface: var(--dark-surface);
     --dark-surface-alt: #3e444e;
     --text-color: var(--dark-text);

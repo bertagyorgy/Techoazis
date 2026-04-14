@@ -148,7 +148,7 @@ $latest_post_img = getValidImage($post_row);
             </div>
         </section>
 
-        <div class="main-trust-bar">
+        <div class="main-trust-bar-gradient">
             <div class="main-container">
                 <div class="main-trust-grid">
                     <div class="main-trust-item">
@@ -171,7 +171,7 @@ $latest_post_img = getValidImage($post_row);
             </div>
         </div>
 
-        <section class="main-section">
+        <section class="main-section main-bg-alt">
             <div class="main-container">
                 <div class="main-header-flex reveal">
                     <div class="main-title-group">
@@ -206,7 +206,7 @@ $latest_post_img = getValidImage($post_row);
             </div>
         </section>
 
-        <div class="main-trust-bar">
+        <div class="main-trust-bar-gradient">
             <div class="main-container">
                 <div class="main-trust-grid">
                     <div class="main-trust-item reveal">
@@ -234,19 +234,19 @@ $latest_post_img = getValidImage($post_row);
                 <h2 class="text-center reveal" style="margin-bottom: 3rem;">Gyakran Ismételt Kérdések</h2>
                 <div class="main-faq-list">
                     <details class="main-faq-item reveal">
-                        <summary>Hogyan működik a biztonságos adás-vétel?</summary>
+                        <summary><i class="fas fa-chevron-down"></i> Hogyan működik a biztonságos adás-vétel?</summary>
                         <p>Mindkét félnek jóvá kell hagynia az üzletet, majd a beszélgetés lezárható. <br>
                         Lezárás után értékelheted az eladót.
                         </p>
                     </details>
 
                     <details class="main-faq-item reveal">
-                        <summary>Miért nem tudok üzenetet küldeni?</summary>
+                        <summary><i class="fas fa-chevron-down"></i> Miért nem tudok üzenetet küldeni?</summary>
                         <p>Ellenőrizd, hogy be vagy-e jelentkezve és a beszélgetés nincs-e lezárva.</p>
                     </details>
 
                     <details class="main-faq-item reveal">
-                        <summary>Hol látom az értékeléseket?</summary>
+                        <summary><i class="fas fa-chevron-down"></i> Hol látom az értékeléseket?</summary>
                         <p>
                             Az értékelések az eladó profilján jelennek meg az legutóbbi értékelések szekcióban.<br>
                             Ezeket az értékeléseket korábbi üzletfeleid teszik közzé és a saját profiloldalon is látszanak.
@@ -254,12 +254,12 @@ $latest_post_img = getValidImage($post_row);
                     </details>
 
                     <details class="main-faq-item reveal">
-                        <summary>Mennyi idő alatt válaszoltok?</summary>
+                        <summary><i class="fas fa-chevron-down"></i> Mennyi idő alatt válaszoltok?</summary>
                         <p>Általában 24-48 órán belül.</p>
                     </details>
 
                     <details class="main-faq-item reveal">
-                        <summary>Hogyan tudok terméket eladni a Techoázison?</summary>
+                        <summary><i class="fas fa-chevron-down"></i> Hogyan tudok terméket eladni a Techoázison?</summary>
                         <p>
                             Az eladás néhány egyszerű lépésből áll:
                             <br><br>
@@ -273,7 +273,7 @@ $latest_post_img = getValidImage($post_row);
                     </details>
 
                     <details class="main-faq-item reveal">
-                        <summary>Mi történik, ha véletlenül töröltem a fiókomat?</summary>
+                        <summary><i class="fas fa-chevron-down"></i> Mi történik, ha véletlenül töröltem a fiókomat?</summary>
                         <p>
                             Ha törölted a fiókodat, az adatok általában véglegesen eltávolításra kerülnek a rendszerből.
                             Ilyenkor új fiókot kell létrehoznod egy másik e-mail címmel.
@@ -282,7 +282,7 @@ $latest_post_img = getValidImage($post_row);
                     </details>
 
                     <details class="main-faq-item reveal">
-                        <summary>Hogyan tudom szerkeszteni vagy törölni a feltöltött termékemet?</summary>
+                        <summary><i class="fas fa-chevron-down"></i> Hogyan tudom szerkeszteni vagy törölni a feltöltött termékemet?</summary>
                         <p>
                             A feltöltött hirdetéseidet a vásárlásnál a saját termékednél alul a „Termék szerkesztése” menüpont alatt találod.
                             Itt lehetőséged van:
