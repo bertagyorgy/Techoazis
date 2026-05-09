@@ -138,7 +138,7 @@ $latest_post_img = getValidImage($post_row);
                                 </select>
                             </div>
                             <input type="text" id="search-input" name="query" placeholder="Keress bármire...">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" id="search-btn">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 <span>Mehet</span>
                             </button>
