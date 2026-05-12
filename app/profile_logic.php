@@ -150,7 +150,10 @@ if ($is_owner) {
                 (c.seller_user_id = u.user_id AND c.seller_user_id != ?) OR
                 (c.buyer_user_id  = u.user_id AND c.buyer_user_id  != ?)
             )
-            WHERE (c.seller_user_id = ? OR c.buyer_user_id = ?)
+            WHERE (
+                (c.seller_user_id = ? AND c.seller_archived = 0) OR 
+                (c.buyer_user_id = ? AND c.buyer_archived = 0)
+            )
             ORDER BY last_activity DESC
             LIMIT 5
         ");

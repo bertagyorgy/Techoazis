@@ -41,13 +41,20 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == '1') {
             $stmt->bind_param("iis", $conversation_id, $user_id, $msg);
             
             if ($stmt->execute()) {
+                // 1. FONTOS: Rögtön az INSERT után mentsük el az ID-t!
+                $new_id = $conn->insert_id; 
 
-                // beszélgetés aktivitás frissítése
-                // $up = $conn->prepare("UPDATE conversations SET updated_at = NOW() WHERE conversation_id = ?");
-                // $up->bind_param("i", $conversation_id);
-                // $up->execute();
-                // $up->close();
-                echo json_encode(['success' => true, 'message_id' => $conn->insert_id]);
+                // 2. JAVÍTÁS: updated_at helyett last_activity (a profile.php ezt használja)
+                // Ez hozza vissza a "kiikszelt" csevegést mindkét félnél
+                $up = $conn->prepare("UPDATE conversations SET seller_archived = 0, buyer_archived = 0, updated_at = NOW() WHERE conversation_id = ?");
+                $up->bind_param("i", $conversation_id);
+                $up->execute();
+                $up->close();
+
+                // 3. JAVÍTÁS: A $new_id változót küldjük vissza, ne a $conn->insert_id-t!
+                echo json_encode(['success' => true, 'message_id' => $new_id]);
+                header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+                exit();
             } else {
                 echo json_encode(['success' => false, 'error' => 'Adatbázis hiba']);
             }
@@ -55,7 +62,7 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == '1') {
         } else {
             echo json_encode(['success' => false, 'error' => 'Hiányzó üzenet vagy ID']);
         }
-        exit(); // Fontos: Itt megállunk, nem renderelünk HTML-t!
+        exit(); 
     }
 
     // --- B) ÜZENETEK LEKÉRÉSE & LÁTTAMOZÁS (POLLING/PING) ---
@@ -421,8 +428,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_message']) && !i
         $stmt = $conn->prepare("INSERT INTO messages (conversation_id, sender_user_id, user_message) VALUES (?, ?, ?)");
         $stmt->bind_param("iis", $conversation_id, $user_id, $message_text);
         if ($stmt->execute()) {
-            header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
-            exit();
+            // JAVÍTÁS: Itt is last_activity-t használunk updated_at helyett
+            $up = $conn->prepare("UPDATE conversations SET seller_archived = 0, buyer_archived = 0, updated_at = NOW() WHERE conversation_id = ?");
+            $up->bind_param("i", $conversation_id);
+            $up->execute();
+            $up->close();
+            
+            /*header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+            exit();*/
         }
         $stmt->close();
     }
