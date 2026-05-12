@@ -36,7 +36,7 @@
     --text-light-o: #cbd5e1;
     --link-preview-bg: var(--primary-100);
     --item-name-text: var(--primary-700);
-    --background: var(--neutral-100);
+    --background: #ebecf0;
     --surface: white;
     --border-color: var(--neutral-100);
     --background-image: url('../../images/desert_evening.webp') left/cover no-repeat;

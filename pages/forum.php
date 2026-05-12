@@ -3,22 +3,63 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
-// ======= ADATOK LEKÉRÉSE A FORMHOZ ÉS KERESÉSHEZ =======
+// ======= TOP TÉMÁK (legtöbb poszt) - q-val szűrhető név alapján =======
+$top_limit = 10;
+
 $q = trim($_GET['q'] ?? '');
-$group_id_param = isset($_GET['group']) ? (int)$_GET['group'] : 0;
+$group_id = isset($_GET['group']) ? (int)$_GET['group'] : 0;
 $q_like = '%' . $q . '%';
 
-// Csoportok listája a sidenavhoz és a legördülő menühöz
-$groups_all = [];
-$res_groups = $conn->query("SELECT group_id, group_name FROM groups ORDER BY group_name ASC");
-while($g = $res_groups->fetch_assoc()) {
-    $groups_all[] = $g;
+if ($q !== '') {
+    $stmtGroups = $conn->prepare("
+        SELECT 
+            g.group_id,
+            g.group_name,
+            COUNT(p.post_id) AS post_count
+        FROM groups g
+        LEFT JOIN posts p ON p.group_id = g.group_id
+        WHERE g.group_name LIKE ?
+        GROUP BY g.group_id, g.group_name
+        ORDER BY post_count DESC, g.group_name ASC
+        LIMIT $top_limit
+    ");
+    $stmtGroups->bind_param('s', $q_like);
+    $stmtGroups->execute();
+    $groups_result = $stmtGroups->get_result();
+} else {
+    $groups_result = $conn->query("
+        SELECT 
+            g.group_id,
+            g.group_name,
+            COUNT(p.post_id) AS post_count
+        FROM groups g
+        LEFT JOIN posts p ON p.group_id = g.group_id
+        GROUP BY g.group_id, g.group_name
+        ORDER BY post_count DESC, g.group_name ASC
+        LIMIT $top_limit
+    ");
 }
 
-// ======= KÖZÉPSŐ RÉSZ – POSZTOK LEKÉRÉSE =======
+
+// ======= LEGÚJABB POSZTOK JOBB OLDALRA =======
+$latest_query = "
+    SELECT 
+        p.post_id, 
+        p.title, 
+        p.created_at, 
+        g.group_id AS group_id,
+        g.group_name AS group_name
+    FROM posts p
+    JOIN groups g ON p.group_id = g.group_id
+    ORDER BY p.created_at DESC
+    LIMIT 6
+";
+$latest_posts = $conn->query($latest_query);
+
+// ======= KÖZÉPSŐ RÉSZ – POSZTOK MINDEN CSOPORTBÓL =======
 if ($q !== '') {
     $stmt = $conn->prepare("
-        SELECT p.*, u.username, u.username_slug AS user_slug, u.profile_image, g.group_name
+        SELECT p.*, u.username, u.username_slug AS user_slug, u.profile_image, g.group_name AS group_name
         FROM posts p
         JOIN users u ON p.user_id = u.user_id
         JOIN groups g ON p.group_id = g.group_id
@@ -30,7 +71,7 @@ if ($q !== '') {
     $posts_result = $stmt->get_result();
 } else {
     $posts_result = $conn->query("
-        SELECT p.*, u.username, u.username_slug AS user_slug, u.profile_image, g.group_name
+        SELECT p.*, u.username, u.username_slug AS user_slug, u.profile_image, g.group_name AS group_name
         FROM posts p
         JOIN users u ON p.user_id = u.user_id
         JOIN groups g ON p.group_id = g.group_id
@@ -38,13 +79,23 @@ if ($q !== '') {
     ");
 }
 
-// ======= LEGÚJABB POSZTOK JOBB OLDALRA =======
-$latest_posts = $conn->query("
-    SELECT p.post_id, p.title, p.created_at, g.group_id, g.group_name
-    FROM posts p
-    JOIN groups g ON p.group_id = g.group_id
-    ORDER BY p.created_at DESC LIMIT 6
-");
+
+// ======= ÖSSZES KÉP LEKÉRÉSE EGYBŐL =======
+$images_query = "SELECT post_id, image_path FROM post_images WHERE post_id IN (
+    SELECT post_id FROM posts
+) ORDER BY post_id";
+
+$images_result = $conn->query($images_query);
+
+// HIBAKERESÉS: Ha a lekérdezés sikertelen, írja ki miért
+if (!$images_result) {
+    die("Hiba a képek lekérdezésekor: " . $conn->error . "<br>Lekérdezés: " . $images_query);
+}
+
+$post_images = [];
+while ($img = $images_result->fetch_assoc()) {
+    $post_images[$img['post_id']][] = $img['image_path'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -68,6 +119,7 @@ $latest_posts = $conn->query("
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/container&grid_system.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/group_view.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/articles_style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,21 +152,22 @@ include ROOT_PATH . '/views/navbar.php';
                     Összes <i class="fa-solid fa-layer-group"></i>
                 </a>
             </li>
-            <?php foreach($groups_all as $g): ?>
+            <?php foreach($groups_result as $row): ?>
                 <li>
-                    <a href="<?= BASE_URL ?>/pages/forum_group.php?group=<?= (int)$g['group_id'] ?><?= $q !== '' ? '&q=' . urlencode($q) : '' ?>">
-                        <?= htmlspecialchars($g['group_name']) ?>
+                    <a href="<?= BASE_URL ?>/pages/forum_group.php?group=<?= (int)$row['group_id'] ?><?= $q !== '' ? '&q=' . urlencode($q) : '' ?>">
+                        <?= htmlspecialchars($row['group_name']) ?>
+                        <span style="font-weight:bold;right:0;">(<?= (int)$row['post_count'] ?>)</span>
                     </a>
                 </li>
             <?php endforeach; ?>
         </ul>
 
         <div class="sidebar-actions" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem;">
-            <a href="<?= BASE_URL ?>/pages/create_group.php" class="new_group" style="width: 100%; margin: 0; text-align: center; box-sizing: border-box;">
-                <i class="fa-solid fa-circle-plus"></i> Új csoport
-            </a>
-            
             <?php if(isset($_SESSION['user_id'])): ?>
+                <a href="<?= BASE_URL ?>/pages/create_group.php" class="new_group" style="width: 100%; margin: 0; text-align: center; box-sizing: border-box; background: var(--primary-100); color: var(--primary-900);">
+                    <i class="fa-solid fa-circle-plus"></i> Új csoport
+                </a>
+            
                 <button class="display-btn" style="width: 100%; margin: 0; padding: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                     <i class="fa-solid fa-plus"></i> Új poszt
                 </button>
@@ -142,10 +195,10 @@ include ROOT_PATH . '/views/navbar.php';
                 <form action="<?= BASE_URL ?>/actions/create_post.php" method="POST" enctype="multipart/form-data">
                     
                     <label for="group_id">Válassz csoportot:</label>
-                    <select name="group_id" id="group_id" required style="width:100%; padding:0.8rem; margin-bottom:1rem; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px;">
+                    <select name="group_id" id="group_id" required style="width:100%; padding:0.8rem; margin-bottom:1rem; background: var(--surface); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px;">
                         <option value="" disabled selected>Hova posztolnál?</option>
-                        <?php foreach ($groups_all as $g): ?>
-                            <option value="<?= (int)$g['group_id'] ?>"><?= htmlspecialchars($g['group_name']) ?></option>
+                        <?php foreach ($groups_result as $row): ?>
+                            <option value="<?= (int)$row['group_id'] ?>"><?= htmlspecialchars($row['group_name']) ?></option>
                         <?php endforeach; ?>
                     </select>
 
@@ -249,7 +302,7 @@ include ROOT_PATH . '/views/navbar.php';
                 <a href="<?= BASE_URL ?>/pages/forum_group.php?group=<?= (int)$lp['group_id'] ?>&q=<?= urlencode($lp['title']) ?>">
                     <strong><?= htmlspecialchars($lp['title']) ?></strong>
                 </a>
-                <p class="latest-post-meta">#<?= htmlspecialchars($lp['group_name']) ?> • <?= substr($lp['created_at'], 0, 16) ?></p>
+                <p class="latest-post-meta">#<?= htmlspecialchars($lp['group_name']) ?></p>
             </div>
         <?php endwhile; ?>
     </aside>

@@ -216,7 +216,7 @@ $stmt->close();
                         <div class="article-meta">
                             <span class="article-badge">#<?= htmlspecialchars($a['category_name']) ?></span>
                             <span class="post-date">
-                                <i class="fa-regular fa-clock"></i> <?= (int)$a['reading_minutes'] ?> perc • 
+                                <i class="fa-regular fa-clock"></i> <?= (int)$a['reading_minutes'] ?> perc&nbsp;
                                 <i class="fa-regular fa-calendar"></i> <?= substr($a['created_at'], 0, 10) ?>
                             </span>
                         </div>
@@ -237,7 +237,7 @@ $stmt->close();
 
     <!-- JOBB: legújabb -->
     <aside class="forum-right">
-        <h3>Legújabbak</h3>
+        <h3>Legújabb cikkek</h3>
         <?php foreach ($latest_articles as $la): ?>
             <div class="latest-post-item">
                 <a href="<?= BASE_URL ?>/pages/article_detail.php?id=<?= (int)$la['article_id'] ?>">

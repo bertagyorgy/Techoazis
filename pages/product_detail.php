@@ -226,7 +226,7 @@ require_once ROOT_PATH . '/app/product_detail_logic.php';
             
             <?php if (!empty($similar_products)): ?>
             <div class="similar-products">
-                <h2 class="section-title">Hasonló termékek</h2>
+                <h2 class="section-title" style="color: var(--text-colr)">Hasonló termékek</h2>
                 <div class="similar-grid">
                     <?php foreach ($similar_products as $product): // $similar helyett legyen $product! ?>
                         <?php 
