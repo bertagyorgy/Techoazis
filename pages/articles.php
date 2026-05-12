@@ -3,6 +3,17 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../core/config.php';
 require_once ROOT_PATH . '/app/db.php';
 
+/* =========================
+   BEJELENTKEZETT USER ADATAI
+========================= */
+$user = null;
+if (isset($_SESSION['user_id'])) {
+    $uid = (int)$_SESSION['user_id'];
+    $u_res = $conn->query("SELECT user_id, user_role FROM users WHERE user_id = $uid LIMIT 1");
+    if ($u_res && $u_res->num_rows > 0) {
+        $user = $u_res->fetch_assoc();
+    }
+}
 
 /* =========================
    GET PARAMS
@@ -40,19 +51,12 @@ $latest_articles = $latest_stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $latest_stmt->close();
 
 /* =========================
-   KÖZÉP: CIKKEK LISTA (filter + search)
+   KÖZÉP: CIKKEK LISTA
 ========================= */
 $sql = "
     SELECT 
-        a.article_id,
-        a.title,
-        a.summary,
-        a.created_at,
-        a.reading_minutes,
-        a.cover_image,
-        u.username,
-        u.username_slug AS author_slug,
-        u.profile_image,
+        a.article_id, a.title, a.summary, a.created_at, a.reading_minutes, a.cover_image,
+        u.username, u.username_slug AS author_slug, u.profile_image,
         c.category_name
     FROM articles a
     JOIN users u ON a.author_user_id = u.user_id
@@ -62,27 +66,12 @@ $sql = "
 
 $params = [];
 $types = "";
-
-if ($category_id > 0) {
-    $sql .= " AND a.category_id = ? ";
-    $types .= "i";
-    $params[] = $category_id;
-}
-
-if ($q !== '') {
-    $sql .= " AND (a.title LIKE ? OR a.summary LIKE ? OR a.content LIKE ?) ";
-    $types .= "sss";
-    $params[] = $q_like;
-    $params[] = $q_like;
-    $params[] = $q_like;
-}
+if ($category_id > 0) { $sql .= " AND a.category_id = ? "; $types .= "i"; $params[] = $category_id; }
+if ($q !== '') { $sql .= " AND (a.title LIKE ? OR a.summary LIKE ? OR a.content LIKE ?) "; $types .= "sss"; $params[] = $q_like; $params[] = $q_like; $params[] = $q_like; }
 
 $sql .= " ORDER BY a.created_at DESC";
-
 $stmt = $conn->prepare($sql);
-if ($types !== "") {
-    $stmt->bind_param($types, ...$params);
-}
+if ($types !== "") { $stmt->bind_param($types, ...$params); }
 $stmt->execute();
 $articles = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
@@ -101,6 +90,7 @@ $stmt->close();
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/button_system.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/comments.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/forum.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/create_post.css"> <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/forum.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_navbar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/modern_footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/post_card.css">
@@ -108,12 +98,15 @@ $stmt->close();
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset&base_styles.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/container&grid_system.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/articles_style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/group_view.css">
 
     <!-- Inter font hozzáadása -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="<?= BASE_URL ?>/assets/js/index.js" defer></script>
+    <script src="<?= BASE_URL ?>/assets/js/forum.js" defer></script>
 
 
 </head>
@@ -126,46 +119,86 @@ $stmt->close();
     <!-- BAL: témák + kereső -->
     <aside class="forum-left">
         <form method="GET" style="margin-bottom: 1rem;">
-            <input
-                type="text"
-                class="group-search"
-                name="q"
-                value="<?= htmlspecialchars($q) ?>"
-                placeholder="🔍 Cikk keresése..."
-            >
+            <input type="text" class="group-search" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="🔍 Cikk keresése...">
             <?php if ($category_id > 0): ?>
                 <input type="hidden" name="category" value="<?= (int)$category_id ?>">
             <?php endif; ?>
         </form>
 
-        <h3>Cikkek</h3>
+        <h3>Kategóriák</h3>
         <ul class="group-list">
             <li>
-                <a href="<?= BASE_URL ?>/pages/articles.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>"
-                   class="<?= $category_id === 0 ? 'active' : '' ?>">
-                    Összes
-                    <i class="fa-solid fa-layer-group"></i>
-                    
+                <a href="<?= BASE_URL ?>/pages/articles.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>" class="<?= $category_id === 0 ? 'active' : '' ?>">
+                    Összes <i class="fa-solid fa-layer-group"></i>
                 </a>
             </li>
-
             <?php foreach ($categories as $cat): ?>
-                <?php
-                    $href = BASE_URL . '/pages/articles.php?category=' . (int)$cat['category_id'];
-                    if ($q !== '') $href .= "&q=" . urlencode($q);
-                ?>
                 <li>
-                    <a href="<?= $href ?>" class="<?= $category_id === (int)$cat['category_id'] ? 'active' : '' ?>">
-                        <!--<i class="<= htmlspecialchars($cat['icon_class'] ?: 'fa-solid fa-hashtag') ?>"></i>-->
+                    <a href="<?= BASE_URL ?>/pages/articles.php?category=<?= (int)$cat['category_id'] ?><?= $q !== '' ? '&q=' . urlencode($q) : '' ?>" class="<?= $category_id === (int)$cat['category_id'] ? 'active' : '' ?>">
                         <?= htmlspecialchars($cat['category_name']) ?>
                     </a>
                 </li>
             <?php endforeach; ?>
         </ul>
+
+        <div class="sidebar-actions" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem;">
+            <?php if(isset($user) && isset($user['user_role']) && $user['user_role'] === 'A'): ?>
+                <button class="display-btn" style="width: 100%; margin: 0; padding: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-plus"></i> Új Tudástár cikk
+                </button>
+            <?php endif; ?>
+        </div>
     </aside>
 
     <!-- KÖZÉP: cikkek -->
     <main class="forum-center">
+
+        <?php if($user && isset($user['user_role']) && $user['user_role'] === 'A'): ?>
+
+            <div class="create-post-bar"> <form action="<?= BASE_URL ?>/actions/create_article.php" method="POST" enctype="multipart/form-data">
+                    
+                    <label for="category_id">Célkategória:</label>
+                    <select name="category_id" id="category_id" required style="width:100%; padding:0.8rem; margin-bottom:1rem; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 8px;">
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= (int)$cat['category_id'] ?>"><?= htmlspecialchars($cat['category_name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <label for="title">Cikk címe:</label>
+                    <input type="text" name="title" id="title" placeholder="A cikk címe..." required>
+
+                    <label for="summary">Rövid összefoglaló:</label>
+                    <textarea name="summary" id="summary" placeholder="Rövid leírás a listához..." style="height: 80px;"></textarea>
+
+                    <label for="content">Cikk tartalma:</label>
+                    <textarea name="content" id="content" placeholder="Írd meg a teljes cikket..." required style="min-height: 250px;"></textarea>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; align-items: end;">
+                        <div class="file-inputs">
+                            <label for="cover_image" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                <i class="fa-solid fa-image"></i> Borítókép kiválasztása
+                            </label>
+                            <input type="file" id="cover_image" name="cover_image" accept="image/*" style="width: 100%;">
+                        </div>
+
+                        <div class="reading-time-input">
+                            <label for="reading_minutes" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                <i class="fa-regular fa-clock"></i> Olvasási idő (perc)
+                            </label>
+                            <input type="number" 
+                                name="reading_minutes" 
+                                id="reading_minutes" 
+                                value="5" 
+                                min="1" 
+                                style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-color); font-family: 'Inter', sans-serif;">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="create-post-btn">Cikk publikálása</button>
+                </form>
+            </div>
+        <?php endif; ?>
+
         <?php if (empty($articles)): ?>
             <div class="empty-state">
                 <i class="fa-regular fa-face-frown" style="font-size:2rem; margin-bottom:.75rem;"></i>
@@ -176,46 +209,20 @@ $stmt->close();
             <?php foreach ($articles as $a): ?>
                 <article class="article-card">
                     <?php if (!empty($a['cover_image'])): ?>
-                        <img class="article-cover" src="<?= htmlspecialchars(BASE_URL . "/". $a['cover_image']) ?>" alt="Cikk borítókép">
+                        <img class="article-cover" src="<?= htmlspecialchars(BASE_URL . "/". $a['cover_image']) ?>" alt="Borítókép">
                     <?php endif; ?>
                     
-                    <?php
-                    $is_external = preg_match('/^https?:\/\//', $a['profile_image']);
-                    if (!empty($a['profile_image'])) {
-                        if ($is_external) {
-                            // Ha külső link (DiceBear), akkor változtatás nélkül használjuk
-                            $a_profile_avatar = htmlspecialchars($a['profile_image']);
-                        } else {
-                            // Ha belső fájl, akkor fűzzük hozzá a BASE_URL-t
-                            $a_profile_avatar = BASE_URL . '/' . htmlspecialchars($a['profile_image']);
-                        }
-                    } else {
-                        // Alapértelmezett kép, ha nincs megadva semmi
-                        $a_profile_avatar = BASE_URL . 'uploads/profile_images/anonymous.png';
-                    }
-                    ?>
                     <div class="article-body">
                         <div class="article-meta">
                             <span class="article-badge">#<?= htmlspecialchars($a['category_name']) ?></span>
-                            <a href="<?= BASE_URL ?>/pages/profile?u=<?= urlencode($a['author_slug']) ?>">
-                                <span class="user-info">
-                                    <img class="profile-avatar-image" src="<?= $a_profile_avatar ?>" alt="<?= htmlspecialchars($a['username']) ?>">
-                                    <span class="username"><?= htmlspecialchars($a['username']) ?></span>
-                                </span>      
-                            </a>
-
                             <span class="post-date">
-                                <i class="fa-regular fa-clock"></i><?= $a['reading_minutes'] ? (int)$a['reading_minutes'] . " perc" : "—" ?>&nbsp;
-                                <i class="fa-regular fa-calendar"></i><?= substr($a['created_at'], 0, 16) ?></span>
+                                <i class="fa-regular fa-clock"></i> <?= (int)$a['reading_minutes'] ?> perc • 
+                                <i class="fa-regular fa-calendar"></i> <?= substr($a['created_at'], 0, 10) ?>
                             </span>
-                            
                         </div>
 
                         <h2 class="article-title"><?= htmlspecialchars($a['title']) ?></h2>
-
-                        <?php if (!empty($a['summary'])): ?>
-                            <p class="article-summary"><?= nl2br(htmlspecialchars($a['summary'])) ?></p>
-                        <?php endif; ?>
+                        <p class="article-summary"><?= nl2br(htmlspecialchars($a['summary'])) ?></p>
 
                         <div class="article-actions">
                             <a class="read-btn" href="<?= BASE_URL ?>/pages/article_detail.php?id=<?= (int)$a['article_id'] ?>">
@@ -230,22 +237,19 @@ $stmt->close();
 
     <!-- JOBB: legújabb -->
     <aside class="forum-right">
-        <h3>Legújabb cikkek</h3>
-
+        <h3>Legújabbak</h3>
         <?php foreach ($latest_articles as $la): ?>
             <div class="latest-post-item">
                 <a href="<?= BASE_URL ?>/pages/article_detail.php?id=<?= (int)$la['article_id'] ?>">
                     <strong><?= htmlspecialchars($la['title']) ?></strong>
                 </a>
-                <p class="latest-post-meta">
-                    #<?= htmlspecialchars($la['category_name']) ?> • <?= substr($la['created_at'], 0, 16) ?>
-                </p>
+                <p class="latest-post-meta">#<?= htmlspecialchars($la['category_name']) ?></p>
             </div>
         <?php endforeach; ?>
     </aside>
 
 </section>
-<?php include ROOT_PATH . '/views/footer.php';?>
 
+<?php include ROOT_PATH . '/views/footer.php';?>
 </body>
 </html>

@@ -108,36 +108,9 @@ $post_count = $posts->num_rows;
             <h4>Leírás:</h4><p class="group-meta"><?= htmlspecialchars($group['group_description']) ?></p>
         </div>
     </div>
-    <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-    <div class="btn-section">
-        <button class="display-btn"><i class="fa-solid fa-plus"></i> Új poszt</button>
-        <a href="<?= BASE_URL ?>/pages/forum.php" class="display-btn back">Vissza a fórumhoz</a> 
-    </div>
-    <div class="create-post-bar">
-        <form action="<?= BASE_URL ?>/actions/create_post.php" method="POST" enctype="multipart/form-data">
-            
-            <input type="hidden" name="group_id" value="<?= $group_id ?>">
-
-            <label for="title">Cím:</label>
-            <input type="text" name="title" id="title" placeholder="Poszt címe..." required>
-
-            <label for="content">Tartalom:</label>
-            <textarea name="content" id="content" placeholder="Írd meg a poszt tartalmát..." required></textarea>
-
-            <div class="file-inputs">
-                <label for="postImages">Képek feltöltése (max 3)</label>
-                <input type="file" id="postImages" name="images[]" accept="image/*" multiple>
-            </div>
-            <div id="imagePreview"></div>
-
-            <button type="submit" class="create-post-btn">Poszt létrehozása</button>
-        </form>
-    </div>
-    <?php else: ?>
     <div class="btn-section">
         <a href="<?= BASE_URL ?>/pages/forum.php" class="display-btn back">Vissza a fórumhoz</a>
     </div>
-    <?php endif; ?>
 
     <!-- ==== POSZTOK ==== -->
     <main class="forum-posts">
