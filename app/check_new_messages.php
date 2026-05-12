@@ -26,7 +26,10 @@ $stmt = $conn->prepare("
     SELECT COUNT(*) as new_messages 
     FROM messages m
     JOIN conversations c ON m.conversation_id = c.conversation_id
-    WHERE (c.seller_user_id = ? OR c.buyer_user_id = ?)
+    WHERE (
+        (c.seller_user_id = ? AND c.seller_archived = 0) OR 
+        (c.buyer_user_id = ? AND c.buyer_archived = 0)
+    )
     AND m.sent_at > FROM_UNIXTIME(?)
     AND m.sender_user_id != ?
     AND m.is_read = 0

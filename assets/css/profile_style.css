@@ -239,6 +239,8 @@ body {
     transition: all var(--transition-fast);
     cursor: pointer;
     border: 1px solid transparent;
+    position: relative; /* Ehhez viszonyítjuk az X-et */
+    padding-right: 30px; /* Hely az X-nek */
 }
 
 .conversation-item:hover {
@@ -246,7 +248,25 @@ body {
     border-color: var(--primary-200);
     transform: translateX(5px);
 }
+.archive-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: var(--neutral-500);
+    cursor: pointer;
+    font-size: 0.9rem;
+    z-index: 10;
+    transition: color 0.2s, transform 0.2s;
+    padding: 5px;
+    line-height: 1;
+}
 
+.archive-btn:hover {
+    color: var(--danger);
+    transform: scale(1.2);
+}
 .conversation-item.unread {
     background: var(--primary-50);
     border-left: 4px solid var(--primary-500);
@@ -285,6 +305,7 @@ body {
     font-weight: 600;
     min-width: 20px;
     text-align: center;
+    margin-left: 5px;
 }
 
 .products-section {

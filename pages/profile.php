@@ -123,6 +123,10 @@ require_once ROOT_PATH . '/app/profile_logic.php';
                 <?php foreach ($conversations as $conv): ?>
                 <a href="<?= BASE_URL ?>/pages/conversation.php?conv_id=<?php echo $conv['conversation_id']; ?>&product_id=<?php echo $conv['product_id']; ?>" class="conversation-link">
                     <div class="conversation-item <?php echo $conv['unread_count'] > 0 ? 'unread' : ''; ?>">
+                        <button class="archive-btn" title="Beszélgetés elrejtése" 
+                                onclick="archiveConversation(event, <?php echo $conv['conversation_id']; ?>)">
+                            <i class="fas fa-times"></i>
+                        </button>
                         <div class="conversation-product">
                             <?php echo htmlspecialchars($conv['product_name']); ?>
                             <?php if ($conv['unread_count'] > 0): ?>
@@ -253,6 +257,28 @@ function confirmLogout() {
 function confirmDeleteAccount() {
     if (confirm('⚠️ Figyelem! A fiók törlésével minden adatod véglegesen törlődik.\n\nBiztosan folytatod?')) {
         window.location.href = '<?= BASE_URL ?>/app/delete_account.php';
+    }
+}
+
+function archiveConversation(event, convId) {
+    event.preventDefault(); // Megállítja a linkre kattintást
+    event.stopPropagation(); // Nem engedi tovább az eseményt a szülőnek
+    
+    if (confirm('Biztosan elrejted ezt a beszélgetést?')) {
+        fetch('<?= BASE_URL ?>/app/archive_conversation.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'conv_id=' + convId
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Eltüntetjük a kártyát animálva
+                const link = event.target.closest('.conversation-link');
+                link.style.opacity = '0';
+                setTimeout(() => link.remove(), 300);
+            }
+        });
     }
 }
 </script>
