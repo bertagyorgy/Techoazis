@@ -144,7 +144,7 @@ $stmt->close();
         <div class="sidebar-actions" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem;">
             <?php if(isset($user) && isset($user['user_role']) && $user['user_role'] === 'A'): ?>
                 <button class="display-btn" style="width: 100%; margin: 0; padding: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                    <i class="fa-solid fa-plus"></i> Új Tudástár cikk
+                    <i class="fa-solid fa-plus"></i> Új cikk
                 </button>
             <?php endif; ?>
         </div>
@@ -182,9 +182,8 @@ $stmt->close();
                         </div>
 
                         <div class="reading-time-input">
-                            <label for="reading_minutes" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
-                                <i class="fa-regular fa-clock"></i> Olvasási idő (perc)
-                            </label>
+                            <label for="reading_minutes">Olvasási idő (perc)</label>
+
                             <input type="number" 
                                 name="reading_minutes" 
                                 id="reading_minutes" 
