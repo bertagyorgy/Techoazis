@@ -120,6 +120,8 @@ CREATE TABLE conversations (
   updated_at datetime DEFAULT NULL,
   is_seller_agreed tinyint(1) DEFAULT 0,
   is_buyer_agreed tinyint(1) DEFAULT 0,
+  seller_archived tinyint(1) DEFAULT 0,
+  buyer_archived tinyint(1) DEFAULT 0,
   UNIQUE KEY product_id (product_id, buyer_user_id)
 );
 

@@ -92,45 +92,61 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Üzenetküldés
     if (messageForm) {
-        messageForm.addEventListener('submit', function(e) {
-            const messageText = messageInput.value.trim();
-            if (!messageText) { e.preventDefault(); return; }
-            e.preventDefault();
-            sendButton.disabled = true;
-            
-            fetch('conversation', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({
-                    'ajax': '1',
-                    'action': 'send',
-                    'conv_id': conversationId,
-                    'user_message': messageText
+            messageForm.addEventListener('submit', function(e) {
+                const messageText = messageInput.value.trim();
+                if (!messageText) { e.preventDefault(); return; }
+                e.preventDefault();
+                
+                sendButton.disabled = true;
+                
+                fetch('conversation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        'ajax': '1',
+                        'action': 'send',
+                        'conv_id': conversationId,
+                        'user_message': messageText
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Megnézzük, hogy a polling nem rakta-e ki véletlenül már (data-message-id alapján)
-                    if (!document.querySelector(`[data-message-id="${data.message_id}"]`)) {
-                        const tempMessage = {
-                            message_id: data.message_id, 
-                            user_message: messageText,
-                            sent_at: new Date().toISOString(),
-                            sender_user_id: currentUserId
-                        };
-                        const html = createMessageHTML(tempMessage, true, false);
-                        messagesContainer.insertAdjacentHTML('beforeend', html);
+                .then(response => {
+                    if (!response.ok) throw new Error('Hálózati hiba');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        messageInput.value = '';
+                        messageInput.style.height = 'auto';
+
+                        if (!document.querySelector(`[data-message-id="${data.message_id}"]`)) {
+                            const tempMessage = {
+                                message_id: data.message_id, 
+                                user_message: messageText,
+                                sent_at: new Date().toISOString(),
+                                sender_user_id: currentUserId,
+                                // Pótold ezeket a sorokat:
+                                username: currentUserName,
+                                profile_image: currentUserProfileImage
+                            };
+                            
+                            // Így a createMessageHTML már tudni fogja, mit tegyen az <img> tagbe
+                            const html = createMessageHTML(tempMessage, true, false);
+                            messagesContainer.insertAdjacentHTML('beforeend', html);
+                        }
+                        
+                        lastMessageId = data.message_id;
+                        scrollToBottom();
                     }
-                    
-                    lastMessageId = data.message_id; // Frissítjük a globális változót!
-                    messageInput.value = '';
-                    scrollToBottom();
-                }
-            })
-            .finally(() => { sendButton.disabled = false; });
-        });
-    }
+                })
+                .catch(error => {
+                    console.error('Fetch hiba (valószínűleg a PHP header() miatt):', error);
+                    // Ha hiba van, akkor is ürítheted, vagy értesítheted a felhasználót
+                })
+                .finally(() => { 
+                    sendButton.disabled = false; 
+                });
+            });
+        }
     
 
     // ÚJ FÜGGVÉNY: Jelzi a szervernek, hogy épp nézzük a beszélgetést
@@ -159,17 +175,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     data.messages.forEach(message => {
                         const msgId = parseInt(message.message_id);
+                        const isSentByMe = parseInt(message.sender_user_id) === parseInt(currentUserId);
                         
-                        // CSAK HA TÉNYLEG ÚJABB AZ ID, MINT AMIT TUDUNK
-                        if (msgId > parseInt(lastMessageId)) {
-                            // BIZTONSÁGI ÖV: Ha még nincs a képernyőn
-                            if (!document.querySelector(`[data-message-id="${msgId}"]`)) {
-                                const isSentByMe = parseInt(message.sender_user_id) === parseInt(currentUserId);
+                        // 1. Megkeressük, létezik-e már az üzenet a DOM-ban
+                        const existingElement = document.querySelector(`.message[data-message-id="${msgId}"]`);
+
+                        if (existingElement) {
+                            // HA LÉTEZIK: Ellenőrizzük a státuszát (csak ha én küldtem)
+                            if (isSentByMe && message.is_read == 1) {
+                                const icon = existingElement.querySelector('.message-status-icon');
+                                
+                                // Ha még "sent" (szürke pipa), frissítjük "read"-re (dupla pipa)
+                                if (icon && icon.classList.contains('sent')) {
+                                    icon.className = 'fas fa-check-double message-status-icon read';
+                                    icon.title = 'Látta';
+                                    icon.style.color = 'var(--accent-600)'; 
+                                }
+                            }
+                        } else {
+                            // HA NEM LÉTEZIK: Ellenőrizzük, hogy tényleg újabb-e, és betesszük a képernyőre
+                            if (msgId > parseInt(lastMessageId)) {
                                 const html = createMessageHTML(message, isSentByMe, message.is_read == 1);
                                 messagesContainer.insertAdjacentHTML('beforeend', html);
                                 shouldScroll = true;
+                                lastMessageId = msgId; // Frissítjük a követést
                             }
-                            lastMessageId = msgId; // Itt frissítjük a követést
                         }
                     });
                     if (shouldScroll) scrollToBottom();

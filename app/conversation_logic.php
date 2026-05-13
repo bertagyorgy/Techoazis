@@ -53,7 +53,7 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == '1') {
 
                 // 3. JAVÍTÁS: A $new_id változót küldjük vissza, ne a $conn->insert_id-t!
                 echo json_encode(['success' => true, 'message_id' => $new_id]);
-                header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
+                // header("Location: /pages/conversation.php?conv_id=" . $conversation_id . "&product_id=" . $product_id);
                 exit();
             } else {
                 echo json_encode(['success' => false, 'error' => 'Adatbázis hiba']);
