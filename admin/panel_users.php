@@ -34,7 +34,9 @@ $config = [
             return '❌ Inaktív/Törölt';
         },
         'user_role' => function($value) {
-            return ($value === 'A') ? '⭐ Admin' : '👤 Felhasználó';
+            if ($value === 'A') return '⭐ Admin';
+            if ($value === 'U') return '✨ User+';
+            return '👤 Felhasználó';
         },
         'registration_date' => function($value) {
             return date('Y.m.d. H:i', strtotime($value));
@@ -82,7 +84,7 @@ $config = [
             'param_type' => 's'
         ],
         'user_role' => [
-            'label' => 'Szerepkör (A: Admin, F: Felhasználó)',
+            'label' => 'Szerepkör (A: Admin, U: User+, F: Felhasználó)',
             'type' => 'text',
             'required' => true,
             'default' => 'F',

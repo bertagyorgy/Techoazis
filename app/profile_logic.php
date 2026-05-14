@@ -185,4 +185,4 @@ if (!empty($user['profile_image'])) {
     $profile_image = BASE_URL . 'uploads/profile_images/anonymous.png';
 }
 
-$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : 'Felhasználó';
+$user_role_display = ($user['user_role'] ?? '') === 'A' ? 'Adminisztrátor' : (($user['user_role'] ?? '') === 'U' ? 'User+' : 'Felhasználó');

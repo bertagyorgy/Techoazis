@@ -142,7 +142,7 @@ $stmt->close();
         </ul>
 
         <div class="sidebar-actions" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem;">
-            <?php if(isset($user) && isset($user['user_role']) && $user['user_role'] === 'A'): ?>
+            <?php if(isset($user) && isset($user['user_role']) && $user['user_role'] === 'A' || $user['user_role'] === 'U'): ?>
                 <button class="display-btn" style="width: 100%; margin: 0; padding: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                     <i class="fa-solid fa-plus"></i> Új cikk
                 </button>
@@ -153,7 +153,7 @@ $stmt->close();
     <!-- KÖZÉP: cikkek -->
     <main class="forum-center">
 
-        <?php if($user && isset($user['user_role']) && $user['user_role'] === 'A'): ?>
+        <?php if($user && isset($user['user_role']) && $user['user_role'] === 'A' || $user['user_role'] === 'U'): ?>
 
             <div class="create-post-bar"> <form action="<?= BASE_URL ?>/actions/create_article.php" method="POST" enctype="multipart/form-data">
                     
