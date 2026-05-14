@@ -35,7 +35,7 @@ $config = [
         },
         'user_role' => function($value) {
             if ($value === 'A') return '⭐ Admin';
-            if ($value === 'U') return '✨ User+';
+            if ($value === 'U') return '✨ Felhasználó+';
             return '👤 Felhasználó';
         },
         'registration_date' => function($value) {

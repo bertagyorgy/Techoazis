@@ -20,7 +20,7 @@ $stmt->execute();
 $res = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-if (!$res || $res['user_role'] !== 'A') {
+if (!$res || $res['user_role'] === 'F') {
     die("Hiba: Nincs jogosultságod.");
 }
 
